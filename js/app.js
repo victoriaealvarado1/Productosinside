@@ -3,15 +3,16 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v1_3";
+const KEY = "gestion_inside_v1_4";
+const HOY = "2026-07-03"; // fecha de referencia de la operación
 
 const UI = {
   view: "calendario",
   mode: "interno",            // interno | cliente
   calView: "grid",            // grid | lista
   month: SEED.meta.mesActual,
-  filtros: { region: "", campana: "", canal: "", formato: "", estado: "", aprobacion: "" },
-  showBacklog: false,         // panel "Por programar" desplegable (oculto por defecto)
+  filtros: { region: "", campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
+  showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
   soloMias: false,            // en modo cliente: solo lo que apruebo yo
   clienteId: "nico",          // "quién soy" cuando entro como cliente
   editId: null,
@@ -49,7 +50,16 @@ function applyFilters(list) {
     .filter((p) => !f.canal || p.canal === f.canal)
     .filter((p) => !f.formato || p.formato === f.formato)
     .filter((p) => !f.estado || p.estado === f.estado)
-    .filter((p) => !f.aprobacion || p.aprobacion === f.aprobacion);
+    .filter((p) => !f.aprobacion || p.aprobacion === f.aprobacion)
+    .filter((p) => !f.responsable || p.responsable === f.responsable);
+  if (f.q) {
+    const q = f.q.toLowerCase();
+    l = l.filter((p) => {
+      const c = campana(p.campanaId);
+      const texto = [c ? c.nombre : "", p.notas, p.formato, p.canal, nombre(p.responsable), nombre(p.aprobador), (p.paises || []).join(" ")].join(" ").toLowerCase();
+      return texto.includes(q);
+    });
+  }
   if (UI.mode === "cliente" && UI.soloMias) l = l.filter((p) => p.aprobador === UI.clienteId);
   return l;
 }
@@ -58,7 +68,7 @@ function piezasVisibles() {
   return applyFilters(DB.piezas.filter((p) => p.fecha && p.mes === UI.month))
     .sort((a, b) => a.fecha.localeCompare(b.fecha) || a.canal.localeCompare(b.canal));
 }
-// Piezas SIN fecha (backlog "por programar") — no dependen del mes
+// Piezas SIN fecha (backlog "por asignar fecha") — no dependen del mes
 function backlogPiezas() {
   return applyFilters(DB.piezas.filter((p) => !p.fecha))
     .sort((a, b) => a.campanaId.localeCompare(b.campanaId) || a.canal.localeCompare(b.canal));
@@ -112,7 +122,9 @@ function viewCalendario() {
     note = `<div class="pill-note cli-note">
       👁️ <b>Modo Cliente</b> — estás como <b>${esc(nombre(UI.clienteId))}</b>.
       Puedes <b>aprobar o pedir ajustes</b> en cada publicación (no editar el contenido).
-      Tienes <b>${mias}</b> pendiente${mias === 1 ? "" : "s"} de tu aprobación.
+      ${mias > 0
+        ? `<button class="link-btn" id="verPendientes">Tienes ${mias} pendiente${mias === 1 ? "" : "s"} de tu aprobación → verlas</button>`
+        : `No tienes aprobaciones pendientes este mes ✓`}
       <select id="quienSoy" style="margin-left:8px">${clientes().map((p) => `<option value="${p.id}" ${UI.clienteId === p.id ? "selected" : ""}>${esc(p.nombre)}</option>`).join("")}</select>
     </div>`;
   }
@@ -128,10 +140,13 @@ function viewCalendario() {
       <select id="fFormato">${optS("Todos los formatos", DB.formatos, UI.filtros.formato)}</select>
       <select id="fEstado">${opt("Toda la producción", DB.estados, UI.filtros.estado)}</select>
       <select id="fAprob">${opt("Toda aprobación", DB.aprobaciones, UI.filtros.aprobacion)}</select>
+      <select id="fResp">${opt("Todos los responsables", inside(), UI.filtros.responsable)}</select>
+      <input type="search" id="fBusca" placeholder="🔍 Buscar…" value="${esc(UI.filtros.q)}" style="width:130px"/>
+      ${Object.values(UI.filtros).some((v) => v) ? `<button class="btn sm ghost" id="btnLimpiar" title="Quitar todos los filtros">✕ Limpiar</button>` : ""}
     </div>
     <div class="spacer"></div>
     ${!interno ? `<label class="chkmine"><input type="checkbox" id="soloMias" ${UI.soloMias ? "checked" : ""}/> Solo lo que apruebo yo</label>` : ""}
-    <button class="btn ${UI.showBacklog ? "active" : ""}" id="btnBacklog" title="Ver las piezas sin fecha">🗂️ Por programar <span class="cnt-inline">${backlogPiezas().length}</span></button>
+    <button class="btn ${UI.showBacklog ? "active" : ""}" id="btnBacklog" title="Piezas que existen pero aún no tienen día de publicación">🗂️ Por asignar fecha <span class="cnt-inline">${DB.piezas.filter((p) => !p.fecha).length}</span></button>
     <div class="viewtoggle">
       <button data-cal="grid" class="${UI.calView === "grid" ? "active" : ""}">📅 Calendario</button>
       <button data-cal="lista" class="${UI.calView === "lista" ? "active" : ""}">☰ Gestión (lista)</button>
@@ -149,15 +164,16 @@ function viewCalendario() {
   `;
 }
 
-/* ---------- Panel "Por programar" (backlog sin fecha) ---------- */
+/* ---------- Panel "Por asignar fecha" (backlog sin fecha) ---------- */
 function backlogPanel(interno) {
   const list = backlogPiezas();
+  const total = DB.piezas.filter((p) => !p.fecha).length;
   const cards = list.length
     ? list.map((p) => bchipHTML(p, interno)).join("")
-    : `<div class="backlog-empty">Sin piezas por programar 🎉</div>`;
+    : (total ? `<div class="backlog-empty">Hay ${total} pieza${total > 1 ? "s" : ""} sin fecha, pero los filtros activos las ocultan.</div>` : `<div class="backlog-empty">Sin piezas por asignar fecha 🎉</div>`);
   return `<aside class="backlog" ${interno ? 'data-drop=""' : ""}>
     <div class="backlog-head">
-      <span>🗂️ Por programar <span class="cnt">${list.length}</span></span>
+      <span>🗂️ Por asignar fecha <span class="cnt">${list.length < total ? `${list.length} de ${total}` : total}</span></span>
       <span>
         ${interno ? `<button class="ico-btn" id="btnNewBacklog" title="Agregar pieza sin fecha">＋</button>` : ""}
         <button class="ico-btn" id="btnCloseBacklog" title="Ocultar panel">✕</button>
@@ -178,6 +194,9 @@ function bchipHTML(p, interno) {
   </div>`;
 }
 
+// Pieza con fecha vencida y aún no publicada
+const atrasada = (p) => p.fecha && p.fecha < HOY && p.estado !== "publicado";
+
 function aprobMark(p) {
   if (p.aprobacion === "aprobado") return `<span class="amark ok" title="Aprobado por ${esc(nombre(p.aprobador))}">✓</span>`;
   if (p.aprobacion === "rechazado") return `<span class="amark no" title="Con ajustes (${esc(nombre(p.aprobador))})">✕</span>`;
@@ -190,7 +209,7 @@ function chipHTML(p) {
   const drag = UI.mode === "interno" ? `draggable="true" data-pieza="${p.id}"` : "";
   return `<span class="chip${UI.mode === "interno" ? " draggable" : ""}" data-open="${p.id}" ${drag} title="${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.canal)} · ${esc(p.formato)} · ${esc(r ? r.nombre : "")}"
     style="background:${r ? r.color : "#64748B"};border-left-color:${e ? e.color : "#fff"}">
-    <span class="cico">${ico}</span>${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}
+    <span class="cico">${ico}</span>${atrasada(p) ? '<span class="late" title="Atrasada: la fecha ya pasó y no está publicada">⚠️</span>' : ""}${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}
     <span class="cmeta">${esc(CANAL_ICONO[p.canal] || "")}·${esc(p.formato)}</span>${aprobMark(p)}</span>`;
 }
 
@@ -202,7 +221,7 @@ function calGrid() {
   const dimPrev = new Date(Date.UTC(y, m - 1, 0)).getUTCDate();
   const byDay = {};
   piezasVisibles().forEach((p) => { (byDay[p.fecha] = byDay[p.fecha] || []).push(p); });
-  const today = "2026-07-03";
+  const today = HOY;
   const dow = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
   let cells = "";
   const total = Math.ceil((startDow + dim) / 7) * 7;
@@ -240,7 +259,7 @@ function calLista(interno) {
       ? `<button class="ico-btn" data-open="${p.id}" title="Editar">✏️</button><button class="ico-btn danger" data-del="${p.id}" title="Eliminar">🗑️</button>`
       : `<button class="ico-btn" data-open="${p.id}" title="Ver / aprobar">👁️</button>`;
     return `<tr class="${p.fecha ? "" : "sin-fecha"}">
-      <td class="nowrap">${p.fecha ? esc(fechaCorta(p.fecha)) : '<span class="tag-sf">Sin fecha</span>'}</td>
+      <td class="nowrap ${atrasada(p) ? "late-cell" : ""}">${p.fecha ? (atrasada(p) ? "⚠️ " : "") + esc(fechaCorta(p.fecha)) : '<span class="tag-sf">Sin fecha</span>'}</td>
       <td><span class="canal-badge c-${p.canal}">${esc(CANAL_ICONO[p.canal])}</span></td>
       <td><span class="fmt-cell">${FORMATO_ICONO[p.formato] || ""} ${esc(p.formato)}</span></td>
       <td><b>${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}</b></td>
@@ -277,8 +296,9 @@ function viewEstructura() {
     <p>${DB.piezas.filter((p) => p.campanaId === c.id && p.mes === UI.month).length} publicaciones este mes</p></div>`).join("");
   const ins = inside().map((p) => `<div class="card"><h4>${esc(p.nombre)}</h4><p>${esc(p.rol)} · Inside</p><span class="tag">Agencia · publica</span></div>`).join("");
   const cli = clientes().map((p) => {
-    const n = DB.piezas.filter((x) => x.mes === UI.month && x.aprobador === p.id).length;
-    return `<div class="card"><h4>${esc(p.nombre)}</h4><p>${esc(p.rol)} · Payless</p><span class="tag cli">Cliente · aprueba ${n}</span></div>`;
+    const n = DB.piezas.filter((x) => x.aprobador === p.id && (x.mes === UI.month || !x.fecha)).length;
+    const pend = DB.piezas.filter((x) => x.aprobador === p.id && (x.mes === UI.month || !x.fecha) && x.aprobacion === "pendiente").length;
+    return `<div class="card"><h4>${esc(p.nombre)}</h4><p>${esc(p.rol)} · Payless</p><span class="tag cli">Cliente · aprueba ${n}${pend ? ` · ${pend} pendiente${pend > 1 ? "s" : ""}` : ""}</span></div>`;
   }).join("");
   return `
     <div class="pill-note">Base compartida del calendario. <b>Inside publica</b>, <b>el cliente aprueba</b>. En la v2 se expande al árbol de matrices (Orgánica, Ecommerce/WhatsApp, Campañas) y a los inputs con legales por país.</div>
@@ -315,7 +335,7 @@ function openModal(id, presetFecha) {
       <div><label class="fld">Formato</label><select id="mFormato" ${ro} style="width:100%">${DB.formatos.map((f) => `<option ${draft.formato === f ? "selected" : ""}>${FORMATO_ICONO[f] || ""} ${esc(f)}</option>`).join("")}</select></div>
       <div><label class="fld">Fecha de publicación</label>
         <input type="date" id="mFecha" value="${esc(draft.fecha)}" ${ro || (!draft.fecha ? "disabled" : "")} style="width:100%"/>
-        <label class="mini-chk"><input type="checkbox" id="mSinFecha" ${!draft.fecha ? "checked" : ""} ${ro}/> Por programar (sin fecha)</label>
+        <label class="mini-chk"><input type="checkbox" id="mSinFecha" ${!draft.fecha ? "checked" : ""} ${ro}/> Por asignar fecha (todavía sin día)</label>
       </div>
     </div>
     <div class="row2">
@@ -327,7 +347,7 @@ function openModal(id, presetFecha) {
       <div><label class="fld">Aprobación cliente · nombre</label><select id="mAprobador" ${ro} style="width:100%">${clientes().map((pe) => `<option value="${pe.id}" ${draft.aprobador === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
     </div>
     <div><label class="fld">Países objetivo</label><div class="paises-grid" id="mPaises">${paisesChecks(draft)}</div></div>
-    <div><label class="fld">Link de la pieza / editable (Drive, Frame…)</label><input type="url" id="mLink" value="${esc(draft.link)}" placeholder="https://..." ${ro} style="width:100%"/></div>
+    <div><label class="fld">Link de la pieza / editable (Drive, Frame…) ${draft.link ? `<a class="lk" href="${esc(draft.link)}" target="_blank" rel="noopener" style="float:right">Abrir pieza ↗</a>` : ""}</label><input type="url" id="mLink" value="${esc(draft.link)}" placeholder="https://..." ${ro} style="width:100%"/></div>
     <div><label class="fld">Notas / legal / adaptación</label><textarea id="mNotas" rows="3" ${ro} style="width:100%">${esc(draft.notas)}</textarea></div>
 
     <div class="approval-box">
@@ -376,6 +396,16 @@ function nuevaPieza(fecha) {
 }
 function closeModal() { document.getElementById("overlay").classList.remove("open"); UI.editId = null; }
 
+/* Toast de confirmación */
+function toast(msg) {
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.classList.add("show"));
+  setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 2200);
+}
+
 /* ============================================================
    WIRING
    ============================================================ */
@@ -412,8 +442,10 @@ function wireModal(draft, interno, existe) {
       // el <option> muestra "🎬 Video"; normalizamos al nombre de formato limpio
       draft.formato = normalizaFormato(document.getElementById("mFormato").value);
       draft.regionId = document.getElementById("mRegion").value;
-      if (document.getElementById("mSinFecha").checked) { draft.fecha = ""; draft.mes = ""; }
-      else { draft.fecha = document.getElementById("mFecha").value; draft.mes = draft.fecha.slice(0, 7); }
+      // Si el checkbox está marcado O la fecha quedó vacía, va a "por asignar fecha"
+      const fechaVal = document.getElementById("mFecha").value;
+      if (document.getElementById("mSinFecha").checked || !fechaVal) { draft.fecha = ""; draft.mes = ""; }
+      else { draft.fecha = fechaVal; draft.mes = fechaVal.slice(0, 7); }
       draft.estado = document.getElementById("mEstado").value;
       draft.responsable = document.getElementById("mResp").value;
       draft.aprobador = document.getElementById("mAprobador").value;
@@ -430,6 +462,11 @@ function wireModal(draft, interno, existe) {
     // Cliente: solo aprobación + comentario
     document.getElementById("mSave").onclick = () => {
       draft.comentarioCliente = document.getElementById("mComentario").value.trim();
+      // Si pide ajustes sin decir cuáles, la agencia no sabrá qué corregir
+      if (draft.aprobacion === "rechazado" && !draft.comentarioCliente) {
+        document.getElementById("mComentario").focus();
+        if (!confirm("Elegiste 'Con ajustes' pero no escribiste qué hay que cambiar.\n¿Guardar igual sin comentario?")) return;
+      }
       commit(draft, existe);
     };
   }
@@ -450,6 +487,7 @@ function commit(draft, existe) {
     DB.piezas.push(draft);
   }
   save(); closeModal(); render();
+  toast(UI.mode === "cliente" ? "Aprobación guardada ✓" : (existe ? "Cambios guardados ✓" : "Publicación creada ✓"));
 }
 
 function wireContent() {
@@ -473,6 +511,18 @@ function wireContent() {
   const chg = (id, key) => { const el = document.getElementById(id); if (el) el.onchange = () => { UI.filtros[key] = el.value; render(); }; };
   chg("fRegion", "region"); chg("fCampana", "campana"); chg("fCanal", "canal");
   chg("fFormato", "formato"); chg("fEstado", "estado"); chg("fAprob", "aprobacion");
+  chg("fResp", "responsable");
+
+  // Búsqueda con re-render conservando el foco y el cursor
+  const busca = document.getElementById("fBusca");
+  if (busca) busca.oninput = () => {
+    UI.filtros.q = busca.value;
+    render();
+    const nb = document.getElementById("fBusca");
+    if (nb) { nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); }
+  };
+  bind("btnLimpiar", () => { Object.keys(UI.filtros).forEach((k) => (UI.filtros[k] = "")); UI.soloMias = false; render(); });
+  bind("verPendientes", () => { UI.soloMias = true; UI.filtros.aprobacion = "pendiente"; UI.calView = "lista"; render(); });
 
   if (UI.mode === "interno" && UI.calView === "grid") wireDragDrop();
 }
@@ -510,6 +560,7 @@ function wireDragDrop() {
       p.mes = nuevaFecha ? nuevaFecha.slice(0, 7) : "";
       save();
       render();
+      toast(nuevaFecha ? `Movida al ${fechaCorta(nuevaFecha)} ✓` : "Enviada a 'Por asignar fecha' ✓");
     });
   });
 }
@@ -528,6 +579,7 @@ function duplicarMes() {
     DB.piezas.push(n);
   });
   save(); UI.month = dest; render();
+  toast(`${src.length} publicaciones copiadas a ${monthLabel(dest)} ✓`);
 }
 
 /* ---------- Nav global ---------- */
@@ -535,6 +587,6 @@ document.querySelectorAll(".nav-item[data-view]").forEach((b) => b.onclick = () 
 document.querySelectorAll("#modePill button").forEach((b) => b.onclick = () => { UI.mode = b.dataset.mode; UI.soloMias = false; render(); });
 document.getElementById("modalClose").onclick = closeModal;
 document.getElementById("overlay").onclick = (e) => { if (e.target.id === "overlay") closeModal(); };
-document.getElementById("btnReset").onclick = () => { if (confirm("¿Reiniciar a los datos del kick off? Se perderán tus cambios en este navegador.")) { DB = JSON.parse(JSON.stringify(SEED)); save(); UI.month = SEED.meta.mesActual; render(); } };
+document.getElementById("btnReset").onclick = () => { if (confirm("¿Restaurar los datos iniciales (kick off + matriz de Centroamérica)? Se perderán tus cambios en este navegador.")) { DB = JSON.parse(JSON.stringify(SEED)); save(); UI.month = SEED.meta.mesActual; render(); toast("Datos restaurados ✓"); } };
 
 render();

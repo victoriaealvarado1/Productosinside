@@ -122,7 +122,7 @@ const SEED = {
     pz("2026-07-21", "liq", "cam", "Facebook", "Estática", "briefing", "ale", "nico", "pendiente", "all",
       "Liquidación 'últimos días', hasta 70%. Refuerzo desde el 21 jul. Propuesta de Inside sobre la gráfica base."),
 
-    /* ===== POR PROGRAMAR (sin fecha) ===== */
+    /* ===== POR ASIGNAR FECHA (sin día definido) ===== */
     pz("", "liq", "cam", "Facebook", "Video", "programado", "alej", "nico", "aprobado", ["El Salvador"],
       "[Value for Money] 'Season Sale – un par nunca es suficiente'. FECHA TBC (por confirmar). El Salvador.", "tbc"),
     pz("", "madres", "cam", "Facebook", "Carrusel", "briefing", "ale", "nico", "pendiente", ["Costa Rica"],
@@ -130,13 +130,13 @@ const SEED = {
     pz("", "padre", "cam", "Facebook", "Video", "briefing", "alej", "nico", "pendiente", "all",
       "Día del Padre: reuso de contenido de junio (zapatos de caballero). Confirmar con Kevin y fecha (aprox. 15 jul).", "bpad"),
     pz("", "liq", "sur", "Facebook", "Estática", "briefing", "vic", "cristina", "pendiente", "all",
-      "Refuerzo de liquidación para Sur (Ecuador, Colombia, Panamá). Por programar.", "bsur"),
+      "Refuerzo de liquidación para Sur (Ecuador, Colombia, Panamá). Por asignar fecha.", "bsur"),
     pz("", "liq", "cam", "WhatsApp", "Estática", "briefing", "vic", "carla", "pendiente", "all",
       "Ecommerce y WhatsApp en standby: Carla Poveda organiza lo pendiente antes de programar la Pauta.", "bwa"),
   ],
 };
 
-/* Helper para construir una publicación (fecha "" = sin fecha / por programar) */
+/* Helper para construir una publicación (fecha "" = sin fecha / por asignar) */
 function pz(fecha, campanaId, regionId, canal, formato, estado, responsable, aprobador, aprobacion, paises, notas, salt) {
   const reg = REG(regionId);
   const target = paises === "all" ? (reg ? reg.paises.slice() : []) : paises;
