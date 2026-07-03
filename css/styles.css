@@ -207,6 +207,47 @@ label.fld { display: block; font-size: 12px; font-weight: 600; color: var(--ink-
 .reg-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
 .reg-legend i { width: 11px; height: 11px; border-radius: 3px; }
 
+/* ---- v1.1 additions ---- */
+.chip .cico { margin-right: 3px; }
+.chip .cmeta { opacity: .82; font-weight: 500; font-size: 10px; margin-left: 3px; }
+.chip .amark { float: right; font-size: 10px; margin-left: 4px; line-height: 1.5; }
+.chip .amark.ok { color: #DCFCE7; }
+.chip .amark.no { color: #FEE2E2; }
+.chip .amark.wait { color: #FEF9C3; }
+
+.legend-note { margin-left: auto; color: var(--muted); font-weight: 500; font-size: 11.5px; }
+
+.canal-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; padding: 3px 7px; border-radius: 7px; font-size: 11px; font-weight: 800; letter-spacing: .04em; color: #fff; }
+.c-Facebook { background: #1877F2; }
+.c-Instagram { background: linear-gradient(135deg,#F58529,#DD2A7B,#8134AF); }
+.c-WhatsApp { background: #25D366; }
+.fmt-cell { white-space: nowrap; font-weight: 600; }
+.paises { color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 220px; }
+.acc { white-space: nowrap; text-align: right; }
+.ico-btn { border: none; background: transparent; font-size: 15px; padding: 4px 6px; border-radius: 7px; }
+.ico-btn:hover { background: var(--line-soft); }
+.ico-btn.danger:hover { background: #FEE2E2; }
+.tbl tr:hover td { background: #FBFCFE; }
+
+.chkmine { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+.chkmine input { width: 15px; height: 15px; accent-color: var(--brand); }
+
+.paises-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.pais-chk { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.pais-chk.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.pais-chk input { accent-color: var(--brand); }
+
+.approval-box { background: #FBFCFE; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.seg.big { display: flex; gap: 8px; }
+.seg.big button { flex: 1; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 9px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.seg.big button.on.pendiente { background: var(--warn); color: #fff; border-color: var(--warn); }
+.seg.big button.on.aprobado { background: var(--ok); color: #fff; border-color: var(--ok); }
+.seg.big button.on.rechazado { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+.card .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+.card .tag.cli { color: #2563EB; background: #EFF6FF; }
+.section-title.mt { margin-top: 26px; }
+
 .hidden { display: none !important; }
 .pill-note { background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; margin-bottom: 18px; }
 .cli-note { background: var(--brand-soft); border-color: #DDD6FE; color: #5B21B6; }
