@@ -254,6 +254,34 @@ label.fld { display: block; font-size: 12px; font-weight: 600; color: var(--ink-
 .card .tag.cli { color: #2563EB; background: #EFF6FF; }
 .section-title.mt { margin-top: 26px; }
 
+/* ---- v1.2 backlog "por programar" ---- */
+.cal-layout { display: grid; grid-template-columns: 1fr 288px; gap: 16px; align-items: start; }
+.backlog { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; position: sticky; top: 84px; max-height: calc(100vh - 110px); overflow: auto; }
+.backlog.drop-hover { box-shadow: inset 0 0 0 2px var(--brand); background: var(--brand-soft); }
+.backlog-head { display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 14px; }
+.backlog-head .cnt { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 11px; margin-left: 4px; }
+.backlog-hint { color: var(--muted); font-size: 11.5px; margin: 6px 0 12px; }
+.backlog-list { display: flex; flex-direction: column; gap: 9px; }
+.backlog-empty { color: var(--muted); font-size: 12.5px; text-align: center; padding: 24px 8px; }
+.bchip { background: #fff; border: 1px solid var(--line); border-left: 4px solid #64748B; border-radius: 10px; padding: 9px 10px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+.bchip.draggable { cursor: grab; }
+.bchip.draggable:active { cursor: grabbing; }
+.bchip.dragging { opacity: .4; }
+.bchip .bc-top { display: flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 700; color: var(--ink); }
+.bchip .bc-top .amark { margin-left: auto; }
+.bchip .bc-top .amark.ok { color: var(--ok); }
+.bchip .bc-top .amark.no { color: var(--danger); }
+.bchip .bc-top .amark.wait { color: var(--warn); }
+.bchip .bc-meta { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 11px; color: var(--muted); font-weight: 600; }
+
+.mini-chk { display: flex; align-items: center; gap: 6px; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.mini-chk input { accent-color: var(--brand); }
+
+tr.sin-fecha td { background: #FFFDF5; }
+.tag-sf { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .03em; color: #B45309; background: #FEF3C7; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+
+@media (max-width: 1100px) { .cal-layout { grid-template-columns: 1fr; } .backlog { position: static; max-height: none; } }
+
 .hidden { display: none !important; }
 .pill-note { background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; margin-bottom: 18px; }
 .cli-note { background: var(--brand-soft); border-color: #DDD6FE; color: #5B21B6; }

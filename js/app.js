@@ -3,7 +3,7 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v1_1";
+const KEY = "gestion_inside_v1_2";
 
 const UI = {
   view: "calendario",
@@ -40,18 +40,27 @@ function shiftMonth(ym, d) { let [y, m] = ym.split("-").map(Number); m += d; if 
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 /* ---------- Filtrado ---------- */
-function piezasVisibles() {
+function applyFilters(list) {
   const f = UI.filtros;
-  let list = DB.piezas
-    .filter((p) => p.mes === UI.month)
+  let l = list
     .filter((p) => !f.region || p.regionId === f.region)
     .filter((p) => !f.campana || p.campanaId === f.campana)
     .filter((p) => !f.canal || p.canal === f.canal)
     .filter((p) => !f.formato || p.formato === f.formato)
     .filter((p) => !f.estado || p.estado === f.estado)
     .filter((p) => !f.aprobacion || p.aprobacion === f.aprobacion);
-  if (UI.mode === "cliente" && UI.soloMias) list = list.filter((p) => p.aprobador === UI.clienteId);
-  return list.sort((a, b) => a.fecha.localeCompare(b.fecha) || a.canal.localeCompare(b.canal));
+  if (UI.mode === "cliente" && UI.soloMias) l = l.filter((p) => p.aprobador === UI.clienteId);
+  return l;
+}
+// Piezas CON fecha, del mes visible
+function piezasVisibles() {
+  return applyFilters(DB.piezas.filter((p) => p.fecha && p.mes === UI.month))
+    .sort((a, b) => a.fecha.localeCompare(b.fecha) || a.canal.localeCompare(b.canal));
+}
+// Piezas SIN fecha (backlog "por programar") — no dependen del mes
+function backlogPiezas() {
+  return applyFilters(DB.piezas.filter((p) => !p.fecha))
+    .sort((a, b) => a.campanaId.localeCompare(b.campanaId) || a.canal.localeCompare(b.canal));
 }
 
 /* ============================================================
@@ -132,8 +141,36 @@ function viewCalendario() {
     ${DB.regiones.map((r) => `<span><i style="background:${r.color}"></i>${esc(r.nombre)}</span>`).join("")}
     <span class="legend-note">Fondo = región · borde izquierdo = producción · ✓/⏳/✕ = aprobación cliente</span>
   </div>
-  ${UI.calView === "grid" ? calGrid() : calLista(interno)}
+  ${UI.calView === "grid"
+      ? `<div class="cal-layout">${calGrid()}${backlogPanel(interno)}</div>`
+      : calLista(interno)}
   `;
+}
+
+/* ---------- Panel "Por programar" (backlog sin fecha) ---------- */
+function backlogPanel(interno) {
+  const list = backlogPiezas();
+  const cards = list.length
+    ? list.map((p) => bchipHTML(p, interno)).join("")
+    : `<div class="backlog-empty">Sin piezas por programar 🎉</div>`;
+  return `<aside class="backlog" ${interno ? 'data-drop=""' : ""}>
+    <div class="backlog-head">
+      <span>🗂️ Por programar <span class="cnt">${list.length}</span></span>
+      ${interno ? `<button class="ico-btn" id="btnNewBacklog" title="Agregar pieza sin fecha">＋</button>` : ""}
+    </div>
+    <p class="backlog-hint">${interno ? "Arrastra una tarjeta a un día para asignarle fecha. Suelta aquí para quitarle la fecha." : "Piezas que aún no tienen fecha de publicación."}</p>
+    <div class="backlog-list">${cards}</div>
+  </aside>`;
+}
+
+function bchipHTML(p, interno) {
+  const r = region(p.regionId);
+  const drag = interno ? `draggable="true" data-pieza="${p.id}"` : "";
+  const c = campana(p.campanaId);
+  return `<div class="bchip${interno ? " draggable" : ""}" data-open="${p.id}" ${drag} style="border-left-color:${r ? r.color : "#64748B"}">
+    <div class="bc-top"><span class="cico">${FORMATO_ICONO[p.formato] || "•"}</span><b>${esc(c ? c.nombre : "")}</b>${aprobMark(p)}</div>
+    <div class="bc-meta"><span class="canal-badge c-${p.canal}">${esc(CANAL_ICONO[p.canal] || "")}</span> ${esc(p.formato)} · ${esc(r ? r.nombre : "")}</div>
+  </div>`;
 }
 
 function aprobMark(p) {
@@ -188,15 +225,17 @@ function paisesResumen(p) {
 }
 
 function calLista(interno) {
-  const piezas = piezasVisibles();
+  const sinFecha = backlogPiezas();
+  const conFecha = piezasVisibles();
+  const piezas = [...sinFecha, ...conFecha];
   if (!piezas.length) return emptyState(interno);
   const rows = piezas.map((p) => {
     const r = region(p.regionId), e = estado(p.estado), a = aprob(p.aprobacion);
     const acc = interno
       ? `<button class="ico-btn" data-open="${p.id}" title="Editar">✏️</button><button class="ico-btn danger" data-del="${p.id}" title="Eliminar">🗑️</button>`
       : `<button class="ico-btn" data-open="${p.id}" title="Ver / aprobar">👁️</button>`;
-    return `<tr>
-      <td class="nowrap">${esc(fechaCorta(p.fecha))}</td>
+    return `<tr class="${p.fecha ? "" : "sin-fecha"}">
+      <td class="nowrap">${p.fecha ? esc(fechaCorta(p.fecha)) : '<span class="tag-sf">Sin fecha</span>'}</td>
       <td><span class="canal-badge c-${p.canal}">${esc(CANAL_ICONO[p.canal])}</span></td>
       <td><span class="fmt-cell">${FORMATO_ICONO[p.formato] || ""} ${esc(p.formato)}</span></td>
       <td><b>${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}</b></td>
@@ -269,7 +308,10 @@ function openModal(id, presetFecha) {
     </div>
     <div class="row2">
       <div><label class="fld">Formato</label><select id="mFormato" ${ro} style="width:100%">${DB.formatos.map((f) => `<option ${draft.formato === f ? "selected" : ""}>${FORMATO_ICONO[f] || ""} ${esc(f)}</option>`).join("")}</select></div>
-      <div><label class="fld">Fecha de publicación</label><input type="date" id="mFecha" value="${esc(draft.fecha)}" ${ro} style="width:100%"/></div>
+      <div><label class="fld">Fecha de publicación</label>
+        <input type="date" id="mFecha" value="${esc(draft.fecha)}" ${ro || (!draft.fecha ? "disabled" : "")} style="width:100%"/>
+        <label class="mini-chk"><input type="checkbox" id="mSinFecha" ${!draft.fecha ? "checked" : ""} ${ro}/> Por programar (sin fecha)</label>
+      </div>
     </div>
     <div class="row2">
       <div><label class="fld">Región</label><select id="mRegion" ${ro} style="width:100%">${DB.regiones.map((r) => `<option value="${r.id}" ${draft.regionId === r.id ? "selected" : ""}>${esc(r.nombre)}</option>`).join("")}</select></div>
@@ -317,10 +359,11 @@ function paisesChecks(draft) {
 }
 
 function nuevaPieza(fecha) {
-  const f = fecha || `${UI.month}-01`;
+  const sinFecha = fecha === "SIN_FECHA";
+  const f = sinFecha ? "" : (fecha || `${UI.month}-01`);
   const r = DB.regiones[0];
   return {
-    id: null, fecha: f, mes: f.slice(0, 7), marca: "Payless",
+    id: null, fecha: f, mes: f ? f.slice(0, 7) : "", marca: "Payless",
     campanaId: DB.campanas[0].id, regionId: r.id, canal: DB.canales[0], formato: DB.formatos[0],
     estado: "briefing", responsable: inside()[0].id, aprobador: clientes()[0].id,
     aprobacion: "pendiente", comentarioCliente: "", paises: r.paises.slice(), link: "", notas: "",
@@ -342,6 +385,13 @@ function wireModal(draft, interno, existe) {
   bindAprob();
 
   if (interno) {
+    const sf = document.getElementById("mSinFecha");
+    const fechaInput = document.getElementById("mFecha");
+    sf.onchange = () => {
+      fechaInput.disabled = sf.checked;
+      if (!sf.checked && !fechaInput.value) fechaInput.value = `${UI.month}-01`;
+    };
+
     const regionSel = document.getElementById("mRegion");
     regionSel.onchange = () => {
       draft.regionId = regionSel.value;
@@ -357,8 +407,8 @@ function wireModal(draft, interno, existe) {
       // el <option> muestra "🎬 Video"; normalizamos al nombre de formato limpio
       draft.formato = normalizaFormato(document.getElementById("mFormato").value);
       draft.regionId = document.getElementById("mRegion").value;
-      draft.fecha = document.getElementById("mFecha").value;
-      draft.mes = draft.fecha.slice(0, 7);
+      if (document.getElementById("mSinFecha").checked) { draft.fecha = ""; draft.mes = ""; }
+      else { draft.fecha = document.getElementById("mFecha").value; draft.mes = draft.fecha.slice(0, 7); }
       draft.estado = document.getElementById("mEstado").value;
       draft.responsable = document.getElementById("mResp").value;
       draft.aprobador = document.getElementById("mAprobador").value;
@@ -405,6 +455,7 @@ function wireContent() {
   const bind = (id, fn, ev = "onclick") => { const el = document.getElementById(id); if (el) el[ev] = fn; };
   bind("btnNew", () => openModal(null));
   bind("btnNew2", () => openModal(null));
+  bind("btnNewBacklog", () => openModal(null, "SIN_FECHA"));
   bind("mPrev", () => { UI.month = shiftMonth(UI.month, -1); render(); });
   bind("mNext", () => { UI.month = shiftMonth(UI.month, 1); render(); });
   bind("btnDup", duplicarMes);
@@ -419,36 +470,37 @@ function wireContent() {
   if (UI.mode === "interno" && UI.calView === "grid") wireDragDrop();
 }
 
-/* Arrastrar publicaciones entre días (estilo Trello) — solo modo Interno */
+/* Arrastrar publicaciones entre días y hacia/desde el backlog — solo modo Interno */
 function wireDragDrop() {
   let arrastrando = null;
 
-  document.querySelectorAll('.chip[draggable="true"]').forEach((chip) => {
-    chip.addEventListener("dragstart", (e) => {
-      arrastrando = chip.dataset.pieza;
+  document.querySelectorAll('.chip[draggable="true"], .bchip[draggable="true"]').forEach((card) => {
+    card.addEventListener("dragstart", (e) => {
+      arrastrando = card.dataset.pieza;
       e.dataTransfer.effectAllowed = "move";
       e.dataTransfer.setData("text/plain", arrastrando);
-      requestAnimationFrame(() => chip.classList.add("dragging"));
+      requestAnimationFrame(() => card.classList.add("dragging"));
     });
-    chip.addEventListener("dragend", () => {
+    card.addEventListener("dragend", () => {
       arrastrando = null;
-      document.querySelectorAll(".chip.dragging").forEach((c) => c.classList.remove("dragging"));
-      document.querySelectorAll(".cal-cell.drop-hover").forEach((c) => c.classList.remove("drop-hover"));
+      document.querySelectorAll(".dragging").forEach((c) => c.classList.remove("dragging"));
+      document.querySelectorAll(".drop-hover").forEach((c) => c.classList.remove("drop-hover"));
     });
   });
 
-  document.querySelectorAll(".cal-cell[data-drop]").forEach((cell) => {
-    cell.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; cell.classList.add("drop-hover"); });
-    cell.addEventListener("dragleave", () => cell.classList.remove("drop-hover"));
-    cell.addEventListener("drop", (e) => {
+  // Zonas de destino: días del calendario (fecha) y el backlog (data-drop="" → quitar fecha)
+  document.querySelectorAll("[data-drop]").forEach((zone) => {
+    zone.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; zone.classList.add("drop-hover"); });
+    zone.addEventListener("dragleave", (e) => { if (!zone.contains(e.relatedTarget)) zone.classList.remove("drop-hover"); });
+    zone.addEventListener("drop", (e) => {
       e.preventDefault();
-      cell.classList.remove("drop-hover");
+      zone.classList.remove("drop-hover");
       const id = e.dataTransfer.getData("text/plain") || arrastrando;
-      const nuevaFecha = cell.dataset.drop;
+      const nuevaFecha = zone.dataset.drop; // "" para el backlog
       const p = DB.piezas.find((x) => x.id === id);
-      if (!p || !nuevaFecha || p.fecha === nuevaFecha) return;
+      if (!p || p.fecha === nuevaFecha) return;
       p.fecha = nuevaFecha;
-      p.mes = nuevaFecha.slice(0, 7);
+      p.mes = nuevaFecha ? nuevaFecha.slice(0, 7) : "";
       save();
       render();
     });

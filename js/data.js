@@ -108,15 +108,27 @@ const SEED = {
     // --- 28 jul · Back to School Caribe ---
     pz("2026-07-28", "bts", "car", "Facebook", "Portada", "briefing", "vic", "daini", "pendiente", "all",
       "Vuelta a clases: temporada más alta de ventas en Caribe. Comienza el 28 jul. (Las alianzas con bancos en RD arrancan en agosto.)"),
+
+    // --- POR PROGRAMAR (sin fecha) · la "matriz pendiente por publicar" ---
+    pz("", "liq", "cam", "Instagram", "Estática", "diseno", "ale", "nico", "pendiente", "all",
+      "Contenido adicional de refuerzo de liquidación (van 2-3 en el mes). Propuesta de Inside. Falta asignar día.", "b1"),
+    pz("", "liq", "cam", "Facebook", "Video", "briefing", "alej", "nico", "pendiente", "all",
+      "Segundo refuerzo de liquidación, en video. Por programar según el calendario.", "b2"),
+    pz("", "liq", "sur", "Instagram", "Estática", "briefing", "vic", "cristina", "pendiente", "all",
+      "Refuerzo de liquidación para Ecuador, Colombia y Panamá. Por programar.", "b3"),
+    pz("", "madres", "cam", "Instagram", "Carrusel", "briefing", "ale", "nico", "pendiente", ["Costa Rica"],
+      "Segundo contenido semanal de Día de las Madres (Costa Rica). Fecha según editables que envíe Nicolás.", "b4"),
+    pz("", "liq", "cam", "WhatsApp", "Estática", "briefing", "vic", "carla", "pendiente", "all",
+      "Ecommerce y WhatsApp en standby: Carla Poveda organiza lo pendiente antes de programar la Pauta.", "b5"),
   ],
 };
 
-/* Helper para construir una publicación */
-function pz(fecha, campanaId, regionId, canal, formato, estado, responsable, aprobador, aprobacion, paises, notas) {
+/* Helper para construir una publicación (fecha "" = sin fecha / por programar) */
+function pz(fecha, campanaId, regionId, canal, formato, estado, responsable, aprobador, aprobacion, paises, notas, salt) {
   const reg = REG(regionId);
   const target = paises === "all" ? (reg ? reg.paises.slice() : []) : paises;
   return {
-    id: "pz_" + fecha.replace(/-/g, "") + "_" + regionId + "_" + canal.slice(0, 2) + "_" + Math.abs(hashStr(campanaId + formato + fecha + canal + aprobador)),
+    id: "pz_" + (fecha ? fecha.replace(/-/g, "") : "sf" + (salt || "")) + "_" + regionId + "_" + canal.slice(0, 2) + "_" + Math.abs(hashStr(campanaId + formato + fecha + canal + aprobador + (salt || ""))),
     fecha,
     mes: fecha.slice(0, 7),
     marca: "Payless",
