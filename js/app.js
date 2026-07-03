@@ -145,7 +145,8 @@ function aprobMark(p) {
 function chipHTML(p) {
   const r = region(p.regionId), e = estado(p.estado);
   const ico = FORMATO_ICONO[p.formato] || "•";
-  return `<span class="chip" data-open="${p.id}" title="${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.canal)} · ${esc(p.formato)} · ${esc(r ? r.nombre : "")}"
+  const drag = UI.mode === "interno" ? `draggable="true" data-pieza="${p.id}"` : "";
+  return `<span class="chip${UI.mode === "interno" ? " draggable" : ""}" data-open="${p.id}" ${drag} title="${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.canal)} · ${esc(p.formato)} · ${esc(r ? r.nombre : "")}"
     style="background:${r ? r.color : "#64748B"};border-left-color:${e ? e.color : "#fff"}">
     <span class="cico">${ico}</span>${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}
     <span class="cmeta">${esc(CANAL_ICONO[p.canal] || "")}·${esc(p.formato)}</span>${aprobMark(p)}</span>`;
@@ -173,7 +174,8 @@ function calGrid() {
     if (dateStr === today) cls += " today";
     const chips = (byDay[dateStr] || []).map(chipHTML).join("");
     const add = !other && UI.mode === "interno" ? `<button class="addday" data-add="${dateStr}" title="Agregar publicación">＋</button>` : "";
-    cells += `<div class="${cls}">${add}<div class="dnum">${label}</div>${chips}</div>`;
+    const dropAttr = !other && UI.mode === "interno" ? `data-drop="${dateStr}"` : "";
+    cells += `<div class="${cls}" ${dropAttr}>${add}<div class="dnum">${label}</div>${chips}</div>`;
   }
   return `<div class="calwrap"><div class="cal-head">${dow.map((d) => `<div>${d}</div>`).join("")}</div><div class="cal-grid">${cells}</div></div>`;
 }
@@ -413,6 +415,44 @@ function wireContent() {
   const chg = (id, key) => { const el = document.getElementById(id); if (el) el.onchange = () => { UI.filtros[key] = el.value; render(); }; };
   chg("fRegion", "region"); chg("fCampana", "campana"); chg("fCanal", "canal");
   chg("fFormato", "formato"); chg("fEstado", "estado"); chg("fAprob", "aprobacion");
+
+  if (UI.mode === "interno" && UI.calView === "grid") wireDragDrop();
+}
+
+/* Arrastrar publicaciones entre días (estilo Trello) — solo modo Interno */
+function wireDragDrop() {
+  let arrastrando = null;
+
+  document.querySelectorAll('.chip[draggable="true"]').forEach((chip) => {
+    chip.addEventListener("dragstart", (e) => {
+      arrastrando = chip.dataset.pieza;
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", arrastrando);
+      requestAnimationFrame(() => chip.classList.add("dragging"));
+    });
+    chip.addEventListener("dragend", () => {
+      arrastrando = null;
+      document.querySelectorAll(".chip.dragging").forEach((c) => c.classList.remove("dragging"));
+      document.querySelectorAll(".cal-cell.drop-hover").forEach((c) => c.classList.remove("drop-hover"));
+    });
+  });
+
+  document.querySelectorAll(".cal-cell[data-drop]").forEach((cell) => {
+    cell.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; cell.classList.add("drop-hover"); });
+    cell.addEventListener("dragleave", () => cell.classList.remove("drop-hover"));
+    cell.addEventListener("drop", (e) => {
+      e.preventDefault();
+      cell.classList.remove("drop-hover");
+      const id = e.dataTransfer.getData("text/plain") || arrastrando;
+      const nuevaFecha = cell.dataset.drop;
+      const p = DB.piezas.find((x) => x.id === id);
+      if (!p || !nuevaFecha || p.fecha === nuevaFecha) return;
+      p.fecha = nuevaFecha;
+      p.mes = nuevaFecha.slice(0, 7);
+      save();
+      render();
+    });
+  });
 }
 
 function duplicarMes() {

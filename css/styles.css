@@ -208,6 +208,12 @@ label.fld { display: block; font-size: 12px; font-weight: 600; color: var(--ink-
 .reg-legend i { width: 11px; height: 11px; border-radius: 3px; }
 
 /* ---- v1.1 additions ---- */
+.chip.draggable { cursor: grab; }
+.chip.draggable:active { cursor: grabbing; }
+.chip.dragging { opacity: .4; transform: scale(.98); }
+.cal-cell.drop-hover { background: var(--brand-soft); box-shadow: inset 0 0 0 2px var(--brand); }
+.cal-cell[data-drop] { transition: background .12s ease; }
+
 .chip .cico { margin-right: 3px; }
 .chip .cmeta { opacity: .82; font-weight: 500; font-size: 10px; margin-left: 3px; }
 .chip .amark { float: right; font-size: 10px; margin-left: 4px; line-height: 1.5; }
