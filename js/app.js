@@ -3,7 +3,7 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v1_2";
+const KEY = "gestion_inside_v1_3";
 
 const UI = {
   view: "calendario",
@@ -11,6 +11,7 @@ const UI = {
   calView: "grid",            // grid | lista
   month: SEED.meta.mesActual,
   filtros: { region: "", campana: "", canal: "", formato: "", estado: "", aprobacion: "" },
+  showBacklog: false,         // panel "Por programar" desplegable (oculto por defecto)
   soloMias: false,            // en modo cliente: solo lo que apruebo yo
   clienteId: "nico",          // "quién soy" cuando entro como cliente
   editId: null,
@@ -130,6 +131,7 @@ function viewCalendario() {
     </div>
     <div class="spacer"></div>
     ${!interno ? `<label class="chkmine"><input type="checkbox" id="soloMias" ${UI.soloMias ? "checked" : ""}/> Solo lo que apruebo yo</label>` : ""}
+    <button class="btn ${UI.showBacklog ? "active" : ""}" id="btnBacklog" title="Ver las piezas sin fecha">🗂️ Por programar <span class="cnt-inline">${backlogPiezas().length}</span></button>
     <div class="viewtoggle">
       <button data-cal="grid" class="${UI.calView === "grid" ? "active" : ""}">📅 Calendario</button>
       <button data-cal="lista" class="${UI.calView === "lista" ? "active" : ""}">☰ Gestión (lista)</button>
@@ -142,7 +144,7 @@ function viewCalendario() {
     <span class="legend-note">Fondo = región · borde izquierdo = producción · ✓/⏳/✕ = aprobación cliente</span>
   </div>
   ${UI.calView === "grid"
-      ? `<div class="cal-layout">${calGrid()}${backlogPanel(interno)}</div>`
+      ? (UI.showBacklog ? `<div class="cal-layout">${calGrid()}${backlogPanel(interno)}</div>` : calGrid())
       : calLista(interno)}
   `;
 }
@@ -156,7 +158,10 @@ function backlogPanel(interno) {
   return `<aside class="backlog" ${interno ? 'data-drop=""' : ""}>
     <div class="backlog-head">
       <span>🗂️ Por programar <span class="cnt">${list.length}</span></span>
-      ${interno ? `<button class="ico-btn" id="btnNewBacklog" title="Agregar pieza sin fecha">＋</button>` : ""}
+      <span>
+        ${interno ? `<button class="ico-btn" id="btnNewBacklog" title="Agregar pieza sin fecha">＋</button>` : ""}
+        <button class="ico-btn" id="btnCloseBacklog" title="Ocultar panel">✕</button>
+      </span>
     </div>
     <p class="backlog-hint">${interno ? "Arrastra una tarjeta a un día para asignarle fecha. Suelta aquí para quitarle la fecha." : "Piezas que aún no tienen fecha de publicación."}</p>
     <div class="backlog-list">${cards}</div>
@@ -456,6 +461,8 @@ function wireContent() {
   bind("btnNew", () => openModal(null));
   bind("btnNew2", () => openModal(null));
   bind("btnNewBacklog", () => openModal(null, "SIN_FECHA"));
+  bind("btnBacklog", () => { UI.showBacklog = !UI.showBacklog; render(); });
+  bind("btnCloseBacklog", () => { UI.showBacklog = false; render(); });
   bind("mPrev", () => { UI.month = shiftMonth(UI.month, -1); render(); });
   bind("mNext", () => { UI.month = shiftMonth(UI.month, 1); render(); });
   bind("btnDup", duplicarMes);

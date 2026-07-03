@@ -255,6 +255,9 @@ label.fld { display: block; font-size: 12px; font-weight: 600; color: var(--ink-
 .section-title.mt { margin-top: 26px; }
 
 /* ---- v1.2 backlog "por programar" ---- */
+.btn.active { background: var(--brand-soft); border-color: #DDD6FE; color: var(--brand); }
+.cnt-inline { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; }
+.btn.active .cnt-inline { background: var(--brand); }
 .cal-layout { display: grid; grid-template-columns: 1fr 288px; gap: 16px; align-items: start; }
 .backlog { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; position: sticky; top: 84px; max-height: calc(100vh - 110px); overflow: auto; }
 .backlog.drop-hover { box-shadow: inset 0 0 0 2px var(--brand); background: var(--brand-soft); }

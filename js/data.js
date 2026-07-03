@@ -23,10 +23,11 @@ const SEED = {
   // Campañas mencionadas por el cliente
   campanas: [
     { id: "liq", nombre: "Liquidación de Temporada", color: "#DC2626" },
-    { id: "spider", nombre: "Spider-Man", color: "#DB2777" },
+    { id: "spider", nombre: "Spider-Man", color: "#C026D3" },
     { id: "padre", nombre: "Día del Padre", color: "#0891B2" },
-    { id: "madres", nombre: "Día de las Madres", color: "#DB2777" },
+    { id: "madres", nombre: "Día de las Madres", color: "#E11D74" },
     { id: "bts", nombre: "Back to School", color: "#2563EB" },
+    { id: "marca", nombre: "Marca / Always On", color: "#64748B" },
   ],
 
   // Canales de publicación (el cliente distingue FB / IG / WhatsApp)
@@ -65,61 +66,73 @@ const SEED = {
     { id: "cesar", nombre: "César", rol: "Marketing", lado: "cliente" },
   ],
 
-  // Publicaciones de JULIO 2026 (solo las que mencionó el cliente)
+  // Publicaciones (según la matriz orgánica real de Centroamérica + adaptaciones)
   piezas: [
-    // --- 7 jul · lanzamiento Liquidación ---
-    pz("2026-07-07", "liq", "cam", "Facebook", "Portada", "programado", "alej", "nico", "aprobado", "all",
-      "Portadas ya aprobadas por el cliente. El Salvador se publicó en junio. En Centroamérica solo hay que publicar."),
-    pz("2026-07-07", "liq", "sur", "Facebook", "Portada", "diseno", "alej", "cristina", "pendiente", "all",
-      "Adaptar la gráfica por país y validar con Nicolás cuál aplica. Legales en el input de Cristina."),
-    pz("2026-07-07", "liq", "car", "Facebook", "Portada", "diseno", "alej", "estefany", "pendiente", ["Jamaica", "Trinidad y Tobago", "Barbados", "Guyana", "Islas Vírgenes"],
-      "Caribe inglés: adaptar a inglés, hasta 70% de descuento. Revisar la frase en inglés que observó el community de Jamaica."),
-    pz("2026-07-07", "liq", "car", "Facebook", "Portada", "diseno", "alej", "daini", "pendiente", ["República Dominicana"],
-      "República Dominicana: adaptar a hasta 50% de descuento (RD no tiene 70%)."),
-    pz("2026-07-07", "liq", "cam", "Instagram", "Estática", "programado", "alej", "nico", "aprobado", "all",
-      "Adaptaciones hechas para El Salvador (slides 15-16) que se replican al resto de Centroamérica. Salen el 7 jul."),
-    pz("2026-07-07", "liq", "sur", "Instagram", "Estática", "diseno", "vic", "cristina", "pendiente", "all",
-      "Adaptar los posts de liquidación para Ecuador, Colombia y Panamá."),
-    pz("2026-07-07", "liq", "car", "Instagram", "Estática", "diseno", "ale", "estefany", "pendiente", ["Jamaica", "Trinidad y Tobago", "Barbados", "Guyana", "Islas Vírgenes"],
-      "Adaptar posts de liquidación a inglés para Caribe inglés."),
+    /* ===== CENTROAMÉRICA · matriz orgánica de Facebook (APROBADA y lista) ===== */
+    // Portadas
+    pz("2026-07-07", "liq", "cam", "Facebook", "Portada", "programado", "alej", "nico", "aprobado", ["El Salvador", "Honduras", "Nicaragua", "Costa Rica"],
+      "Portadas de Liquidación 70% aprobadas. El Salvador ya en línea desde el 29 jun. Vigencia 7 jul – 3 ago."),
+    pz("2026-07-07", "marca", "cam", "Facebook", "Portada", "programado", "alej", "nico", "aprobado", ["Guatemala"],
+      "Portada de marca 'La tendencia empieza contigo'. Guatemala usa esta, no la de liquidación."),
+    // Posts / contenido
     pz("2026-07-07", "liq", "cam", "Facebook", "Video", "programado", "alej", "nico", "aprobado", ["Guatemala"],
-      "Video 'bobo 50' — publicar en Guatemala el 7 jul."),
+      "[Value for Money] 2x1: lleva el 2º artículo a 50% de descuento. Vigencia 7 jul – 3 ago. (Guatemala)"),
+    pz("2026-07-07", "liq", "cam", "Facebook", "Video", "programado", "alej", "nico", "aprobado", ["El Salvador"],
+      "[Value for Money] 2x1: lleva el 2º artículo a 40% de descuento (versión El Salvador)."),
+    pz("2026-07-08", "marca", "cam", "Facebook", "Video", "programado", "vic", "nico", "aprobado", ["Guatemala"],
+      "[Style & Comfort] 'Una opción para cada día'. Ref. 210821 – 2108 – 210845. (Guatemala)"),
+    pz("2026-07-09", "marca", "cam", "Facebook", "Video", "programado", "alej", "nico", "aprobado", ["El Salvador", "Nicaragua", "Honduras", "Costa Rica"],
+      "[Style & Comfort] 'Diseñados para destacar' (hombre). Ref. 211572. No aplica Guatemala."),
+    pz("2026-07-10", "marca", "cam", "Facebook", "Estática", "programado", "alej", "nico", "aprobado", "all",
+      "[Style & Comfort] 'Elegancia que se adapta – Comfort plus', tacones de cuero. Aplica a toda Centroamérica. Ref. 210677."),
+    pz("2026-07-10", "marca", "cam", "Facebook", "Historia", "programado", "ale", "nico", "aprobado", "all",
+      "[Style & Comfort] Historia de 'Elegancia que se adapta'. Aplica a toda Centroamérica."),
+    pz("2026-07-13", "spider", "cam", "Facebook", "Estática", "programado", "alej", "nico", "aprobado", "all",
+      "[Style & Comfort] Tenis Spider-Man con luces (niños). Aplica a toda Centroamérica. Ref. 211349. (Estreno película 30 jul.)"),
+    pz("2026-07-13", "spider", "cam", "Facebook", "Historia", "programado", "ale", "nico", "aprobado", "all",
+      "[Style & Comfort] Historia Spider-Man. Aplica a toda Centroamérica."),
+    pz("2026-06-29", "liq", "cam", "Facebook", "Estática", "publicado", "alej", "nico", "aprobado", ["El Salvador"],
+      "[Value for Money] 'Es el momento exacto' – Liquidación 70%. Ya publicado el 29 jun en El Salvador."),
+    pz("2026-07-21", "marca", "cam", "Facebook", "Estática", "programado", "alej", "nico", "aprobado", ["El Salvador", "Nicaragua", "Honduras"],
+      "[Style & Comfort] 'Lower East Side' (dama). Ref. 211842-43-44. Aplica a El Salvador, Nicaragua y Honduras."),
+    pz("2026-07-21", "marca", "cam", "Facebook", "Historia", "programado", "ale", "nico", "aprobado", ["El Salvador", "Nicaragua", "Honduras"],
+      "[Style & Comfort] Historia 'Lower East Side'. El Salvador, Nicaragua y Honduras."),
 
-    // --- 13 jul · Spider-Man (estreno película 30 jul) ---
-    pz("2026-07-13", "spider", "cam", "Instagram", "Carrusel", "briefing", "vic", "nico", "pendiente", "all",
-      "Colección Spider-Man. Sin legal específico de país. Empezar a publicar 13-14 jul (estreno de la película el 30 jul)."),
-    pz("2026-07-13", "spider", "sur", "Instagram", "Carrusel", "briefing", "vic", "cristina", "pendiente", "all",
-      "Aplica para Panamá, Ecuador y Colombia (confirmado por Cristina)."),
-    pz("2026-07-13", "spider", "car", "Instagram", "Carrusel", "briefing", "ale", "estefany", "pendiente", ["Jamaica", "Trinidad y Tobago", "Barbados", "Guyana", "Islas Vírgenes"],
-      "Adaptar el texto a inglés. No aplica para República Dominicana."),
+    /* ===== SUR · adaptaciones pendientes (Cristina Quesada) ===== */
+    pz("2026-07-07", "liq", "sur", "Facebook", "Portada", "diseno", "alej", "cristina", "pendiente", "all",
+      "Adaptar portada de Liquidación 70% a Ecuador, Colombia y Panamá. Validar con Nicolás la gráfica. Legales en el input de Cristina."),
+    pz("2026-07-07", "liq", "sur", "Facebook", "Estática", "diseno", "vic", "cristina", "pendiente", "all",
+      "Adaptar los posts de liquidación para Sur (Ecuador, Colombia, Panamá)."),
+    pz("2026-07-13", "spider", "sur", "Facebook", "Estática", "briefing", "ale", "cristina", "pendiente", "all",
+      "Spider-Man aplica para Panamá, Ecuador y Colombia (confirmado por Cristina)."),
 
-    // --- 15 jul · Día del Padre ---
-    pz("2026-07-15", "padre", "cam", "Facebook", "Video", "briefing", "alej", "nico", "pendiente", "all",
-      "Reuso de contenido de junio (zapatos de caballero). Confirmar con Kevin si hay pieza disponible. Publicar desde el 15 jul."),
-    pz("2026-07-15", "padre", "cam", "Instagram", "Estática", "briefing", "alej", "nico", "pendiente", "all",
-      "Bailarinas de dama, nueva colección. Publicar el 15 jul."),
-
-    // --- 21 jul · Madres (CR) + Liquidación últimos días ---
-    pz("2026-07-21", "madres", "cam", "Instagram", "Estática", "briefing", "vic", "nico", "pendiente", ["Costa Rica"],
-      "Prioridad Costa Rica. Nicolás envía editables y concepto. 2 contenidos por semana mostrando los productos indicados."),
-    pz("2026-07-21", "liq", "cam", "Instagram", "Estática", "briefing", "ale", "nico", "pendiente", "all",
-      "Liquidación 'últimos días', hasta 70%. 2 contenidos por semana desde el 21 jul. Propuesta de Inside sobre la gráfica base."),
-
-    // --- 28 jul · Back to School Caribe ---
+    /* ===== CARIBE · adaptaciones pendientes (Estefany / Daini) ===== */
+    pz("2026-07-07", "liq", "car", "Facebook", "Portada", "diseno", "alej", "estefany", "pendiente", ["Jamaica", "Trinidad y Tobago", "Barbados", "Guyana", "Islas Vírgenes"],
+      "Caribe inglés: adaptar portada a inglés, hasta 70%. Revisar la frase en inglés observada por el community de Jamaica."),
+    pz("2026-07-07", "liq", "car", "Facebook", "Portada", "diseno", "alej", "daini", "pendiente", ["República Dominicana"],
+      "República Dominicana: adaptar a hasta 50% (RD no tiene 70%)."),
+    pz("2026-07-13", "spider", "car", "Facebook", "Estática", "briefing", "ale", "estefany", "pendiente", ["Jamaica", "Trinidad y Tobago", "Barbados", "Guyana", "Islas Vírgenes"],
+      "Spider-Man: adaptar texto a inglés. No aplica República Dominicana."),
     pz("2026-07-28", "bts", "car", "Facebook", "Portada", "briefing", "vic", "daini", "pendiente", "all",
-      "Vuelta a clases: temporada más alta de ventas en Caribe. Comienza el 28 jul. (Las alianzas con bancos en RD arrancan en agosto.)"),
+      "Back to School / vuelta a clases: temporada más alta de ventas en Caribe. Comienza el 28 jul. (Alianzas con bancos en RD arrancan en agosto.)"),
 
-    // --- POR PROGRAMAR (sin fecha) · la "matriz pendiente por publicar" ---
-    pz("", "liq", "cam", "Instagram", "Estática", "diseno", "ale", "nico", "pendiente", "all",
-      "Contenido adicional de refuerzo de liquidación (van 2-3 en el mes). Propuesta de Inside. Falta asignar día.", "b1"),
-    pz("", "liq", "cam", "Facebook", "Video", "briefing", "alej", "nico", "pendiente", "all",
-      "Segundo refuerzo de liquidación, en video. Por programar según el calendario.", "b2"),
-    pz("", "liq", "sur", "Instagram", "Estática", "briefing", "vic", "cristina", "pendiente", "all",
-      "Refuerzo de liquidación para Ecuador, Colombia y Panamá. Por programar.", "b3"),
-    pz("", "madres", "cam", "Instagram", "Carrusel", "briefing", "ale", "nico", "pendiente", ["Costa Rica"],
-      "Segundo contenido semanal de Día de las Madres (Costa Rica). Fecha según editables que envíe Nicolás.", "b4"),
+    /* ===== CENTROAMÉRICA · pendientes de brief (fuera de la matriz aprobada) ===== */
+    pz("2026-07-21", "madres", "cam", "Facebook", "Estática", "briefing", "vic", "nico", "pendiente", ["Costa Rica"],
+      "Prioridad Costa Rica. Nicolás envía editables y concepto. 2 contenidos por semana mostrando los productos indicados."),
+    pz("2026-07-21", "liq", "cam", "Facebook", "Estática", "briefing", "ale", "nico", "pendiente", "all",
+      "Liquidación 'últimos días', hasta 70%. Refuerzo desde el 21 jul. Propuesta de Inside sobre la gráfica base."),
+
+    /* ===== POR PROGRAMAR (sin fecha) ===== */
+    pz("", "liq", "cam", "Facebook", "Video", "programado", "alej", "nico", "aprobado", ["El Salvador"],
+      "[Value for Money] 'Season Sale – un par nunca es suficiente'. FECHA TBC (por confirmar). El Salvador.", "tbc"),
+    pz("", "madres", "cam", "Facebook", "Carrusel", "briefing", "ale", "nico", "pendiente", ["Costa Rica"],
+      "Segundo contenido semanal de Día de las Madres (Costa Rica). Fecha según editables de Nicolás.", "bmad"),
+    pz("", "padre", "cam", "Facebook", "Video", "briefing", "alej", "nico", "pendiente", "all",
+      "Día del Padre: reuso de contenido de junio (zapatos de caballero). Confirmar con Kevin y fecha (aprox. 15 jul).", "bpad"),
+    pz("", "liq", "sur", "Facebook", "Estática", "briefing", "vic", "cristina", "pendiente", "all",
+      "Refuerzo de liquidación para Sur (Ecuador, Colombia, Panamá). Por programar.", "bsur"),
     pz("", "liq", "cam", "WhatsApp", "Estática", "briefing", "vic", "carla", "pendiente", "all",
-      "Ecommerce y WhatsApp en standby: Carla Poveda organiza lo pendiente antes de programar la Pauta.", "b5"),
+      "Ecommerce y WhatsApp en standby: Carla Poveda organiza lo pendiente antes de programar la Pauta.", "bwa"),
   ],
 };
 
