@@ -55,8 +55,16 @@ const SEED = {
   // Personas — equipo Inside (publican) y contactos Payless (aprueban)
   personas: [
     { id: "vic", nombre: "Victoria Alvarado", rol: "Cuenta", lado: "agencia" },
-    { id: "ale", nombre: "Alexandra León Raffo", rol: "Cuenta", lado: "agencia" },
-    { id: "alej", nombre: "Alejandro", rol: "Diseño", lado: "agencia" },
+    { id: "ale", nombre: "Alexandra León Raffo", rol: "Directora Social Media", lado: "agencia" },
+    { id: "sunny", nombre: "Sunniva Giraldo", rol: "Ejecutiva de cuenta", lado: "agencia" },
+    { id: "rober", nombre: "Roberto Olazabal", rol: "Content Manager", lado: "agencia" },
+    { id: "dani", nombre: "Daniela Argumedo", rol: "Redactora creativa", lado: "agencia" },
+    { id: "alej", nombre: "Alejandro Mendoza", rol: "Diseño Gráfico", lado: "agencia" },
+    { id: "antu", nombre: "Antuané Medrano", rol: "Edición Audiovisual", lado: "agencia" },
+    { id: "ari", nombre: "Ariana Torrecilla", rol: "Community Manager", lado: "agencia" },
+    { id: "jairo", nombre: "Jairo López", rol: "Supervisor de Medios", lado: "agencia" },
+    { id: "kevin", nombre: "Kevin Tasaico", rol: "Director de Arte", lado: "agencia" },
+    { id: "luismi", nombre: "Luis Miguel Pérez", rol: "Dir. Planning y Creatividad", lado: "agencia" },
     { id: "franco", nombre: "Franco", rol: "Dirección", lado: "agencia" },
     { id: "nico", nombre: "Nicolás", rol: "Coord. Marketing", lado: "cliente" },
     { id: "carla", nombre: "Carla Poveda", rol: "Ecommerce & WhatsApp", lado: "cliente" },
@@ -65,6 +73,89 @@ const SEED = {
     { id: "daini", nombre: "Daini", rol: "Caribe / Rep. Dominicana", lado: "cliente" },
     { id: "cesar", nombre: "César", rol: "Marketing", lado: "cliente" },
   ],
+
+  /* ===== GESTIÓN: pendientes manuales (de las reuniones del 3 jul) ===== */
+  pendientes: [
+    // — Del cliente (Payless nos debe) —
+    pd("pc1", "cliente", "Acceso al SharePoint para toda la lista de correos + Victoria", "nico", "Accesos", "2026-07-03", "", "Pedido en el kick off: 'a más tardar el día de hoy'. Sin esto solo entra la cuenta de Franco."),
+    pd("pc2", "cliente", "Acceso a la carpeta 2026 de Nicolás (editables)", "nico", "Accesos", "2026-07-06", "", "La carpeta con todo el 2026 no abre con nuestras cuentas. Ale tiene los cambios anotados pero no el material."),
+    pd("pc3", "cliente", "Editables de Liquidación (portadas + posts + videos)", "nico", "Editables", "2026-07-03", "", "'Deberíamos tenerlos hoy antes del almuerzo'. Solo hay artes finales JPG, sin editables."),
+    pd("pc4", "cliente", "Editables + concepto de Día de las Madres (Costa Rica)", "nico", "Editables", "2026-07-10", "", "Campaña inicia el 21 jul en CR. Nicolás envía editables, concepto y lista de productos."),
+    pd("pc5", "cliente", "Habilitar input del Sur (legales Ecuador / Colombia / Panamá)", "cristina", "Inputs", "2026-07-06", "", "El link del input Sur no abre con ninguna de nuestras cuentas. Reunión con Cristina el lunes."),
+    pd("pc6", "cliente", "Estatus de la matriz Pauta & Commerce", "carla", "Matrices", "", "", "Carla Poveda organiza lo pendiente de Ecommerce/WhatsApp y avisa cuándo está listo."),
+    pd("pc7", "cliente", "Confirmar pieza de Día del Padre reutilizable (con Kevin)", "nico", "Contenido", "2026-07-08", "", "Hay contenido de junio del Día del Padre que quizá funciona; falta confirmar modelo/foto."),
+    pd("pc8", "cliente", "Comentario de Jamaica sobre la frase en inglés", "estefany", "Contenido", "", "", "La community manager de Jamaica observó una frase confusa; Estefany pasa la nota para el ajuste."),
+    // — De Inside (nosotros debemos) —
+    pd("pi1", "inside", "Correo de estatus al cliente (recibido / pendiente, con links)", "ale", "Gestión", "2026-07-04", "", "Formato acordado: material recibido, material pendiente y accesos, todo en un solo estatus."),
+    pd("pi2", "inside", "Pedido al diseñador: adaptaciones de Liquidación", "ale", "Diseño", "2026-07-04", "", "Editable de julio ubicado. Piezas deben estar listas el martes 7 (portadas, estática y video)."),
+    pd("pi3", "inside", "Adaptar portada Liquidación a inglés 70% (Caribe inglés)", "alej", "Diseño", "2026-07-06", "", "Misma gráfica de círculos concéntricos, en inglés, para publicar el 7 jul."),
+    pd("pi4", "inside", "Adaptar Liquidación de RD al 50%", "alej", "Diseño", "2026-07-06", "", "República Dominicana no tiene 70%: su versión es hasta 50% de descuento."),
+    pd("pi5", "inside", "Enlazar links de piezas finales en el calendario", "sunny", "Gestión", "2026-07-06", "", "Ale pasó los links por WhatsApp; falta enlazar cada pieza (lo puede hacer una de las chicas el lunes)."),
+    pd("pi6", "inside", "Cuadro países ↔ contacto del cliente", "vic", "Gestión", "2026-07-06", "", "Quién ve cada país: Carla CAM (por ahora), Cristina Sur, Estefany Caribe inglés, Daini RD."),
+    pd("pi7", "inside", "Refuerzo del equipo con inglés técnico (para Estefany)", "franco", "Equipo", "", "", "En ~1 mes Estefany queda sola con Caribe inglés; se necesita alguien con inglés fluido."),
+    pd("pi8", "inside", "Excel de monitoreo", "ari", "Masterdoc", "", "", "Solicitado a Ari (del Masterdoc)."),
+    pd("pi9", "inside", "Documento de procesos", "sunny", "Masterdoc", "", "", "En construcción (del Masterdoc)."),
+    pd("pi10", "inside", "Estrategia de RRSS 2026 / drivers estratégicos", "luismi", "Masterdoc", "", "", "Pendiente del Masterdoc."),
+  ],
+
+  /* ===== GESTIÓN: proyectos / matrices (los 5 bloques × región) ===== */
+  proyectos: [
+    py("mo_cam", "Matriz Orgánica", "Centroamérica", "activo", 70, "vic", "nico", "", "Matriz recibida y aprobada. Publicaciones del 7 al 21 jul cargadas en el calendario."),
+    py("mo_sur", "Matriz Orgánica", "Sur", "esperando", 20, "vic", "cristina", "", "Esperando acceso al input (legales). Reunión con Cristina Quesada el lunes."),
+    py("mo_car", "Matriz Orgánica", "Caribe", "activo", 35, "ale", "estefany", "", "Adaptaciones a inglés (70%) y RD (50%) en diseño para salir el 7 jul."),
+    py("atl_all", "Matriz ATL", "Las 3 regiones", "cerrado", 100, "ale", "nico", "", "Gestionada con el proveedor anterior. La campaña ATL de RD está culminando; nada por hacer."),
+    py("pauta", "Matriz Pauta", "Regional", "descartado", 0, "jairo", "carla", "", "La matriz de Pauta es para la agencia de medios (no Inside). Se descarta de nuestra gestión."),
+    py("ecom", "Pauta Ecommerce & WhatsApp", "Regional", "standby", 10, "vic", "carla", "", "En standby: Carla Poveda organiza lo pendiente y avisa cuándo empezamos a publicar."),
+    py("liq", "Campaña · Liquidación de Temporada", "Las 3 regiones", "activo", 60, "ale", "nico", "", "Lanzada en CAM; adaptaciones Sur/Caribe en curso. Refuerzos 'últimos días' desde el 21 jul."),
+    py("madres", "Campaña · Día de las Madres", "Costa Rica", "activo", 15, "vic", "nico", "", "Inicia 21 jul. 2 contenidos por semana. Esperando editables y concepto de Nicolás."),
+    py("spider", "Campaña · Spider-Man", "CAM · Sur · Caribe inglés", "activo", 40, "alej", "nico", "", "Publicar desde el 13-14 jul (estreno 30 jul). Caribe inglés requiere adaptación de texto."),
+    py("bts", "Campaña · Back to School", "Caribe", "briefing", 5, "vic", "daini", "", "Arranca 28 jul, temporada más alta de ventas del Caribe. Alianzas con bancos en RD: agosto."),
+  ],
+
+  /* ===== GESTIÓN: Masterdoc (del Excel, SIN contraseñas) ===== */
+  masterdoc: {
+    ficha: {
+      cliente: "PAYLESS",
+      inicio: "1 de julio de 2026",
+      contactoInside: "Alexandra León Raffo (Directora Social Media)",
+      comunicacion: "Correo y grupo de WhatsApp",
+    },
+    documentacion: [
+      md("Brief / información estratégica de la marca", "PAYLESS", "pendiente", ""),
+      md("Manual de Identidad Gráfica / Brandbook", "PAYLESS", "entregado", ""),
+      md("Documento de Aprendizajes", "Inside", "pendiente", "https://docs.google.com/document/d/12NvVrRHtBav2Z4ydvzlgbmD3gdJq34lu96x5Hwkn1YE/"),
+      md("Status de la marca", "Inside", "pendiente", ""),
+      md("Documentos de Acuerdos", "Inside / PAYLESS", "pendiente", ""),
+      md("Estrategia de RRSS 2026 (drivers estratégicos)", "Inside", "pendiente", ""),
+      md("ADN de marca", "Inside", "pendiente", ""),
+      md("Manual ejecutivos", "Inside", "pendiente", ""),
+      md("Planning mensual", "Inside", "pendiente", ""),
+      md("FAQs de la marca", "Inside / PAYLESS", "pendiente", ""),
+      md("Excel de monitoreo", "Inside", "pendiente", "", "Solicitado a Ari"),
+      md("Documento de procesos", "Inside", "pendiente", "", "En construcción (Sunny)"),
+      md("Carpeta Drive principal", "Inside", "entregado", ""),
+    ],
+    fechasClave: [
+      { que: "Envío de drivers comerciales mensuales", quien: "PAYLESS", cuando: "El 20 de cada mes" },
+      { que: "Desarrollo del planning mensual", quien: "Inside", cuando: "2-3 días después de los drivers" },
+      { que: "Reunión de planning", quien: "Inside + PAYLESS", cuando: "El 25 de cada mes" },
+      { que: "Reporte semanal", quien: "Inside", cuando: "Todos los jueves" },
+    ],
+    // Cuentas por país — SOLO usuarios. Las contraseñas viven fuera de esta herramienta.
+    cuentas: [
+      { pais: "Guatemala", usuario: "@paylessguatemala" },
+      { pais: "El Salvador", usuario: "@paylesselsalvador" },
+      { pais: "Nicaragua", usuario: "@payless.nicaragua" },
+      { pais: "Honduras", usuario: "@paylesshonduras" },
+      { pais: "Costa Rica", usuario: "@paylesscostarica" },
+      { pais: "Panamá", usuario: "@payless.panama" },
+      { pais: "Colombia", usuario: "@payless.colombia" },
+      { pais: "Ecuador", usuario: "@paylessecuador" },
+      { pais: "Perú", usuario: "@payless.peru" },
+      { pais: "Rep. Dominicana", usuario: "@paylessdr" },
+      { pais: "Caribe inglés", usuario: "@paylesscaribbean" },
+    ],
+  },
 
   // Publicaciones (según la matriz orgánica real de Centroamérica + adaptaciones)
   piezas: [
@@ -135,6 +226,17 @@ const SEED = {
       "Ecommerce y WhatsApp en standby: Carla Poveda organiza lo pendiente antes de programar la Pauta.", "bwa"),
   ],
 };
+
+/* Helpers de gestión */
+function pd(id, lado, titulo, responsable, area, limite, link, notas) {
+  return { id, lado, titulo, responsable, area, limite: limite || "", link: link || "", notas: notas || "", hecho: false };
+}
+function py(id, grupo, region, estado, avance, responsable, aprobador, link, notas) {
+  return { id, grupo, region, estado, avance, responsable, aprobador, link: link || "", notas: notas || "" };
+}
+function md(entregable, responsable, estado, link, nota) {
+  return { entregable, responsable, estado, link: link || "", nota: nota || "" };
+}
 
 /* Helper para construir una publicación (fecha "" = sin fecha / por asignar) */
 function pz(fecha, campanaId, regionId, canal, formato, estado, responsable, aprobador, aprobacion, paises, notas, salt) {

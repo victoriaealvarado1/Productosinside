@@ -3,15 +3,18 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v1_4";
+const KEY = "gestion_inside_v1_5";
 const HOY = "2026-07-03"; // fecha de referencia de la operación
+// Riesgo: publica en <=2 días y el cliente aún no aprueba
+const HOY_MAS_2 = (() => { const d = new Date(HOY + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 2); return d.toISOString().slice(0, 10); })();
 
 const UI = {
   view: "calendario",
   mode: "interno",            // interno | cliente
   calView: "grid",            // grid | lista
+  gestTab: "dash",            // dash | proyectos | masterdoc
   month: SEED.meta.mesActual,
-  filtros: { region: "", campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
+  filtros: { region: [], campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
   showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
   soloMias: false,            // en modo cliente: solo lo que apruebo yo
   clienteId: "nico",          // "quién soy" cuando entro como cliente
@@ -21,7 +24,15 @@ const UI = {
 let DB = load();
 
 function load() {
-  try { const raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch (e) {}
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) {
+      const db = JSON.parse(raw);
+      // Migración suave: si faltan bloques nuevos, tomarlos de la semilla
+      ["pendientes", "proyectos", "masterdoc"].forEach((k) => { if (!db[k]) db[k] = JSON.parse(JSON.stringify(SEED[k])); });
+      return db;
+    }
+  } catch (e) {}
   return JSON.parse(JSON.stringify(SEED));
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
@@ -45,7 +56,7 @@ const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&":
 function applyFilters(list) {
   const f = UI.filtros;
   let l = list
-    .filter((p) => !f.region || p.regionId === f.region)
+    .filter((p) => !f.region.length || f.region.includes(p.regionId))
     .filter((p) => !f.campana || p.campanaId === f.campana)
     .filter((p) => !f.canal || p.canal === f.canal)
     .filter((p) => !f.formato || p.formato === f.formato)
@@ -83,6 +94,7 @@ function render() {
 
   const titles = {
     calendario: ["Calendario de Publicación", monthLabel(UI.month) + " · Payless"],
+    gestion: ["Gestión de la cuenta", UI.mode === "cliente" ? "Lo que Inside necesita de Payless" : "Pendientes, proyectos y masterdoc · Payless"],
     estructura: ["Estructura de cuenta", "Territorios, campañas y quién aprueba qué"],
     roadmap: ["Roadmap", "Lo que viene en la v2"],
   };
@@ -91,6 +103,7 @@ function render() {
 
   const c = document.getElementById("content");
   if (UI.view === "calendario") c.innerHTML = viewCalendario();
+  else if (UI.view === "gestion") c.innerHTML = viewGestion();
   else if (UI.view === "estructura") c.innerHTML = viewEstructura();
   else c.innerHTML = viewRoadmap();
   wireContent();
@@ -134,7 +147,6 @@ function viewCalendario() {
   <div class="toolbar">
     <div class="monthnav"><button id="mPrev">‹</button><span class="m">${monthLabel(UI.month)}</span><button id="mNext">›</button></div>
     <div class="grp">
-      <select id="fRegion">${opt("Todas las regiones", DB.regiones, UI.filtros.region)}</select>
       <select id="fCampana">${opt("Todas las campañas", DB.campanas, UI.filtros.campana)}</select>
       <select id="fCanal">${optS("Todos los canales", DB.canales, UI.filtros.canal)}</select>
       <select id="fFormato">${optS("Todos los formatos", DB.formatos, UI.filtros.formato)}</select>
@@ -142,7 +154,7 @@ function viewCalendario() {
       <select id="fAprob">${opt("Toda aprobación", DB.aprobaciones, UI.filtros.aprobacion)}</select>
       <select id="fResp">${opt("Todos los responsables", inside(), UI.filtros.responsable)}</select>
       <input type="search" id="fBusca" placeholder="🔍 Buscar…" value="${esc(UI.filtros.q)}" style="width:130px"/>
-      ${Object.values(UI.filtros).some((v) => v) ? `<button class="btn sm ghost" id="btnLimpiar" title="Quitar todos los filtros">✕ Limpiar</button>` : ""}
+      ${Object.values(UI.filtros).some((v) => Array.isArray(v) ? v.length : v) ? `<button class="btn sm ghost" id="btnLimpiar" title="Quitar todos los filtros">✕ Limpiar</button>` : ""}
     </div>
     <div class="spacer"></div>
     ${!interno ? `<label class="chkmine"><input type="checkbox" id="soloMias" ${UI.soloMias ? "checked" : ""}/> Solo lo que apruebo yo</label>` : ""}
@@ -155,8 +167,12 @@ function viewCalendario() {
     ${interno ? `<button class="btn primary" id="btnNew">＋ Agregar publicación</button>` : ""}
   </div>
   <div class="reg-legend">
-    ${DB.regiones.map((r) => `<span><i style="background:${r.color}"></i>${esc(r.nombre)}</span>`).join("")}
-    <span class="legend-note">Fondo = región · borde izquierdo = producción · ✓/⏳/✕ = aprobación cliente</span>
+    ${DB.regiones.map((r) => {
+      const on = UI.filtros.region.includes(r.id);
+      return `<button class="reg-chip ${on ? "on" : ""}" data-regchip="${r.id}" title="Clic para ver solo esta región (puedes elegir varias)"><i style="background:${r.color}"></i>${esc(r.nombre)}</button>`;
+    }).join("")}
+    ${UI.filtros.region.length ? `<button class="reg-chip clear" data-regclear="1">✕ Todas</button>` : ""}
+    <span class="legend-note">Fondo = región · borde izq. = producción · ✓/⏳/✕ = aprobación · 🔴 en riesgo · ⚠️ atrasada</span>
   </div>
   ${UI.calView === "grid"
       ? (UI.showBacklog ? `<div class="cal-layout">${calGrid()}${backlogPanel(interno)}</div>` : calGrid())
@@ -196,6 +212,8 @@ function bchipHTML(p, interno) {
 
 // Pieza con fecha vencida y aún no publicada
 const atrasada = (p) => p.fecha && p.fecha < HOY && p.estado !== "publicado";
+// Pieza que publica en <=2 días sin aprobación del cliente: EN RIESGO de no salir
+const enRiesgo = (p) => p.fecha && p.fecha >= HOY && p.fecha <= HOY_MAS_2 && p.aprobacion !== "aprobado" && p.estado !== "publicado";
 
 function aprobMark(p) {
   if (p.aprobacion === "aprobado") return `<span class="amark ok" title="Aprobado por ${esc(nombre(p.aprobador))}">✓</span>`;
@@ -209,7 +227,7 @@ function chipHTML(p) {
   const drag = UI.mode === "interno" ? `draggable="true" data-pieza="${p.id}"` : "";
   return `<span class="chip${UI.mode === "interno" ? " draggable" : ""}" data-open="${p.id}" ${drag} title="${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.canal)} · ${esc(p.formato)} · ${esc(r ? r.nombre : "")}"
     style="background:${r ? r.color : "#64748B"};border-left-color:${e ? e.color : "#fff"}">
-    <span class="cico">${ico}</span>${atrasada(p) ? '<span class="late" title="Atrasada: la fecha ya pasó y no está publicada">⚠️</span>' : ""}${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}
+    <span class="cico">${ico}</span>${atrasada(p) ? '<span class="late" title="Atrasada: la fecha ya pasó y no está publicada">⚠️</span>' : ""}${enRiesgo(p) ? '<span class="late" title="En riesgo: publica en menos de 2 días y el cliente no ha aprobado">🔴</span>' : ""}${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}
     <span class="cmeta">${esc(CANAL_ICONO[p.canal] || "")}·${esc(p.formato)}</span>${aprobMark(p)}</span>`;
 }
 
@@ -259,7 +277,7 @@ function calLista(interno) {
       ? `<button class="ico-btn" data-open="${p.id}" title="Editar">✏️</button><button class="ico-btn danger" data-del="${p.id}" title="Eliminar">🗑️</button>`
       : `<button class="ico-btn" data-open="${p.id}" title="Ver / aprobar">👁️</button>`;
     return `<tr class="${p.fecha ? "" : "sin-fecha"}">
-      <td class="nowrap ${atrasada(p) ? "late-cell" : ""}">${p.fecha ? (atrasada(p) ? "⚠️ " : "") + esc(fechaCorta(p.fecha)) : '<span class="tag-sf">Sin fecha</span>'}</td>
+      <td class="nowrap ${atrasada(p) || enRiesgo(p) ? "late-cell" : ""}">${p.fecha ? (atrasada(p) ? "⚠️ " : enRiesgo(p) ? "🔴 " : "") + esc(fechaCorta(p.fecha)) : '<span class="tag-sf">Sin fecha</span>'}</td>
       <td><span class="canal-badge c-${p.canal}">${esc(CANAL_ICONO[p.canal])}</span></td>
       <td><span class="fmt-cell">${FORMATO_ICONO[p.formato] || ""} ${esc(p.formato)}</span></td>
       <td><b>${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")}</b></td>
@@ -311,6 +329,303 @@ function viewEstructura() {
 function viewRoadmap() {
   return `<div class="pill-note">La v1 (este calendario) es la base. Cada tarjeta es un módulo de la v2, ligado a un dolor concreto de la operación con Payless.</div>
     <div class="cards">${ROADMAP_V2.map((r) => `<div class="card"><h4>${esc(r.titulo)}</h4><p>${esc(r.desc)}</p><span class="tag">Resuelve: ${esc(r.dolor)}</span></div>`).join("")}</div>`;
+}
+
+/* ============================================================
+   GESTIÓN — dashboard de pendientes, proyectos, masterdoc
+   ============================================================ */
+const P_ESTADOS = {
+  activo: { nombre: "Activo", color: "#16A34A" },
+  esperando: { nombre: "Esperando al cliente", color: "#F59E0B" },
+  standby: { nombre: "En standby", color: "#94A3B8" },
+  briefing: { nombre: "Briefing", color: "#3B82F6" },
+  cerrado: { nombre: "Cerrado", color: "#0D9488" },
+  descartado: { nombre: "Fuera de alcance", color: "#94A3B8" },
+};
+const DOC_ESTADOS = {
+  pendiente: { nombre: "Pendiente", color: "#F59E0B" },
+  proceso: { nombre: "En proceso", color: "#3B82F6" },
+  entregado: { nombre: "Entregado", color: "#16A34A" },
+};
+
+// Pendientes automáticos derivados del calendario
+function pendAuto() {
+  const delMes = DB.piezas.filter((p) => p.mes === UI.month || !p.fecha);
+  const porAprobador = {};
+  delMes.filter((p) => p.aprobacion === "pendiente").forEach((p) => {
+    (porAprobador[p.aprobador] = porAprobador[p.aprobador] || []).push(p);
+  });
+  const ajustes = delMes.filter((p) => p.aprobacion === "rechazado");
+  const riesgo = DB.piezas.filter(enRiesgo);
+  return { porAprobador, ajustes, riesgo };
+}
+
+function viewGestion() {
+  if (UI.mode === "cliente") return gestionCliente();
+  const tabs = [["dash", "📋 Dashboard de pendientes"], ["proyectos", "🗂️ Proyectos / Matrices"], ["masterdoc", "📚 Masterdoc"]];
+  return `
+    <div class="gest-tabs">${tabs.map(([id, l]) => `<button class="gest-tab ${UI.gestTab === id ? "active" : ""}" data-gtab="${id}">${l}</button>`).join("")}</div>
+    ${UI.gestTab === "dash" ? gestDash() : UI.gestTab === "proyectos" ? gestProyectos() : gestMasterdoc()}`;
+}
+
+/* ---- Dashboard de pendientes ---- */
+function gestDash() {
+  const auto = pendAuto();
+  const man = DB.pendientes;
+  const abiertos = (lado) => man.filter((x) => x.lado === lado && !x.hecho);
+  const nCliente = abiertos("cliente").length + Object.keys(auto.porAprobador).length;
+  const nInside = abiertos("inside").length + auto.ajustes.length;
+  const vencidos = man.filter((x) => !x.hecho && x.limite && x.limite < HOY).length;
+  const card = (n, l, color) => `<div class="kpi"><div class="n" style="color:${color}">${n}</div><div class="l">${l}</div></div>`;
+
+  const alertas = auto.riesgo.length ? `
+    <div class="riesgo-box">
+      <b>🔴 En riesgo de no publicarse</b> — publican en ≤2 días y el cliente no ha aprobado:
+      ${auto.riesgo.map((p) => `<button class="riesgo-item" data-openpieza="${p.id}">${esc(fechaCorta(p.fecha))} · ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} (${esc(nombre(p.aprobador))})</button>`).join("")}
+    </div>` : "";
+
+  return `
+  <div class="kpis">
+    ${card(nCliente, "Pendientes del cliente", "#F59E0B")}
+    ${card(nInside, "Pendientes de Inside", "#6D28D9")}
+    ${card(auto.riesgo.length, "Piezas en riesgo", "#DC2626")}
+    ${card(vencidos, "Pendientes vencidos", "#DC2626")}
+  </div>
+  ${alertas}
+  <div class="pend-cols">
+    ${pendCol("cliente", "🏢 Debe el cliente (Payless)", auto)}
+    ${pendCol("inside", "🏠 Debe Inside", auto)}
+  </div>`;
+}
+
+function pendCol(lado, titulo, auto) {
+  const man = DB.pendientes.filter((x) => x.lado === lado);
+  const abiertos = man.filter((x) => !x.hecho);
+  const hechos = man.filter((x) => x.hecho);
+
+  // Automáticos del calendario
+  let autoCards = "";
+  if (lado === "cliente") {
+    autoCards = Object.entries(auto.porAprobador).map(([ap, ps]) =>
+      `<div class="pend-card auto" data-verapro="${ap}">
+        <div class="pt">✋ Aprobar ${ps.length} publicaci${ps.length === 1 ? "ón" : "ones"} <span class="auto-tag">auto</span></div>
+        <div class="pm">${esc(nombre(ap))} · del calendario · clic para verlas</div>
+      </div>`).join("");
+  } else {
+    autoCards = auto.ajustes.map((p) =>
+      `<div class="pend-card auto" data-openpieza="${p.id}">
+        <div class="pt">🛠️ Aplicar ajustes: ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} <span class="auto-tag">auto</span></div>
+        <div class="pm">${esc(nombre(p.responsable))} · ${p.comentarioCliente ? `"${esc(p.comentarioCliente)}"` : "sin comentario del cliente"}</div>
+      </div>`).join("");
+  }
+
+  const manCard = (x) => `
+    <div class="pend-card ${x.hecho ? "done" : ""}">
+      <label class="pend-check"><input type="checkbox" data-pdone="${x.id}" ${x.hecho ? "checked" : ""}/></label>
+      <div class="pend-body">
+        <div class="pt">${esc(x.titulo)}</div>
+        <div class="pm">${esc(nombre(x.responsable))} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
+        ${x.notas ? `<div class="pn">${esc(x.notas)}</div>` : ""}
+      </div>
+      <span class="pend-acc"><button class="ico-btn" data-pedit="${x.id}" title="Editar">✏️</button><button class="ico-btn danger" data-pdel="${x.id}" title="Eliminar">🗑️</button></span>
+    </div>`;
+
+  return `<div class="pend-col">
+    <div class="pend-head"><span>${titulo} <span class="cnt">${abiertos.length + (lado === "cliente" ? Object.keys(auto.porAprobador).length : auto.ajustes.length)}</span></span>
+      <button class="btn sm" data-paddlado="${lado}">＋ Pendiente</button></div>
+    ${autoCards}
+    ${abiertos.map(manCard).join("") || (!autoCards ? `<div class="backlog-empty">Nada pendiente 🎉</div>` : "")}
+    ${hechos.length ? `<div class="pend-done-sep">Completados (${hechos.length})</div>${hechos.map(manCard).join("")}` : ""}
+  </div>`;
+}
+
+/* ---- Proyectos / Matrices ---- */
+function gestProyectos() {
+  const grupos = {};
+  DB.proyectos.forEach((p) => {
+    const g = p.grupo.startsWith("Campaña") ? "Campañas del mes" : p.grupo;
+    (grupos[g] = grupos[g] || []).push(p);
+  });
+  const bloques = Object.entries(grupos).map(([g, ps]) => `
+    <div class="section-title mt">${esc(g)}</div>
+    <div class="cards">${ps.map(proyCard).join("")}</div>`).join("");
+  return `
+    <div class="pill-note">Los grandes bloques de trabajo de la cuenta con su estatus, avance y link. <b>El “Excel de estatus”, versión 3.0.</b></div>
+    <div style="text-align:right;margin-bottom:4px"><button class="btn primary" id="btnAddProy">＋ Agregar proyecto</button></div>
+    ${bloques}`;
+}
+
+function proyCard(p) {
+  const e = P_ESTADOS[p.estado] || P_ESTADOS.activo;
+  const titulo = p.grupo.startsWith("Campaña") ? p.grupo.replace("Campaña · ", "") : p.grupo;
+  return `<div class="card proy ${p.estado === "descartado" ? "off" : ""}">
+    <div class="proy-top"><h4>${esc(titulo)}</h4><button class="ico-btn" data-pyedit="${p.id}" title="Editar">✏️</button></div>
+    <p class="proy-region">${esc(p.region)}</p>
+    <div class="proy-bar"><i style="width:${p.avance}%;background:${e.color}"></i></div>
+    <div class="proy-meta"><span class="badge" style="background:${e.color}22;color:${e.color}">${esc(e.nombre)}</span> <b>${p.avance}%</b></div>
+    <p class="pm" style="margin-top:8px">Inside: ${esc(nombre(p.responsable))} · Aprueba: ${esc(nombre(p.aprobador))}</p>
+    ${p.notas ? `<p class="pn">${esc(p.notas)}</p>` : ""}
+    ${p.link ? `<a class="lk" href="${esc(p.link)}" target="_blank" rel="noopener">Abrir documento ↗</a>` : `<span class="nolink">sin link aún</span>`}
+  </div>`;
+}
+
+/* ---- Masterdoc ---- */
+function gestMasterdoc() {
+  const m = DB.masterdoc;
+  const docRow = (d, i) => {
+    const e = DOC_ESTADOS[d.estado] || DOC_ESTADOS.pendiente;
+    return `<tr>
+      <td><b>${esc(d.entregable)}</b>${d.nota ? `<div class="pn">${esc(d.nota)}</div>` : ""}</td>
+      <td>${esc(d.responsable)}</td>
+      <td><button class="badge doc-estado" data-doccycle="${i}" title="Clic para cambiar el estado" style="background:${e.color}22;color:${e.color};border:none;cursor:pointer">${esc(e.nombre)}</button></td>
+      <td>${d.link ? `<a class="lk" href="${esc(d.link)}" target="_blank" rel="noopener">Abrir ↗</a>` : `<span class="nolink">—</span>`}</td>
+      <td class="acc"><button class="ico-btn" data-docedit="${i}" title="Editar link/nota">✏️</button></td>
+    </tr>`;
+  };
+  return `
+  <div class="cards" style="margin-bottom:20px">
+    <div class="card"><h4>Cliente</h4><p>${esc(m.ficha.cliente)} · gestión desde ${esc(m.ficha.inicio)}</p></div>
+    <div class="card"><h4>Punto de contacto Inside</h4><p>${esc(m.ficha.contactoInside)}</p></div>
+    <div class="card"><h4>Comunicación</h4><p>${esc(m.ficha.comunicacion)}</p></div>
+  </div>
+  <div class="section-title">Documentación base de la marca</div>
+  <table class="tbl"><thead><tr><th>Entregable</th><th>Responsable</th><th>Estado</th><th>Link</th><th></th></tr></thead>
+    <tbody>${m.documentacion.map(docRow).join("")}</tbody></table>
+  <div class="section-title mt">Fechas clave del ciclo mensual</div>
+  <div class="cards">${m.fechasClave.map((f) => `<div class="card"><h4>${esc(f.que)}</h4><p>${esc(f.cuando)}</p><span class="tag">${esc(f.quien)}</span></div>`).join("")}</div>
+  <div class="section-title mt">Cuentas por país (Instagram)</div>
+  <div class="pill-note">🔒 Por seguridad, aquí solo se listan los usuarios. Las contraseñas <b>no viven en esta herramienta</b>: muévanlas del Excel compartido a un gestor de contraseñas (1Password / Bitwarden).</div>
+  <table class="tbl"><thead><tr><th>País</th><th>Cuenta</th></tr></thead>
+    <tbody>${m.cuentas.map((c) => `<tr><td>${esc(c.pais)}</td><td><b>${esc(c.usuario)}</b></td></tr>`).join("")}</tbody></table>`;
+}
+
+/* ---- Gestión en modo Cliente: solo lo que Payless nos debe ---- */
+function gestionCliente() {
+  const auto = pendAuto();
+  const man = DB.pendientes.filter((x) => x.lado === "cliente" && !x.hecho);
+  const misAprob = auto.porAprobador[UI.clienteId] || [];
+  return `
+  <div class="pill-note cli-note">👁️ <b>Modo Cliente</b> — esta lista es lo que Inside necesita de Payless para avanzar sin frenos.</div>
+  ${misAprob.length ? `<div class="riesgo-box"><b>✋ Tienes ${misAprob.length} publicaci${misAprob.length === 1 ? "ón" : "ones"} por aprobar</b> — <button class="link-btn" data-verapro="${UI.clienteId}">verlas en el calendario</button></div>` : ""}
+  <div class="pend-col" style="max-width:760px">
+    <div class="pend-head"><span>Pendientes de Payless <span class="cnt">${man.length}</span></span></div>
+    ${man.map((x) => `
+      <div class="pend-card">
+        <div class="pend-body">
+          <div class="pt">${esc(x.titulo)}</div>
+          <div class="pm">${esc(nombre(x.responsable))} · ${esc(x.area)}${x.limite ? ` · <span class="${x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}</div>
+          ${x.notas ? `<div class="pn">${esc(x.notas)}</div>` : ""}
+        </div>
+      </div>`).join("") || `<div class="backlog-empty">Nada pendiente 🎉</div>`}
+  </div>`;
+}
+
+/* ---- Modales de gestión ---- */
+function openPendModal(id, ladoPreset) {
+  const p = id ? DB.pendientes.find((x) => x.id === id) : { id: null, lado: ladoPreset || "cliente", titulo: "", responsable: ladoPreset === "inside" ? "vic" : "nico", area: "Gestión", limite: "", link: "", notas: "", hecho: false };
+  if (!p) return;
+  const personasDelLado = p.lado === "cliente" ? clientes() : inside();
+  document.getElementById("modalTitle").textContent = id ? "Editar pendiente" : "Nuevo pendiente";
+  document.getElementById("modalBody").innerHTML = `
+    <div><label class="fld">¿Qué falta?</label><input type="text" id="pTitulo" value="${esc(p.titulo)}" placeholder="Ej: enviar editables de..." style="width:100%"/></div>
+    <div class="row2">
+      <div><label class="fld">Lado</label><select id="pLado" style="width:100%"><option value="cliente" ${p.lado === "cliente" ? "selected" : ""}>Debe el cliente</option><option value="inside" ${p.lado === "inside" ? "selected" : ""}>Debe Inside</option></select></div>
+      <div><label class="fld">Responsable</label><select id="pResp" style="width:100%">${personasDelLado.map((pe) => `<option value="${pe.id}" ${p.responsable === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
+    </div>
+    <div class="row2">
+      <div><label class="fld">Área</label><select id="pArea" style="width:100%">${["Accesos", "Editables", "Inputs", "Contenido", "Diseño", "Matrices", "Gestión", "Equipo", "Masterdoc"].map((a) => `<option ${p.area === a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
+      <div><label class="fld">Fecha límite (opcional)</label><input type="date" id="pLimite" value="${esc(p.limite)}" style="width:100%"/></div>
+    </div>
+    <div><label class="fld">Link (opcional)</label><input type="url" id="pLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
+    <div><label class="fld">Notas</label><textarea id="pNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>`;
+  document.getElementById("modalFooter").innerHTML = `
+    ${id ? `<button class="btn ghost" id="pDel" style="margin-right:auto;color:var(--danger)">Eliminar</button>` : ""}
+    <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="pSave">${id ? "Guardar" : "Crear pendiente"}</button>`;
+  document.getElementById("overlay").classList.add("open");
+
+  // Cambiar lado recarga responsables
+  document.getElementById("pLado").onchange = () => {
+    const lado = document.getElementById("pLado").value;
+    const lista = lado === "cliente" ? clientes() : inside();
+    document.getElementById("pResp").innerHTML = lista.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)}</option>`).join("");
+  };
+  document.getElementById("mCancel").onclick = closeModal;
+  document.getElementById("pSave").onclick = () => {
+    const t = document.getElementById("pTitulo").value.trim();
+    if (!t) { document.getElementById("pTitulo").focus(); return; }
+    p.titulo = t;
+    p.lado = document.getElementById("pLado").value;
+    p.responsable = document.getElementById("pResp").value;
+    p.area = document.getElementById("pArea").value;
+    p.limite = document.getElementById("pLimite").value;
+    p.link = document.getElementById("pLink").value.trim();
+    p.notas = document.getElementById("pNotas").value.trim();
+    if (!p.id) { p.id = "pd_" + Date.now(); DB.pendientes.push(p); }
+    save(); closeModal(); render(); toast(id ? "Pendiente actualizado ✓" : "Pendiente creado ✓");
+  };
+  const del = document.getElementById("pDel");
+  if (del) del.onclick = () => { if (confirm("¿Eliminar este pendiente?")) { DB.pendientes = DB.pendientes.filter((x) => x.id !== p.id); save(); closeModal(); render(); } };
+}
+
+function openProyModal(id) {
+  const p = id ? DB.proyectos.find((x) => x.id === id) : { id: null, grupo: "", region: "", estado: "activo", avance: 0, responsable: "vic", aprobador: "nico", link: "", notas: "" };
+  if (!p) return;
+  document.getElementById("modalTitle").textContent = id ? "Editar proyecto" : "Nuevo proyecto";
+  document.getElementById("modalBody").innerHTML = `
+    <div><label class="fld">Nombre (usa “Campaña · X” para campañas)</label><input type="text" id="yNombre" value="${esc(p.grupo)}" placeholder="Ej: Matriz Orgánica / Campaña · Black Friday" style="width:100%"/></div>
+    <div class="row2">
+      <div><label class="fld">Región / alcance</label><input type="text" id="yRegion" value="${esc(p.region)}" placeholder="Ej: Centroamérica" style="width:100%"/></div>
+      <div><label class="fld">Estado</label><select id="yEstado" style="width:100%">${Object.entries(P_ESTADOS).map(([k, v]) => `<option value="${k}" ${p.estado === k ? "selected" : ""}>${esc(v.nombre)}</option>`).join("")}</select></div>
+    </div>
+    <div><label class="fld">Avance: <b id="yAvanceVal">${p.avance}%</b></label><input type="range" id="yAvance" min="0" max="100" step="5" value="${p.avance}" style="width:100%"/></div>
+    <div class="row2">
+      <div><label class="fld">Responsable Inside</label><select id="yResp" style="width:100%">${inside().map((pe) => `<option value="${pe.id}" ${p.responsable === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
+      <div><label class="fld">Aprueba (cliente)</label><select id="yApro" style="width:100%">${clientes().map((pe) => `<option value="${pe.id}" ${p.aprobador === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
+    </div>
+    <div><label class="fld">Link al documento / matriz</label><input type="url" id="yLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
+    <div><label class="fld">Notas / estatus</label><textarea id="yNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>`;
+  document.getElementById("modalFooter").innerHTML = `
+    ${id ? `<button class="btn ghost" id="yDel" style="margin-right:auto;color:var(--danger)">Eliminar</button>` : ""}
+    <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="ySave">${id ? "Guardar" : "Crear proyecto"}</button>`;
+  document.getElementById("overlay").classList.add("open");
+
+  document.getElementById("yAvance").oninput = () => { document.getElementById("yAvanceVal").textContent = document.getElementById("yAvance").value + "%"; };
+  document.getElementById("mCancel").onclick = closeModal;
+  document.getElementById("ySave").onclick = () => {
+    const n = document.getElementById("yNombre").value.trim();
+    if (!n) { document.getElementById("yNombre").focus(); return; }
+    p.grupo = n;
+    p.region = document.getElementById("yRegion").value.trim();
+    p.estado = document.getElementById("yEstado").value;
+    p.avance = Number(document.getElementById("yAvance").value);
+    p.responsable = document.getElementById("yResp").value;
+    p.aprobador = document.getElementById("yApro").value;
+    p.link = document.getElementById("yLink").value.trim();
+    p.notas = document.getElementById("yNotas").value.trim();
+    if (!p.id) { p.id = "py_" + Date.now(); DB.proyectos.push(p); }
+    save(); closeModal(); render(); toast("Proyecto guardado ✓");
+  };
+  const del = document.getElementById("yDel");
+  if (del) del.onclick = () => { if (confirm("¿Eliminar este proyecto?")) { DB.proyectos = DB.proyectos.filter((x) => x.id !== p.id); save(); closeModal(); render(); } };
+}
+
+function openDocModal(i) {
+  const d = DB.masterdoc.documentacion[i];
+  if (!d) return;
+  document.getElementById("modalTitle").textContent = d.entregable;
+  document.getElementById("modalBody").innerHTML = `
+    <div><label class="fld">Estado</label><select id="dEstado" style="width:100%">${Object.entries(DOC_ESTADOS).map(([k, v]) => `<option value="${k}" ${d.estado === k ? "selected" : ""}>${esc(v.nombre)}</option>`).join("")}</select></div>
+    <div><label class="fld">Link</label><input type="url" id="dLink" value="${esc(d.link)}" placeholder="https://..." style="width:100%"/></div>
+    <div><label class="fld">Nota</label><input type="text" id="dNota" value="${esc(d.nota)}" style="width:100%"/></div>`;
+  document.getElementById("modalFooter").innerHTML = `<button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="dSave">Guardar</button>`;
+  document.getElementById("overlay").classList.add("open");
+  document.getElementById("mCancel").onclick = closeModal;
+  document.getElementById("dSave").onclick = () => {
+    d.estado = document.getElementById("dEstado").value;
+    d.link = document.getElementById("dLink").value.trim();
+    d.nota = document.getElementById("dNota").value.trim();
+    save(); closeModal(); render(); toast("Masterdoc actualizado ✓");
+  };
 }
 
 /* ============================================================
@@ -509,9 +824,44 @@ function wireContent() {
 
   document.querySelectorAll("[data-cal]").forEach((b) => b.onclick = () => { UI.calView = b.dataset.cal; render(); });
   const chg = (id, key) => { const el = document.getElementById(id); if (el) el.onchange = () => { UI.filtros[key] = el.value; render(); }; };
-  chg("fRegion", "region"); chg("fCampana", "campana"); chg("fCanal", "canal");
+  chg("fCampana", "campana"); chg("fCanal", "canal");
   chg("fFormato", "formato"); chg("fEstado", "estado"); chg("fAprob", "aprobacion");
   chg("fResp", "responsable");
+
+  // — Gestión —
+  document.querySelectorAll("[data-gtab]").forEach((b) => b.onclick = () => { UI.gestTab = b.dataset.gtab; render(); });
+  document.querySelectorAll("[data-paddlado]").forEach((b) => b.onclick = () => openPendModal(null, b.dataset.paddlado));
+  document.querySelectorAll("[data-pedit]").forEach((b) => b.onclick = () => openPendModal(b.dataset.pedit));
+  document.querySelectorAll("[data-pdel]").forEach((b) => b.onclick = () => { if (confirm("¿Eliminar este pendiente?")) { DB.pendientes = DB.pendientes.filter((x) => x.id !== b.dataset.pdel); save(); render(); } });
+  document.querySelectorAll("[data-pdone]").forEach((c) => c.onchange = () => {
+    const x = DB.pendientes.find((y) => y.id === c.dataset.pdone);
+    if (x) { x.hecho = c.checked; save(); render(); toast(x.hecho ? "Pendiente completado ✓" : "Pendiente reabierto"); }
+  });
+  document.querySelectorAll("[data-openpieza]").forEach((b) => b.onclick = () => openModal(b.dataset.openpieza));
+  document.querySelectorAll("[data-verapro]").forEach((b) => b.onclick = () => {
+    UI.view = "calendario"; UI.calView = "lista";
+    UI.filtros.aprobacion = "pendiente"; UI.filtros.q = nombre(b.dataset.verapro);
+    if (UI.mode === "cliente") UI.soloMias = true;
+    render();
+  });
+  bind("btnAddProy", () => openProyModal(null));
+  document.querySelectorAll("[data-pyedit]").forEach((b) => b.onclick = () => openProyModal(b.dataset.pyedit));
+  document.querySelectorAll("[data-doccycle]").forEach((b) => b.onclick = () => {
+    const d = DB.masterdoc.documentacion[Number(b.dataset.doccycle)];
+    const orden = ["pendiente", "proceso", "entregado"];
+    d.estado = orden[(orden.indexOf(d.estado) + 1) % orden.length];
+    save(); render();
+  });
+  document.querySelectorAll("[data-docedit]").forEach((b) => b.onclick = () => openDocModal(Number(b.dataset.docedit)));
+
+  // Chips de región: multi-selección
+  document.querySelectorAll("[data-regchip]").forEach((b) => b.onclick = () => {
+    const id = b.dataset.regchip;
+    const i = UI.filtros.region.indexOf(id);
+    if (i >= 0) UI.filtros.region.splice(i, 1); else UI.filtros.region.push(id);
+    render();
+  });
+  document.querySelectorAll("[data-regclear]").forEach((b) => b.onclick = () => { UI.filtros.region = []; render(); });
 
   // Búsqueda con re-render conservando el foco y el cursor
   const busca = document.getElementById("fBusca");
@@ -521,7 +871,7 @@ function wireContent() {
     const nb = document.getElementById("fBusca");
     if (nb) { nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); }
   };
-  bind("btnLimpiar", () => { Object.keys(UI.filtros).forEach((k) => (UI.filtros[k] = "")); UI.soloMias = false; render(); });
+  bind("btnLimpiar", () => { Object.keys(UI.filtros).forEach((k) => (UI.filtros[k] = Array.isArray(UI.filtros[k]) ? [] : "")); UI.soloMias = false; render(); });
   bind("verPendientes", () => { UI.soloMias = true; UI.filtros.aprobacion = "pendiente"; UI.calView = "lista"; render(); });
 
   if (UI.mode === "interno" && UI.calView === "grid") wireDragDrop();
