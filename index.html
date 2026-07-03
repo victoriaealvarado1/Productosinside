@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión Inside · Payless</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">i</div>
+        <div>
+          <h1>Gestión Inside</h1>
+          <small>Cuenta · Payless</small>
+        </div>
+      </div>
+
+      <button class="nav-item active" data-view="calendario"><span class="ico">📅</span> Calendario</button>
+      <button class="nav-item" data-view="estructura"><span class="ico">🗂️</span> Estructura de cuenta</button>
+      <button class="nav-item" data-view="roadmap"><span class="ico">🚀</span> Roadmap v2</button>
+
+      <div class="nav-sep">Acciones</div>
+      <button class="nav-item" id="btnReset"><span class="ico">↺</span> Reiniciar datos demo</button>
+
+      <div class="sidebar-foot">
+        v1 · Calendario de Publicación<br />Datos guardados en este navegador
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Calendario de Publicación</h2>
+          <div class="sub" id="pageSub">Julio 2026</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="modepill" id="modePill" title="Modo de la herramienta">
+          <button data-mode="interno" class="active">✏️ Interno</button>
+          <button data-mode="cliente" class="cli">👁️ Cliente</button>
+        </div>
+      </header>
+
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+
+  <!-- Modal pieza -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <header>
+        <h3 id="modalTitle">Pieza</h3>
+        <button class="x" id="modalClose">✕</button>
+      </header>
+      <div class="body" id="modalBody"></div>
+      <footer id="modalFooter"></footer>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
