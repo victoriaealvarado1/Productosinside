@@ -102,9 +102,9 @@ const SEED = {
     pd("pi2", "inside", "Pedido al diseñador: adaptaciones de Liquidación", "ale", "Diseño", "2026-07-04", "", "Editable de julio ubicado. Piezas listas el martes 7.",
       [ev("2026-07-03", "🏁 Editable localizado por Ale; falta hacer el pedido formal")], "", "mo_cam"),
     pd("pi3", "inside", "Adaptar portada Liquidación a inglés 70% (Caribe inglés)", "alej", "Diseño", "2026-07-06", "", "Misma gráfica de círculos concéntricos, en inglés, para el 7 jul.",
-      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente (pc3)", "mo_car"),
+      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente", "mo_car", "pc3"),
     pd("pi4", "inside", "Adaptar Liquidación de RD al 50%", "alej", "Diseño", "2026-07-06", "", "RD no tiene 70%: su versión es hasta 50% de descuento.",
-      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente (pc3)", "mo_car"),
+      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente", "mo_car", "pc3"),
     pd("pi5", "inside", "Enlazar links de piezas finales en el calendario", "sunny", "Gestión", "2026-07-06", "", "Ale pasó los links por WhatsApp; falta enlazar cada pieza.",
       [ev("2026-07-03", "🏁 Links recopilados por Ale (WhatsApp); se asigna el lunes")], "", "mo_cam"),
     pd("pi6", "inside", "Cuadro países ↔ contacto del cliente", "vic", "Gestión", "2026-07-06", "", "Carla CAM (por ahora), Cristina Sur, Estefany Caribe inglés, Daini RD.",
@@ -280,8 +280,8 @@ const SEED = {
 };
 
 /* Helpers de gestión */
-function pd(id, lado, titulo, responsable, area, limite, link, notas, historial, faltaInfo, matrizId) {
-  return { id, lado, titulo, responsable, area, limite: limite || "", link: link || "", notas: notas || "", hecho: false, historial: historial || [], faltaInfo: faltaInfo || "", matrizId: matrizId || "" };
+function pd(id, lado, titulo, responsable, area, limite, link, notas, historial, faltaInfo, matrizId, bloqueadoPor) {
+  return { id, lado, titulo, responsable, area, limite: limite || "", link: link || "", notas: notas || "", hecho: false, historial: historial || [], faltaInfo: faltaInfo || "", matrizId: matrizId || "", bloqueadoPor: bloqueadoPor || "" };
 }
 function ev(fecha, texto) { return { fecha, texto }; }
 function mx(id, mes, grupo, sub, region, estado, avance, responsable, aprobador, link, notas) {

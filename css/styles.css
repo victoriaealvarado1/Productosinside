@@ -374,6 +374,14 @@ input[type="range"] { accent-color: var(--brand); }
 .hist-add { display: flex; gap: 7px; }
 .pn.hist { background: #F0FDF4; }
 
+/* v2.2 — hallazgos del experto */
+.kpi.kpi-click { cursor: pointer; }
+.kpi.kpi-click:hover { border-color: var(--danger); }
+.kpi.kpi-on { box-shadow: inset 0 0 0 2px var(--danger); }
+.pend-grupo.vacio { opacity: .75; }
+.pend-grupo.yo { border-color: var(--brand); background: #FDFCFF; }
+.chooser { background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; border-radius: 10px; padding: 9px 12px; font-size: 12.5px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; margin-bottom: 8px; }
+
 .hidden { display: none !important; }
 .pill-note { background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; margin-bottom: 18px; }
 .cli-note { background: var(--brand-soft); border-color: #DDD6FE; color: #5B21B6; }

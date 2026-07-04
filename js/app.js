@@ -3,8 +3,10 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v2_0";
-const HOY = "2026-07-04"; // fecha de referencia de la operación
+const KEY = "gestion_inside_v2_1";
+// Fecha real del día (la trazabilidad siempre registra la fecha verdadera)
+const HOY = new Date().toISOString().slice(0, 10);
+const MES_ACTUAL = HOY.slice(0, 7);
 // Riesgo: publica en <=2 días y el cliente aún no aprueba
 const HOY_MAS_2 = (() => { const d = new Date(HOY + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 2); return d.toISOString().slice(0, 10); })();
 
@@ -17,6 +19,10 @@ const UI = {
   gestGrupo: "",              // drill-down dentro de la gestión mensual
   pendGroupCliente: "persona",// persona | lista
   pendGroupInside: "area",    // area | persona | lista
+  pendVer: "",                // "ver como": filtra pendientes a una persona
+  pendQ: "",                  // búsqueda de texto en pendientes
+  pendVencidos: false,        // mostrar solo vencidos
+  pendChooser: null,          // {pendId, area} — elegir persona al soltar en un área
   month: SEED.meta.mesActual,
   filtros: { region: [], campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
   showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
@@ -364,9 +370,9 @@ const DOC_ESTADOS = {
   entregado: { nombre: "Entregado", color: "#16A34A" },
 };
 
-// Pendientes automáticos derivados del calendario
+// Pendientes automáticos derivados del calendario (siempre del mes en curso real)
 function pendAuto() {
-  const delMes = DB.piezas.filter((p) => p.mes === UI.month || !p.fecha);
+  const delMes = DB.piezas.filter((p) => p.mes === MES_ACTUAL || !p.fecha);
   const porAprobador = {};
   delMes.filter((p) => p.aprobacion === "pendiente").forEach((p) => {
     (porAprobador[p.aprobador] = porAprobador[p.aprobador] || []).push(p);
@@ -392,7 +398,7 @@ function gestDash() {
   const nCliente = abiertos("cliente").length + Object.keys(auto.porAprobador).length;
   const nInside = abiertos("inside").length + auto.ajustes.length;
   const vencidos = man.filter((x) => !x.hecho && x.limite && x.limite < HOY).length;
-  const card = (n, l, color) => `<div class="kpi"><div class="n" style="color:${color}">${n}</div><div class="l">${l}</div></div>`;
+  const card = (n, l, color, extra) => `<div class="kpi ${extra || ""}" ${extra ? `id="kpiVencidos" title="Clic para ver solo los vencidos"` : ""}><div class="n" style="color:${color}">${n}</div><div class="l">${l}</div></div>`;
 
   const alertas = auto.riesgo.length ? `
     <div class="riesgo-box">
@@ -400,18 +406,80 @@ function gestDash() {
       ${auto.riesgo.map((p) => `<button class="riesgo-item" data-openpieza="${p.id}">${esc(fechaCorta(p.fecha))} · ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} (${esc(nombre(p.aprobador))})</button>`).join("")}
     </div>` : "";
 
+  const todas = [...clientes(), ...inside()];
   return `
   <div class="kpis">
     ${card(nCliente, "Pendientes del cliente", "#F59E0B")}
     ${card(nInside, "Pendientes de Inside", "#6D28D9")}
     ${card(auto.riesgo.length, "Piezas en riesgo", "#DC2626")}
-    ${card(vencidos, "Pendientes vencidos", "#DC2626")}
+    ${card(vencidos, "Pendientes vencidos", "#DC2626", "kpi-click" + (UI.pendVencidos ? " kpi-on" : ""))}
   </div>
   ${alertas}
+  <div class="toolbar" style="margin-bottom:14px">
+    <div class="grp">
+      <select id="pendVer" title="Filtra las dos columnas a una sola persona">
+        <option value="">👥 Ver a todos</option>
+        <optgroup label="Inside">${inside().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)} · ${esc(pe.area)}</option>`).join("")}</optgroup>
+        <optgroup label="Cliente">${clientes().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</optgroup>
+      </select>
+      <input type="search" id="pendQ" placeholder="🔍 Buscar pendiente…" value="${esc(UI.pendQ)}" style="width:180px"/>
+      ${UI.pendVer || UI.pendQ || UI.pendVencidos ? `<button class="btn sm ghost" id="pendLimpiar">✕ Limpiar</button>` : ""}
+    </div>
+    <div class="spacer"></div>
+    <button class="btn" id="btnCopiarEstatus" title="Arma el estatus (recibido/pendiente) listo para pegar en correo o WhatsApp">📋 Copiar estatus</button>
+  </div>
   <div class="pend-cols">
     ${pendCol("cliente", "🏢 Debe el cliente (Payless)", auto)}
     ${pendCol("inside", "🏠 Debe Inside", auto)}
   </div>`;
+}
+
+/* Filtros del dashboard de pendientes */
+function pendVisible(x) {
+  if (UI.pendVer && x.responsable !== UI.pendVer) return false;
+  if (UI.pendVencidos && !(x.limite && x.limite < HOY && !x.hecho)) return false;
+  if (UI.pendQ) {
+    const q = UI.pendQ.toLowerCase();
+    const texto = [x.titulo, x.notas, x.faltaInfo, x.area, nombre(x.responsable)].join(" ").toLowerCase();
+    if (!texto.includes(q)) return false;
+  }
+  return true;
+}
+/* Orden: vencidos primero, luego por fecha límite, sin límite al final */
+function ordenLimite(a, b) {
+  return (a.limite || "9999-12-31").localeCompare(b.limite || "9999-12-31");
+}
+
+/* Genera el texto del estatus para correo / WhatsApp */
+function textoEstatus() {
+  const auto = pendAuto();
+  const abiertosC = DB.pendientes.filter((x) => x.lado === "cliente" && !x.hecho).sort(ordenLimite);
+  const abiertosI = DB.pendientes.filter((x) => x.lado === "inside" && !x.hecho).sort(ordenLimite);
+  const hechos = DB.pendientes.filter((x) => x.hecho);
+  const linea = (x) => `• ${x.titulo} — ${nombre(x.responsable)}${x.limite ? ` (límite ${fechaCorta(x.limite)})` : ""}${x.faltaInfo ? ` ⛔ ${x.faltaInfo}` : ""}`;
+  let t = `ESTATUS PAYLESS · ${fechaCorta(HOY)}\n`;
+  t += `\n🏢 PENDIENTE DE PAYLESS (${abiertosC.length}):\n${abiertosC.map(linea).join("\n") || "• Nada pendiente"}\n`;
+  const aprob = Object.entries(auto.porAprobador);
+  if (aprob.length) t += `\n✋ APROBACIONES PENDIENTES:\n${aprob.map(([ap, ps]) => `• ${nombre(ap)}: ${ps.length} publicaci${ps.length === 1 ? "ón" : "ones"}`).join("\n")}\n`;
+  t += `\n🏠 EN CURSO POR INSIDE (${abiertosI.length}):\n${abiertosI.map(linea).join("\n") || "• Nada pendiente"}\n`;
+  if (hechos.length) t += `\n✅ COMPLETADOS: ${hechos.length}\n${hechos.slice(-5).map((x) => `• ${x.titulo}`).join("\n")}\n`;
+  return t;
+}
+function copiarEstatus() {
+  const t = textoEstatus();
+  const listo = () => toast("Estatus copiado — pégalo en correo o WhatsApp ✓");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t).then(listo).catch(() => mostrarEstatus(t));
+  } else mostrarEstatus(t);
+}
+function mostrarEstatus(t) {
+  document.getElementById("modalTitle").textContent = "Estatus para copiar";
+  document.getElementById("modalBody").innerHTML = `<textarea id="estatusTxt" rows="16" style="width:100%;font-family:ui-monospace,monospace;font-size:12.5px">${esc(t)}</textarea>`;
+  document.getElementById("modalFooter").innerHTML = `<button class="btn" id="mCancel">Cerrar</button>`;
+  document.getElementById("overlay").classList.add("open");
+  document.getElementById("mCancel").onclick = closeModal;
+  const ta = document.getElementById("estatusTxt");
+  ta.focus(); ta.select();
 }
 
 /* Tarjeta de pendiente manual, con trazabilidad visible */
@@ -425,6 +493,7 @@ function manCard(x, draggable) {
         <div class="pt">${esc(x.titulo)}</div>
         <div class="pm">${esc(nombre(x.responsable))} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
         ${x.faltaInfo && !x.hecho ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
+        ${x.bloqueadoPor && !x.hecho ? (() => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && !bl.hecho ? `<div class="falta-chip">🔒 Bloqueado por: ${esc(bl.titulo.slice(0, 45))}</div>` : ""; })() : ""}
         ${m ? `<div class="mx-chip" data-vermatriz="${m.id}">🗂️ ${esc(matrizLabel(m))}</div>` : ""}
         ${ultimo ? `<div class="pn hist">${esc(fechaCorta(ultimo.fecha))} · ${esc(ultimo.texto)}${x.historial.length > 1 ? ` <span class="hist-more">+${x.historial.length - 1} más</span>` : ""}</div>` : (x.notas ? `<div class="pn">${esc(x.notas)}</div>` : "")}
       </div>
@@ -433,56 +502,74 @@ function manCard(x, draggable) {
 }
 
 function autoCardsDe(lado, auto, filtroPersona) {
+  const mesLbl = monthLabel(MES_ACTUAL).toLowerCase();
   if (lado === "cliente") {
     return Object.entries(auto.porAprobador)
       .filter(([ap]) => !filtroPersona || ap === filtroPersona)
       .map(([ap, ps]) => `<div class="pend-card auto" data-verapro="${ap}">
         <div class="pt">✋ Aprobar ${ps.length} publicaci${ps.length === 1 ? "ón" : "ones"} <span class="auto-tag">auto</span></div>
-        <div class="pm">${esc(nombre(ap))} · del calendario · clic para verlas</div>
+        <div class="pm">${esc(nombre(ap))} · del calendario de ${esc(mesLbl)} · clic para verlas</div>
       </div>`).join("");
   }
   return auto.ajustes
     .filter((p) => !filtroPersona || p.responsable === filtroPersona)
     .map((p) => `<div class="pend-card auto" data-openpieza="${p.id}">
       <div class="pt">🛠️ Aplicar ajustes: ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} <span class="auto-tag">auto</span></div>
-      <div class="pm">${esc(nombre(p.responsable))} · ${p.comentarioCliente ? `"${esc(p.comentarioCliente)}"` : "sin comentario del cliente"}</div>
+      <div class="pm">${esc(nombre(p.responsable))} · calendario de ${esc(mesLbl)} · ${p.comentarioCliente ? `"${esc(p.comentarioCliente)}"` : "sin comentario del cliente"}</div>
     </div>`).join("");
+}
+
+/* Mini-menú al soltar en un área con varias personas: "¿a quién?" */
+function chooserHTML(area) {
+  if (!UI.pendChooser || UI.pendChooser.area !== area) return "";
+  const x = DB.pendientes.find((y) => y.id === UI.pendChooser.pendId);
+  if (!x) return "";
+  return `<div class="chooser">¿A quién de ${esc(area)} va "<b>${esc(x.titulo.slice(0, 40))}</b>"?
+    ${inside().filter((pe) => pe.area === area).map((pe) => `<button class="btn sm" data-eligep="${pe.id}">${esc(pe.nombre.split(" ")[0])}</button>`).join("")}
+    <button class="btn sm ghost" data-eligep="">Cancelar</button></div>`;
 }
 
 function pendCol(lado, titulo, auto) {
   const man = DB.pendientes.filter((x) => x.lado === lado);
-  const abiertos = man.filter((x) => !x.hecho);
-  const hechos = man.filter((x) => x.hecho);
+  const abiertos = man.filter((x) => !x.hecho && pendVisible(x)).sort(ordenLimite);
+  const hechos = man.filter((x) => x.hecho && pendVisible(x));
   const nAuto = lado === "cliente" ? Object.keys(auto.porAprobador).length : auto.ajustes.length;
   const modo = lado === "cliente" ? UI.pendGroupCliente : UI.pendGroupInside;
   const modos = lado === "cliente" ? [["persona", "Por persona"], ["lista", "Lista"]] : [["area", "Por área"], ["persona", "Por persona"], ["lista", "Lista"]];
+  const filtrando = UI.pendVer || UI.pendQ || UI.pendVencidos;
 
   let cuerpo = "";
   if (modo === "lista") {
-    cuerpo = autoCardsDe(lado, auto) + abiertos.map((x) => manCard(x, false)).join("");
+    cuerpo = autoCardsDe(lado, auto, UI.pendVer) + abiertos.map((x) => manCard(x, false)).join("");
   } else if (modo === "persona") {
+    // TODAS las personas del lado son zona de drop (las vacías, plegadas)
     const gente = (lado === "cliente" ? clientes() : inside());
     cuerpo = gente.map((pe) => {
+      if (UI.pendVer && pe.id !== UI.pendVer) return "";
       const suyos = abiertos.filter((x) => x.responsable === pe.id);
       const autos = autoCardsDe(lado, auto, pe.id);
-      if (!suyos.length && !autos) return "";
-      return `<div class="pend-grupo" data-asignap="${pe.id}">
+      const vacio = !suyos.length && !autos;
+      if (vacio && filtrando) return "";
+      return `<div class="pend-grupo ${vacio ? "vacio" : ""}" data-asignap="${pe.id}">
         <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length + (autos ? 1 : 0)}</span></div>
         ${autos}${suyos.map((x) => manCard(x, true)).join("")}
+        ${vacio ? `<div class="pg-empty">Libre — arrastra aquí para asignarle</div>` : ""}
       </div>`;
     }).join("");
   } else {
-    // Por área (solo Inside): distribuir arrastrando entre áreas
+    // Por área (solo Inside): TODAS las áreas visibles para distribuir
     cuerpo = DB.areas.map((area) => {
       const equipo = inside().filter((pe) => pe.area === area);
       const ids = equipo.map((pe) => pe.id);
       const suyos = abiertos.filter((x) => ids.includes(x.responsable));
-      const autos = auto.ajustes.filter((p) => ids.includes(p.responsable));
-      if (!suyos.length && !autos.length && !["Cuentas", "Diseño"].includes(area)) return "";
-      return `<div class="pend-grupo" data-asignarea="${esc(area)}">
-        <div class="pg-head">${AREA_ICONO[area] || "📁"} <b>${esc(area)}</b> <span class="pg-rol">${equipo.map((pe) => esc(pe.nombre.split(" ")[0])).join(", ")}</span> <span class="pg-cnt">${suyos.length + autos.length}</span></div>
+      const autos = auto.ajustes.filter((p) => ids.includes(p.responsable) && (!UI.pendVer || p.responsable === UI.pendVer));
+      const vacio = !suyos.length && !autos.length;
+      if (vacio && filtrando) return "";
+      return `<div class="pend-grupo ${vacio ? "vacio" : ""}" data-asignarea="${esc(area)}">
+        <div class="pg-head">${AREA_ICONO[area] || "📁"} <b>${esc(area)}</b> <span class="pg-rol">${equipo.map((pe) => esc(pe.nombre.split(" ")[0] + " (" + pe.rol + ")")).join(" · ")}</span> <span class="pg-cnt">${suyos.length + autos.length}</span></div>
+        ${chooserHTML(area)}
         ${autoCardsDe("inside", { ajustes: autos, porAprobador: {} })}${suyos.map((x) => manCard(x, true)).join("")}
-        ${!suyos.length && !autos.length ? `<div class="pg-empty">Arrastra aquí un pendiente para asignarlo a ${esc(area)}</div>` : ""}
+        ${vacio ? `<div class="pg-empty">Arrastra aquí un pendiente para ${esc(area)}</div>` : ""}
       </div>`;
     }).join("");
   }
@@ -601,24 +688,37 @@ function gestionCliente() {
   const auto = pendAuto();
   const man = DB.pendientes.filter((x) => x.lado === "cliente" && !x.hecho);
   const misAprob = auto.porAprobador[UI.clienteId] || [];
-  const porPersona = clientes().map((pe) => {
+  // El grupo del cliente activo va primero y resaltado
+  const ordenados = [...clientes()].sort((a, b) => (a.id === UI.clienteId ? -1 : 0) - (b.id === UI.clienteId ? -1 : 0));
+  const visibles = UI.soloMias ? ordenados.filter((pe) => pe.id === UI.clienteId) : ordenados;
+  const ultimoEv = (x) => x.historial && x.historial.length ? x.historial[x.historial.length - 1] : null;
+  const porPersona = visibles.map((pe) => {
     const suyos = man.filter((x) => x.responsable === pe.id);
     if (!suyos.length) return "";
-    return `<div class="pend-grupo">
-      <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length}</span></div>
-      ${suyos.map((x) => `
+    const esYo = pe.id === UI.clienteId;
+    return `<div class="pend-grupo ${esYo ? "yo" : ""}">
+      <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> ${esYo ? '<span class="auto-tag">tú</span>' : ""} <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length}</span></div>
+      ${suyos.map((x) => {
+        const u = ultimoEv(x);
+        return `
       <div class="pend-card">
         <div class="pend-body">
           <div class="pt">${esc(x.titulo)}</div>
           <div class="pm">${esc(x.area)}${x.limite ? ` · <span class="${x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}</div>
           ${x.faltaInfo ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
-          ${x.notas ? `<div class="pn">${esc(x.notas)}</div>` : ""}
+          ${u ? `<div class="pn hist">${esc(fechaCorta(u.fecha))} · ${esc(u.texto)}</div>` : (x.notas ? `<div class="pn">${esc(x.notas)}</div>` : "")}
         </div>
-      </div>`).join("")}
+        <span class="pend-acc">${esYo ? `<button class="btn sm" data-penvio="${x.id}" title="Avísale a Inside que ya lo enviaste">📬 Ya lo envié</button>` : ""}</span>
+      </div>`;
+      }).join("")}
     </div>`;
   }).join("");
   return `
-  <div class="pill-note cli-note">👁️ <b>Modo Cliente</b> — esta lista es lo que Inside necesita de Payless para avanzar sin frenos, organizada por responsable.</div>
+  <div class="pill-note cli-note">👁️ <b>Modo Cliente</b> — estás como <b>${esc(nombre(UI.clienteId))}</b>.
+    Esta lista es lo que Inside necesita de Payless, organizada por responsable.
+    <select id="quienSoy" style="margin-left:8px">${clientes().map((p) => `<option value="${p.id}" ${UI.clienteId === p.id ? "selected" : ""}>${esc(p.nombre)}</option>`).join("")}</select>
+    <label class="chkmine" style="margin-left:10px"><input type="checkbox" id="soloMias" ${UI.soloMias ? "checked" : ""}/> Solo lo mío</label>
+  </div>
   ${misAprob.length ? `<div class="riesgo-box"><b>✋ Tienes ${misAprob.length} publicaci${misAprob.length === 1 ? "ón" : "ones"} por aprobar</b> — <button class="link-btn" data-verapro="${UI.clienteId}">verlas en el calendario</button></div>` : ""}
   <div class="pend-col" style="max-width:760px">
     <div class="pend-head"><span>Pendientes de Payless <span class="cnt">${man.length}</span></span></div>
@@ -657,8 +757,16 @@ function openPendModal(id, ladoPreset, matrizPreset) {
     : { id: null, lado: ladoPreset || "cliente", titulo: "", responsable: ladoPreset === "inside" ? "vic" : "nico", area: "Gestión", limite: "", link: "", notas: "", hecho: false, historial: [], faltaInfo: "", matrizId: matrizPreset || "" };
   if (!p) return;
   if (!p.historial) p.historial = [];
+  // El historial se edita en borrador: si cancelas, no queda rastro
+  const hist = p.historial.slice();
   const personasDelLado = p.lado === "cliente" ? clientes() : inside();
-  const mxDelMes = DB.matrices.filter((m) => m.mes === UI.gestMes);
+  // Matrices del mes en gestión + SIEMPRE la vinculada actual (aunque sea de otro mes)
+  const mxOpciones = DB.matrices.filter((m) => m.mes === UI.gestMes);
+  if (p.matrizId && !mxOpciones.some((m) => m.id === p.matrizId)) {
+    const ligada = matriz(p.matrizId);
+    if (ligada) mxOpciones.unshift(ligada);
+  }
+  const bloqueables = DB.pendientes.filter((y) => !y.hecho && y.id !== p.id);
   document.getElementById("modalTitle").textContent = id ? "Pendiente · trazabilidad" : "Nuevo pendiente";
   document.getElementById("modalBody").innerHTML = `
     <div><label class="fld">¿Qué falta?</label><input type="text" id="pTitulo" value="${esc(p.titulo)}" placeholder="Ej: enviar editables de..." style="width:100%"/></div>
@@ -670,17 +778,23 @@ function openPendModal(id, ladoPreset, matrizPreset) {
       <div><label class="fld">Categoría</label><select id="pArea" style="width:100%">${["Accesos", "Editables", "Inputs", "Contenido", "Diseño", "Matrices", "Gestión", "Equipo", "Creatividad"].map((a) => `<option ${p.area === a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
       <div><label class="fld">Fecha límite (opcional)</label><input type="date" id="pLimite" value="${esc(p.limite)}" style="width:100%"/></div>
     </div>
-    <div><label class="fld">Matriz vinculada (opcional)</label><select id="pMatriz" style="width:100%">
-      <option value="">— Sin matriz —</option>
-      ${mxDelMes.map((m) => `<option value="${m.id}" ${p.matrizId === m.id ? "selected" : ""}>${esc(matrizLabel(m))}</option>`).join("")}
-    </select></div>
+    <div class="row2">
+      <div><label class="fld">Matriz vinculada (opcional)</label><select id="pMatriz" style="width:100%">
+        <option value="">— Sin matriz —</option>
+        ${mxOpciones.map((m) => `<option value="${m.id}" ${p.matrizId === m.id ? "selected" : ""}>${esc(matrizLabel(m))}${m.mes !== UI.gestMes ? ` (${esc(monthLabel(m.mes))})` : ""}</option>`).join("")}
+      </select></div>
+      <div><label class="fld">🔒 Bloqueado por (opcional)</label><select id="pBloq" style="width:100%">
+        <option value="">— Nada lo bloquea —</option>
+        ${bloqueables.map((y) => `<option value="${y.id}" ${p.bloqueadoPor === y.id ? "selected" : ""}>${esc(y.titulo.slice(0, 50))}</option>`).join("")}
+      </select></div>
+    </div>
     <div><label class="fld">⛔ ¿Qué información falta para avanzar? (se muestra en rojo)</label><input type="text" id="pFalta" value="${esc(p.faltaInfo)}" placeholder="Ej: faltan los editables, falta el legal de Panamá..." style="width:100%"/></div>
     <div><label class="fld">Link (opcional)</label><input type="url" id="pLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
     <div><label class="fld">Notas</label><textarea id="pNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>
     <div class="approval-box">
-      <label class="fld">📜 Historial (trazabilidad)</label>
-      <div class="hist-list">${p.historial.length
-        ? p.historial.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
+      <label class="fld">📜 Historial (trazabilidad) — se guarda al pulsar Guardar</label>
+      <div class="hist-list">${hist.length
+        ? hist.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
         : `<div class="pg-empty" style="margin:0">Sin eventos aún</div>`}</div>
       <div class="hist-actions">
         <button type="button" class="btn sm" id="hSolicitado">📤 Solicitado hoy</button>
@@ -697,13 +811,13 @@ function openPendModal(id, ladoPreset, matrizPreset) {
     <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="pSave">${id ? "Guardar" : "Crear pendiente"}</button>`;
   document.getElementById("overlay").classList.add("open");
 
-  // Historial: acciones rápidas y notas libres (se pintan al guardar)
+  // Historial: acciones rápidas y notas libres sobre el BORRADOR (cancelar no deja rastro)
   const refreshHist = () => {
-    document.querySelector(".hist-list").innerHTML = p.historial.length
-      ? p.historial.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
+    document.querySelector(".hist-list").innerHTML = hist.length
+      ? hist.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
       : `<div class="pg-empty" style="margin:0">Sin eventos aún</div>`;
   };
-  const addEv = (texto) => { p.historial.push({ fecha: HOY, texto }); refreshHist(); };
+  const addEv = (texto) => { hist.push({ fecha: HOY, texto }); refreshHist(); };
   document.getElementById("hSolicitado").onclick = () => addEv("📤 Solicitado");
   document.getElementById("hEnviado").onclick = () => addEv("📬 Enviado" + (p.lado === "inside" ? " al cliente" : ""));
   document.getElementById("hRecibido").onclick = () => addEv("📥 Recibido");
@@ -727,9 +841,11 @@ function openPendModal(id, ladoPreset, matrizPreset) {
     p.area = document.getElementById("pArea").value;
     p.limite = document.getElementById("pLimite").value;
     p.matrizId = document.getElementById("pMatriz").value;
+    p.bloqueadoPor = document.getElementById("pBloq").value;
     p.faltaInfo = document.getElementById("pFalta").value.trim();
     p.link = document.getElementById("pLink").value.trim();
     p.notas = document.getElementById("pNotas").value.trim();
+    p.historial = hist;
     if (!p.id) { p.id = "pd_" + Date.now(); p.historial.unshift({ fecha: HOY, texto: "🏁 Creado" }); DB.pendientes.push(p); }
     save(); closeModal(); render(); toast(id ? "Pendiente actualizado ✓" : "Pendiente creado ✓");
   };
@@ -1016,7 +1132,17 @@ function wireContent() {
     if (x) {
       x.hecho = c.checked;
       (x.historial = x.historial || []).push({ fecha: HOY, texto: x.hecho ? "✅ Completado" : "🔄 Reabierto" });
-      save(); render(); toast(x.hecho ? "Pendiente completado ✓" : "Pendiente reabierto");
+      // Desbloquear en cascada a quienes esperaban este pendiente
+      let desbloqueados = 0;
+      if (x.hecho) DB.pendientes.forEach((y) => {
+        if (y.bloqueadoPor === x.id && !y.hecho) {
+          y.bloqueadoPor = "";
+          (y.historial = y.historial || []).push({ fecha: HOY, texto: `🔓 Desbloqueado: se completó "${x.titulo.slice(0, 40)}"` });
+          desbloqueados++;
+        }
+      });
+      save(); render();
+      toast(x.hecho ? (desbloqueados ? `Completado ✓ · ${desbloqueados} pendiente${desbloqueados > 1 ? "s" : ""} desbloqueado${desbloqueados > 1 ? "s" : ""} 🔓` : "Pendiente completado ✓") : "Pendiente reabierto");
     }
   });
   document.querySelectorAll("[data-openpieza]").forEach((b) => b.onclick = () => openModal(b.dataset.openpieza));
@@ -1031,6 +1157,27 @@ function wireContent() {
     const [lado, modo] = b.dataset.pgmode.split(":");
     if (lado === "cliente") UI.pendGroupCliente = modo; else UI.pendGroupInside = modo;
     render();
+  });
+
+  // Filtros del dashboard de pendientes
+  bind("pendVer", () => { UI.pendVer = document.getElementById("pendVer").value; render(); }, "onchange");
+  const pq = document.getElementById("pendQ");
+  if (pq) pq.oninput = () => {
+    UI.pendQ = pq.value; render();
+    const n = document.getElementById("pendQ");
+    if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); }
+  };
+  bind("pendLimpiar", () => { UI.pendVer = ""; UI.pendQ = ""; UI.pendVencidos = false; render(); });
+  bind("kpiVencidos", () => { UI.pendVencidos = !UI.pendVencidos; render(); });
+  bind("btnCopiarEstatus", copiarEstatus);
+
+  // Cliente marca "ya lo envié" → evento en el historial (Inside confirma el recibido)
+  document.querySelectorAll("[data-penvio]").forEach((b) => b.onclick = () => {
+    const x = DB.pendientes.find((y) => y.id === b.dataset.penvio);
+    if (!x) return;
+    const nota = prompt(`¿Algún comentario para Inside sobre "${x.titulo.slice(0, 50)}"? (opcional)`) || "";
+    (x.historial = x.historial || []).push({ fecha: HOY, texto: `📬 ${nombre(UI.clienteId)} (cliente) marcó como enviado${nota ? `: "${nota}"` : ""}` });
+    save(); render(); toast("Aviso registrado — Inside confirmará el recibido ✓");
   });
 
   // Distribuir pendientes arrastrando entre grupos (persona o área)
@@ -1052,18 +1199,45 @@ function wireContent() {
       const x = DB.pendientes.find((y) => y.id === id);
       if (!x) return;
       if (zone.dataset.asignap) {
+        // No cruzar columnas: un pendiente de Inside no puede caer en una persona del cliente (y viceversa)
+        const destino = persona(zone.dataset.asignap);
+        const ladoDestino = destino && destino.lado === "agencia" ? "inside" : "cliente";
+        if (ladoDestino !== x.lado) { toast(`⚠️ Este pendiente es de ${x.lado === "inside" ? "Inside" : "el cliente"}; suéltalo en su columna`); return; }
         if (x.responsable === zone.dataset.asignap) return;
         x.responsable = zone.dataset.asignap;
         (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Reasignado a ${nombre(x.responsable)}` });
+        save(); render(); toast(`Asignado a ${nombre(x.responsable)} ✓`);
       } else {
         const area = zone.dataset.asignarea;
+        if (x.lado !== "inside") { toast("⚠️ Los pendientes del cliente no se distribuyen por área"); return; }
         const equipo = inside().filter((pe) => pe.area === area);
-        if (!equipo.length || equipo.some((pe) => pe.id === x.responsable)) return;
-        x.responsable = equipo[0].id;
-        (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Distribuido al área ${area} (${nombre(x.responsable)})` });
+        if (!equipo.length) return;
+        if (equipo.length === 1) {
+          if (x.responsable === equipo[0].id) return;
+          x.responsable = equipo[0].id;
+          (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Distribuido al área ${area} (${nombre(x.responsable)})` });
+          save(); render(); toast(`Asignado a ${nombre(x.responsable)} ✓`);
+        } else {
+          // Varias personas en el área: preguntar a quién
+          UI.pendChooser = { pendId: x.id, area };
+          render();
+        }
       }
-      save(); render(); toast(`Asignado a ${nombre(x.responsable)} ✓`);
     });
+  });
+
+  // Elegir persona del área (mini-menú tras soltar)
+  document.querySelectorAll("[data-eligep]").forEach((b) => b.onclick = () => {
+    const ch = UI.pendChooser;
+    UI.pendChooser = null;
+    if (!ch || !b.dataset.eligep) { render(); return; }
+    const x = DB.pendientes.find((y) => y.id === ch.pendId);
+    if (x && x.responsable !== b.dataset.eligep) {
+      x.responsable = b.dataset.eligep;
+      (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Distribuido al área ${ch.area} (${nombre(x.responsable)})` });
+      save(); toast(`Asignado a ${nombre(x.responsable)} ✓`);
+    }
+    render();
   });
 
   // Gestión mensual
