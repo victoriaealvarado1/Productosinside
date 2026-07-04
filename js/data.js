@@ -52,20 +52,23 @@ const SEED = {
     { id: "rechazado", nombre: "Con ajustes", color: "#DC2626" },
   ],
 
+  // Áreas del equipo Inside (para agrupar y distribuir pendientes)
+  areas: ["Cuentas", "Diseño", "Audiovisual", "Creatividad", "Community", "Medios", "Dirección"],
+
   // Personas — equipo Inside (publican) y contactos Payless (aprueban)
   personas: [
-    { id: "vic", nombre: "Victoria Alvarado", rol: "Cuenta", lado: "agencia" },
-    { id: "ale", nombre: "Alexandra León Raffo", rol: "Directora Social Media", lado: "agencia" },
-    { id: "sunny", nombre: "Sunniva Giraldo", rol: "Ejecutiva de cuenta", lado: "agencia" },
-    { id: "rober", nombre: "Roberto Olazabal", rol: "Content Manager", lado: "agencia" },
-    { id: "dani", nombre: "Daniela Argumedo", rol: "Redactora creativa", lado: "agencia" },
-    { id: "alej", nombre: "Alejandro Mendoza", rol: "Diseño Gráfico", lado: "agencia" },
-    { id: "antu", nombre: "Antuané Medrano", rol: "Edición Audiovisual", lado: "agencia" },
-    { id: "ari", nombre: "Ariana Torrecilla", rol: "Community Manager", lado: "agencia" },
-    { id: "jairo", nombre: "Jairo López", rol: "Supervisor de Medios", lado: "agencia" },
-    { id: "kevin", nombre: "Kevin Tasaico", rol: "Director de Arte", lado: "agencia" },
-    { id: "luismi", nombre: "Luis Miguel Pérez", rol: "Dir. Planning y Creatividad", lado: "agencia" },
-    { id: "franco", nombre: "Franco", rol: "Dirección", lado: "agencia" },
+    { id: "vic", nombre: "Victoria Alvarado", rol: "Cuenta", area: "Cuentas", lado: "agencia" },
+    { id: "ale", nombre: "Alexandra León Raffo", rol: "Directora Social Media", area: "Cuentas", lado: "agencia" },
+    { id: "sunny", nombre: "Sunniva Giraldo", rol: "Ejecutiva de cuenta", area: "Cuentas", lado: "agencia" },
+    { id: "rober", nombre: "Roberto Olazabal", rol: "Content Manager", area: "Creatividad", lado: "agencia" },
+    { id: "dani", nombre: "Daniela Argumedo", rol: "Redactora creativa", area: "Creatividad", lado: "agencia" },
+    { id: "luismi", nombre: "Luis Miguel Pérez", rol: "Dir. Planning y Creatividad", area: "Creatividad", lado: "agencia" },
+    { id: "alej", nombre: "Alejandro Mendoza", rol: "Diseñador Gráfico", area: "Diseño", lado: "agencia" },
+    { id: "kevin", nombre: "Kevin Tasaico", rol: "Director de Arte", area: "Diseño", lado: "agencia" },
+    { id: "antu", nombre: "Antuané Medrano", rol: "Editora Audiovisual", area: "Audiovisual", lado: "agencia" },
+    { id: "ari", nombre: "Ariana Torrecilla", rol: "Community Manager", area: "Community", lado: "agencia" },
+    { id: "jairo", nombre: "Jairo López", rol: "Supervisor de Medios", area: "Medios", lado: "agencia" },
+    { id: "franco", nombre: "Franco", rol: "Dirección", area: "Dirección", lado: "agencia" },
     { id: "nico", nombre: "Nicolás", rol: "Coord. Marketing", lado: "cliente" },
     { id: "carla", nombre: "Carla Poveda", rol: "Ecommerce & WhatsApp", lado: "cliente" },
     { id: "cristina", nombre: "Cristina Quesada", rol: "Región Sur", lado: "cliente" },
@@ -74,42 +77,91 @@ const SEED = {
     { id: "cesar", nombre: "César", rol: "Marketing", lado: "cliente" },
   ],
 
-  /* ===== GESTIÓN: pendientes manuales (de las reuniones del 3 jul) ===== */
+  /* ===== GESTIÓN: pendientes (con trazabilidad: historial, falta info, matriz) ===== */
   pendientes: [
     // — Del cliente (Payless nos debe) —
-    pd("pc1", "cliente", "Acceso al SharePoint para toda la lista de correos + Victoria", "nico", "Accesos", "2026-07-03", "", "Pedido en el kick off: 'a más tardar el día de hoy'. Sin esto solo entra la cuenta de Franco."),
-    pd("pc2", "cliente", "Acceso a la carpeta 2026 de Nicolás (editables)", "nico", "Accesos", "2026-07-06", "", "La carpeta con todo el 2026 no abre con nuestras cuentas. Ale tiene los cambios anotados pero no el material."),
-    pd("pc3", "cliente", "Editables de Liquidación (portadas + posts + videos)", "nico", "Editables", "2026-07-03", "", "'Deberíamos tenerlos hoy antes del almuerzo'. Solo hay artes finales JPG, sin editables."),
-    pd("pc4", "cliente", "Editables + concepto de Día de las Madres (Costa Rica)", "nico", "Editables", "2026-07-10", "", "Campaña inicia el 21 jul en CR. Nicolás envía editables, concepto y lista de productos."),
-    pd("pc5", "cliente", "Habilitar input del Sur (legales Ecuador / Colombia / Panamá)", "cristina", "Inputs", "2026-07-06", "", "El link del input Sur no abre con ninguna de nuestras cuentas. Reunión con Cristina el lunes."),
-    pd("pc6", "cliente", "Estatus de la matriz Pauta & Commerce", "carla", "Matrices", "", "", "Carla Poveda organiza lo pendiente de Ecommerce/WhatsApp y avisa cuándo está listo."),
-    pd("pc7", "cliente", "Confirmar pieza de Día del Padre reutilizable (con Kevin)", "nico", "Contenido", "2026-07-08", "", "Hay contenido de junio del Día del Padre que quizá funciona; falta confirmar modelo/foto."),
-    pd("pc8", "cliente", "Comentario de Jamaica sobre la frase en inglés", "estefany", "Contenido", "", "", "La community manager de Jamaica observó una frase confusa; Estefany pasa la nota para el ajuste."),
+    pd("pc1", "cliente", "Acceso al SharePoint para toda la lista de correos + Victoria", "nico", "Accesos", "2026-07-03", "", "Sin esto solo entra la cuenta de Franco.",
+      [ev("2026-07-03", "📤 Solicitado en el kick off: 'a más tardar el día de hoy'")], "Falta que TI de Payless agregue los correos del equipo", ""),
+    pd("pc2", "cliente", "Acceso a la carpeta 2026 de Nicolás (editables)", "nico", "Accesos", "2026-07-06", "", "Ale tiene los cambios anotados pero no el material.",
+      [ev("2026-07-03", "📤 Solicitado en reunión interna: la carpeta no abre con nuestras cuentas")], "", ""),
+    pd("pc3", "cliente", "Editables de Liquidación (portadas + posts + videos)", "nico", "Editables", "2026-07-03", "", "Para adaptar Caribe inglés 70%, RD 50% y Sur.",
+      [ev("2026-07-03", "📤 Solicitado en el kick off: 'hoy antes del almuerzo'"), ev("2026-07-03", "📝 Solo llegaron artes finales JPG")], "Faltan los archivos editables (solo hay JPG finales)", "mo_car"),
+    pd("pc4", "cliente", "Editables + concepto de Día de las Madres (Costa Rica)", "nico", "Editables", "2026-07-10", "", "Campaña inicia el 21 jul en CR: editables, concepto y lista de productos.",
+      [ev("2026-07-03", "📤 Solicitado en el kick off; Nicolás confirmó envío")], "", "ca_madres"),
+    pd("pc5", "cliente", "Habilitar input del Sur (legales Ecuador / Colombia / Panamá)", "cristina", "Inputs", "2026-07-06", "", "Reunión con Cristina el lunes.",
+      [ev("2026-07-03", "📤 Reportado: el link no abre con ninguna de nuestras cuentas")], "Acceso al documento de legales del Sur", "mo_sur"),
+    pd("pc6", "cliente", "Estatus de la matriz Pauta & Commerce", "carla", "Matrices", "", "", "Carla Poveda organiza lo pendiente de Ecommerce/WhatsApp y avisa.",
+      [ev("2026-07-03", "📤 Acordado en el kick off: esperar señal de Carla")], "", "mp_ecom_cam"),
+    pd("pc7", "cliente", "Confirmar pieza de Día del Padre reutilizable (con Kevin)", "nico", "Contenido", "2026-07-08", "", "Hay contenido de junio que quizá funciona; falta confirmar modelo/foto.",
+      [ev("2026-07-03", "📤 Nicolás quedó en confirmar con Kevin (cliente)")], "", ""),
+    pd("pc8", "cliente", "Comentario de Jamaica sobre la frase en inglés", "estefany", "Contenido", "", "", "Nota para el ajuste de la pieza de Caribe inglés.",
+      [ev("2026-07-03", "📤 Estefany quedó en pasar el comentario de la community de Jamaica")], "", "mo_car"),
     // — De Inside (nosotros debemos) —
-    pd("pi1", "inside", "Correo de estatus al cliente (recibido / pendiente, con links)", "ale", "Gestión", "2026-07-04", "", "Formato acordado: material recibido, material pendiente y accesos, todo en un solo estatus."),
-    pd("pi2", "inside", "Pedido al diseñador: adaptaciones de Liquidación", "ale", "Diseño", "2026-07-04", "", "Editable de julio ubicado. Piezas deben estar listas el martes 7 (portadas, estática y video)."),
-    pd("pi3", "inside", "Adaptar portada Liquidación a inglés 70% (Caribe inglés)", "alej", "Diseño", "2026-07-06", "", "Misma gráfica de círculos concéntricos, en inglés, para publicar el 7 jul."),
-    pd("pi4", "inside", "Adaptar Liquidación de RD al 50%", "alej", "Diseño", "2026-07-06", "", "República Dominicana no tiene 70%: su versión es hasta 50% de descuento."),
-    pd("pi5", "inside", "Enlazar links de piezas finales en el calendario", "sunny", "Gestión", "2026-07-06", "", "Ale pasó los links por WhatsApp; falta enlazar cada pieza (lo puede hacer una de las chicas el lunes)."),
-    pd("pi6", "inside", "Cuadro países ↔ contacto del cliente", "vic", "Gestión", "2026-07-06", "", "Quién ve cada país: Carla CAM (por ahora), Cristina Sur, Estefany Caribe inglés, Daini RD."),
-    pd("pi7", "inside", "Refuerzo del equipo con inglés técnico (para Estefany)", "franco", "Equipo", "", "", "En ~1 mes Estefany queda sola con Caribe inglés; se necesita alguien con inglés fluido."),
-    pd("pi8", "inside", "Excel de monitoreo", "ari", "Masterdoc", "", "", "Solicitado a Ari (del Masterdoc)."),
-    pd("pi9", "inside", "Documento de procesos", "sunny", "Masterdoc", "", "", "En construcción (del Masterdoc)."),
-    pd("pi10", "inside", "Estrategia de RRSS 2026 / drivers estratégicos", "luismi", "Masterdoc", "", "", "Pendiente del Masterdoc."),
+    pd("pi1", "inside", "Correo de estatus al cliente (recibido / pendiente, con links)", "ale", "Gestión", "2026-07-04", "", "Formato acordado: material recibido, pendiente y accesos en un solo estatus.",
+      [ev("2026-07-03", "🏁 Acordado en reunión interna; Ale redacta")], "", ""),
+    pd("pi2", "inside", "Pedido al diseñador: adaptaciones de Liquidación", "ale", "Diseño", "2026-07-04", "", "Editable de julio ubicado. Piezas listas el martes 7.",
+      [ev("2026-07-03", "🏁 Editable localizado por Ale; falta hacer el pedido formal")], "", "mo_cam"),
+    pd("pi3", "inside", "Adaptar portada Liquidación a inglés 70% (Caribe inglés)", "alej", "Diseño", "2026-07-06", "", "Misma gráfica de círculos concéntricos, en inglés, para el 7 jul.",
+      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente (pc3)", "mo_car"),
+    pd("pi4", "inside", "Adaptar Liquidación de RD al 50%", "alej", "Diseño", "2026-07-06", "", "RD no tiene 70%: su versión es hasta 50% de descuento.",
+      [ev("2026-07-03", "🏁 Asignado a diseño tras el kick off")], "Falta el editable del cliente (pc3)", "mo_car"),
+    pd("pi5", "inside", "Enlazar links de piezas finales en el calendario", "sunny", "Gestión", "2026-07-06", "", "Ale pasó los links por WhatsApp; falta enlazar cada pieza.",
+      [ev("2026-07-03", "🏁 Links recopilados por Ale (WhatsApp); se asigna el lunes")], "", "mo_cam"),
+    pd("pi6", "inside", "Cuadro países ↔ contacto del cliente", "vic", "Gestión", "2026-07-06", "", "Carla CAM (por ahora), Cristina Sur, Estefany Caribe inglés, Daini RD.",
+      [ev("2026-07-03", "🏁 Acordado en el kick off para ordenar la coordinación")], "", ""),
+    pd("pi7", "inside", "Refuerzo del equipo con inglés técnico (para Estefany)", "franco", "Equipo", "", "", "En ~1 mes Estefany queda sola con Caribe inglés.",
+      [ev("2026-07-03", "🏁 Pedido explícito del cliente en el kick off")], "", ""),
+    pd("pi8", "inside", "Excel de monitoreo", "ari", "Gestión", "", "", "Del Masterdoc.",
+      [ev("2026-07-01", "🏁 Solicitado a Ari")], "", ""),
+    pd("pi9", "inside", "Documento de procesos", "sunny", "Gestión", "", "", "Del Masterdoc.",
+      [ev("2026-07-01", "🏁 En construcción (Sunny)")], "", ""),
+    pd("pi10", "inside", "Estrategia de RRSS 2026 / drivers estratégicos", "luismi", "Creatividad", "", "", "Del Masterdoc.",
+      [ev("2026-07-01", "🏁 Pendiente de arranque")], "", ""),
   ],
 
-  /* ===== GESTIÓN: proyectos / matrices (los 5 bloques × región) ===== */
-  proyectos: [
-    py("mo_cam", "Matriz Orgánica", "Centroamérica", "activo", 70, "vic", "nico", "", "Matriz recibida y aprobada. Publicaciones del 7 al 21 jul cargadas en el calendario."),
-    py("mo_sur", "Matriz Orgánica", "Sur", "esperando", 20, "vic", "cristina", "", "Esperando acceso al input (legales). Reunión con Cristina Quesada el lunes."),
-    py("mo_car", "Matriz Orgánica", "Caribe", "activo", 35, "ale", "estefany", "", "Adaptaciones a inglés (70%) y RD (50%) en diseño para salir el 7 jul."),
-    py("atl_all", "Matriz ATL", "Las 3 regiones", "cerrado", 100, "ale", "nico", "", "Gestionada con el proveedor anterior. La campaña ATL de RD está culminando; nada por hacer."),
-    py("pauta", "Matriz Pauta", "Regional", "descartado", 0, "jairo", "carla", "", "La matriz de Pauta es para la agencia de medios (no Inside). Se descarta de nuestra gestión."),
-    py("ecom", "Pauta Ecommerce & WhatsApp", "Regional", "standby", 10, "vic", "carla", "", "En standby: Carla Poveda organiza lo pendiente y avisa cuándo empezamos a publicar."),
-    py("liq", "Campaña · Liquidación de Temporada", "Las 3 regiones", "activo", 60, "ale", "nico", "", "Lanzada en CAM; adaptaciones Sur/Caribe en curso. Refuerzos 'últimos días' desde el 21 jul."),
-    py("madres", "Campaña · Día de las Madres", "Costa Rica", "activo", 15, "vic", "nico", "", "Inicia 21 jul. 2 contenidos por semana. Esperando editables y concepto de Nicolás."),
-    py("spider", "Campaña · Spider-Man", "CAM · Sur · Caribe inglés", "activo", 40, "alej", "nico", "", "Publicar desde el 13-14 jul (estreno 30 jul). Caribe inglés requiere adaptación de texto."),
-    py("bts", "Campaña · Back to School", "Caribe", "briefing", 5, "vic", "daini", "", "Arranca 28 jul, temporada más alta de ventas del Caribe. Alianzas con bancos en RD: agosto."),
+  /* ===== GESTIÓN POR MES: matrices (estructura real de los tactiqs) =====
+     4 grandes grupos: Malls, Pauta (ECOM/WA/PMAX/Tiendas), ATL, Orgánica — × región.
+     + Campañas del mes. Cada matriz enlazable a su documento y a sus pendientes. */
+  matrices: [
+    // — Matriz Malls —
+    mx("mm_cam", "2026-07", "Matriz Malls", "", "Centroamérica", "activo", 50, "ale", "nico", "", "Matriz Mall del mes en curso."),
+    mx("mm_sur", "2026-07", "Matriz Malls", "", "Sur", "activo", 40, "vic", "cristina", "", ""),
+    mx("mm_car", "2026-07", "Matriz Malls", "", "Caribe", "activo", 40, "ale", "daini", "", ""),
+    // — Matriz Pauta (la lleva la agencia de medios; Inside da seguimiento y apoya ECOM/WA) —
+    mx("mp_ecom_cam", "2026-07", "Matriz Pauta", "ECOM", "Centroamérica", "standby", 10, "vic", "carla", "", "Carla Poveda organiza lo pendiente y avisa cuándo publicamos."),
+    mx("mp_ecom_sur", "2026-07", "Matriz Pauta", "ECOM", "Sur", "standby", 10, "vic", "carla", "", ""),
+    mx("mp_wa_cam", "2026-07", "Matriz Pauta", "WA · WhatsApp", "Centroamérica", "standby", 10, "vic", "carla", "", "Contenidos de WhatsApp que luego pauta la agencia de medios."),
+    mx("mp_wa_sur", "2026-07", "Matriz Pauta", "WA · WhatsApp", "Sur", "standby", 10, "vic", "carla", "", ""),
+    mx("mp_wa_car", "2026-07", "Matriz Pauta", "WA · WhatsApp", "Caribe", "standby", 10, "vic", "carla", "", ""),
+    mx("mp_pmax_cam", "2026-07", "Matriz Pauta", "PMAX", "Centroamérica", "seguimiento", 0, "jairo", "carla", "", "Performance Max: la ejecuta la agencia de medios; Inside solo da seguimiento."),
+    mx("mp_pmax_sur", "2026-07", "Matriz Pauta", "PMAX", "Sur", "seguimiento", 0, "jairo", "carla", "", ""),
+    mx("mp_tie_cam", "2026-07", "Matriz Pauta", "Tiendas", "Centroamérica", "seguimiento", 0, "jairo", "carla", "", ""),
+    mx("mp_tie_sur", "2026-07", "Matriz Pauta", "Tiendas", "Sur", "seguimiento", 0, "jairo", "carla", "", ""),
+    mx("mp_tie_car", "2026-07", "Matriz Pauta", "Tiendas", "Caribe", "seguimiento", 0, "jairo", "carla", "", ""),
+    // — Matriz ATL —
+    mx("atl_cam", "2026-07", "Matriz ATL", "", "Centroamérica", "cerrado", 100, "ale", "nico", "", "Gestionada con el proveedor anterior."),
+    mx("atl_sur", "2026-07", "Matriz ATL", "", "Sur", "cerrado", 100, "ale", "cristina", "", ""),
+    mx("atl_car", "2026-07", "Matriz ATL", "", "Caribe", "activo", 90, "ale", "daini", "", "La campaña ATL de RD está culminando."),
+    // — Matriz Orgánica —
+    mx("mo_cam", "2026-07", "Matriz Orgánica", "", "Centroamérica", "activo", 70, "vic", "nico", "", "Matriz recibida y aprobada. Publicaciones del 7 al 21 jul en el calendario."),
+    mx("mo_sur", "2026-07", "Matriz Orgánica", "", "Sur", "esperando", 20, "vic", "cristina", "", "Esperando acceso al input (legales). Reunión con Cristina el lunes."),
+    mx("mo_car", "2026-07", "Matriz Orgánica", "", "Caribe", "activo", 35, "ale", "estefany", "", "Adaptaciones a inglés (70%) y RD (50%) en diseño para el 7 jul."),
+    // — Campañas del mes —
+    mx("ca_liq", "2026-07", "Campañas", "Liquidación de Temporada", "Las 3 regiones", "activo", 60, "ale", "nico", "", "Lanzada en CAM; adaptaciones Sur/Caribe en curso. Refuerzos desde el 21 jul."),
+    mx("ca_madres", "2026-07", "Campañas", "Día de las Madres", "Costa Rica", "activo", 15, "vic", "nico", "", "Inicia 21 jul. 2 contenidos por semana."),
+    mx("ca_spider", "2026-07", "Campañas", "Spider-Man", "CAM · Sur · Caribe inglés", "activo", 40, "alej", "nico", "", "Publicar desde el 13-14 jul (estreno 30 jul)."),
+    mx("ca_bts", "2026-07", "Campañas", "Back to School", "Caribe", "briefing", 5, "vic", "daini", "", "Arranca 28 jul. Alianzas con bancos RD: agosto."),
+  ],
+
+  /* ===== INFORMACIÓN GENERAL: aprendizajes de la cuenta ===== */
+  aprendizajes: [
+    ap("2026-07-03", "República Dominicana no maneja 70% de descuento: su liquidación es hasta 50%.", "Kick off"),
+    ap("2026-07-03", "Guatemala usa portada de marca ('La tendencia empieza contigo'), no la de liquidación.", "Matriz CAM"),
+    ap("2026-07-03", "Los legales de cada promoción viven en el input de cada región y deben coincidir con el país de la pieza.", "Kick off"),
+    ap("2026-07-03", "La matriz de Pauta la ejecuta la agencia de medios; Inside solo apoya ECOM y WhatsApp cuando Carla avise.", "Kick off"),
+    ap("2026-07-03", "Al cliente le gusta el estatus resumido: recibido / pendiente / accesos, sin pestañas de más.", "Reunión interna"),
+    ap("2026-07-03", "Caribe inglés se comporta como una sola plataforma (un solo IG); back to school es su temporada más alta.", "Kick off"),
+    ap("2026-07-03", "Estefany quedará sola con Caribe inglés en ~1 mes: se necesita refuerzo con inglés técnico.", "Kick off"),
   ],
 
   /* ===== GESTIÓN: Masterdoc (del Excel, SIN contraseñas) ===== */
@@ -228,12 +280,14 @@ const SEED = {
 };
 
 /* Helpers de gestión */
-function pd(id, lado, titulo, responsable, area, limite, link, notas) {
-  return { id, lado, titulo, responsable, area, limite: limite || "", link: link || "", notas: notas || "", hecho: false };
+function pd(id, lado, titulo, responsable, area, limite, link, notas, historial, faltaInfo, matrizId) {
+  return { id, lado, titulo, responsable, area, limite: limite || "", link: link || "", notas: notas || "", hecho: false, historial: historial || [], faltaInfo: faltaInfo || "", matrizId: matrizId || "" };
 }
-function py(id, grupo, region, estado, avance, responsable, aprobador, link, notas) {
-  return { id, grupo, region, estado, avance, responsable, aprobador, link: link || "", notas: notas || "" };
+function ev(fecha, texto) { return { fecha, texto }; }
+function mx(id, mes, grupo, sub, region, estado, avance, responsable, aprobador, link, notas) {
+  return { id, mes, grupo, sub: sub || "", region, estado, avance, responsable, aprobador, link: link || "", notas: notas || "" };
 }
+function ap(fecha, texto, fuente) { return { id: "ap_" + Math.abs(hashStr(texto)), fecha, texto, fuente: fuente || "" }; }
 function md(entregable, responsable, estado, link, nota) {
   return { entregable, responsable, estado, link: link || "", nota: nota || "" };
 }

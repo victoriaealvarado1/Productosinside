@@ -3,8 +3,8 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v1_5";
-const HOY = "2026-07-03"; // fecha de referencia de la operación
+const KEY = "gestion_inside_v2_0";
+const HOY = "2026-07-04"; // fecha de referencia de la operación
 // Riesgo: publica en <=2 días y el cliente aún no aprueba
 const HOY_MAS_2 = (() => { const d = new Date(HOY + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + 2); return d.toISOString().slice(0, 10); })();
 
@@ -12,7 +12,11 @@ const UI = {
   view: "calendario",
   mode: "interno",            // interno | cliente
   calView: "grid",            // grid | lista
-  gestTab: "dash",            // dash | proyectos | masterdoc
+  gestTab: "pend",            // pend | mensual
+  gestMes: SEED.meta.mesActual,
+  gestGrupo: "",              // drill-down dentro de la gestión mensual
+  pendGroupCliente: "persona",// persona | lista
+  pendGroupInside: "area",    // area | persona | lista
   month: SEED.meta.mesActual,
   filtros: { region: [], campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
   showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
@@ -29,7 +33,7 @@ function load() {
     if (raw) {
       const db = JSON.parse(raw);
       // Migración suave: si faltan bloques nuevos, tomarlos de la semilla
-      ["pendientes", "proyectos", "masterdoc"].forEach((k) => { if (!db[k]) db[k] = JSON.parse(JSON.stringify(SEED[k])); });
+      ["pendientes", "matrices", "masterdoc", "aprendizajes", "areas"].forEach((k) => { if (!db[k]) db[k] = JSON.parse(JSON.stringify(SEED[k])); });
       return db;
     }
   } catch (e) {}
@@ -92,11 +96,17 @@ function render() {
   document.querySelectorAll(".nav-item[data-view]").forEach((b) => b.classList.toggle("active", b.dataset.view === UI.view));
   document.querySelectorAll("#modePill button").forEach((b) => b.classList.toggle("active", b.dataset.mode === UI.mode));
 
+  // Información general es solo interna
+  const navInfo = document.querySelector('.nav-item[data-view="info"]');
+  if (navInfo) navInfo.style.display = UI.mode === "cliente" ? "none" : "";
+  if (UI.mode === "cliente" && UI.view === "info") UI.view = "calendario";
+
   const titles = {
     calendario: ["Calendario de Publicación", monthLabel(UI.month) + " · Payless"],
-    gestion: ["Gestión de la cuenta", UI.mode === "cliente" ? "Lo que Inside necesita de Payless" : "Pendientes, proyectos y masterdoc · Payless"],
+    gestion: ["Gestión", UI.mode === "cliente" ? "Lo que Inside necesita de Payless" : "Pendientes y gestión mensual · Payless"],
+    info: ["Información general de la cuenta", "Masterdoc, brief y aprendizajes · Payless"],
     estructura: ["Estructura de cuenta", "Territorios, campañas y quién aprueba qué"],
-    roadmap: ["Roadmap", "Lo que viene en la v2"],
+    roadmap: ["Roadmap", "Lo que viene"],
   };
   document.getElementById("pageTitle").textContent = titles[UI.view][0];
   document.getElementById("pageSub").textContent = titles[UI.view][1];
@@ -104,6 +114,7 @@ function render() {
   const c = document.getElementById("content");
   if (UI.view === "calendario") c.innerHTML = viewCalendario();
   else if (UI.view === "gestion") c.innerHTML = viewGestion();
+  else if (UI.view === "info") c.innerHTML = viewInfo();
   else if (UI.view === "estructura") c.innerHTML = viewEstructura();
   else c.innerHTML = viewRoadmap();
   wireContent();
@@ -339,9 +350,14 @@ const P_ESTADOS = {
   esperando: { nombre: "Esperando al cliente", color: "#F59E0B" },
   standby: { nombre: "En standby", color: "#94A3B8" },
   briefing: { nombre: "Briefing", color: "#3B82F6" },
+  seguimiento: { nombre: "Seguimiento (medios)", color: "#64748B" },
   cerrado: { nombre: "Cerrado", color: "#0D9488" },
   descartado: { nombre: "Fuera de alcance", color: "#94A3B8" },
 };
+const GRUPOS_MES = ["Matriz Malls", "Matriz Pauta", "Matriz ATL", "Matriz Orgánica", "Campañas"];
+const matriz = (id) => DB.matrices.find((m) => m.id === id);
+const matrizLabel = (m) => `${m.grupo}${m.sub ? " · " + m.sub : ""} · ${m.region}`;
+const pendDeMatriz = (mid) => DB.pendientes.filter((p) => p.matrizId === mid);
 const DOC_ESTADOS = {
   pendiente: { nombre: "Pendiente", color: "#F59E0B" },
   proceso: { nombre: "En proceso", color: "#3B82F6" },
@@ -362,10 +378,10 @@ function pendAuto() {
 
 function viewGestion() {
   if (UI.mode === "cliente") return gestionCliente();
-  const tabs = [["dash", "📋 Dashboard de pendientes"], ["proyectos", "🗂️ Proyectos / Matrices"], ["masterdoc", "📚 Masterdoc"]];
+  const tabs = [["pend", "📋 Pendientes"], ["mensual", `🗂️ Gestión ${monthLabel(UI.gestMes)}`]];
   return `
     <div class="gest-tabs">${tabs.map(([id, l]) => `<button class="gest-tab ${UI.gestTab === id ? "active" : ""}" data-gtab="${id}">${l}</button>`).join("")}</div>
-    ${UI.gestTab === "dash" ? gestDash() : UI.gestTab === "proyectos" ? gestProyectos() : gestMasterdoc()}`;
+    ${UI.gestTab === "pend" ? gestDash() : gestMensual()}`;
 }
 
 /* ---- Dashboard de pendientes ---- */
@@ -398,74 +414,155 @@ function gestDash() {
   </div>`;
 }
 
-function pendCol(lado, titulo, auto) {
-  const man = DB.pendientes.filter((x) => x.lado === lado);
-  const abiertos = man.filter((x) => !x.hecho);
-  const hechos = man.filter((x) => x.hecho);
-
-  // Automáticos del calendario
-  let autoCards = "";
-  if (lado === "cliente") {
-    autoCards = Object.entries(auto.porAprobador).map(([ap, ps]) =>
-      `<div class="pend-card auto" data-verapro="${ap}">
-        <div class="pt">✋ Aprobar ${ps.length} publicaci${ps.length === 1 ? "ón" : "ones"} <span class="auto-tag">auto</span></div>
-        <div class="pm">${esc(nombre(ap))} · del calendario · clic para verlas</div>
-      </div>`).join("");
-  } else {
-    autoCards = auto.ajustes.map((p) =>
-      `<div class="pend-card auto" data-openpieza="${p.id}">
-        <div class="pt">🛠️ Aplicar ajustes: ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} <span class="auto-tag">auto</span></div>
-        <div class="pm">${esc(nombre(p.responsable))} · ${p.comentarioCliente ? `"${esc(p.comentarioCliente)}"` : "sin comentario del cliente"}</div>
-      </div>`).join("");
-  }
-
-  const manCard = (x) => `
-    <div class="pend-card ${x.hecho ? "done" : ""}">
+/* Tarjeta de pendiente manual, con trazabilidad visible */
+function manCard(x, draggable) {
+  const m = x.matrizId ? matriz(x.matrizId) : null;
+  const ultimo = x.historial && x.historial.length ? x.historial[x.historial.length - 1] : null;
+  return `
+    <div class="pend-card ${x.hecho ? "done" : ""}" ${draggable && !x.hecho ? `draggable="true" data-pmove="${x.id}"` : ""}>
       <label class="pend-check"><input type="checkbox" data-pdone="${x.id}" ${x.hecho ? "checked" : ""}/></label>
       <div class="pend-body">
         <div class="pt">${esc(x.titulo)}</div>
         <div class="pm">${esc(nombre(x.responsable))} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
-        ${x.notas ? `<div class="pn">${esc(x.notas)}</div>` : ""}
+        ${x.faltaInfo && !x.hecho ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
+        ${m ? `<div class="mx-chip" data-vermatriz="${m.id}">🗂️ ${esc(matrizLabel(m))}</div>` : ""}
+        ${ultimo ? `<div class="pn hist">${esc(fechaCorta(ultimo.fecha))} · ${esc(ultimo.texto)}${x.historial.length > 1 ? ` <span class="hist-more">+${x.historial.length - 1} más</span>` : ""}</div>` : (x.notas ? `<div class="pn">${esc(x.notas)}</div>` : "")}
       </div>
-      <span class="pend-acc"><button class="ico-btn" data-pedit="${x.id}" title="Editar">✏️</button><button class="ico-btn danger" data-pdel="${x.id}" title="Eliminar">🗑️</button></span>
+      <span class="pend-acc"><button class="ico-btn" data-pedit="${x.id}" title="Ver historial / editar">✏️</button><button class="ico-btn danger" data-pdel="${x.id}" title="Eliminar">🗑️</button></span>
     </div>`;
-
-  return `<div class="pend-col">
-    <div class="pend-head"><span>${titulo} <span class="cnt">${abiertos.length + (lado === "cliente" ? Object.keys(auto.porAprobador).length : auto.ajustes.length)}</span></span>
-      <button class="btn sm" data-paddlado="${lado}">＋ Pendiente</button></div>
-    ${autoCards}
-    ${abiertos.map(manCard).join("") || (!autoCards ? `<div class="backlog-empty">Nada pendiente 🎉</div>` : "")}
-    ${hechos.length ? `<div class="pend-done-sep">Completados (${hechos.length})</div>${hechos.map(manCard).join("")}` : ""}
-  </div>`;
 }
 
-/* ---- Proyectos / Matrices ---- */
-function gestProyectos() {
-  const grupos = {};
-  DB.proyectos.forEach((p) => {
-    const g = p.grupo.startsWith("Campaña") ? "Campañas del mes" : p.grupo;
-    (grupos[g] = grupos[g] || []).push(p);
-  });
-  const bloques = Object.entries(grupos).map(([g, ps]) => `
-    <div class="section-title mt">${esc(g)}</div>
-    <div class="cards">${ps.map(proyCard).join("")}</div>`).join("");
-  return `
-    <div class="pill-note">Los grandes bloques de trabajo de la cuenta con su estatus, avance y link. <b>El “Excel de estatus”, versión 3.0.</b></div>
-    <div style="text-align:right;margin-bottom:4px"><button class="btn primary" id="btnAddProy">＋ Agregar proyecto</button></div>
+function autoCardsDe(lado, auto, filtroPersona) {
+  if (lado === "cliente") {
+    return Object.entries(auto.porAprobador)
+      .filter(([ap]) => !filtroPersona || ap === filtroPersona)
+      .map(([ap, ps]) => `<div class="pend-card auto" data-verapro="${ap}">
+        <div class="pt">✋ Aprobar ${ps.length} publicaci${ps.length === 1 ? "ón" : "ones"} <span class="auto-tag">auto</span></div>
+        <div class="pm">${esc(nombre(ap))} · del calendario · clic para verlas</div>
+      </div>`).join("");
+  }
+  return auto.ajustes
+    .filter((p) => !filtroPersona || p.responsable === filtroPersona)
+    .map((p) => `<div class="pend-card auto" data-openpieza="${p.id}">
+      <div class="pt">🛠️ Aplicar ajustes: ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} <span class="auto-tag">auto</span></div>
+      <div class="pm">${esc(nombre(p.responsable))} · ${p.comentarioCliente ? `"${esc(p.comentarioCliente)}"` : "sin comentario del cliente"}</div>
+    </div>`).join("");
+}
+
+function pendCol(lado, titulo, auto) {
+  const man = DB.pendientes.filter((x) => x.lado === lado);
+  const abiertos = man.filter((x) => !x.hecho);
+  const hechos = man.filter((x) => x.hecho);
+  const nAuto = lado === "cliente" ? Object.keys(auto.porAprobador).length : auto.ajustes.length;
+  const modo = lado === "cliente" ? UI.pendGroupCliente : UI.pendGroupInside;
+  const modos = lado === "cliente" ? [["persona", "Por persona"], ["lista", "Lista"]] : [["area", "Por área"], ["persona", "Por persona"], ["lista", "Lista"]];
+
+  let cuerpo = "";
+  if (modo === "lista") {
+    cuerpo = autoCardsDe(lado, auto) + abiertos.map((x) => manCard(x, false)).join("");
+  } else if (modo === "persona") {
+    const gente = (lado === "cliente" ? clientes() : inside());
+    cuerpo = gente.map((pe) => {
+      const suyos = abiertos.filter((x) => x.responsable === pe.id);
+      const autos = autoCardsDe(lado, auto, pe.id);
+      if (!suyos.length && !autos) return "";
+      return `<div class="pend-grupo" data-asignap="${pe.id}">
+        <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length + (autos ? 1 : 0)}</span></div>
+        ${autos}${suyos.map((x) => manCard(x, true)).join("")}
+      </div>`;
+    }).join("");
+  } else {
+    // Por área (solo Inside): distribuir arrastrando entre áreas
+    cuerpo = DB.areas.map((area) => {
+      const equipo = inside().filter((pe) => pe.area === area);
+      const ids = equipo.map((pe) => pe.id);
+      const suyos = abiertos.filter((x) => ids.includes(x.responsable));
+      const autos = auto.ajustes.filter((p) => ids.includes(p.responsable));
+      if (!suyos.length && !autos.length && !["Cuentas", "Diseño"].includes(area)) return "";
+      return `<div class="pend-grupo" data-asignarea="${esc(area)}">
+        <div class="pg-head">${AREA_ICONO[area] || "📁"} <b>${esc(area)}</b> <span class="pg-rol">${equipo.map((pe) => esc(pe.nombre.split(" ")[0])).join(", ")}</span> <span class="pg-cnt">${suyos.length + autos.length}</span></div>
+        ${autoCardsDe("inside", { ajustes: autos, porAprobador: {} })}${suyos.map((x) => manCard(x, true)).join("")}
+        ${!suyos.length && !autos.length ? `<div class="pg-empty">Arrastra aquí un pendiente para asignarlo a ${esc(area)}</div>` : ""}
+      </div>`;
+    }).join("");
+  }
+
+  return `<div class="pend-col">
+    <div class="pend-head">
+      <span>${titulo} <span class="cnt">${abiertos.length + nAuto}</span></span>
+      <span class="pend-head-acc">
+        <span class="viewtoggle sm">${modos.map(([id, l]) => `<button data-pgmode="${lado}:${id}" class="${modo === id ? "active" : ""}">${l}</button>`).join("")}</span>
+        <button class="btn sm" data-paddlado="${lado}">＋ Pendiente</button>
+      </span>
+    </div>
+    ${cuerpo || `<div class="backlog-empty">Nada pendiente 🎉</div>`}
+    ${hechos.length ? `<div class="pend-done-sep">Completados (${hechos.length})</div>${hechos.map((x) => manCard(x, false)).join("")}` : ""}
+  </div>`;
+}
+const AREA_ICONO = { Cuentas: "💼", Diseño: "🎨", Audiovisual: "🎬", Creatividad: "💡", Community: "💬", Medios: "📈", Dirección: "🧭" };
+
+/* ---- Gestión mensual: grupos → matrices → pendientes ---- */
+function gestMensual() {
+  const ms = DB.matrices.filter((m) => m.mes === UI.gestMes);
+  const nav = `<div class="monthnav" style="margin-bottom:16px">
+    <button id="gmPrev">‹</button><span class="m">Gestión ${monthLabel(UI.gestMes)}</span><button id="gmNext">›</button>
+    <span class="spacer"></span>
+    ${!UI.gestGrupo ? `<button class="btn primary" id="btnAddMx">＋ Agregar matriz</button>` : ""}
+  </div>`;
+
+  if (!ms.length) return `${nav}<div class="calwrap"><div class="empty"><div class="big">🗂️</div>
+    <p>No hay matrices cargadas para ${monthLabel(UI.gestMes)}.</p>
+    <button class="btn" id="btnDupMes">⧉ Duplicar estructura de ${monthLabel(shiftMonth(UI.gestMes, -1))}</button></div></div>`;
+
+  // Nivel 1: los grandes grupos
+  if (!UI.gestGrupo) {
+    const cards = GRUPOS_MES.map((g) => {
+      const mg = ms.filter((m) => m.grupo === g);
+      if (!mg.length) return "";
+      const avg = Math.round(mg.reduce((s, m) => s + m.avance, 0) / mg.length);
+      const nPend = mg.reduce((s, m) => s + pendDeMatriz(m.id).filter((p) => !p.hecho).length, 0);
+      const regiones = [...new Set(mg.map((m) => m.region))];
+      return `<div class="card proy grupo-card" data-abregrupo="${esc(g)}">
+        <h4>${esc(g)}</h4>
+        <p class="proy-region">${mg.length} matri${mg.length === 1 ? "z" : "ces"} · ${regiones.map(esc).join(" · ")}</p>
+        <div class="proy-bar"><i style="width:${avg}%;background:#6D28D9"></i></div>
+        <div class="proy-meta"><b>${avg}%</b> promedio ${nPend ? `<span class="badge" style="background:#FEF3C7;color:#B45309">${nPend} pendiente${nPend > 1 ? "s" : ""}</span>` : `<span class="badge" style="background:#DCFCE7;color:#15803D">al día</span>`}</div>
+        <p class="pm" style="margin-top:8px">Entrar para ver cada matriz →</p>
+      </div>`;
+    }).join("");
+    return `${nav}
+      <div class="pill-note">Las grandes acciones de ${monthLabel(UI.gestMes)}. Entra a cada grupo para ver sus matrices por región, su avance, su link y sus pendientes.</div>
+      <div class="cards">${cards}</div>`;
+  }
+
+  // Nivel 2: matrices del grupo
+  const mg = ms.filter((m) => m.grupo === UI.gestGrupo);
+  const subs = [...new Set(mg.map((m) => m.sub))];
+  const bloques = subs.map((sub) => {
+    const lista = mg.filter((m) => m.sub === sub);
+    return `${sub ? `<div class="section-title mt">${esc(UI.gestGrupo)} (${esc(sub)})</div>` : ""}
+      <div class="cards">${lista.map(matrizCard).join("")}</div>`;
+  }).join("");
+  return `${nav}
+    <button class="btn sm ghost" id="btnBackGrupo">← Volver a los grupos</button>
+    <div class="section-title" style="margin-top:14px">${esc(UI.gestGrupo)} · ${monthLabel(UI.gestMes)}</div>
     ${bloques}`;
 }
 
-function proyCard(p) {
-  const e = P_ESTADOS[p.estado] || P_ESTADOS.activo;
-  const titulo = p.grupo.startsWith("Campaña") ? p.grupo.replace("Campaña · ", "") : p.grupo;
-  return `<div class="card proy ${p.estado === "descartado" ? "off" : ""}">
-    <div class="proy-top"><h4>${esc(titulo)}</h4><button class="ico-btn" data-pyedit="${p.id}" title="Editar">✏️</button></div>
-    <p class="proy-region">${esc(p.region)}</p>
-    <div class="proy-bar"><i style="width:${p.avance}%;background:${e.color}"></i></div>
-    <div class="proy-meta"><span class="badge" style="background:${e.color}22;color:${e.color}">${esc(e.nombre)}</span> <b>${p.avance}%</b></div>
-    <p class="pm" style="margin-top:8px">Inside: ${esc(nombre(p.responsable))} · Aprueba: ${esc(nombre(p.aprobador))}</p>
-    ${p.notas ? `<p class="pn">${esc(p.notas)}</p>` : ""}
-    ${p.link ? `<a class="lk" href="${esc(p.link)}" target="_blank" rel="noopener">Abrir documento ↗</a>` : `<span class="nolink">sin link aún</span>`}
+function matrizCard(m) {
+  const e = P_ESTADOS[m.estado] || P_ESTADOS.activo;
+  const pends = pendDeMatriz(m.id).filter((p) => !p.hecho);
+  return `<div class="card proy ${["descartado", "seguimiento"].includes(m.estado) ? "off" : ""}">
+    <div class="proy-top"><h4>${m.sub ? esc(m.sub) + " · " : ""}${esc(m.region)}</h4><button class="ico-btn" data-mxedit="${m.id}" title="Editar">✏️</button></div>
+    <div class="proy-bar"><i style="width:${m.avance}%;background:${e.color}"></i></div>
+    <div class="proy-meta"><span class="badge" style="background:${e.color}22;color:${e.color}">${esc(e.nombre)}</span> <b>${m.avance}%</b></div>
+    <p class="pm" style="margin-top:8px">Inside: ${esc(nombre(m.responsable))} · Aprueba: ${esc(nombre(m.aprobador))}</p>
+    ${m.notas ? `<p class="pn">${esc(m.notas)}</p>` : ""}
+    ${m.link ? `<a class="lk" href="${esc(m.link)}" target="_blank" rel="noopener">Abrir matriz ↗</a>` : `<span class="nolink">sin link aún</span>`}
+    <div class="mx-pends">
+      ${pends.map((p) => `<div class="mx-pend" data-pedit="${p.id}">${p.lado === "cliente" ? "🏢" : "🏠"} ${esc(p.titulo)} <span class="pg-rol">${esc(nombre(p.responsable))}</span></div>`).join("") || `<div class="pg-empty" style="margin:0">Sin pendientes vinculados</div>`}
+      <button class="btn sm ghost" data-paddmx="${m.id}">＋ Pendiente de esta matriz</button>
+    </div>
   </div>`;
 }
 
@@ -504,50 +601,121 @@ function gestionCliente() {
   const auto = pendAuto();
   const man = DB.pendientes.filter((x) => x.lado === "cliente" && !x.hecho);
   const misAprob = auto.porAprobador[UI.clienteId] || [];
-  return `
-  <div class="pill-note cli-note">👁️ <b>Modo Cliente</b> — esta lista es lo que Inside necesita de Payless para avanzar sin frenos.</div>
-  ${misAprob.length ? `<div class="riesgo-box"><b>✋ Tienes ${misAprob.length} publicaci${misAprob.length === 1 ? "ón" : "ones"} por aprobar</b> — <button class="link-btn" data-verapro="${UI.clienteId}">verlas en el calendario</button></div>` : ""}
-  <div class="pend-col" style="max-width:760px">
-    <div class="pend-head"><span>Pendientes de Payless <span class="cnt">${man.length}</span></span></div>
-    ${man.map((x) => `
+  const porPersona = clientes().map((pe) => {
+    const suyos = man.filter((x) => x.responsable === pe.id);
+    if (!suyos.length) return "";
+    return `<div class="pend-grupo">
+      <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length}</span></div>
+      ${suyos.map((x) => `
       <div class="pend-card">
         <div class="pend-body">
           <div class="pt">${esc(x.titulo)}</div>
-          <div class="pm">${esc(nombre(x.responsable))} · ${esc(x.area)}${x.limite ? ` · <span class="${x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}</div>
+          <div class="pm">${esc(x.area)}${x.limite ? ` · <span class="${x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}</div>
+          ${x.faltaInfo ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
           ${x.notas ? `<div class="pn">${esc(x.notas)}</div>` : ""}
         </div>
-      </div>`).join("") || `<div class="backlog-empty">Nada pendiente 🎉</div>`}
+      </div>`).join("")}
+    </div>`;
+  }).join("");
+  return `
+  <div class="pill-note cli-note">👁️ <b>Modo Cliente</b> — esta lista es lo que Inside necesita de Payless para avanzar sin frenos, organizada por responsable.</div>
+  ${misAprob.length ? `<div class="riesgo-box"><b>✋ Tienes ${misAprob.length} publicaci${misAprob.length === 1 ? "ón" : "ones"} por aprobar</b> — <button class="link-btn" data-verapro="${UI.clienteId}">verlas en el calendario</button></div>` : ""}
+  <div class="pend-col" style="max-width:760px">
+    <div class="pend-head"><span>Pendientes de Payless <span class="cnt">${man.length}</span></span></div>
+    ${porPersona || `<div class="backlog-empty">Nada pendiente 🎉</div>`}
+  </div>`;
+}
+
+/* ============================================================
+   INFORMACIÓN GENERAL DE LA CUENTA (solo interno)
+   ============================================================ */
+function viewInfo() {
+  const apts = [...DB.aprendizajes].sort((a, b) => b.fecha.localeCompare(a.fecha));
+  return `
+  ${gestMasterdoc()}
+  <div class="section-title mt">💡 Aprendizajes de la cuenta</div>
+  <div class="pill-note">Lo que la cuenta nos va enseñando. Hoy se agregan a mano (y desde las reuniones); en la v3 se generarán automáticamente desde las transcripciones.</div>
+  <div class="hist-add" style="max-width:760px;margin-bottom:14px">
+    <input type="text" id="apNuevo" placeholder="Nuevo aprendizaje... (ej: 'al cliente no le gustan los fondos amarillos')" style="flex:1"/>
+    <button class="btn primary sm" id="apAdd">＋ Agregar</button>
+  </div>
+  <div class="pend-col" style="max-width:760px">
+    ${apts.map((a) => `
+      <div class="pend-card">
+        <div class="pend-body">
+          <div class="pt">${esc(a.texto)}</div>
+          <div class="pm">${esc(fechaCorta(a.fecha))}${a.fuente ? ` · ${esc(a.fuente)}` : ""}</div>
+        </div>
+        <span class="pend-acc"><button class="ico-btn danger" data-apdel="${a.id}" title="Eliminar">🗑️</button></span>
+      </div>`).join("") || `<div class="backlog-empty">Aún no hay aprendizajes registrados</div>`}
   </div>`;
 }
 
 /* ---- Modales de gestión ---- */
-function openPendModal(id, ladoPreset) {
-  const p = id ? DB.pendientes.find((x) => x.id === id) : { id: null, lado: ladoPreset || "cliente", titulo: "", responsable: ladoPreset === "inside" ? "vic" : "nico", area: "Gestión", limite: "", link: "", notas: "", hecho: false };
+function openPendModal(id, ladoPreset, matrizPreset) {
+  const p = id ? DB.pendientes.find((x) => x.id === id)
+    : { id: null, lado: ladoPreset || "cliente", titulo: "", responsable: ladoPreset === "inside" ? "vic" : "nico", area: "Gestión", limite: "", link: "", notas: "", hecho: false, historial: [], faltaInfo: "", matrizId: matrizPreset || "" };
   if (!p) return;
+  if (!p.historial) p.historial = [];
   const personasDelLado = p.lado === "cliente" ? clientes() : inside();
-  document.getElementById("modalTitle").textContent = id ? "Editar pendiente" : "Nuevo pendiente";
+  const mxDelMes = DB.matrices.filter((m) => m.mes === UI.gestMes);
+  document.getElementById("modalTitle").textContent = id ? "Pendiente · trazabilidad" : "Nuevo pendiente";
   document.getElementById("modalBody").innerHTML = `
     <div><label class="fld">¿Qué falta?</label><input type="text" id="pTitulo" value="${esc(p.titulo)}" placeholder="Ej: enviar editables de..." style="width:100%"/></div>
     <div class="row2">
       <div><label class="fld">Lado</label><select id="pLado" style="width:100%"><option value="cliente" ${p.lado === "cliente" ? "selected" : ""}>Debe el cliente</option><option value="inside" ${p.lado === "inside" ? "selected" : ""}>Debe Inside</option></select></div>
-      <div><label class="fld">Responsable</label><select id="pResp" style="width:100%">${personasDelLado.map((pe) => `<option value="${pe.id}" ${p.responsable === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
+      <div><label class="fld">Responsable</label><select id="pResp" style="width:100%">${personasDelLado.map((pe) => `<option value="${pe.id}" ${p.responsable === pe.id ? "selected" : ""}>${esc(pe.nombre)}${pe.lado === "agencia" ? " · " + esc(pe.area) : ""}</option>`).join("")}</select></div>
     </div>
     <div class="row2">
-      <div><label class="fld">Área</label><select id="pArea" style="width:100%">${["Accesos", "Editables", "Inputs", "Contenido", "Diseño", "Matrices", "Gestión", "Equipo", "Masterdoc"].map((a) => `<option ${p.area === a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
+      <div><label class="fld">Categoría</label><select id="pArea" style="width:100%">${["Accesos", "Editables", "Inputs", "Contenido", "Diseño", "Matrices", "Gestión", "Equipo", "Creatividad"].map((a) => `<option ${p.area === a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
       <div><label class="fld">Fecha límite (opcional)</label><input type="date" id="pLimite" value="${esc(p.limite)}" style="width:100%"/></div>
     </div>
+    <div><label class="fld">Matriz vinculada (opcional)</label><select id="pMatriz" style="width:100%">
+      <option value="">— Sin matriz —</option>
+      ${mxDelMes.map((m) => `<option value="${m.id}" ${p.matrizId === m.id ? "selected" : ""}>${esc(matrizLabel(m))}</option>`).join("")}
+    </select></div>
+    <div><label class="fld">⛔ ¿Qué información falta para avanzar? (se muestra en rojo)</label><input type="text" id="pFalta" value="${esc(p.faltaInfo)}" placeholder="Ej: faltan los editables, falta el legal de Panamá..." style="width:100%"/></div>
     <div><label class="fld">Link (opcional)</label><input type="url" id="pLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
-    <div><label class="fld">Notas</label><textarea id="pNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>`;
+    <div><label class="fld">Notas</label><textarea id="pNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>
+    <div class="approval-box">
+      <label class="fld">📜 Historial (trazabilidad)</label>
+      <div class="hist-list">${p.historial.length
+        ? p.historial.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
+        : `<div class="pg-empty" style="margin:0">Sin eventos aún</div>`}</div>
+      <div class="hist-actions">
+        <button type="button" class="btn sm" id="hSolicitado">📤 Solicitado hoy</button>
+        <button type="button" class="btn sm" id="hEnviado">📬 Enviado hoy</button>
+        <button type="button" class="btn sm" id="hRecibido">📥 Recibido hoy</button>
+      </div>
+      <div class="hist-add">
+        <input type="text" id="hNota" placeholder="Agregar nota al historial (ej: 'pedido al diseñador por WhatsApp')" style="flex:1"/>
+        <button type="button" class="btn sm" id="hAdd">＋</button>
+      </div>
+    </div>`;
   document.getElementById("modalFooter").innerHTML = `
     ${id ? `<button class="btn ghost" id="pDel" style="margin-right:auto;color:var(--danger)">Eliminar</button>` : ""}
     <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="pSave">${id ? "Guardar" : "Crear pendiente"}</button>`;
   document.getElementById("overlay").classList.add("open");
 
-  // Cambiar lado recarga responsables
+  // Historial: acciones rápidas y notas libres (se pintan al guardar)
+  const refreshHist = () => {
+    document.querySelector(".hist-list").innerHTML = p.historial.length
+      ? p.historial.map((h) => `<div class="hist-item"><span class="hist-fecha">${esc(fechaCorta(h.fecha))}</span> ${esc(h.texto)}</div>`).join("")
+      : `<div class="pg-empty" style="margin:0">Sin eventos aún</div>`;
+  };
+  const addEv = (texto) => { p.historial.push({ fecha: HOY, texto }); refreshHist(); };
+  document.getElementById("hSolicitado").onclick = () => addEv("📤 Solicitado");
+  document.getElementById("hEnviado").onclick = () => addEv("📬 Enviado" + (p.lado === "inside" ? " al cliente" : ""));
+  document.getElementById("hRecibido").onclick = () => addEv("📥 Recibido");
+  document.getElementById("hAdd").onclick = () => {
+    const t = document.getElementById("hNota").value.trim();
+    if (t) { addEv("📝 " + t); document.getElementById("hNota").value = ""; }
+  };
+
   document.getElementById("pLado").onchange = () => {
     const lado = document.getElementById("pLado").value;
     const lista = lado === "cliente" ? clientes() : inside();
-    document.getElementById("pResp").innerHTML = lista.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)}</option>`).join("");
+    document.getElementById("pResp").innerHTML = lista.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)}${pe.lado === "agencia" ? " · " + esc(pe.area) : ""}</option>`).join("");
   };
   document.getElementById("mCancel").onclick = closeModal;
   document.getElementById("pSave").onclick = () => {
@@ -558,21 +726,26 @@ function openPendModal(id, ladoPreset) {
     p.responsable = document.getElementById("pResp").value;
     p.area = document.getElementById("pArea").value;
     p.limite = document.getElementById("pLimite").value;
+    p.matrizId = document.getElementById("pMatriz").value;
+    p.faltaInfo = document.getElementById("pFalta").value.trim();
     p.link = document.getElementById("pLink").value.trim();
     p.notas = document.getElementById("pNotas").value.trim();
-    if (!p.id) { p.id = "pd_" + Date.now(); DB.pendientes.push(p); }
+    if (!p.id) { p.id = "pd_" + Date.now(); p.historial.unshift({ fecha: HOY, texto: "🏁 Creado" }); DB.pendientes.push(p); }
     save(); closeModal(); render(); toast(id ? "Pendiente actualizado ✓" : "Pendiente creado ✓");
   };
   const del = document.getElementById("pDel");
   if (del) del.onclick = () => { if (confirm("¿Eliminar este pendiente?")) { DB.pendientes = DB.pendientes.filter((x) => x.id !== p.id); save(); closeModal(); render(); } };
 }
 
-function openProyModal(id) {
-  const p = id ? DB.proyectos.find((x) => x.id === id) : { id: null, grupo: "", region: "", estado: "activo", avance: 0, responsable: "vic", aprobador: "nico", link: "", notas: "" };
+function openMatrizModal(id) {
+  const p = id ? matriz(id) : { id: null, mes: UI.gestMes, grupo: UI.gestGrupo || GRUPOS_MES[0], sub: "", region: "", estado: "activo", avance: 0, responsable: "vic", aprobador: "nico", link: "", notas: "" };
   if (!p) return;
-  document.getElementById("modalTitle").textContent = id ? "Editar proyecto" : "Nuevo proyecto";
+  document.getElementById("modalTitle").textContent = id ? "Editar matriz" : "Nueva matriz";
   document.getElementById("modalBody").innerHTML = `
-    <div><label class="fld">Nombre (usa “Campaña · X” para campañas)</label><input type="text" id="yNombre" value="${esc(p.grupo)}" placeholder="Ej: Matriz Orgánica / Campaña · Black Friday" style="width:100%"/></div>
+    <div class="row2">
+      <div><label class="fld">Grupo</label><select id="yGrupo" style="width:100%">${GRUPOS_MES.map((g) => `<option ${p.grupo === g ? "selected" : ""}>${esc(g)}</option>`).join("")}</select></div>
+      <div><label class="fld">Sub-matriz / campaña (opcional)</label><input type="text" id="ySub" value="${esc(p.sub)}" placeholder="Ej: ECOM, WA, PMAX, Tiendas" style="width:100%"/></div>
+    </div>
     <div class="row2">
       <div><label class="fld">Región / alcance</label><input type="text" id="yRegion" value="${esc(p.region)}" placeholder="Ej: Centroamérica" style="width:100%"/></div>
       <div><label class="fld">Estado</label><select id="yEstado" style="width:100%">${Object.entries(P_ESTADOS).map(([k, v]) => `<option value="${k}" ${p.estado === k ? "selected" : ""}>${esc(v.nombre)}</option>`).join("")}</select></div>
@@ -582,19 +755,18 @@ function openProyModal(id) {
       <div><label class="fld">Responsable Inside</label><select id="yResp" style="width:100%">${inside().map((pe) => `<option value="${pe.id}" ${p.responsable === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
       <div><label class="fld">Aprueba (cliente)</label><select id="yApro" style="width:100%">${clientes().map((pe) => `<option value="${pe.id}" ${p.aprobador === pe.id ? "selected" : ""}>${esc(pe.nombre)}</option>`).join("")}</select></div>
     </div>
-    <div><label class="fld">Link al documento / matriz</label><input type="url" id="yLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
+    <div><label class="fld">Link a la matriz / documento</label><input type="url" id="yLink" value="${esc(p.link)}" placeholder="https://..." style="width:100%"/></div>
     <div><label class="fld">Notas / estatus</label><textarea id="yNotas" rows="2" style="width:100%">${esc(p.notas)}</textarea></div>`;
   document.getElementById("modalFooter").innerHTML = `
     ${id ? `<button class="btn ghost" id="yDel" style="margin-right:auto;color:var(--danger)">Eliminar</button>` : ""}
-    <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="ySave">${id ? "Guardar" : "Crear proyecto"}</button>`;
+    <button class="btn" id="mCancel">Cancelar</button><button class="btn primary" id="ySave">${id ? "Guardar" : "Crear matriz"}</button>`;
   document.getElementById("overlay").classList.add("open");
 
   document.getElementById("yAvance").oninput = () => { document.getElementById("yAvanceVal").textContent = document.getElementById("yAvance").value + "%"; };
   document.getElementById("mCancel").onclick = closeModal;
   document.getElementById("ySave").onclick = () => {
-    const n = document.getElementById("yNombre").value.trim();
-    if (!n) { document.getElementById("yNombre").focus(); return; }
-    p.grupo = n;
+    p.grupo = document.getElementById("yGrupo").value;
+    p.sub = document.getElementById("ySub").value.trim();
     p.region = document.getElementById("yRegion").value.trim();
     p.estado = document.getElementById("yEstado").value;
     p.avance = Number(document.getElementById("yAvance").value);
@@ -602,11 +774,17 @@ function openProyModal(id) {
     p.aprobador = document.getElementById("yApro").value;
     p.link = document.getElementById("yLink").value.trim();
     p.notas = document.getElementById("yNotas").value.trim();
-    if (!p.id) { p.id = "py_" + Date.now(); DB.proyectos.push(p); }
-    save(); closeModal(); render(); toast("Proyecto guardado ✓");
+    if (!p.id) { p.id = "mx_" + Date.now(); p.mes = UI.gestMes; DB.matrices.push(p); }
+    save(); closeModal(); render(); toast("Matriz guardada ✓");
   };
   const del = document.getElementById("yDel");
-  if (del) del.onclick = () => { if (confirm("¿Eliminar este proyecto?")) { DB.proyectos = DB.proyectos.filter((x) => x.id !== p.id); save(); closeModal(); render(); } };
+  if (del) del.onclick = () => {
+    if (confirm("¿Eliminar esta matriz? Sus pendientes vinculados quedan sueltos (no se borran).")) {
+      DB.pendientes.forEach((x) => { if (x.matrizId === p.id) x.matrizId = ""; });
+      DB.matrices = DB.matrices.filter((x) => x.id !== p.id);
+      save(); closeModal(); render();
+    }
+  };
 }
 
 function openDocModal(i) {
@@ -835,7 +1013,11 @@ function wireContent() {
   document.querySelectorAll("[data-pdel]").forEach((b) => b.onclick = () => { if (confirm("¿Eliminar este pendiente?")) { DB.pendientes = DB.pendientes.filter((x) => x.id !== b.dataset.pdel); save(); render(); } });
   document.querySelectorAll("[data-pdone]").forEach((c) => c.onchange = () => {
     const x = DB.pendientes.find((y) => y.id === c.dataset.pdone);
-    if (x) { x.hecho = c.checked; save(); render(); toast(x.hecho ? "Pendiente completado ✓" : "Pendiente reabierto"); }
+    if (x) {
+      x.hecho = c.checked;
+      (x.historial = x.historial || []).push({ fecha: HOY, texto: x.hecho ? "✅ Completado" : "🔄 Reabierto" });
+      save(); render(); toast(x.hecho ? "Pendiente completado ✓" : "Pendiente reabierto");
+    }
   });
   document.querySelectorAll("[data-openpieza]").forEach((b) => b.onclick = () => openModal(b.dataset.openpieza));
   document.querySelectorAll("[data-verapro]").forEach((b) => b.onclick = () => {
@@ -844,8 +1026,83 @@ function wireContent() {
     if (UI.mode === "cliente") UI.soloMias = true;
     render();
   });
-  bind("btnAddProy", () => openProyModal(null));
-  document.querySelectorAll("[data-pyedit]").forEach((b) => b.onclick = () => openProyModal(b.dataset.pyedit));
+  // Toggles de agrupación (por área / persona / lista)
+  document.querySelectorAll("[data-pgmode]").forEach((b) => b.onclick = () => {
+    const [lado, modo] = b.dataset.pgmode.split(":");
+    if (lado === "cliente") UI.pendGroupCliente = modo; else UI.pendGroupInside = modo;
+    render();
+  });
+
+  // Distribuir pendientes arrastrando entre grupos (persona o área)
+  document.querySelectorAll('[data-pmove]').forEach((card) => {
+    card.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/pend", card.dataset.pmove);
+      e.dataTransfer.effectAllowed = "move";
+      requestAnimationFrame(() => card.classList.add("dragging"));
+    });
+    card.addEventListener("dragend", () => document.querySelectorAll(".dragging,.drop-hover").forEach((c) => c.classList.remove("dragging", "drop-hover")));
+  });
+  document.querySelectorAll("[data-asignap],[data-asignarea]").forEach((zone) => {
+    zone.addEventListener("dragover", (e) => { if (e.dataTransfer.types.includes("text/pend")) { e.preventDefault(); zone.classList.add("drop-hover"); } });
+    zone.addEventListener("dragleave", (e) => { if (!zone.contains(e.relatedTarget)) zone.classList.remove("drop-hover"); });
+    zone.addEventListener("drop", (e) => {
+      const id = e.dataTransfer.getData("text/pend");
+      if (!id) return;
+      e.preventDefault(); zone.classList.remove("drop-hover");
+      const x = DB.pendientes.find((y) => y.id === id);
+      if (!x) return;
+      if (zone.dataset.asignap) {
+        if (x.responsable === zone.dataset.asignap) return;
+        x.responsable = zone.dataset.asignap;
+        (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Reasignado a ${nombre(x.responsable)}` });
+      } else {
+        const area = zone.dataset.asignarea;
+        const equipo = inside().filter((pe) => pe.area === area);
+        if (!equipo.length || equipo.some((pe) => pe.id === x.responsable)) return;
+        x.responsable = equipo[0].id;
+        (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Distribuido al área ${area} (${nombre(x.responsable)})` });
+      }
+      save(); render(); toast(`Asignado a ${nombre(x.responsable)} ✓`);
+    });
+  });
+
+  // Gestión mensual
+  bind("gmPrev", () => { UI.gestMes = shiftMonth(UI.gestMes, -1); UI.gestGrupo = ""; render(); });
+  bind("gmNext", () => { UI.gestMes = shiftMonth(UI.gestMes, 1); UI.gestGrupo = ""; render(); });
+  bind("btnBackGrupo", () => { UI.gestGrupo = ""; render(); });
+  bind("btnAddMx", () => openMatrizModal(null));
+  bind("btnDupMes", () => {
+    const prev = shiftMonth(UI.gestMes, -1);
+    const src = DB.matrices.filter((m) => m.mes === prev);
+    if (!src.length) { alert(`No hay matrices en ${monthLabel(prev)} para duplicar.`); return; }
+    src.forEach((m) => {
+      const n = JSON.parse(JSON.stringify(m));
+      n.id = "mx_" + Date.now() + "_" + Math.abs(hashStr(m.id + UI.gestMes));
+      n.mes = UI.gestMes; n.avance = 0; n.estado = m.estado === "cerrado" ? "briefing" : m.estado; n.link = "";
+      DB.matrices.push(n);
+    });
+    save(); render(); toast(`${src.length} matrices copiadas a ${monthLabel(UI.gestMes)} ✓`);
+  });
+  document.querySelectorAll("[data-abregrupo]").forEach((b) => b.onclick = () => { UI.gestGrupo = b.dataset.abregrupo; render(); });
+  document.querySelectorAll("[data-mxedit]").forEach((b) => b.onclick = () => openMatrizModal(b.dataset.mxedit));
+  document.querySelectorAll("[data-paddmx]").forEach((b) => b.onclick = () => openPendModal(null, "cliente", b.dataset.paddmx));
+  document.querySelectorAll("[data-vermatriz]").forEach((b) => b.onclick = (e) => {
+    e.stopPropagation();
+    const m = matriz(b.dataset.vermatriz);
+    if (m) { UI.view = "gestion"; UI.gestTab = "mensual"; UI.gestMes = m.mes; UI.gestGrupo = m.grupo; render(); }
+  });
+
+  // Aprendizajes (Información general)
+  bind("apAdd", () => {
+    const inp = document.getElementById("apNuevo");
+    const t = inp.value.trim();
+    if (!t) { inp.focus(); return; }
+    DB.aprendizajes.push({ id: "ap_" + Date.now(), fecha: HOY, texto: t, fuente: "Manual" });
+    save(); render(); toast("Aprendizaje guardado ✓");
+  });
+  document.querySelectorAll("[data-apdel]").forEach((b) => b.onclick = () => {
+    if (confirm("¿Eliminar este aprendizaje?")) { DB.aprendizajes = DB.aprendizajes.filter((a) => a.id !== b.dataset.apdel); save(); render(); }
+  });
   document.querySelectorAll("[data-doccycle]").forEach((b) => b.onclick = () => {
     const d = DB.masterdoc.documentacion[Number(b.dataset.doccycle)];
     const orden = ["pendiente", "proceso", "entregado"];
