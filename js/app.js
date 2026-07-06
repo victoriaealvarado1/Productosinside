@@ -3,7 +3,7 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v2_3";
+const KEY = "gestion_inside_v2_4";
 // Fecha real del día (la trazabilidad siempre registra la fecha verdadera)
 const HOY = new Date().toISOString().slice(0, 10);
 const MES_ACTUAL = HOY.slice(0, 7);
@@ -18,7 +18,7 @@ const UI = {
   gestMes: SEED.meta.mesActual,
   gestGrupo: "",              // drill-down dentro de la gestión mensual
   pendGroupCliente: "persona",// persona | lista
-  pendGroupInside: "area",    // area | persona | lista
+  pendGroupInside: "lista",   // lista | area | persona (la asignación interna es opcional)
   pendVer: "",                // "ver como": filtra pendientes a una persona
   pendQ: "",                  // búsqueda de texto en pendientes
   pendVencidos: false,        // mostrar solo vencidos
@@ -71,6 +71,7 @@ function load() {
     const s = SEED.personas.find((sp) => sp.id === p.id);
     if (s && s.area) { p.area = s.area; p.rol = s.rol; }
   });
+  SEED.personas.forEach((sp) => { if (!db.personas.some((p) => p.id === sp.id)) db.personas.push(JSON.parse(JSON.stringify(sp))); });
   return db;
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) {} }
@@ -480,7 +481,7 @@ function pendAuto() {
 
 function viewGestion() {
   if (UI.mode === "cliente") return gestionCliente();
-  const tabs = [["pend", "📋 Pendientes"], ["mensual", `🗂️ Gestión ${monthLabel(UI.gestMes)}`]];
+  const tabs = [["pend", "📋 Gestión general"], ["mensual", `🗂️ Gestión ${monthLabel(UI.gestMes)}`]];
   return `
     <div class="gest-tabs">${tabs.map(([id, l]) => `<button class="gest-tab ${UI.gestTab === id ? "active" : ""}" data-gtab="${id}">${l}</button>`).join("")}</div>
     ${UI.gestTab === "pend" ? gestDash() : gestMensual()}`;
@@ -629,7 +630,8 @@ function quickAddPanel() {
   const qa = UI.quickAdd;
   if (!qa) return "";
   const gente = qa.lado === "inside" ? inside() : clientes();
-  const respSel = qa.resp && gente.some((p) => p.id === qa.resp) ? qa.resp : gente[0].id;
+  const generico = qa.lado === "inside" ? "equipo" : "payless";
+  const respSel = qa.resp && gente.some((p) => p.id === qa.resp) ? qa.resp : (gente.some((p) => p.id === generico) ? generico : gente[0].id);
   const rol = (persona(respSel) || {}).rol || "";
   return `<div class="qpanel">
     <div class="qp-row">
@@ -886,7 +888,7 @@ function pendTabla() {
     <tr class="qadd"><td>＋</td><td></td>
       <td><input type="text" id="qaTitulo" placeholder="＋ Escribe el pendiente y pulsa Enter…" style="width:100%"/></td>
       <td><select id="qaLadoSel"><option value="cliente" ${UI.qaLado === "cliente" ? "selected" : ""}>🏢 Payless</option><option value="inside" ${UI.qaLado === "inside" ? "selected" : ""}>🏠 Inside</option></select></td>
-      <td><select id="qaRespSel">${qaGente.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)} — ${esc(pe.rol)}</option>`).join("")}</select></td>
+      <td><select id="qaRespSel">${qaGente.map((pe) => `<option value="${pe.id}" ${pe.id === (UI.qaLado === "inside" ? "equipo" : "payless") ? "selected" : ""}>${esc(pe.nombre)} — ${esc(pe.rol)}</option>`).join("")}</select></td>
       <td colspan="8" class="paises">Enter crea · prioridad media · categoría Gestión · sin límite</td>
     </tr>
   </tbody></table></div>`;
@@ -1113,7 +1115,7 @@ function viewInfo() {
 function openPendModal(id, ladoPreset, matrizPreset, extra) {
   extra = extra || {};
   const p = id ? DB.pendientes.find((x) => x.id === id)
-    : { id: null, lado: ladoPreset || "cliente", titulo: extra.titulo || "", responsable: extra.responsable || (ladoPreset === "inside" ? "vic" : "nico"), area: extra.area || "Gestión", limite: extra.limite || "", link: "", notas: "", hecho: false, historial: [], faltaInfo: "", matrizId: matrizPreset || "", bloqueadoPor: "", estado: extra.estado || "por_hacer" };
+    : { id: null, lado: ladoPreset || "cliente", titulo: extra.titulo || "", responsable: extra.responsable || (ladoPreset === "inside" ? "equipo" : "payless"), area: extra.area || "Gestión", limite: extra.limite || "", link: "", notas: "", hecho: false, historial: [], faltaInfo: "", matrizId: matrizPreset || "", bloqueadoPor: "", estado: extra.estado || "por_hacer" };
   if (!p) return;
   if (!p.historial) p.historial = [];
   // El historial se edita en borrador: si cancelas, no queda rastro
@@ -1193,7 +1195,8 @@ function openPendModal(id, ladoPreset, matrizPreset, extra) {
   document.getElementById("pLado").onchange = () => {
     const lado = document.getElementById("pLado").value;
     const lista = lado === "cliente" ? clientes() : inside();
-    document.getElementById("pResp").innerHTML = lista.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)}${pe.lado === "agencia" ? " · " + esc(pe.area) : ""}</option>`).join("");
+    const gen = lado === "inside" ? "equipo" : "payless";
+    document.getElementById("pResp").innerHTML = lista.map((pe) => `<option value="${pe.id}" ${pe.id === gen ? "selected" : ""}>${esc(pe.nombre)}${pe.lado === "agencia" ? " · " + esc(pe.area) : ""}</option>`).join("");
   };
   document.getElementById("mCancel").onclick = closeModal;
   document.getElementById("pSave").onclick = () => {
@@ -1633,7 +1636,7 @@ function wireContent() {
     if (x) { fn(x, el.value); save(); render(); }
   });
   inline("data-ilado", (x, v) => {
-    x.lado = v; x.responsable = v === "inside" ? "vic" : "nico";
+    x.lado = v; x.responsable = v === "inside" ? "equipo" : "payless";
     (x.historial = x.historial || []).push({ fecha: HOY, texto: `↔️ Cambiado a ${v === "inside" ? "Inside" : "Payless"} (${nombre(x.responsable)})` });
   });
   inline("data-iresp", (x, v) => { x.responsable = v; (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Reasignado a ${nombre(v)}` }); });

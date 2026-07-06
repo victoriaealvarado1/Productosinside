@@ -69,12 +69,15 @@ const SEED = {
     { id: "antu", nombre: "Antuané Medrano", rol: "Editora Audiovisual", area: "Edición", lado: "agencia" },
     { id: "jairo", nombre: "Jairo López", rol: "Supervisor de Medios", area: "Medios", lado: "agencia" },
     { id: "ari", nombre: "Ariana Torrecilla", rol: "Community Manager", area: "Community", lado: "agencia" },
+    // Responsables genéricos (gestión general, como el cuadro de estatus: CLIENTE / INSIDE)
+    { id: "equipo", nombre: "INSIDE", rol: "Equipo completo", area: "Gestión", lado: "agencia" },
     { id: "nico", nombre: "Nicolás", rol: "Coord. Marketing", lado: "cliente" },
     { id: "carla", nombre: "Carla Poveda", rol: "Ecommerce & WhatsApp", lado: "cliente" },
     { id: "cristina", nombre: "Cristina Quesada", rol: "Región Sur", lado: "cliente" },
     { id: "estefany", nombre: "Estefany", rol: "Caribe inglés", lado: "cliente" },
     { id: "daini", nombre: "Daini", rol: "Caribe / Rep. Dominicana", lado: "cliente" },
     { id: "cesar", nombre: "César", rol: "Marketing", lado: "cliente" },
+    { id: "payless", nombre: "PAYLESS", rol: "Cliente general", lado: "cliente" },
   ],
 
   /* ===== GESTIÓN: pendientes (con trazabilidad: historial, falta info, matriz) ===== */
