@@ -33,7 +33,10 @@ const UI = {
   pendHechoOpen: false,       // columna "Hecho" del tablero expandida
   quickAdd: null,             // {lado, titulo, estadoPreset, limitePreset} — panel de creación rápida
   qaLado: "cliente",          // último lado usado al crear rápido
-  pendRealizados: false,      // sección "✅ Realizados" (pendientes completados)
+  pendRealizados: false,      // sección "Realizados" (pendientes completados)
+  filtrosOpen: false,         // panel de filtros plegable
+  alertOpen: false,           // detalle de "atascados" desplegado
+  masOpen: false,             // menú "···"
   month: SEED.meta.mesActual,
   filtros: { region: [], campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
   showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
@@ -490,62 +493,78 @@ function viewGestion() {
 /* ---- Dashboard de pendientes ---- */
 function gestDash() {
   const auto = pendAuto();
-  const man = DB.pendientes;
-  const abiertosAll = man.filter((x) => !x.hecho);
-  const card = (n, l, color, extra) => `<div class="kpi ${extra || ""}" ${extra ? `id="kpiVencidos" title="Clic para ver solo los vencidos"` : ""}><div class="n" style="color:${color}">${n}</div><div class="l">${l}</div></div>`;
+  const abiertosAll = DB.pendientes.filter((x) => !x.hecho);
 
-  // Cumplimiento general (semáforo del cuadro de estatus)
+  // Urgencia: lo único que se pinta de color
   const cumpl = { plazo: 0, riesgo: 0, retraso: 0 };
   abiertosAll.forEach((x) => cumpl[cumplimiento(x)]++);
-
-  // Contadores por área (+ "Respuesta del cliente" aparte, como en el Excel)
-  const nRespCliente = abiertosAll.filter((x) => x.lado === "cliente").length;
-  const nArea = (a) => abiertosAll.filter((x) => x.lado === "inside" && (persona(x.responsable) || {}).area === a).length;
-  const areaStrip = `<div class="area-strip">
-    <button class="area-chip cliente ${UI.pendLado === "cliente" && !UI.pendArea ? "on" : ""}" data-achip="cliente">✉️ Respuesta del cliente <b>${nRespCliente}</b></button>
-    ${DB.areas.map((a) => `<button class="area-chip ${UI.pendArea === a ? "on" : ""}" data-achip="${esc(a)}">${AREA_ICONO[a] || "📁"} ${esc(a)} <b>${nArea(a)}</b></button>`).join("")}
-  </div>`;
-
-  // Bloqueados: causa cliente vs causa interna, con días de espera
   const bloqueados = abiertosAll.filter((x) => x.bloqueadoPor);
+  const atascados = auto.riesgo.length + bloqueados.length;
+
+  // Línea de estado: un solo renglón
+  const statusLine = `<div class="status-line"><b>${abiertosAll.length}</b> pendientes abiertos${cumpl.retraso ? ` · <button class="link-red" id="kpiVencidos">${cumpl.retraso} en retraso${UI.pendVencidos ? " ✕" : ""}</button>` : ""}${auto.riesgo.length ? ` · <button class="link-red" id="alertTgl2">${auto.riesgo.length} pieza${auto.riesgo.length > 1 ? "s" : ""} en riesgo</button>` : ""}</div>`;
+
+  // Alerta plegada: todo lo atascado en una línea, detalle a un clic
   const diasBloq = (x) => {
     const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor);
     const f = bl && bl.historial && bl.historial.length ? bl.historial[0].fecha : HOY;
     return Math.max(0, Math.round((new Date(HOY) - new Date(f)) / 86400000));
   };
-  const bloqCard = (titulo, lista, clase) => `<div class="bloq-card ${clase}">
-    <b>${titulo} (${lista.length})</b>
-    ${lista.map((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return `<div class="bloq-item" data-pedit="${x.id}">🔒 ${esc(x.titulo.slice(0, 42))} <span class="pg-rol">espera "${esc((bl || {}).titulo || "").slice(0, 30)}" hace ${diasBloq(x)} día${diasBloq(x) === 1 ? "" : "s"}</span></div>`; }).join("") || `<div class="pg-rol">Ninguno 🎉</div>`}
-  </div>`;
-  const bloqCli = bloqueados.filter((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && bl.lado === "cliente"; });
-  const bloqInt = bloqueados.filter((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && bl.lado === "inside"; });
+  const alerta = atascados ? `
+    <div class="alert-line">
+      <button class="alert-head" id="alertTgl">⚠ ${atascados} atascado${atascados > 1 ? "s" : ""} <span class="alert-sub">(${auto.riesgo.length} pieza${auto.riesgo.length === 1 ? "" : "s"} en riesgo, ${bloqueados.length} bloqueado${bloqueados.length === 1 ? "" : "s"})</span> ${UI.alertOpen ? "▴" : "▾"}</button>
+      ${UI.alertOpen ? `<div class="alert-body">
+        ${auto.riesgo.map((p) => `<button class="riesgo-item" data-openpieza="${p.id}">${esc(fechaCorta(p.fecha))} · ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} — falta aprobación de ${esc(nombre(p.aprobador))}</button>`).join("")}
+        ${bloqueados.map((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return `<button class="riesgo-item" data-pedit="${x.id}">🔒 ${esc(x.titulo.slice(0, 48))} — espera "${esc((bl || {}).titulo || "").slice(0, 34)}" hace ${diasBloq(x)} día${diasBloq(x) === 1 ? "" : "s"}</button>`; }).join("")}
+      </div>` : ""}
+    </div>` : "";
 
-  // Carga de trabajo por responsable (solo interna, colapsable)
+  // Contadores para el panel de filtros
+  const abiertosCon = (ignorar) => DB.pendientes.filter((x) => !x.hecho && pendVisible(x, ignorar));
+  const nLado = (l) => abiertosCon("lado").filter((x) => x.lado === l).length;
+  const nCat = (c) => abiertosCon("cat").filter((x) => x.area === c).length;
+  const nRespCliente = abiertosAll.filter((x) => x.lado === "cliente").length;
+  const nArea = (a) => abiertosAll.filter((x) => x.lado === "inside" && (persona(x.responsable) || {}).area === a).length;
+  const nF = nFiltrosActivos();
+
+  // Panel de filtros plegable: toda la potencia, a un clic
+  const filtros = UI.filtrosOpen ? `<div class="filtros-panel">
+    <div class="qp-row">
+      <span class="viewtoggle sm">
+        <button data-plado="" class="${!UI.pendLado ? "active" : ""}">Todos</button>
+        <button data-plado="cliente" class="${UI.pendLado === "cliente" ? "active" : ""}">Payless (${nLado("cliente")})</button>
+        <button data-plado="inside" class="${UI.pendLado === "inside" ? "active" : ""}">Inside (${nLado("inside")})</button>
+      </span>
+      <select id="pendCat">
+        <option value="">Todas las categorías</option>
+        ${PEND_CATS.map((c) => `<option value="${c}" ${UI.pendCat === c ? "selected" : ""} ${!nCat(c) && UI.pendCat !== c ? "disabled" : ""}>${c} (${nCat(c)})</option>`).join("")}
+      </select>
+      <select id="pendVer">
+        <option value="">Todas las personas</option>
+        <optgroup label="Inside">${inside().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)} · ${esc(pe.rol)}</option>`).join("")}</optgroup>
+        <optgroup label="Cliente">${clientes().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)} · ${esc(pe.rol)}</option>`).join("")}</optgroup>
+      </select>
+      <label class="chkmine"><input type="checkbox" id="chkVencidos" ${UI.pendVencidos ? "checked" : ""}/> Solo vencidos</label>
+      ${nF ? `<button class="btn sm ghost" id="pendLimpiar">✕ Limpiar (${nF})</button>` : ""}
+    </div>
+    <div class="qp-row">
+      <button class="area-chip cliente ${UI.pendLado === "cliente" && !UI.pendArea ? "on" : ""}" data-achip="cliente">Respuesta del cliente <b>${nRespCliente}</b></button>
+      ${DB.areas.map((a) => `<button class="area-chip ${UI.pendArea === a ? "on" : ""}" data-achip="${esc(a)}">${esc(a)} <b>${nArea(a)}</b></button>`).join("")}
+    </div>
+  </div>` : "";
+
+  // Carga por responsable: al final, colapsada (el "en plazo" en gris: lo correcto no grita)
   const carga = inside().map((pe) => {
     const suyos = abiertosAll.filter((x) => x.responsable === pe.id);
     if (!suyos.length) return "";
     const c = { plazo: 0, riesgo: 0, retraso: 0 };
     suyos.forEach((x) => c[cumplimiento(x)]++);
-    const seg = (k) => c[k] ? `<i style="flex:${c[k]};background:${CUMPLIMIENTO[k].color}" title="${CUMPLIMIENTO[k].nombre}: ${c[k]}"></i>` : "";
+    const seg = (k) => c[k] ? `<i style="flex:${c[k]};background:${k === "plazo" ? "#CBD5E1" : CUMPLIMIENTO[k].color}" title="${CUMPLIMIENTO[k].nombre}: ${c[k]}"></i>` : "";
     return `<div class="carga-row"><span class="carga-nombre">${esc(pe.nombre.split(" ")[0])} <span class="pg-rol">${esc(pe.rol)}</span></span>
       <span class="carga-bar">${seg("retraso")}${seg("riesgo")}${seg("plazo")}</span><b>${suyos.length}</b></div>`;
   }).join("");
-  const cargaBox = `<details class="carga-box"><summary>📊 Carga de trabajo por responsable (interno)</summary><div class="carga-list">${carga || `<div class="pg-rol">Sin tareas asignadas</div>`}</div></details>`;
 
-  const alertas = auto.riesgo.length ? `
-    <div class="riesgo-box">
-      <b>🔴 En riesgo de no publicarse</b> — publican en ≤2 días y el cliente no ha aprobado:
-      ${auto.riesgo.map((p) => `<button class="riesgo-item" data-openpieza="${p.id}">${esc(fechaCorta(p.fecha))} · ${esc(campana(p.campanaId) ? campana(p.campanaId).nombre : "")} · ${esc(p.formato)} (${esc(nombre(p.aprobador))})</button>`).join("")}
-    </div>` : "";
-
-  // Contadores de filtros (respetan los demás filtros activos)
-  const abiertosCon = (ignorar) => DB.pendientes.filter((x) => !x.hecho && pendVisible(x, ignorar));
-  const nLado = (l) => abiertosCon("lado").filter((x) => x.lado === l).length;
-  const nCat = (c) => abiertosCon("cat").filter((x) => x.area === c).length;
-  const nF = nFiltrosActivos();
-
-  const vistas = [["equipos", "👥 Equipos"], ["tablero", "🗂️ Tablero"], ["tabla", "☰ Tabla"], ["calendario", "📅 Calendario"]];
-  const nAbiertosTot = DB.pendientes.filter((x) => !x.hecho && pendVisible(x)).length;
+  const vistas = [["equipos", "Equipos"], ["tablero", "Tablero"], ["tabla", "Tabla"], ["calendario", "Calendario"]];
   const nHechosTot = DB.pendientes.filter((x) => x.hecho && pendVisible(x)).length;
   let cuerpo;
   if (UI.pendRealizados) cuerpo = pendRealizados();
@@ -555,44 +574,20 @@ function gestDash() {
   else cuerpo = pendEquipos(auto);
 
   return `
-  <div class="kpis">
-    ${card(cumpl.plazo, "Tareas en plazo", "#16A34A")}
-    ${card(cumpl.riesgo, "En riesgo", "#F59E0B")}
-    ${card(cumpl.retraso, "En retraso", "#DC2626", "kpi-click" + (UI.pendVencidos ? " kpi-on" : ""))}
-    ${card(auto.riesgo.length, "Piezas en riesgo (calendario)", "#DC2626")}
-  </div>
-  ${areaStrip}
-  ${alertas}
-  ${bloqueados.length ? `<div class="bloq-cols">${bloqCard("🏢 Bloqueados por el cliente", bloqCli, "cli")}${bloqCard("🏠 Bloqueados internos", bloqInt, "int")}</div>` : ""}
-  ${cargaBox}
+  ${statusLine}
+  ${alerta}
   <div class="toolbar" style="margin-bottom:14px">
-    <div class="viewtoggle">${vistas.map(([id, l]) => `<button data-pvista="${id}" class="${!UI.pendRealizados && UI.pendVista === id ? "active" : ""}">${l}</button>`).join("")}</div>
-    <div class="viewtoggle sm">
-      <button data-phecho="0" class="${!UI.pendRealizados ? "active" : ""}">Abiertos (${nAbiertosTot})</button>
-      <button data-phecho="1" class="${UI.pendRealizados ? "active" : ""}">✅ Realizados (${nHechosTot})</button>
-    </div>
-    <div class="viewtoggle sm">
-      <button data-plado="" class="${!UI.pendLado ? "active" : ""}">Todos</button>
-      <button data-plado="cliente" class="${UI.pendLado === "cliente" ? "active" : ""}">🏢 Payless (${nLado("cliente")})</button>
-      <button data-plado="inside" class="${UI.pendLado === "inside" ? "active" : ""}">🏠 Inside (${nLado("inside")})</button>
-    </div>
-    <select id="pendCat">
-      <option value="">🏷️ Todas las categorías</option>
-      ${PEND_CATS.map((c) => `<option value="${c}" ${UI.pendCat === c ? "selected" : ""} ${!nCat(c) && UI.pendCat !== c ? "disabled" : ""}>${c} (${nCat(c)})</option>`).join("")}
-    </select>
-    <select id="pendVer" title="Filtrar a una sola persona">
-      <option value="">👥 Ver a todos</option>
-      <optgroup label="Inside">${inside().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)} · ${esc(pe.rol)}</option>`).join("")}</optgroup>
-      <optgroup label="Cliente">${clientes().map((pe) => `<option value="${pe.id}" ${UI.pendVer === pe.id ? "selected" : ""}>${esc(pe.nombre)} · ${esc(pe.rol)}</option>`).join("")}</optgroup>
-    </select>
-    <input type="search" id="pendQ" placeholder="🔍 Buscar…" value="${esc(UI.pendQ)}" style="width:150px"/>
-    ${nF ? `<button class="btn sm ghost" id="pendLimpiar">✕ Limpiar (${nF})</button>` : ""}
+    <div class="viewtoggle">${vistas.map(([id, l]) => `<button data-pvista="${id}" class="${!UI.pendRealizados && UI.pendVista === id ? "active" : ""}">${l}</button>`).join("")}<button data-phecho="1" class="${UI.pendRealizados ? "active" : ""}">Realizados (${nHechosTot})</button></div>
+    <input type="search" id="pendQ" placeholder="Buscar…" value="${esc(UI.pendQ)}" style="width:170px"/>
+    <button class="btn ${UI.filtrosOpen || nF ? "" : "ghost"}" id="btnFiltros">Filtros${nF ? ` · ${nF}` : ""}</button>
     <div class="spacer"></div>
     <button class="btn primary" id="btnQuickAdd">＋ Agregar pendiente</button>
-    <button class="btn" id="btnCopiarEstatus" title="Arma el estatus (recibido/pendiente) listo para pegar en correo o WhatsApp">📋 Copiar estatus</button>
+    <div class="mas-wrap"><button class="btn" id="btnMas" title="Más acciones">···</button>${UI.masOpen ? `<div class="mas-menu"><button id="btnCopiarEstatus">📋 Copiar estatus para correo/WhatsApp</button></div>` : ""}</div>
   </div>
+  ${filtros}
   ${quickAddPanel()}
-  ${cuerpo}`;
+  ${cuerpo}
+  ${!UI.pendRealizados ? `<details class="carga-box"><summary>Carga de trabajo por responsable (interno)</summary><div class="carga-list">${carga || `<div class="pg-rol">Sin tareas asignadas</div>`}</div></details>` : ""}`;
 }
 
 /* Sección "✅ Realizados": los completados, agrupados por fecha de cierre */
@@ -620,8 +615,8 @@ function pendRealizados() {
 
 /* Vista Equipos (la distribución por columnas/áreas de siempre) */
 function pendEquipos(auto) {
-  const colC = !UI.pendLado || UI.pendLado === "cliente" ? pendCol("cliente", "🏢 Debe el cliente (Payless)", auto) : "";
-  const colI = !UI.pendLado || UI.pendLado === "inside" ? pendCol("inside", "🏠 Debe Inside", auto) : "";
+  const colC = !UI.pendLado || UI.pendLado === "cliente" ? pendCol("cliente", "Debe el cliente (Payless)", auto) : "";
+  const colI = !UI.pendLado || UI.pendLado === "inside" ? pendCol("inside", "Debe Inside", auto) : "";
   return `<div class="pend-cols ${UI.pendLado ? "una" : ""}">${colC}${colI}</div>`;
 }
 
@@ -704,26 +699,19 @@ function mostrarEstatus(t) {
   ta.focus(); ta.select();
 }
 
-/* Tarjeta de pendiente manual, con trazabilidad visible */
+/* Tarjeta calmada: 2 líneas; todo lo demás vive en el modal */
 function manCard(x, draggable, showLado) {
-  const m = x.matrizId ? matriz(x.matrizId) : null;
-  const ultimo = x.historial && x.historial.length ? x.historial[x.historial.length - 1] : null;
-  const dv = diasVencido(x);
-  const cu = cumplimiento(x);
-  const sm = sinMovimiento(x);
-  const pr = PRIORIDADES[x.prioridad || "media"];
+  const venc = diasVencido(x);
+  const atasco = !x.hecho && (x.bloqueadoPor || x.faltaInfo);
+  const tip = x.bloqueadoPor ? "Bloqueado: espera \"" + (((DB.pendientes.find((y) => y.id === x.bloqueadoPor) || {}).titulo) || "") + "\"" : (x.faltaInfo ? "Falta: " + x.faltaInfo : "");
   return `
-    <div class="pend-card prio-${x.prioridad || "media"} ${x.hecho ? "done" : ""}" ${draggable && !x.hecho ? `draggable="true" data-pmove="${x.id}"` : ""}>
+    <div class="pend-card ${x.hecho ? "done" : ""}" ${draggable && !x.hecho ? `draggable="true" data-pmove="${x.id}"` : ""}>
       <label class="pend-check"><input type="checkbox" data-pdone="${x.id}" ${x.hecho ? "checked" : ""}/></label>
-      <div class="pend-body">
-        <div class="pt"><span class="cumpl-dot" style="background:${CUMPLIMIENTO[cu].color}" title="${CUMPLIMIENTO[cu].nombre}"></span>${showLado ? `<span class="lado-tag ${x.lado}">${x.lado === "cliente" ? "🏢" : "🏠"}</span> ` : ""}${esc(x.titulo)}${x.proyecto ? ` <span class="proy-tag">${esc(x.proyecto)}</span>` : ""}</div>
-        <div class="pm">${esc(nombre(x.responsable))} · ${esc((persona(x.responsable) || {}).rol || "")} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${dv ? ` · <span class="late-cell">⏰ hace ${dv} día${dv > 1 ? "s" : ""}</span>` : ""}${sm ? ` · <span class="sinmov" title="Sin ningún movimiento en el historial">💤 sin movimiento ${sm} días</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
-        ${x.faltaInfo && !x.hecho ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
-        ${x.bloqueadoPor && !x.hecho ? (() => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && !bl.hecho ? `<div class="falta-chip">🔒 Bloqueado por: ${esc(bl.titulo.slice(0, 45))}</div>` : ""; })() : ""}
-        ${m ? `<div class="mx-chip" data-vermatriz="${m.id}">🗂️ ${esc(matrizLabel(m))}</div>` : ""}
-        ${ultimo ? `<div class="pn hist">${esc(fechaCorta(ultimo.fecha))} · ${esc(ultimo.texto)}${x.historial.length > 1 ? ` <span class="hist-more">+${x.historial.length - 1} más</span>` : ""}</div>` : (x.notas ? `<div class="pn">${esc(x.notas)}</div>` : "")}
+      <div class="pend-body" data-pedit="${x.id}">
+        <div class="pt">${x.prioridad === "alta" && !x.hecho ? `<span class="prio-dot" title="Prioridad alta"></span>` : ""}${esc(x.titulo)}${atasco ? ` <span class="pcard-ico" title="${esc(tip)}">${x.bloqueadoPor ? "🔒" : "⛔"}</span>` : ""}</div>
+        <div class="pm">${esc(nombre(x.responsable))}${x.limite ? ` · <span class="${venc ? "late-cell" : ""}">${venc ? `venció hace ${venc} día${venc > 1 ? "s" : ""}` : "límite " + esc(fechaCorta(x.limite))}</span>` : ""}</div>
       </div>
-      <span class="pend-acc"><button class="ico-btn" data-pedit="${x.id}" title="Ver historial / editar">✏️</button><button class="ico-btn danger" data-pdel="${x.id}" title="Eliminar">🗑️</button></span>
+      <span class="pend-acc"><button class="ico-btn" data-pedit="${x.id}" title="Abrir">✏️</button><button class="ico-btn danger" data-pdel="${x.id}" title="Eliminar">🗑️</button></span>
     </div>`;
 }
 
@@ -777,7 +765,7 @@ function pendCol(lado, titulo, auto) {
       const vacio = !suyos.length && !autos;
       if (vacio && filtrando) return "";
       return `<div class="pend-grupo ${vacio ? "vacio" : ""}" data-asignap="${pe.id}">
-        <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length + (autos ? 1 : 0)}</span></div>
+        <div class="pg-head"><b>${esc(pe.nombre)}</b> <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length + (autos ? 1 : 0)}</span></div>
         ${autos}${suyos.map((x) => manCard(x, true)).join("")}
         ${vacio ? `<div class="pg-empty">Libre — arrastra aquí para asignarle</div>` : ""}
       </div>`;
@@ -792,7 +780,7 @@ function pendCol(lado, titulo, auto) {
       const vacio = !suyos.length && !autos.length;
       if (vacio && filtrando) return "";
       return `<div class="pend-grupo ${vacio ? "vacio" : ""}" data-asignarea="${esc(area)}">
-        <div class="pg-head">${AREA_ICONO[area] || "📁"} <b>${esc(area)}</b> <span class="pg-rol">${equipo.map((pe) => esc(pe.nombre.split(" ")[0] + " (" + pe.rol + ")")).join(" · ")}</span> <span class="pg-cnt">${suyos.length + autos.length}</span></div>
+        <div class="pg-head"><b>${esc(area)}</b> <span class="pg-rol">${equipo.map((pe) => esc(pe.nombre.split(" ")[0] + " (" + pe.rol + ")")).join(" · ")}</span> <span class="pg-cnt">${suyos.length + autos.length}</span></div>
         ${chooserHTML(area)}
         ${autoCardsDe("inside", { ajustes: autos, porAprobador: {} })}${suyos.map((x) => manCard(x, true)).join("")}
         ${vacio ? `<div class="pg-empty">Arrastra aquí un pendiente para ${esc(area)}</div>` : ""}
@@ -829,7 +817,7 @@ function pendTablero() {
         `<div class="pg-empty">Nada aquí — arrastra una tarjeta o crea una con ＋</div>`;
     }
     return `<div class="kb-col" data-estadocol="${est}">
-      <div class="kb-head"><span class="dot" style="background:${cfg.color}"></span> <b>${cfg.nombre}</b> <span class="pg-cnt">${n}</span>
+      <div class="kb-head"><span class="dot" style="background:#CBD5E1"></span> <b>${cfg.nombre}</b> <span class="pg-cnt">${n}</span>
         <button class="ico-btn" data-qcol="${est}" title="Crear aquí">＋</button></div>
       ${inner}
     </div>`;
@@ -1057,7 +1045,7 @@ function gestionCliente() {
     if (!suyos.length) return "";
     const esYo = pe.id === UI.clienteId;
     return `<div class="pend-grupo ${esYo ? "yo" : ""}">
-      <div class="pg-head">👤 <b>${esc(pe.nombre)}</b> ${esYo ? '<span class="auto-tag">tú</span>' : ""} <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length}</span></div>
+      <div class="pg-head"><b>${esc(pe.nombre)}</b> ${esYo ? '<span class="auto-tag">tú</span>' : ""} <span class="pg-rol">${esc(pe.rol)}</span> <span class="pg-cnt">${suyos.length}</span></div>
       ${suyos.map((x) => {
         const u = ultimoEv(x);
         return `
@@ -1533,7 +1521,12 @@ function wireContent() {
   bind("pendLimpiar", limpiarPend);
   bind("pendLimpiar2", limpiarPend);
   bind("kpiVencidos", () => { UI.pendVencidos = !UI.pendVencidos; render(); });
-  bind("btnCopiarEstatus", copiarEstatus);
+  bind("btnFiltros", () => { UI.filtrosOpen = !UI.filtrosOpen; render(); });
+  bind("alertTgl", () => { UI.alertOpen = !UI.alertOpen; render(); });
+  bind("alertTgl2", () => { UI.alertOpen = true; render(); });
+  bind("btnMas", () => { UI.masOpen = !UI.masOpen; render(); });
+  bind("chkVencidos", () => { UI.pendVencidos = document.getElementById("chkVencidos").checked; render(); }, "onchange");
+  bind("btnCopiarEstatus", () => { UI.masOpen = false; copiarEstatus(); });
 
   // Selector de vista y filtro de lado
   document.querySelectorAll("[data-pvista]").forEach((b) => b.onclick = () => {
