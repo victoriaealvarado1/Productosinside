@@ -32,6 +32,7 @@ const UI = {
   pendHechoOpen: false,       // columna "Hecho" del tablero expandida
   quickAdd: null,             // {lado, titulo, estadoPreset, limitePreset} — panel de creación rápida
   qaLado: "cliente",          // último lado usado al crear rápido
+  pendRealizados: false,      // sección "✅ Realizados" (pendientes completados)
   month: SEED.meta.mesActual,
   filtros: { region: [], campana: "", canal: "", formato: "", estado: "", aprobacion: "", responsable: "", q: "" },
   showBacklog: false,         // panel "Por asignar fecha" desplegable (oculto por defecto)
@@ -470,8 +471,11 @@ function gestDash() {
   const nF = nFiltrosActivos();
 
   const vistas = [["equipos", "👥 Equipos"], ["tablero", "🗂️ Tablero"], ["tabla", "☰ Tabla"], ["calendario", "📅 Calendario"]];
+  const nAbiertosTot = DB.pendientes.filter((x) => !x.hecho && pendVisible(x)).length;
+  const nHechosTot = DB.pendientes.filter((x) => x.hecho && pendVisible(x)).length;
   let cuerpo;
-  if (UI.pendVista === "tablero") cuerpo = pendTablero();
+  if (UI.pendRealizados) cuerpo = pendRealizados();
+  else if (UI.pendVista === "tablero") cuerpo = pendTablero();
   else if (UI.pendVista === "tabla") cuerpo = pendTabla();
   else if (UI.pendVista === "calendario") cuerpo = pendCalendario();
   else cuerpo = pendEquipos(auto);
@@ -485,7 +489,11 @@ function gestDash() {
   </div>
   ${alertas}
   <div class="toolbar" style="margin-bottom:14px">
-    <div class="viewtoggle">${vistas.map(([id, l]) => `<button data-pvista="${id}" class="${UI.pendVista === id ? "active" : ""}">${l}</button>`).join("")}</div>
+    <div class="viewtoggle">${vistas.map(([id, l]) => `<button data-pvista="${id}" class="${!UI.pendRealizados && UI.pendVista === id ? "active" : ""}">${l}</button>`).join("")}</div>
+    <div class="viewtoggle sm">
+      <button data-phecho="0" class="${!UI.pendRealizados ? "active" : ""}">Abiertos (${nAbiertosTot})</button>
+      <button data-phecho="1" class="${UI.pendRealizados ? "active" : ""}">✅ Realizados (${nHechosTot})</button>
+    </div>
     <div class="viewtoggle sm">
       <button data-plado="" class="${!UI.pendLado ? "active" : ""}">Todos</button>
       <button data-plado="cliente" class="${UI.pendLado === "cliente" ? "active" : ""}">🏢 Payless (${nLado("cliente")})</button>
@@ -508,6 +516,29 @@ function gestDash() {
   </div>
   ${quickAddPanel()}
   ${cuerpo}`;
+}
+
+/* Sección "✅ Realizados": los completados, agrupados por fecha de cierre */
+function fechaCompletado(x) {
+  const evs = (x.historial || []).filter((h) => h.texto.includes("✅ Completado"));
+  return evs.length ? evs[evs.length - 1].fecha : ultimaAct(x) || HOY;
+}
+function pendRealizados() {
+  const hechos = DB.pendientes.filter((x) => x.hecho && pendVisible(x));
+  if (!hechos.length) return `<div class="calwrap"><div class="empty"><div class="big">✅</div>
+    <p>Aún no hay pendientes realizados${nFiltrosActivos() ? " con estos filtros" : ""}.</p>
+    <p class="pm">Cuando marques el check de un pendiente, aparecerá aquí con su fecha de cierre.</p></div></div>`;
+  const porFecha = {};
+  hechos.forEach((x) => { const f = fechaCompletado(x); (porFecha[f] = porFecha[f] || []).push(x); });
+  const dias = Object.keys(porFecha).sort((a, b) => b.localeCompare(a));
+  return `
+  <div class="pill-note">✅ <b>Pendientes realizados.</b> Desmarca el check de cualquiera para reabrirlo (vuelve a "Abiertos" con su evento 🔄 en el historial).</div>
+  <div class="pend-col" style="max-width:860px">
+    ${dias.map((f) => `
+      <div class="pend-done-sep">✔️ ${esc(fechaCorta(f))} · ${porFecha[f].length} completado${porFecha[f].length > 1 ? "s" : ""}</div>
+      ${porFecha[f].map((x) => manCard(x, false, true)).join("")}
+    `).join("")}
+  </div>`;
 }
 
 /* Vista Equipos (la distribución por columnas/áreas de siempre) */
@@ -695,7 +726,7 @@ function pendCol(lado, titulo, auto) {
       </span>
     </div>
     ${cuerpo || `<div class="backlog-empty">Nada pendiente 🎉</div>`}
-    ${hechos.length ? `<div class="pend-done-sep">Completados (${hechos.length})</div>${hechos.map((x) => manCard(x, false)).join("")}` : ""}
+    ${hechos.length ? `<button class="btn sm ghost" data-phecho="1" style="width:100%;margin-top:6px">✅ Ver ${hechos.length} realizado${hechos.length > 1 ? "s" : ""} →</button>` : ""}
   </div>`;
 }
 const AREA_ICONO = { Cuentas: "💼", Diseño: "🎨", Audiovisual: "🎬", Creatividad: "💡", Community: "💬", Medios: "📈", Dirección: "🧭" };
@@ -707,10 +738,10 @@ function pendTablero() {
     let lista = visibles.filter((x) => (x.estado || "por_hacer") === est).sort(ordenLimite);
     const n = lista.length;
     let inner;
-    if (est === "hecho" && !UI.pendHechoOpen) {
-      inner = `<button class="btn sm ghost" id="kbVerHechos" style="width:100%">Ver ${n} completado${n === 1 ? "" : "s"} ▾</button>`;
+    if (est === "hecho") {
+      inner = `<button class="btn sm ghost" id="kbVerHechos" style="width:100%">Ver ${n} realizado${n === 1 ? "" : "s"} →</button>
+        <div class="pg-empty" style="margin-top:8px">Suelta aquí una tarjeta para completarla</div>`;
     } else {
-      if (est === "hecho") lista = lista.slice(-10);
       inner = lista.map((x) => manCard(x, true, true)).join("") ||
         `<div class="pg-empty">Nada aquí — arrastra una tarjeta o crea una con ＋</div>`;
     }
@@ -725,7 +756,8 @@ function pendTablero() {
 
 /* ---- Vista Tabla (filas/columnas, orden por encabezado, quick-add) ---- */
 function pendTabla() {
-  const visibles = DB.pendientes.filter((x) => pendVisible(x));
+  // Los completados viven en "✅ Realizados"
+  const visibles = DB.pendientes.filter((x) => !x.hecho && pendVisible(x));
   const s = UI.pendSort;
   const val = (x) => {
     switch (s.col) {
@@ -1410,9 +1442,11 @@ function wireContent() {
   // Selector de vista y filtro de lado
   document.querySelectorAll("[data-pvista]").forEach((b) => b.onclick = () => {
     UI.pendVista = b.dataset.pvista;
+    UI.pendRealizados = false;
     try { localStorage.setItem("gi_pend_vista", UI.pendVista); } catch (e) {}
     render();
   });
+  document.querySelectorAll("[data-phecho]").forEach((b) => b.onclick = () => { UI.pendRealizados = b.dataset.phecho === "1"; render(); });
   document.querySelectorAll("[data-plado]").forEach((b) => b.onclick = () => { UI.pendLado = b.dataset.plado; render(); });
 
   // — Creación rápida (popover global) —
@@ -1472,7 +1506,7 @@ function wireContent() {
   document.querySelectorAll("[data-qdia]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); UI.quickAdd = { lado: UI.qaLado, limitePreset: b.dataset.qdia }; render(); const t = document.getElementById("qpTitulo"); if (t) t.focus(); });
 
   // — Tablero: arrastrar entre columnas de estado —
-  bind("kbVerHechos", () => { UI.pendHechoOpen = true; render(); });
+  bind("kbVerHechos", () => { UI.pendRealizados = true; render(); });
   document.querySelectorAll("[data-estadocol]").forEach((zone) => {
     zone.addEventListener("dragover", (e) => { if (e.dataTransfer.types.includes("text/pend")) { e.preventDefault(); zone.classList.add("drop-hover"); } });
     zone.addEventListener("dragleave", (e) => { if (!zone.contains(e.relatedTarget)) zone.classList.remove("drop-hover"); });
