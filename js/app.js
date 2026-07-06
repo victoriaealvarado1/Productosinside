@@ -3,7 +3,7 @@
    Vanilla JS, sin build. Persiste en localStorage.
    ============================================================ */
 
-const KEY = "gestion_inside_v2_2";
+const KEY = "gestion_inside_v2_3";
 // Fecha real del día (la trazabilidad siempre registra la fecha verdadera)
 const HOY = new Date().toISOString().slice(0, 10);
 const MES_ACTUAL = HOY.slice(0, 7);
@@ -25,6 +25,7 @@ const UI = {
   pendChooser: null,          // {pendId, area} — elegir persona al soltar en un área
   pendVista: (() => { try { return localStorage.getItem("gi_pend_vista") || "equipos"; } catch (e) { return "equipos"; } })(), // equipos | tablero | tabla | calendario
   pendLado: "",               // filtro: "" | cliente | inside
+  pendArea: "",               // filtro por área del equipo Inside
   pendCat: "",                // filtro por categoría de tarea
   pendSort: { col: "limite", dir: 1 },
   pendCalMes: MES_ACTUAL,     // mes de la vista calendario de pendientes
@@ -54,13 +55,21 @@ function load() {
     }
   } catch (e) {}
   if (!db) db = JSON.parse(JSON.stringify(SEED));
-  // Migración: estado de flujo de cada pendiente (para el tablero)
+  // Migración: estado de flujo, prioridad y proyecto de cada pendiente
   db.pendientes.forEach((x) => {
+    if (!x.prioridad) x.prioridad = "media";
+    if (x.proyecto == null) x.proyecto = "";
     if (x.estado) return;
     if (x.hecho) x.estado = "hecho";
     else if (x.faltaInfo || x.bloqueadoPor) x.estado = "en_espera";
     else if (x.historial && x.historial.length > 1) x.estado = "en_curso";
     else x.estado = "por_hacer";
+  });
+  // Migración: áreas del equipo alineadas al cuadro de estatus (desde la semilla)
+  db.areas = JSON.parse(JSON.stringify(SEED.areas));
+  db.personas.forEach((p) => {
+    const s = SEED.personas.find((sp) => sp.id === p.id);
+    if (s && s.area) { p.area = s.area; p.rol = s.rol; }
   });
   return db;
 }
@@ -390,6 +399,35 @@ const PEND_ESTADOS = {
 };
 const PEND_CATS = ["Accesos", "Editables", "Inputs", "Contenido", "Diseño", "Matrices", "Gestión", "Equipo", "Creatividad"];
 
+// Prioridades (del cuadro de estatus)
+const PRIORIDADES = {
+  alta: { nombre: "🔴 Alta", color: "#DC2626" },
+  media: { nombre: "🟠 Media", color: "#F59E0B" },
+  baja: { nombre: "🟢 Baja", color: "#16A34A" },
+};
+
+// Semáforo de cumplimiento: en plazo / en riesgo / en retraso
+function cumplimiento(x) {
+  if (x.hecho) return "plazo";
+  if (x.limite && x.limite < HOY) return "retraso";
+  if ((x.limite && x.limite <= HOY_MAS_2) || x.bloqueadoPor || x.faltaInfo) return "riesgo";
+  return "plazo";
+}
+const CUMPLIMIENTO = {
+  plazo: { nombre: "En plazo", color: "#16A34A" },
+  riesgo: { nombre: "En riesgo", color: "#F59E0B" },
+  retraso: { nombre: "En retraso", color: "#DC2626" },
+};
+
+// Días sin movimiento (sin eventos nuevos en el historial)
+function sinMovimiento(x) {
+  if (x.hecho) return 0;
+  const f = ultimaAct(x);
+  if (!f) return 0;
+  const n = Math.round((new Date(HOY) - new Date(f)) / 86400000);
+  return n >= 4 ? n : 0;
+}
+
 const diasVencido = (x) => {
   if (!x.limite || x.hecho || x.limite >= HOY) return 0;
   return Math.round((new Date(HOY) - new Date(x.limite)) / 86400000);
@@ -452,11 +490,46 @@ function viewGestion() {
 function gestDash() {
   const auto = pendAuto();
   const man = DB.pendientes;
-  const abiertos = (lado) => man.filter((x) => x.lado === lado && !x.hecho);
-  const nCliente = abiertos("cliente").length + Object.keys(auto.porAprobador).length;
-  const nInside = abiertos("inside").length + auto.ajustes.length;
-  const vencidos = man.filter((x) => !x.hecho && x.limite && x.limite < HOY).length;
+  const abiertosAll = man.filter((x) => !x.hecho);
   const card = (n, l, color, extra) => `<div class="kpi ${extra || ""}" ${extra ? `id="kpiVencidos" title="Clic para ver solo los vencidos"` : ""}><div class="n" style="color:${color}">${n}</div><div class="l">${l}</div></div>`;
+
+  // Cumplimiento general (semáforo del cuadro de estatus)
+  const cumpl = { plazo: 0, riesgo: 0, retraso: 0 };
+  abiertosAll.forEach((x) => cumpl[cumplimiento(x)]++);
+
+  // Contadores por área (+ "Respuesta del cliente" aparte, como en el Excel)
+  const nRespCliente = abiertosAll.filter((x) => x.lado === "cliente").length;
+  const nArea = (a) => abiertosAll.filter((x) => x.lado === "inside" && (persona(x.responsable) || {}).area === a).length;
+  const areaStrip = `<div class="area-strip">
+    <button class="area-chip cliente ${UI.pendLado === "cliente" && !UI.pendArea ? "on" : ""}" data-achip="cliente">✉️ Respuesta del cliente <b>${nRespCliente}</b></button>
+    ${DB.areas.map((a) => `<button class="area-chip ${UI.pendArea === a ? "on" : ""}" data-achip="${esc(a)}">${AREA_ICONO[a] || "📁"} ${esc(a)} <b>${nArea(a)}</b></button>`).join("")}
+  </div>`;
+
+  // Bloqueados: causa cliente vs causa interna, con días de espera
+  const bloqueados = abiertosAll.filter((x) => x.bloqueadoPor);
+  const diasBloq = (x) => {
+    const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor);
+    const f = bl && bl.historial && bl.historial.length ? bl.historial[0].fecha : HOY;
+    return Math.max(0, Math.round((new Date(HOY) - new Date(f)) / 86400000));
+  };
+  const bloqCard = (titulo, lista, clase) => `<div class="bloq-card ${clase}">
+    <b>${titulo} (${lista.length})</b>
+    ${lista.map((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return `<div class="bloq-item" data-pedit="${x.id}">🔒 ${esc(x.titulo.slice(0, 42))} <span class="pg-rol">espera "${esc((bl || {}).titulo || "").slice(0, 30)}" hace ${diasBloq(x)} día${diasBloq(x) === 1 ? "" : "s"}</span></div>`; }).join("") || `<div class="pg-rol">Ninguno 🎉</div>`}
+  </div>`;
+  const bloqCli = bloqueados.filter((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && bl.lado === "cliente"; });
+  const bloqInt = bloqueados.filter((x) => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && bl.lado === "inside"; });
+
+  // Carga de trabajo por responsable (solo interna, colapsable)
+  const carga = inside().map((pe) => {
+    const suyos = abiertosAll.filter((x) => x.responsable === pe.id);
+    if (!suyos.length) return "";
+    const c = { plazo: 0, riesgo: 0, retraso: 0 };
+    suyos.forEach((x) => c[cumplimiento(x)]++);
+    const seg = (k) => c[k] ? `<i style="flex:${c[k]};background:${CUMPLIMIENTO[k].color}" title="${CUMPLIMIENTO[k].nombre}: ${c[k]}"></i>` : "";
+    return `<div class="carga-row"><span class="carga-nombre">${esc(pe.nombre.split(" ")[0])} <span class="pg-rol">${esc(pe.rol)}</span></span>
+      <span class="carga-bar">${seg("retraso")}${seg("riesgo")}${seg("plazo")}</span><b>${suyos.length}</b></div>`;
+  }).join("");
+  const cargaBox = `<details class="carga-box"><summary>📊 Carga de trabajo por responsable (interno)</summary><div class="carga-list">${carga || `<div class="pg-rol">Sin tareas asignadas</div>`}</div></details>`;
 
   const alertas = auto.riesgo.length ? `
     <div class="riesgo-box">
@@ -482,12 +555,15 @@ function gestDash() {
 
   return `
   <div class="kpis">
-    ${card(nCliente, "Pendientes del cliente", "#F59E0B")}
-    ${card(nInside, "Pendientes de Inside", "#6D28D9")}
-    ${card(auto.riesgo.length, "Piezas en riesgo", "#DC2626")}
-    ${card(vencidos, "Pendientes vencidos", "#DC2626", "kpi-click" + (UI.pendVencidos ? " kpi-on" : ""))}
+    ${card(cumpl.plazo, "Tareas en plazo", "#16A34A")}
+    ${card(cumpl.riesgo, "En riesgo", "#F59E0B")}
+    ${card(cumpl.retraso, "En retraso", "#DC2626", "kpi-click" + (UI.pendVencidos ? " kpi-on" : ""))}
+    ${card(auto.riesgo.length, "Piezas en riesgo (calendario)", "#DC2626")}
   </div>
+  ${areaStrip}
   ${alertas}
+  ${bloqueados.length ? `<div class="bloq-cols">${bloqCard("🏢 Bloqueados por el cliente", bloqCli, "cli")}${bloqCard("🏠 Bloqueados internos", bloqInt, "int")}</div>` : ""}
+  ${cargaBox}
   <div class="toolbar" style="margin-bottom:14px">
     <div class="viewtoggle">${vistas.map(([id, l]) => `<button data-pvista="${id}" class="${!UI.pendRealizados && UI.pendVista === id ? "active" : ""}">${l}</button>`).join("")}</div>
     <div class="viewtoggle sm">
@@ -563,6 +639,7 @@ function quickAddPanel() {
     </div>
     <div class="qp-row">
       <input type="text" id="qpTitulo" placeholder="¿Qué falta? (la tarea)" value="${esc(qa.titulo || "")}" style="flex:1"/>
+      <select id="qpPrio">${Object.entries(PRIORIDADES).map(([k, v]) => `<option value="${k}" ${k === "media" ? "selected" : ""}>${v.nombre}</option>`).join("")}</select>
       <select id="qpCat">${PEND_CATS.map((c) => `<option ${c === (qa.cat || "Gestión") ? "selected" : ""}>${c}</option>`).join("")}</select>
       <input type="date" id="qpLim" value="${esc(qa.limitePreset || "")}" title="Límite (opcional)"/>
       <button class="btn primary" id="qpCrear">Crear</button>
@@ -576,6 +653,7 @@ function quickAddPanel() {
 /* Filtros del dashboard de pendientes */
 function pendVisible(x, ignorar) {
   if (ignorar !== "lado" && UI.pendLado && x.lado !== UI.pendLado) return false;
+  if (UI.pendArea && !(x.lado === "inside" && (persona(x.responsable) || {}).area === UI.pendArea)) return false;
   if (ignorar !== "cat" && UI.pendCat && x.area !== UI.pendCat) return false;
   if (UI.pendVer && x.responsable !== UI.pendVer) return false;
   if (UI.pendVencidos && !(x.limite && x.limite < HOY && !x.hecho)) return false;
@@ -586,7 +664,7 @@ function pendVisible(x, ignorar) {
   }
   return true;
 }
-const nFiltrosActivos = () => [UI.pendLado, UI.pendCat, UI.pendVer, UI.pendQ, UI.pendVencidos].filter(Boolean).length;
+const nFiltrosActivos = () => [UI.pendLado, UI.pendCat, UI.pendVer, UI.pendQ, UI.pendVencidos, UI.pendArea].filter(Boolean).length;
 /* Orden: vencidos primero, luego por fecha límite, sin límite al final */
 function ordenLimite(a, b) {
   return (a.limite || "9999-12-31").localeCompare(b.limite || "9999-12-31");
@@ -598,7 +676,7 @@ function textoEstatus() {
   const abiertosC = DB.pendientes.filter((x) => x.lado === "cliente" && !x.hecho).sort(ordenLimite);
   const abiertosI = DB.pendientes.filter((x) => x.lado === "inside" && !x.hecho).sort(ordenLimite);
   const hechos = DB.pendientes.filter((x) => x.hecho);
-  const linea = (x) => `• ${x.titulo} — ${nombre(x.responsable)}${x.limite ? ` (límite ${fechaCorta(x.limite)})` : ""}${x.faltaInfo ? ` ⛔ ${x.faltaInfo}` : ""}`;
+  const linea = (x) => `• ${x.prioridad === "alta" ? "🔴 " : ""}${x.proyecto ? `[${x.proyecto}] ` : ""}${x.titulo} — ${nombre(x.responsable)}${x.limite ? ` (límite ${fechaCorta(x.limite)})` : ""}${x.faltaInfo ? ` ⛔ ${x.faltaInfo}` : ""}`;
   let t = `ESTATUS PAYLESS · ${fechaCorta(HOY)}\n`;
   t += `\n🏢 PENDIENTE DE PAYLESS (${abiertosC.length}):\n${abiertosC.map(linea).join("\n") || "• Nada pendiente"}\n`;
   const aprob = Object.entries(auto.porAprobador);
@@ -629,12 +707,15 @@ function manCard(x, draggable, showLado) {
   const m = x.matrizId ? matriz(x.matrizId) : null;
   const ultimo = x.historial && x.historial.length ? x.historial[x.historial.length - 1] : null;
   const dv = diasVencido(x);
+  const cu = cumplimiento(x);
+  const sm = sinMovimiento(x);
+  const pr = PRIORIDADES[x.prioridad || "media"];
   return `
-    <div class="pend-card ${x.hecho ? "done" : ""}" ${draggable && !x.hecho ? `draggable="true" data-pmove="${x.id}"` : ""}>
+    <div class="pend-card prio-${x.prioridad || "media"} ${x.hecho ? "done" : ""}" ${draggable && !x.hecho ? `draggable="true" data-pmove="${x.id}"` : ""}>
       <label class="pend-check"><input type="checkbox" data-pdone="${x.id}" ${x.hecho ? "checked" : ""}/></label>
       <div class="pend-body">
-        <div class="pt">${showLado ? `<span class="lado-tag ${x.lado}">${x.lado === "cliente" ? "🏢" : "🏠"}</span> ` : ""}${esc(x.titulo)}</div>
-        <div class="pm">${esc(nombre(x.responsable))} · ${esc((persona(x.responsable) || {}).rol || "")} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${dv ? ` · <span class="late-cell">⏰ hace ${dv} día${dv > 1 ? "s" : ""}</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
+        <div class="pt"><span class="cumpl-dot" style="background:${CUMPLIMIENTO[cu].color}" title="${CUMPLIMIENTO[cu].nombre}"></span>${showLado ? `<span class="lado-tag ${x.lado}">${x.lado === "cliente" ? "🏢" : "🏠"}</span> ` : ""}${esc(x.titulo)}${x.proyecto ? ` <span class="proy-tag">${esc(x.proyecto)}</span>` : ""}</div>
+        <div class="pm">${esc(nombre(x.responsable))} · ${esc((persona(x.responsable) || {}).rol || "")} · ${esc(x.area)}${x.limite ? ` · <span class="${!x.hecho && x.limite < HOY ? "late-cell" : ""}">límite ${esc(fechaCorta(x.limite))}</span>` : ""}${dv ? ` · <span class="late-cell">⏰ hace ${dv} día${dv > 1 ? "s" : ""}</span>` : ""}${sm ? ` · <span class="sinmov" title="Sin ningún movimiento en el historial">💤 sin movimiento ${sm} días</span>` : ""}${x.link ? ` · <a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">link ↗</a>` : ""}</div>
         ${x.faltaInfo && !x.hecho ? `<div class="falta-chip">⛔ Falta: ${esc(x.faltaInfo)}</div>` : ""}
         ${x.bloqueadoPor && !x.hecho ? (() => { const bl = DB.pendientes.find((y) => y.id === x.bloqueadoPor); return bl && !bl.hecho ? `<div class="falta-chip">🔒 Bloqueado por: ${esc(bl.titulo.slice(0, 45))}</div>` : ""; })() : ""}
         ${m ? `<div class="mx-chip" data-vermatriz="${m.id}">🗂️ ${esc(matrizLabel(m))}</div>` : ""}
@@ -729,7 +810,7 @@ function pendCol(lado, titulo, auto) {
     ${hechos.length ? `<button class="btn sm ghost" data-phecho="1" style="width:100%;margin-top:6px">✅ Ver ${hechos.length} realizado${hechos.length > 1 ? "s" : ""} →</button>` : ""}
   </div>`;
 }
-const AREA_ICONO = { Cuentas: "💼", Diseño: "🎨", Audiovisual: "🎬", Creatividad: "💡", Community: "💬", Medios: "📈", Dirección: "🧭" };
+const AREA_ICONO = { "Gestión": "💼", "Contenidos": "💡", "Diseño": "🎨", "Edición": "🎬", "Medios": "📈", "Community": "💬" };
 
 /* ---- Vista Tablero (kanban por estado de flujo) ---- */
 function pendTablero() {
@@ -762,6 +843,8 @@ function pendTabla() {
   const val = (x) => {
     switch (s.col) {
       case "titulo": return x.titulo.toLowerCase();
+      case "proy": return (x.proyecto || "").toLowerCase();
+      case "prio": return ["alta", "media", "baja"].indexOf(x.prioridad || "media");
       case "lado": return x.lado;
       case "resp": return nombre(x.responsable).toLowerCase();
       case "cat": return x.area;
@@ -777,32 +860,36 @@ function pendTabla() {
     const e = PEND_ESTADOS[x.estado || "por_hacer"];
     const dv = diasVencido(x);
     const u = x.historial && x.historial.length ? x.historial[x.historial.length - 1] : null;
+    const prw = PRIORIDADES[x.prioridad || "media"];
     return `<tr class="${x.hecho ? "fila-hecha" : ""}">
       <td><input type="checkbox" data-pdone="${x.id}" ${x.hecho ? "checked" : ""}/></td>
+      <td><input type="text" data-iproy="${x.id}" value="${esc(x.proyecto || "")}" placeholder="—" style="width:110px"/></td>
       <td class="tt" data-pedit="${x.id}"><b>${esc(x.titulo)}</b>
         ${x.faltaInfo && !x.hecho ? `<div class="paises" style="color:#B91C1C">⛔ ${esc(x.faltaInfo)}</div>` : ""}
         ${dv ? `<div class="paises" style="color:#B91C1C">⏰ Vencido hace ${dv} día${dv > 1 ? "s" : ""}</div>` : ""}</td>
       <td><select data-ilado="${x.id}"><option value="cliente" ${x.lado === "cliente" ? "selected" : ""}>🏢 Payless</option><option value="inside" ${x.lado === "inside" ? "selected" : ""}>🏠 Inside</option></select></td>
       <td><select data-iresp="${x.id}">${opciones(x.lado, x.responsable)}</select></td>
-      <td><select data-icat="${x.id}">${PEND_CATS.map((c) => `<option ${x.area === c ? "selected" : ""}>${c}</option>`).join("")}</select></td>
+      <td><select data-iprio="${x.id}" style="color:${prw.color};font-weight:700">${Object.entries(PRIORIDADES).map(([k, v]) => `<option value="${k}" ${(x.prioridad || "media") === k ? "selected" : ""}>${v.nombre}</option>`).join("")}</select></td>
       <td><select data-iestado="${x.id}" style="color:${e.color};font-weight:700">${Object.entries(PEND_ESTADOS).map(([k, v]) => `<option value="${k}" ${(x.estado || "por_hacer") === k ? "selected" : ""}>${v.nombre}</option>`).join("")}</select></td>
       <td><input type="date" data-ilim="${x.id}" value="${esc(x.limite)}" class="${dv ? "late-cell" : ""}"/></td>
-      <td class="paises">${u ? `${esc(fechaCorta(u.fecha))} · ${esc(u.texto.slice(0, 30))}` : "—"}</td>
+      <td><select data-icat="${x.id}">${PEND_CATS.map((c) => `<option ${x.area === c ? "selected" : ""}>${c}</option>`).join("")}</select></td>
+      <td class="paises">${u ? `${esc(fechaCorta(u.fecha))} · ${esc(u.texto.slice(0, 26))}` : "—"}</td>
+      <td>${x.link ? `<a class="lk" href="${esc(x.link)}" target="_blank" rel="noopener">Abrir ↗</a>` : `<span class="nolink">—</span>`}</td>
       <td class="acc"><button class="ico-btn" data-pedit="${x.id}">✏️</button><button class="ico-btn danger" data-pdel="${x.id}">🗑️</button></td>
     </tr>`;
   }).join("");
   const qaGente = UI.qaLado === "inside" ? inside() : clientes();
-  return `<table class="tbl pend-tabla"><thead><tr>
-      <th></th>${th("titulo", "Pendiente")}${th("lado", "Lado")}${th("resp", "Responsable")}${th("cat", "Categoría")}${th("estado", "Estado")}${th("limite", "Límite")}${th("act", "Última actividad")}<th></th>
+  return `<div style="overflow-x:auto"><table class="tbl pend-tabla"><thead><tr>
+      <th></th>${th("proy", "Proyecto")}${th("titulo", "Tarea")}${th("lado", "Lado")}${th("resp", "Responsable")}${th("prio", "Prioridad")}${th("estado", "Estado")}${th("limite", "Límite")}${th("cat", "Categoría")}${th("act", "Última actividad")}<th>Link</th><th></th>
     </tr></thead><tbody>
-    ${filas || `<tr><td colspan="9"><div class="backlog-empty">Sin resultados con estos filtros — <button class="link-btn" id="pendLimpiar2">✕ limpiar filtros</button></div></td></tr>`}
-    <tr class="qadd"><td>＋</td>
+    ${filas || `<tr><td colspan="12"><div class="backlog-empty">Sin resultados con estos filtros — <button class="link-btn" id="pendLimpiar2">✕ limpiar filtros</button></div></td></tr>`}
+    <tr class="qadd"><td>＋</td><td></td>
       <td><input type="text" id="qaTitulo" placeholder="＋ Escribe el pendiente y pulsa Enter…" style="width:100%"/></td>
       <td><select id="qaLadoSel"><option value="cliente" ${UI.qaLado === "cliente" ? "selected" : ""}>🏢 Payless</option><option value="inside" ${UI.qaLado === "inside" ? "selected" : ""}>🏠 Inside</option></select></td>
       <td><select id="qaRespSel">${qaGente.map((pe) => `<option value="${pe.id}">${esc(pe.nombre)} — ${esc(pe.rol)}</option>`).join("")}</select></td>
-      <td colspan="5" class="paises">Enter crea · categoría Gestión · sin límite</td>
+      <td colspan="8" class="paises">Enter crea · prioridad media · categoría Gestión · sin límite</td>
     </tr>
-  </tbody></table>`;
+  </tbody></table></div>`;
 }
 
 /* ---- Vista Calendario de pendientes (por fecha límite) ---- */
@@ -1050,7 +1137,11 @@ function openPendModal(id, ladoPreset, matrizPreset, extra) {
       <div><label class="fld">Categoría</label><select id="pArea" style="width:100%">${PEND_CATS.map((a) => `<option ${p.area === a ? "selected" : ""}>${a}</option>`).join("")}</select></div>
       <div><label class="fld">Fecha límite (opcional)</label><input type="date" id="pLimite" value="${esc(p.limite)}" style="width:100%"/></div>
     </div>
-    <div><label class="fld">Estado de flujo</label><select id="pEstado" style="width:100%">${Object.entries(PEND_ESTADOS).map(([k, v]) => `<option value="${k}" ${(p.estado || "por_hacer") === k ? "selected" : ""}>${v.nombre}</option>`).join("")}</select></div>
+    <div class="row2">
+      <div><label class="fld">Estado de flujo</label><select id="pEstado" style="width:100%">${Object.entries(PEND_ESTADOS).map(([k, v]) => `<option value="${k}" ${(p.estado || "por_hacer") === k ? "selected" : ""}>${v.nombre}</option>`).join("")}</select></div>
+      <div><label class="fld">Prioridad</label><select id="pPrio" style="width:100%">${Object.entries(PRIORIDADES).map(([k, v]) => `<option value="${k}" ${(p.prioridad || "media") === k ? "selected" : ""}>${v.nombre}</option>`).join("")}</select></div>
+    </div>
+    <div><label class="fld">Proyecto (opcional, como en el cuadro de estatus)</label><input type="text" id="pProy" value="${esc(p.proyecto || "")}" placeholder="Ej: Liquidación, Accesos, Estrategia Payless..." style="width:100%"/></div>
     <div class="row2">
       <div><label class="fld">Matriz vinculada (opcional)</label><select id="pMatriz" style="width:100%">
         <option value="">— Sin matriz —</option>
@@ -1116,6 +1207,8 @@ function openPendModal(id, ladoPreset, matrizPreset, extra) {
     p.matrizId = document.getElementById("pMatriz").value;
     p.bloqueadoPor = document.getElementById("pBloq").value;
     p.faltaInfo = document.getElementById("pFalta").value.trim();
+    p.prioridad = document.getElementById("pPrio").value;
+    p.proyecto = document.getElementById("pProy").value.trim();
     p.link = document.getElementById("pLink").value.trim();
     p.notas = document.getElementById("pNotas").value.trim();
     p.historial = hist;
@@ -1433,7 +1526,7 @@ function wireContent() {
     const n = document.getElementById("pendQ");
     if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); }
   };
-  const limpiarPend = () => { UI.pendVer = ""; UI.pendQ = ""; UI.pendVencidos = false; UI.pendLado = ""; UI.pendCat = ""; render(); };
+  const limpiarPend = () => { UI.pendVer = ""; UI.pendQ = ""; UI.pendVencidos = false; UI.pendLado = ""; UI.pendCat = ""; UI.pendArea = ""; render(); };
   bind("pendLimpiar", limpiarPend);
   bind("pendLimpiar2", limpiarPend);
   bind("kpiVencidos", () => { UI.pendVencidos = !UI.pendVencidos; render(); });
@@ -1448,6 +1541,12 @@ function wireContent() {
   });
   document.querySelectorAll("[data-phecho]").forEach((b) => b.onclick = () => { UI.pendRealizados = b.dataset.phecho === "1"; render(); });
   document.querySelectorAll("[data-plado]").forEach((b) => b.onclick = () => { UI.pendLado = b.dataset.plado; render(); });
+  document.querySelectorAll("[data-achip]").forEach((b) => b.onclick = () => {
+    const v = b.dataset.achip;
+    if (v === "cliente") { const ya = UI.pendLado === "cliente" && !UI.pendArea; UI.pendLado = ya ? "" : "cliente"; UI.pendArea = ""; }
+    else { const ya = UI.pendArea === v; UI.pendArea = ya ? "" : v; UI.pendLado = ya ? "" : "inside"; }
+    render();
+  });
 
   // — Creación rápida (popover global) —
   const crearPendiente = (campos) => {
@@ -1456,7 +1555,7 @@ function wireContent() {
       responsable: campos.responsable, area: campos.area || "Gestión",
       limite: campos.limite || "", link: "", notas: "", hecho: campos.estado === "hecho",
       historial: [{ fecha: HOY, texto: "🏁 Creado" }], faltaInfo: "", matrizId: "", bloqueadoPor: "",
-      estado: campos.estado || "por_hacer",
+      estado: campos.estado || "por_hacer", prioridad: campos.prioridad || "media", proyecto: campos.proyecto || "",
     };
     DB.pendientes.push(p);
     UI.qaLado = campos.lado;
@@ -1482,6 +1581,7 @@ function wireContent() {
       responsable: document.getElementById("qpResp").value,
       area: document.getElementById("qpCat").value,
       limite: document.getElementById("qpLim").value,
+      prioridad: document.getElementById("qpPrio").value,
       estado: qa.estadoPreset || "por_hacer",
     });
     UI.quickAdd = null; render();
@@ -1538,6 +1638,8 @@ function wireContent() {
   });
   inline("data-iresp", (x, v) => { x.responsable = v; (x.historial = x.historial || []).push({ fecha: HOY, texto: `👤 Reasignado a ${nombre(v)}` }); });
   inline("data-icat", (x, v) => { x.area = v; });
+  inline("data-iprio", (x, v) => { x.prioridad = v; (x.historial = x.historial || []).push({ fecha: HOY, texto: `🚩 Prioridad: ${PRIORIDADES[v].nombre}` }); });
+  inline("data-iproy", (x, v) => { x.proyecto = v.trim(); });
   inline("data-iestado", (x, v) => { const n = setEstadoPend(x, v); if (n) toast(`${n} desbloqueado${n > 1 ? "s" : ""} 🔓`); });
   inline("data-ilim", (x, v) => { x.limite = v; (x.historial = x.historial || []).push({ fecha: HOY, texto: v ? `📅 Límite: ${fechaCorta(v)}` : "📅 Quedó sin fecha límite" }); });
   const qaT = document.getElementById("qaTitulo");

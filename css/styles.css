@@ -419,6 +419,39 @@ tr.qadd input[type="text"] { border-style: dashed; }
 .pchip.dragging { opacity: .4; }
 .pchip[draggable="true"] { cursor: grab; }
 
+/* ---- v2.6 cuadro de estatus (Excel → herramienta) ---- */
+.area-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.area-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 13px; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+.area-chip b { background: var(--line-soft); border-radius: 999px; padding: 1px 8px; font-size: 11.5px; }
+.area-chip.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.area-chip.on b { background: var(--brand); color: #fff; }
+.area-chip.cliente { border-color: #FED7AA; background: #FFF7ED; color: #9A3412; }
+.area-chip.cliente.on { border-color: #EA580C; box-shadow: inset 0 0 0 1px #EA580C; }
+.area-chip.cliente b { background: #FED7AA; color: #9A3412; }
+
+.pend-card.prio-alta { border-left: 4px solid #DC2626; }
+.pend-card.prio-media { border-left: 4px solid #F59E0B; }
+.pend-card.prio-baja { border-left: 4px solid #16A34A; }
+.cumpl-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.proy-tag { font-size: 10.5px; font-weight: 700; color: var(--brand); background: var(--brand-soft); padding: 2px 8px; border-radius: 999px; margin-left: 5px; vertical-align: middle; }
+.sinmov { color: #9A3412; font-weight: 700; }
+
+.bloq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+@media (max-width: 1000px) { .bloq-cols { grid-template-columns: 1fr; } }
+.bloq-card { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13px; background: var(--panel); }
+.bloq-card.cli { border-color: #FED7AA; background: #FFFBF5; }
+.bloq-item { font-size: 12.5px; padding: 6px 8px; margin-top: 6px; background: #fff; border: 1px solid var(--line-soft); border-radius: 8px; cursor: pointer; }
+.bloq-item:hover { border-color: var(--brand); }
+.bloq-item .pg-rol { display: block; margin-top: 2px; }
+
+.carga-box { margin-bottom: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
+.carga-box summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.carga-list { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+.carga-row { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+.carga-nombre { width: 210px; font-weight: 600; }
+.carga-bar { flex: 1; display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: var(--line-soft); }
+.carga-bar i { display: block; }
+
 .hidden { display: none !important; }
 .pill-note { background: #FFF7ED; border: 1px solid #FED7AA; color: #9A3412; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; margin-bottom: 18px; }
 .cli-note { background: var(--brand-soft); border-color: #DDD6FE; color: #5B21B6; }
