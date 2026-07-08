@@ -42,9 +42,15 @@ Cada reunión queda guardada en el navegador (localStorage) con su transcripció
 - La traducción es buena para conversación de negocios; modismos muy locales pueden salir literales.
 - La voz en alto suena unos segundos después de que la frase termina (no es doblaje simultáneo).
 
-## Roadmap
+## Sesión compartida (Fase 2 — ya disponible)
 
-- **Fase 2 — Sesión compartida por link**: la clienta abre un link en su navegador, ve la conversación en inglés en vivo y su voz se transcribe desde su propio dispositivo (sincronización WebRTC peer a peer, sin servidor). Requiere publicar la app en una URL `https` (p. ej. GitHub Pages).
+Botón **👥 Sesión compartida**: genera un link (`?sala=CODIGO`) que la otra persona abre en su propio dispositivo. Cada una habla por su propio micrófono (**con audífonos**, para que los audios no se crucen), y ambas ven la misma conversación sincronizada en vivo, con el nombre de quien habló en cada burbuja. La conexión es directa entre navegadores (WebRTC vía PeerJS); la conversación no pasa por servidores propios.
+
+## Ajustes (⚙️ Voz e idioma)
+
+- **Mi nombre**: aparece junto a tus frases en sesiones compartidas.
+- **Variante de español** del reconocimiento (Perú por defecto; México, Colombia, etc.) — mejora la precisión con tu acento.
+- **Voz para leer** en español y en inglés: por defecto se elige la más natural disponible (voces de Google en Chrome); se puede cambiar y se escucha una muestra al elegir.
 
 ## Estructura
 

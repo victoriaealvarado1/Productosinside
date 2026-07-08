@@ -11,8 +11,30 @@
 
   const LS_KEY = "ti_reuniones_v1";
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const REC_LANGS = { es: "es-MX", en: "en-US" };
   const $ = (sel, el = document) => el.querySelector(sel);
+
+  /* Identidad de este dispositivo y preferencias de la usuaria */
+  let myDev = localStorage.getItem("ti_dev");
+  if (!myDev) {
+    myDev = Math.random().toString(36).slice(2, 10);
+    localStorage.setItem("ti_dev", myDev);
+  }
+  const prefs = (() => {
+    try { return JSON.parse(localStorage.getItem("ti_prefs")) || {}; }
+    catch { return {}; }
+  })();
+  function savePrefs() { localStorage.setItem("ti_prefs", JSON.stringify(prefs)); }
+
+  const DIALECTOS = [
+    ["es-PE", "Español (Perú)"],
+    ["es-MX", "Español (México)"],
+    ["es-CO", "Español (Colombia)"],
+    ["es-AR", "Español (Argentina)"],
+    ["es-CL", "Español (Chile)"],
+    ["es-US", "Español (EE. UU.)"],
+    ["es-ES", "Español (España)"],
+  ];
+  const recLang = l => (l === "es" ? (prefs.dialecto || "es-PE") : "en-US");
 
   /* ---------------- Estado ---------------- */
   const state = {
@@ -168,11 +190,22 @@
      ================================================================ */
   let ttsActive = false;
   const ttsQueue = [];
+  /* Elegir la voz menos robótica disponible: primero la que la usuaria
+     escogió en Ajustes, luego voces "naturales" (Google/Natural). */
   function pickVoice(lang) {
-    const voices = speechSynthesis.getVoices();
-    return voices.find(v => v.lang === REC_LANGS[lang])
-        || voices.find(v => v.lang && v.lang.startsWith(lang))
-        || null;
+    const all = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith(lang));
+    if (!all.length) return null;
+    const wanted = lang === "es" ? prefs.vozEs : prefs.vozEn;
+    if (wanted) {
+      const v = all.find(x => x.name === wanted);
+      if (v) return v;
+    }
+    const score = v =>
+      (/natural/i.test(v.name) ? 8 : 0) +
+      (/google/i.test(v.name) ? 4 : 0) +
+      (v.lang === recLang(lang) ? 2 : 0) +
+      (v.localService ? 0 : 1);
+    return [...all].sort((a, b) => score(b) - score(a))[0];
   }
   function speakText(text, lang) {
     if (!("speechSynthesis" in window)) return;
@@ -187,7 +220,7 @@
     if (ttsActive || !ttsQueue.length) return;
     const { text, lang } = ttsQueue.shift();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = REC_LANGS[lang];
+    u.lang = recLang(lang);
     const v = pickVoice(lang);
     if (v) u.voice = v;
     u.rate = 1;
@@ -299,7 +332,7 @@
     stopRec();
     if (!SR || ttsActive) return;
     rec = new SR();
-    rec.lang = REC_LANGS[state.turn];
+    rec.lang = recLang(state.turn);
     rec.continuous = true;
     rec.interimResults = true;
 
@@ -352,10 +385,14 @@
     text = text.trim();
     const m = meeting();
     if (!text || !m) return;
-    const msg = { id: uid(), lang: state.turn, original: text, traduccion: null, error: false, hora: hhmm() };
+    const msg = {
+      id: uid(), lang: state.turn, original: text, traduccion: null, error: false,
+      hora: hhmm(), t: Date.now(), autor: prefs.nombre || "", dev: myDev,
+    };
     m.mensajes.push(msg);
     save();
     renderTranscript();
+    broadcast({ type: "msg", msg });
     processPhrase(msg);
   }
 
@@ -376,6 +413,7 @@
     }
     save();
     renderTranscript();
+    broadcast({ type: "upd", msg });
     if (state.speak && msg.traduccion) speakText(msg.traduccion, target);
   }
 
@@ -391,6 +429,123 @@
     }
     save();
     renderTranscript();
+    broadcast({ type: "upd", msg });
+  }
+
+  /* ================================================================
+     Sesión compartida: dos personas, cada una con su dispositivo, su
+     micrófono y sus audífonos, dentro de la MISMA conversación — así
+     los audios no se cruzan. Conexión directa entre navegadores
+     (WebRTC vía PeerJS); la conversación no pasa por servidores propios.
+     ================================================================ */
+  const HAS_PEER = typeof Peer !== "undefined";
+  let peer = null, conns = [], shareState = "off", peerShare = null;
+  const roomPeerId = code => "traductor-inside-sala-" + code;
+  const shareUrl = code => location.origin + location.pathname + "?sala=" + code;
+
+  function resetPeer() {
+    conns = [];
+    peerShare = null;
+    shareState = "off";
+    if (peer) { try { peer.destroy(); } catch { /* ya destruido */ } peer = null; }
+  }
+  function startHosting(m) {
+    if (!HAS_PEER || !m.share || peerShare === m.share) return;
+    resetPeer();
+    peerShare = m.share;
+    shareState = "starting";
+    peer = new Peer(roomPeerId(m.share));
+    peer.on("open", () => { shareState = conns.length ? "connected" : "waiting"; renderShare(); });
+    peer.on("connection", c => setupConn(c, true));
+    peer.on("error", err => {
+      if (err && err.type === "unavailable-id") {
+        // Otra pestaña o dispositivo ya hospeda esta sala: entrar como invitada
+        const code = m.share;
+        resetPeer();
+        joinRoom(code);
+      } else {
+        shareState = "error";
+        renderShare();
+      }
+    });
+    renderShare();
+  }
+  function joinRoom(code) {
+    if (!HAS_PEER || peerShare === code) return;
+    resetPeer();
+    peerShare = code;
+    shareState = "starting";
+    peer = new Peer();
+    peer.on("open", () => setupConn(peer.connect(roomPeerId(code), { reliable: true }), false));
+    peer.on("error", () => { shareState = "error"; renderShare(); });
+    renderShare();
+  }
+  function setupConn(c, soyAnfitriona) {
+    c.on("open", () => {
+      conns.push(c);
+      shareState = "connected";
+      if (soyAnfitriona) c.send({ type: "hist", meeting: meeting() });
+      renderShare();
+    });
+    c.on("data", d => onPeerData(c, d));
+    const drop = () => {
+      conns = conns.filter(x => x !== c);
+      shareState = conns.length ? "connected" : "waiting";
+      renderShare();
+    };
+    c.on("close", drop);
+    c.on("error", drop);
+  }
+  function broadcast(d, except) {
+    conns.forEach(c => { if (c !== except && c.open) c.send(d); });
+  }
+  function upsertMsg(m, msg) {
+    const i = m.mensajes.findIndex(x => x.id === msg.id);
+    if (i >= 0) m.mensajes[i] = msg;
+    else {
+      m.mensajes.push(msg);
+      m.mensajes.sort((a, b) => (a.t || 0) - (b.t || 0));
+    }
+  }
+  function onPeerData(c, d) {
+    const m = meeting();
+    if (!m || !d) return;
+    if (d.type === "hist") {
+      m.titulo = d.meeting.titulo || m.titulo;
+      m.cliente = d.meeting.cliente || m.cliente;
+      m.link = d.meeting.link || m.link;
+      for (const msg of d.meeting.mensajes || []) upsertMsg(m, msg);
+      save();
+      render();
+    } else if (d.type === "msg" || d.type === "upd") {
+      upsertMsg(m, d.msg);
+      save();
+      renderTranscript();
+      broadcast(d, c); // la anfitriona reenvía a las demás conectadas
+      if (d.type === "upd" && state.speak && d.msg.traduccion && d.msg.dev !== myDev) {
+        speakText(d.msg.traduccion, d.msg.lang === "es" ? "en" : "es");
+      }
+    } else if (d.type === "del") {
+      m.mensajes = m.mensajes.filter(x => x.id !== d.id);
+      save();
+      renderTranscript();
+      broadcast(d, c);
+    }
+  }
+  function renderShare() {
+    const pill = $("#sharePill");
+    if (!pill) return;
+    pill.className = "status-pill" + (shareState === "connected" ? " live" : shareState === "error" ? " err" : "");
+    pill.textContent =
+      shareState === "connected" ? "👥 Conectadas (" + (conns.length + 1) + ")" :
+      shareState === "waiting" ? "🔗 Esperando a la otra persona…" :
+      shareState === "starting" ? "Conectando…" :
+      shareState === "error" ? "⚠️ No se pudo conectar, recarga la página" : "";
+  }
+  function ensureName() {
+    if (prefs.nombre) return;
+    const n = prompt("Tu nombre (aparecerá junto a tus frases):", "");
+    if (n && n.trim()) { prefs.nombre = n.trim(); savePrefs(); }
   }
 
   /* ================================================================
@@ -473,13 +628,21 @@
                <button class="btn sm" id="btnEditLink" title="Cambiar el link">✏️ cambiar</button>`
             : `<button class="btn" id="btnEditLink">🎥 Agregar link de la videollamada</button>`}
         </div>
+        <div class="sharebar">
+          ${m.share ? `
+            <span class="status-pill" id="sharePill"></span>
+            <button class="btn sm" id="btnCopyLink">📋 Copiar link de la sesión</button>
+          ` : `
+            <button class="btn" id="btnShare">👥 Sesión compartida — la otra persona entra con un link</button>
+          `}
+        </div>
         <details class="help">
           <summary>¿Cómo usarla con Meet, Teams o Zoom?</summary>
           <ol>
-            <li>Únete a la videollamada como siempre, en su propia pestaña o app. <strong>Esta herramienta no entra a la llamada</strong>: la acompaña desde aquí, escuchando por el micrófono de tu computadora.</li>
-            <li>Para captar la voz de tu cliente, escucha la llamada por <strong>parlantes (sin audífonos)</strong> y activa <strong>🌎 Cliente · English</strong>: el micrófono oye lo que sale por los parlantes y lo traduce.</li>
-            <li>Cuando hables tú, activa <strong>🧑‍💼 Yo · Español</strong> (o deja la detección automática y usa <kbd>Espacio</kbd> para cambiar de turno).</li>
-            <li>Para que tu cliente vea la conversación en inglés, comparte <strong>esta pestaña</strong> en la llamada y usa la vista <strong>👁️ Cliente (EN)</strong> de arriba a la derecha.</li>
+            <li><strong>Si las dos tienen la app (recomendado — así no se cruzan los audios)</strong>: aprieta <em>👥 Sesión compartida</em> y pásale el link a la otra persona por el chat. Cada una entra desde su dispositivo, <strong>con audífonos</strong>, y habla con su propio micrófono: verán la misma conversación y cada quien transcribe solo su voz.</li>
+            <li><strong>Si solo tú tienes la app</strong>: únete a la videollamada como siempre (la herramienta no entra a la llamada, la acompaña). Para captar la voz de tu cliente, escucha la llamada por <strong>parlantes, sin audífonos</strong>, y activa 🌎 Cliente · English.</li>
+            <li>Cuando hables tú, activa 🧑‍💼 Yo · Español, o deja la detección automática y cambia de turno con <kbd>Espacio</kbd>.</li>
+            <li>Para que tu cliente vea la conversación en inglés sin tener la app, comparte esta pestaña en la llamada con la vista <strong>👁️ Cliente (EN)</strong>.</li>
           </ol>
         </details>
       </div>
@@ -497,6 +660,20 @@
           <label class="switch"><input type="checkbox" id="swSpeak" ${state.speak ? "checked" : ""}/><span class="track"></span> 🔊 Leer traducciones en voz alta</label>
           <span class="hint"><kbd>Espacio</kbd> cambia de turno · <kbd>M</kbd> enciende/apaga el micrófono</span>
         </div>
+        <details class="help">
+          <summary>⚙️ Ajustes de voz e idioma</summary>
+          <div class="prefs">
+            <label>Mi nombre
+              <input id="pNombre" type="text" value="${esc(prefs.nombre || "")}" placeholder="Ej. Victoria" /></label>
+            <label>Español que reconoce el micrófono
+              <select id="pDialecto">${DIALECTOS.map(([v, t]) =>
+                `<option value="${v}" ${recLang("es") === v ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+            <label>Voz para leer en español
+              <select id="pVozEs"><option value="">Automática (la más natural)</option></select></label>
+            <label>Voz para leer en inglés
+              <select id="pVozEn"><option value="">Automática (la más natural)</option></select></label>
+          </div>
+        </details>
       </div>
 
       <div class="transcript ${state.clientView ? "client-mode" : ""}" id="transcript"></div>
@@ -513,6 +690,58 @@
       state.speak = e.target.checked;
       if (!state.speak) clearTts();
     };
+    // Sesión compartida
+    if (!m.share && peer) resetPeer();
+    if (m.share) {
+      if (m.guest) joinRoom(m.share); else startHosting(m);
+      renderShare();
+      $("#btnCopyLink").onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(shareUrl(m.share));
+          $("#btnCopyLink").textContent = "✅ Link copiado, pásaselo a la otra persona";
+        } catch {
+          prompt("Copia este link y pásaselo a la otra persona:", shareUrl(m.share));
+        }
+      };
+    } else {
+      $("#btnShare").onclick = () => {
+        if (!HAS_PEER) { alert("La sesión compartida necesita conexión a internet para cargar; recarga la página e intenta de nuevo."); return; }
+        ensureName();
+        m.share = uid().slice(0, 6);
+        save();
+        renderLive();
+      };
+    }
+
+    // Ajustes de voz e idioma
+    const fillVoices = () => {
+      const opts = (sel, lang, wanted) => {
+        const voices = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith(lang));
+        sel.innerHTML = '<option value="">Automática (la más natural)</option>' +
+          voices.map(v => `<option value="${esc(v.name)}" ${v.name === wanted ? "selected" : ""}>${esc(v.name)}</option>`).join("");
+      };
+      if ($("#pVozEs")) opts($("#pVozEs"), "es", prefs.vozEs);
+      if ($("#pVozEn")) opts($("#pVozEn"), "en", prefs.vozEn);
+    };
+    fillVoices();
+    if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = fillVoices;
+    $("#pNombre").onchange = e => { prefs.nombre = e.target.value.trim(); savePrefs(); };
+    $("#pDialecto").onchange = e => {
+      prefs.dialecto = e.target.value;
+      savePrefs();
+      if (state.listening && state.turn === "es") startRec();
+    };
+    $("#pVozEs").onchange = e => {
+      prefs.vozEs = e.target.value;
+      savePrefs();
+      if (e.target.value) speakText("Hola, así sueno en español.", "es");
+    };
+    $("#pVozEn").onchange = e => {
+      prefs.vozEn = e.target.value;
+      savePrefs();
+      if (e.target.value) speakText("Hi, this is how I sound in English.", "en");
+    };
+
     $("#btnEditLink").onclick = () => {
       const link = prompt("Pega el link de la videollamada (Meet, Teams o Zoom):", m.link || "");
       if (link === null) return;
@@ -523,6 +752,7 @@
     $("#btnExport").onclick = () => exportMeeting(m);
     $("#btnFinish").onclick = () => {
       stopListening();
+      resetPeer();
       state.currentId = null;
       save();
       state.view = "meetings";
@@ -621,14 +851,17 @@
     }
 
     let html = m.mensajes.map(msg => {
-      const who = msg.lang === "es" ? "🧑‍💼 Yo · ES" : "🌎 Cliente · EN";
+      const mine = m.share ? msg.dev === myDev : msg.lang === "es";
+      const who = msg.autor
+        ? (msg.lang === "es" ? "🧑‍💼 " : "🌎 ") + esc(msg.autor) + " · " + msg.lang.toUpperCase()
+        : (msg.lang === "es" ? "🧑‍💼 Yo · ES" : "🌎 Cliente · EN");
       const other = msg.lang === "es" ? "en" : "es";
       let trad;
       if (msg.error) trad = `<div class="trad error">⚠️ No se pudo traducir (¿sin internet?). <button class="btn sm" data-retry="${msg.id}">Reintentar</button></div>`;
       else if (msg.traduccion === null) trad = `<div class="trad pending">Traduciendo…</div>`;
       else trad = `<div class="trad">${esc(msg.traduccion)}</div>`;
       return `
-        <div class="msg ${msg.lang}">
+        <div class="msg ${msg.lang} ${mine ? "mine" : "theirs"}">
           <div class="bubble">
             <div class="who">${who} <span class="hora">${msg.hora}</span></div>
             <div class="orig">${esc(msg.original)}</div>
@@ -644,7 +877,7 @@
 
     if (state.interim) {
       const who = state.turn === "es" ? "🧑‍💼 Yo · ES" : "🌎 Cliente · EN";
-      html += `<div class="msg interim ${state.turn}"><div class="bubble">
+      html += `<div class="msg interim mine ${state.turn}"><div class="bubble">
         <div class="who">${who}</div><div class="orig">${esc(state.interim)}…</div>
       </div></div>`;
     }
@@ -667,6 +900,7 @@
       m.mensajes = m.mensajes.filter(x => x.id !== b.dataset.del);
       save();
       renderTranscript();
+      broadcast({ type: "del", id: b.dataset.del });
     });
 
     if (nearBottom) window.scrollTo({ top: document.body.scrollHeight });
@@ -791,6 +1025,24 @@
 
   // Cargar voces de speechSynthesis (Chrome las entrega de forma asíncrona)
   if ("speechSynthesis" in window) speechSynthesis.getVoices();
+
+  // Entrar a una sala compartida desde un link ?sala=CODIGO
+  const salaParam = (new URLSearchParams(location.search).get("sala") || "").trim();
+  if (salaParam && /^[a-z0-9]{4,12}$/i.test(salaParam)) {
+    let m = state.meetings.find(x => x.share === salaParam);
+    if (!m) {
+      m = {
+        id: uid(), titulo: "Reunión compartida", cliente: "", link: "",
+        fecha: new Date().toLocaleDateString("es-MX", { year: "numeric", month: "2-digit", day: "2-digit" }),
+        creado: Date.now(), mensajes: [], share: salaParam, guest: true,
+      };
+      state.meetings.push(m);
+    }
+    state.currentId = m.id;
+    state.view = "live";
+    save();
+    if (HAS_PEER && m.guest) ensureName();
+  }
 
   render();
 })();
