@@ -167,6 +167,7 @@
      que no se transcriba a sí misma.
      ================================================================ */
   let ttsActive = false;
+  const ttsQueue = [];
   function pickVoice(lang) {
     const voices = speechSynthesis.getVoices();
     return voices.find(v => v.lang === REC_LANGS[lang])
@@ -175,7 +176,16 @@
   }
   function speakText(text, lang) {
     if (!("speechSynthesis" in window)) return;
-    speechSynthesis.cancel();
+    ttsQueue.push({ text, lang });
+    pumpTts();
+  }
+  function clearTts() {
+    ttsQueue.length = 0;
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+  }
+  function pumpTts() {
+    if (ttsActive || !ttsQueue.length) return;
+    const { text, lang } = ttsQueue.shift();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = REC_LANGS[lang];
     const v = pickVoice(lang);
@@ -184,13 +194,26 @@
     ttsActive = true;
     stopRec();
     renderStatus();
+    let settled = false;
+    const t0 = Date.now();
     const done = () => {
+      if (settled) return;
+      settled = true;
+      clearInterval(watchdog);
       ttsActive = false;
-      if (state.listening) startRec();
+      if (!ttsQueue.length && state.listening) startRec();
       renderStatus();
+      pumpTts();
     };
     u.onend = done;
     u.onerror = done;
+    // Vigilante: si el navegador no tiene voces (o la síntesis nunca
+    // arranca), onend jamás llega y el micrófono quedaría muerto
+    const watchdog = setInterval(() => {
+      const elapsed = Date.now() - t0;
+      if (elapsed > 60000) return done();
+      if (elapsed > 1500 && !speechSynthesis.speaking && !speechSynthesis.pending) done();
+    }, 400);
     speechSynthesis.speak(u);
   }
 
@@ -263,29 +286,33 @@
     renderControls();
   }
 
-  /* ---------------- Frase confirmada ---------------- */
-  async function handlePhrase(text) {
+  /* ---------------- Frase confirmada ----------------
+     La frase entra a la conversación de inmediato, en el orden en que
+     se dijo; la detección de idioma y la traducción (asíncronas) llegan
+     después sin poder reordenar los mensajes. */
+  function handlePhrase(text) {
     text = text.trim();
     const m = meeting();
     if (!text || !m) return;
-
-    let lang = state.turn;
-    if (state.auto) {
-      const detected = await detectLang(text);
-      if (detected && detected !== lang) {
-        lang = detected;
-        setTurn(detected); // el micrófono queda esperando ese idioma
-      }
-    }
-
-    const msg = { id: uid(), lang, original: text, traduccion: null, error: false, hora: hhmm() };
+    const msg = { id: uid(), lang: state.turn, original: text, traduccion: null, error: false, hora: hhmm() };
     m.mensajes.push(msg);
     save();
     renderTranscript();
+    processPhrase(msg);
+  }
 
-    const target = lang === "es" ? "en" : "es";
+  async function processPhrase(msg) {
+    if (state.auto) {
+      const detected = await detectLang(msg.original);
+      if (detected && detected !== msg.lang) {
+        msg.lang = detected;
+        setTurn(detected); // el micrófono queda esperando ese idioma
+        renderTranscript();
+      }
+    }
+    const target = msg.lang === "es" ? "en" : "es";
     try {
-      msg.traduccion = await translate(text, lang, target);
+      msg.traduccion = await translate(msg.original, msg.lang, target);
     } catch {
       msg.error = true;
     }
@@ -317,6 +344,7 @@
     lines.push("Reunión: " + m.titulo);
     if (m.cliente) lines.push("Cliente: " + m.cliente);
     lines.push("Fecha: " + m.fecha);
+    if (m.link) lines.push("Videollamada: " + m.link);
     lines.push("".padEnd(56, "-"));
     for (const msg of m.mensajes) {
       const who = msg.lang === "es" ? "Yo (ES)" : "Cliente (EN)";
@@ -355,19 +383,47 @@
       : "Habla en español o inglés y mira la traducción al instante";
 
     if (!m) {
+      const recientes = [...state.meetings].sort((a, b) => b.creado - a.creado).slice(0, 3);
       content.innerHTML = `
         <div class="empty-state card">
           <div class="big">🎙️</div>
           <h3>No hay una reunión abierta</h3>
           <p>Crea una reunión para empezar a traducir la conversación en vivo.</p>
           <button class="btn primary" id="emptyNueva">＋ Nueva reunión</button>
+          ${recientes.length ? `
+          <div class="recent">
+            <div class="recent-label">o retoma una reciente</div>
+            ${recientes.map(r => `<button class="btn sm" data-reopen="${r.id}">↩ ${esc(r.titulo)}${r.cliente ? " · " + esc(r.cliente) : ""}</button>`).join(" ")}
+          </div>` : ""}
         </div>`;
       $("#emptyNueva").onclick = openNewMeetingModal;
+      content.querySelectorAll("[data-reopen]").forEach(b => b.onclick = () => {
+        state.currentId = b.dataset.reopen;
+        save();
+        render();
+      });
       return;
     }
 
     content.innerHTML = `
       ${compatBanners()}
+      <div class="callbar card">
+        <div class="callbar-main">
+          ${m.link
+            ? `<a class="btn primary" href="${esc(m.link)}" target="_blank" rel="noopener">🎥 Abrir videollamada</a>
+               <button class="btn sm" id="btnEditLink" title="Cambiar el link">✏️ cambiar</button>`
+            : `<button class="btn" id="btnEditLink">🎥 Agregar link de la videollamada</button>`}
+        </div>
+        <details class="help">
+          <summary>¿Cómo usarla con Meet, Teams o Zoom?</summary>
+          <ol>
+            <li>Únete a la videollamada como siempre, en su propia pestaña o app. <strong>Esta herramienta no entra a la llamada</strong>: la acompaña desde aquí, escuchando por el micrófono de tu computadora.</li>
+            <li>Para captar la voz de tu cliente, escucha la llamada por <strong>parlantes (sin audífonos)</strong> y activa <strong>🌎 Cliente · English</strong>: el micrófono oye lo que sale por los parlantes y lo traduce.</li>
+            <li>Cuando hables tú, activa <strong>🧑‍💼 Yo · Español</strong> (o deja la detección automática y usa <kbd>Espacio</kbd> para cambiar de turno).</li>
+            <li>Para que tu cliente vea la conversación en inglés, comparte <strong>esta pestaña</strong> en la llamada y usa la vista <strong>👁️ Cliente (EN)</strong> de arriba a la derecha.</li>
+          </ol>
+        </details>
+      </div>
       <div class="card">
         <div class="controls">
           <div class="mic-group">
@@ -396,7 +452,14 @@
     $("#swAuto").onchange = e => { state.auto = e.target.checked; };
     $("#swSpeak").onchange = e => {
       state.speak = e.target.checked;
-      if (!state.speak) speechSynthesis.cancel();
+      if (!state.speak) clearTts();
+    };
+    $("#btnEditLink").onclick = () => {
+      const link = prompt("Pega el link de la videollamada (Meet, Teams o Zoom):", m.link || "");
+      if (link === null) return;
+      m.link = link.trim();
+      save();
+      renderLive();
     };
     $("#btnExport").onclick = () => exportMeeting(m);
     $("#btnFinish").onclick = () => {
@@ -584,7 +647,8 @@
     $("#modalTitle").textContent = "Nueva reunión";
     $("#modalBody").innerHTML = `
       <div class="field"><label>Cliente</label><input id="fCliente" type="text" placeholder="Ej. Payless" /></div>
-      <div class="field"><label>Título de la reunión</label><input id="fTitulo" type="text" value="Reunión ${fecha}" /></div>`;
+      <div class="field"><label>Título de la reunión</label><input id="fTitulo" type="text" value="Reunión ${fecha}" /></div>
+      <div class="field"><label>Link de la videollamada (opcional)</label><input id="fLink" type="url" placeholder="https://meet.google.com/…" /></div>`;
     $("#modalFooter").innerHTML = `
       <button class="btn" id="mCancel">Cancelar</button>
       <button class="btn primary" id="mCreate">Crear y empezar</button>`;
@@ -596,6 +660,7 @@
         id: uid(),
         titulo: $("#fTitulo").value.trim() || "Reunión " + fecha,
         cliente: $("#fCliente").value.trim(),
+        link: $("#fLink").value.trim(),
         fecha,
         creado: Date.now(),
         mensajes: [],
