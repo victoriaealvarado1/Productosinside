@@ -218,20 +218,69 @@
   }
 
   /* ================================================================
+     Micrófono: permiso explícito + medidor de nivel en vivo.
+     Pedir getUserMedia antes de reconocer hace visible el bloqueo
+     (permiso denegado, vista embebida, sin micrófono) en lugar de
+     fallar en silencio, y el medidor muestra si el mic te oye.
+     ================================================================ */
+  let micStream = null, audioCtx = null, meterTimer = null;
+
+  function startMeter() {
+    stopMeter(false);
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const src = audioCtx.createMediaStreamSource(micStream);
+      const an = audioCtx.createAnalyser();
+      an.fftSize = 256;
+      src.connect(an);
+      const buf = new Uint8Array(an.frequencyBinCount);
+      meterTimer = setInterval(() => {
+        an.getByteTimeDomainData(buf);
+        let peak = 0;
+        for (const v of buf) { const d = Math.abs(v - 128); if (d > peak) peak = d; }
+        const bar = document.getElementById("meterBar");
+        if (bar) bar.style.width = Math.min(100, Math.round((peak / 50) * 100)) + "%";
+      }, 120);
+    } catch { /* sin medidor, no es crítico */ }
+  }
+  function stopMeter(releaseStream = true) {
+    clearInterval(meterTimer);
+    meterTimer = null;
+    if (audioCtx) { audioCtx.close().catch(() => {}); audioCtx = null; }
+    if (releaseStream && micStream) {
+      micStream.getTracks().forEach(t => t.stop());
+      micStream = null;
+    }
+  }
+
+  /* ================================================================
      Reconocimiento de voz
      ================================================================ */
   let rec = null, restartTimer = null;
 
-  function startListening() {
+  async function startListening() {
     if (!SR || !meeting()) return;
-    state.listening = true;
     state.micError = null;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (e) {
+        state.listening = false;
+        state.micError = (e && (e.name === "NotAllowedError" || e.name === "SecurityError"))
+          ? "denied" : "nomic";
+        renderControls();
+        return;
+      }
+      startMeter();
+    }
+    state.listening = true;
     startRec();
     renderControls();
   }
   function stopListening() {
     state.listening = false;
     stopRec();
+    stopMeter();
     state.interim = "";
     renderControls();
     renderTranscript();
@@ -268,9 +317,18 @@
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         state.listening = false;
         state.micError = "denied";
+        stopMeter();
+        renderControls();
+      } else if (e.error === "audio-capture") {
+        state.listening = false;
+        state.micError = "nomic";
+        stopMeter();
+        renderControls();
+      } else if (e.error === "network") {
+        state.micError = "network"; // se sigue reintentando vía onend
         renderControls();
       }
-      // "no-speech" y "network" se resuelven con el reinicio de onend
+      // "no-speech" y "aborted" se resuelven con el reinicio de onend
     };
     // Chrome corta la escucha tras unos segundos de silencio: se reinicia sola
     rec.onend = () => {
@@ -407,6 +465,7 @@
 
     content.innerHTML = `
       ${compatBanners()}
+      <div id="micBanner"></div>
       <div class="callbar card">
         <div class="callbar-main">
           ${m.link
@@ -498,7 +557,29 @@
     if (!es) return;
     es.classList.toggle("on", state.listening && state.turn === "es");
     en.classList.toggle("on", state.listening && state.turn === "en");
+    renderMicBanner();
     renderStatus();
+  }
+
+  function renderMicBanner() {
+    const box = $("#micBanner");
+    if (!box) return;
+    const embedded = (() => { try { return window.self !== window.top; } catch { return true; } })();
+    if (state.micError === "denied" && embedded) {
+      box.innerHTML = `<div class="banner danger"><strong>El micrófono está bloqueado en esta vista embebida.</strong>
+        Abre la app en su propia pestaña del navegador (botón "abrir en pestaña nueva" o copia el link a la barra de dirección) y vuelve a intentar.</div>`;
+    } else if (state.micError === "denied") {
+      box.innerHTML = `<div class="banner danger"><strong>El navegador no dio permiso de micrófono.</strong>
+        Haz clic en el candado 🔒 (o el ícono de micrófono) junto a la dirección, elige <em>Permitir micrófono</em>, recarga y vuelve a intentar.</div>`;
+    } else if (state.micError === "nomic") {
+      box.innerHTML = `<div class="banner danger"><strong>No se encontró un micrófono disponible.</strong>
+        Revisa que esté conectado, que no esté silenciado y que ninguna otra app lo tenga tomado en exclusiva.</div>`;
+    } else if (state.micError === "network") {
+      box.innerHTML = `<div class="banner warn"><strong>El reconocimiento de voz perdió la conexión.</strong>
+        Se está reintentando solo; revisa tu internet si persiste.</div>`;
+    } else {
+      box.innerHTML = "";
+    }
   }
 
   function renderStatus() {
@@ -507,13 +588,17 @@
     pill.className = "status-pill";
     if (state.micError === "denied") {
       pill.classList.add("err");
-      pill.textContent = "🚫 Permiso de micrófono denegado";
+      pill.textContent = "🚫 Micrófono bloqueado";
+    } else if (state.micError === "nomic") {
+      pill.classList.add("err");
+      pill.textContent = "🚫 Sin micrófono";
     } else if (ttsActive) {
       pill.classList.add("tts");
       pill.textContent = "🔊 Leyendo traducción…";
     } else if (state.listening) {
       pill.classList.add("live");
-      pill.textContent = state.turn === "es" ? "🎙️ Escuchando en español…" : "🎙️ Listening in English…";
+      pill.innerHTML = (state.turn === "es" ? "🎙️ Escuchando en español…" : "🎙️ Listening in English…")
+        + ' <span class="meter" title="Nivel del micrófono: si no se mueve cuando hablas, el mic no te oye"><i id="meterBar"></i></span>';
     } else {
       pill.textContent = "Micrófono apagado";
     }

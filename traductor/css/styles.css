@@ -171,6 +171,15 @@ button { font-family: inherit; cursor: pointer; }
 .status-pill.live { background: #ECFDF5; color: #047857; }
 .status-pill.tts { background: var(--brand-soft); color: var(--brand); }
 .status-pill.err { background: #FEF2F2; color: var(--danger); }
+.status-pill .meter {
+  display: inline-block; width: 52px; height: 8px; border-radius: 999px;
+  background: rgba(4,120,87,.15); overflow: hidden; vertical-align: 1px;
+}
+.status-pill .meter i {
+  display: block; height: 100%; width: 0%;
+  background: currentColor; border-radius: 999px;
+  transition: width .1s linear;
+}
 
 /* Switches */
 .switches { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
