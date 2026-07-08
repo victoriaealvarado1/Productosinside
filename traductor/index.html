@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traductor Inside · Reuniones bilingües</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">🌐</div>
+        <div>
+          <h1>Traductor Inside</h1>
+          <small>Reuniones ES ⇄ EN</small>
+        </div>
+      </div>
+
+      <button class="nav-item active" data-view="live"><span class="ico">🎙️</span> Reunión en vivo</button>
+      <button class="nav-item" data-view="meetings"><span class="ico">📚</span> Reuniones guardadas</button>
+
+      <div class="nav-sep">Acciones</div>
+      <button class="nav-item" id="btnNueva"><span class="ico">＋</span> Nueva reunión</button>
+
+      <div class="sidebar-foot">
+        v1 · Modo Solo<br />Datos guardados en este navegador
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Reunión en vivo</h2>
+          <div class="sub" id="pageSub">Habla en español o inglés y mira la traducción al instante</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="modepill" id="viewPill" title="Idioma de la vista">
+          <button data-mode="bilingue" class="active">✏️ Bilingüe</button>
+          <button data-mode="cliente" class="cli">👁️ Cliente (EN)</button>
+        </div>
+      </header>
+
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+
+  <!-- Modal nueva reunión -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <header>
+        <h3 id="modalTitle">Nueva reunión</h3>
+        <button class="x" id="modalClose">✕</button>
+      </header>
+      <div class="body" id="modalBody"></div>
+      <footer id="modalFooter"></footer>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

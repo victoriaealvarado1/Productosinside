@@ -37,7 +37,14 @@ index.html        Shell de la app
 css/styles.css    Estilos
 js/data.js        Modelo + semilla (estructura real de Payless)
 js/app.js         Estado, router, vistas, persistencia
+traductor/        Traductor Inside — app independiente (ver abajo)
 ```
+
+## Traductor Inside (app independiente)
+
+Traductor en vivo para reuniones bilingües con clientes: la clienta habla en inglés y tú lo ves en español; tú hablas en español y ella lo ve (y puede escucharlo) en inglés. Con historial de reuniones y exportación para minutas. Misma filosofía que esta herramienta: corre en el navegador, sin backend.
+
+→ Documentación completa en [`traductor/README.md`](traductor/README.md).
 
 ## Modelo de datos
 
