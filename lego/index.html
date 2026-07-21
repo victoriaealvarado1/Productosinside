@@ -99,6 +99,11 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 }
 .brandblock h1{font-size:15px;font-weight:800;letter-spacing:-.01em}
 .brandblock small{color:var(--ink-2);font-size:11.5px;display:block}
+.modepill{display:flex;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;padding:3px;margin:0 4px 10px}
+.modepill button{flex:1;padding:5px 8px;border-radius:99px;font-weight:700;font-size:12px;color:var(--ink-2)}
+.modepill button.active{background:var(--ink);color:var(--bg)}
+.modepill button.cli.active{background:var(--brick);color:#1B1B1F}
+body.modo-cliente .only-interno{display:none !important}
 .nav-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:14px 10px 6px}
 .nav-item{
   display:flex;align-items:center;gap:10px;width:100%;text-align:left;
@@ -269,18 +274,24 @@ textarea{resize:vertical}
         <small>Gestión de marca · INSIDE</small>
       </div>
     </div>
+    <div class="modepill" id="modePill" title="Modo de la herramienta">
+      <button data-mode="interno" class="active">✏️ Interno</button>
+      <button data-mode="cliente" class="cli">👁️ Cliente</button>
+    </div>
     <div class="nav-label">Espacios</div>
     <button class="nav-item" data-view="gestion"><span class="ico">📌</span> Gestión de la marca <span class="cnt" id="cntGestion">0</span></button>
     <button class="nav-item" data-view="planning"><span class="ico">🧱</span> Planning &amp; piezas <span class="cnt" id="cntPlanning">0</span></button>
     <button class="nav-item" data-view="calendario"><span class="ico">📅</span> Calendario</button>
     <button class="nav-item" data-view="reuniones"><span class="ico">🤝</span> Reuniones &amp; acuerdos <span class="cnt" id="cntAcuerdos">0</span></button>
-    <div class="nav-label">Datos</div>
-    <button class="nav-item" id="btnExport"><span class="ico">⬇️</span> Exportar respaldo</button>
-    <button class="nav-item" id="btnImport"><span class="ico">⬆️</span> Importar respaldo</button>
-    <input type="file" id="importFile" accept="application/json" style="display:none" />
+    <div class="only-interno" style="display:contents">
+      <div class="nav-label">Datos</div>
+      <button class="nav-item" id="btnExport"><span class="ico">⬇️</span> Exportar respaldo</button>
+      <button class="nav-item" id="btnImport"><span class="ico">⬆️</span> Importar respaldo</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none" />
+    </div>
     <div class="sidebar-foot">
       Todo se guarda automáticamente en este navegador.<br />
-      <button class="linkish" id="btnReset">Restaurar datos iniciales</button>
+      <button class="linkish only-interno" id="btnReset">Restaurar datos iniciales</button>
     </div>
   </aside>
   <main class="main" id="main"></main>
@@ -297,7 +308,7 @@ const LS_KEY = "legoBrain_v1";
 const HOY = new Date(); HOY.setHours(0,0,0,0);
 
 const SEED = {
-  settings: { feeCupo: { "2026-08": 15 } },
+  settings: { feeCupo: { "2026-08": 15 }, modo: "interno" },
 
   pendientes: [
     { id:"p1", tarea:"Enviar resumen de adicionales aprobados por correo", detalle:"Total extras hasta ahora: S/ 2,610 (Spiderman táctica 1,060 + Larcomar 1,200 + adicionales 350). Andrea lo revisa al recibirlo.", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-21", fechaEnvio:"", prioridad:"alta", estado:"pendiente", origen:"Reunión 20.07" },
@@ -412,10 +423,19 @@ const SEED = {
 
 /* ============ Estado ============ */
 let S;
+/* Piezas de la matriz FINAL que aún esperan aprobación del cliente
+   (guiones de mundos por alinear, arte que envía el cliente, dinámica por confirmar) */
+const APROB_PENDIENTE_SEED = new Set(["j40","j44","j50","a07","a08","a09","a10","a11","a12"]);
 function load(){
   try{ const raw = localStorage.getItem(LS_KEY); S = raw ? JSON.parse(raw) : structuredClone(SEED); }
   catch(e){ S = structuredClone(SEED); }
+  /* migraciones suaves para datos guardados de versiones anteriores */
+  S.settings = S.settings || {};
+  S.settings.feeCupo = S.settings.feeCupo || { "2026-08": 15 };
+  if(!S.settings.modo) S.settings.modo = "interno";
+  S.planning.forEach(i=>{ if(i.aprobacion==null) i.aprobacion = APROB_PENDIENTE_SEED.has(i.id) ? "pendiente" : "aprobado"; });
 }
+const esInterno = ()=> S.settings.modo !== "cliente";
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); refreshCounts(); }
 function uid(){ return "x" + Math.random().toString(36).slice(2,9); }
 
@@ -432,6 +452,23 @@ function fmtMes(mesKey){ const [y,m]=mesKey.split("-").map(Number); return MESES
 function isOverdue(p){
   return p.fechaCompromiso && p.estado!=="enviado" && p.estado!=="completado" && new Date(p.fechaCompromiso+"T00:00:00") < HOY;
 }
+/* Semáforo de cumplimiento (idea heredada de la herramienta Payless):
+   en retraso = pasó el compromiso · en riesgo = vence en ≤2 días · en plazo = lo demás */
+function cumplimiento(p){
+  if(p.estado==="enviado"||p.estado==="completado") return "plazo";
+  if(!p.fechaCompromiso) return "plazo";
+  const d = new Date(p.fechaCompromiso+"T00:00:00");
+  if(d < HOY) return "retraso";
+  const en2 = new Date(HOY); en2.setDate(en2.getDate()+2);
+  return d <= en2 ? "riesgo" : "plazo";
+}
+/* Pieza en riesgo: publica en ≤3 días y el cliente aún no la aprueba */
+function piezaEnRiesgo(i){
+  if(i.aprobacion!=="pendiente" || !i.fecha || i.status==="publicado") return false;
+  const d = new Date(i.fecha+"T00:00:00");
+  const en3 = new Date(HOY); en3.setDate(en3.getDate()+3);
+  return d >= HOY && d <= en3;
+}
 function soles(n){ return "S/ " + Number(n||0).toLocaleString("es-PE"); }
 function toast(msg){
   document.querySelectorAll(".toast").forEach(t=>t.remove());
@@ -442,7 +479,7 @@ function toast(msg){
 /* ============ Navegación ============ */
 let view = "gestion";
 let mesActual = "2026-07";
-const filtros = { resp:"todos", estado:"activos" };
+const filtros = { resp:"todos", estado:"activos", q:"" };
 let reunionSel = null;
 
 document.querySelectorAll(".nav-item[data-view]").forEach(b=>{
@@ -458,6 +495,8 @@ function refreshCounts(){
 
 function render(){
   document.querySelectorAll(".nav-item[data-view]").forEach(b=>b.classList.toggle("active", b.dataset.view===view));
+  document.body.classList.toggle("modo-cliente", !esInterno());
+  document.querySelectorAll("#modePill button").forEach(b=>b.classList.toggle("active", b.dataset.mode===S.settings.modo));
   refreshCounts();
   const main = document.getElementById("main");
   if(view==="gestion") main.innerHTML = viewGestion();
@@ -487,21 +526,22 @@ function pillEstado(e){
 }
 
 function viewGestion(){
+  const interno = esInterno();
   const all = S.pendientes;
-  const lego = all.filter(p=>p.responsable==="LEGO" && p.estado!=="completado" && p.estado!=="enviado");
-  const inside = all.filter(p=>p.responsable==="INSIDE" && p.estado!=="completado" && p.estado!=="enviado");
-  const vencidos = all.filter(isOverdue);
-  const semana = all.filter(p=>{
-    if(!p.fechaCompromiso || p.estado==="completado" || p.estado==="enviado") return false;
-    const d = new Date(p.fechaCompromiso+"T00:00:00");
-    const in7 = new Date(HOY); in7.setDate(in7.getDate()+7);
-    return d>=HOY && d<=in7;
-  });
+  const abiertos = all.filter(p=>p.estado!=="completado" && p.estado!=="enviado");
+  const lego = abiertos.filter(p=>p.responsable==="LEGO");
+  const inside = abiertos.filter(p=>p.responsable==="INSIDE");
+  const retraso = abiertos.filter(p=>cumplimiento(p)==="retraso");
+  const riesgo = abiertos.filter(p=>cumplimiento(p)==="riesgo");
 
   let rows = all.filter(p=>{
     if(filtros.resp!=="todos" && p.responsable!==filtros.resp) return false;
     if(filtros.estado==="activos" && (p.estado==="completado"||p.estado==="enviado")) return false;
     if(filtros.estado==="cerrados" && p.estado!=="completado" && p.estado!=="enviado") return false;
+    if(filtros.q){
+      const t = [p.tarea,p.detalle,p.solicitadoPor,p.origen].join(" ").toLowerCase();
+      if(!t.includes(filtros.q.toLowerCase())) return false;
+    }
     return true;
   });
   const prioridadOrden = {alta:0, media:1, baja:2};
@@ -520,14 +560,15 @@ function viewGestion(){
       <div class="sub">Pendientes LEGO ↔ INSIDE · quién lo pidió, para cuándo quedó y cuándo se envía</div>
     </div>
     <div class="spacer"></div>
-    <button class="btn primary" data-act="nuevo-pendiente">＋ Nuevo pendiente</button>
+    <button class="btn" data-act="copiar-estatus" title="Genera el cuadro de estatus en texto">📋 Copiar estatus</button>
+    <button class="btn primary only-interno" data-act="nuevo-pendiente">＋ Nuevo pendiente</button>
   </div>
 
   <div class="statrow">
     <div class="stat lego"><div class="k">Debe LEGO</div><div class="v">${lego.length}</div><div class="d">pendientes del cliente</div></div>
     <div class="stat inside"><div class="k">Debe INSIDE</div><div class="v">${inside.length}</div><div class="d">pendientes de la agencia</div></div>
-    <div class="stat bad"><div class="k">Vencidos</div><div class="v">${vencidos.length}</div><div class="d">pasaron su fecha compromiso</div></div>
-    <div class="stat warn"><div class="k">Esta semana</div><div class="v">${semana.length}</div><div class="d">se envían en los próximos 7 días</div></div>
+    <div class="stat bad"><div class="k">En retraso</div><div class="v">${retraso.length}</div><div class="d">pasaron su fecha compromiso</div></div>
+    <div class="stat warn"><div class="k">En riesgo</div><div class="v">${riesgo.length}</div><div class="d">vencen en los próximos 2 días</div></div>
   </div>
 
   <div class="filters">
@@ -538,6 +579,7 @@ function viewGestion(){
     <button class="fchip ${filtros.estado==="activos"?"on":""}" data-festado="activos">Activos</button>
     <button class="fchip ${filtros.estado==="cerrados"?"on":""}" data-festado="cerrados">✓ Cerrados</button>
     <button class="fchip ${filtros.estado==="todos"?"on":""}" data-festado="todos">Historial completo</button>
+    <input type="search" id="buscaPend" placeholder="Buscar pendiente…" value="${esc(filtros.q)}" style="margin-left:auto;min-width:180px" />
   </div>
 
   <div class="card"><div class="tablewrap"><table>
@@ -547,8 +589,9 @@ function viewGestion(){
     <tbody>
       ${rows.length ? rows.map(p=>{
         const closed = p.estado==="completado"||p.estado==="enviado";
+        const cump = cumplimiento(p);
         return `<tr class="${closed?"rowdone":""}">
-          <td><button class="checkbtn ${closed?"done":""}" data-toggle="${p.id}" title="${closed?"Reabrir":"Marcar enviado"}">✓</button></td>
+          <td><button class="checkbtn only-interno ${closed?"done":""}" data-toggle="${p.id}" title="${closed?"Reabrir":"Marcar enviado"}">✓</button></td>
           <td style="min-width:260px">
             <div class="tasktitle" data-edit-p="${p.id}">${esc(p.tarea)}</div>
             ${p.detalle?`<div class="tnote">${esc(p.detalle)}</div>`:""}
@@ -557,10 +600,10 @@ function viewGestion(){
           <td>${pillResp(p.responsable)}</td>
           <td>${pillPrioridad(p.prioridad)}</td>
           <td class="num">${fmtFecha(p.fechaPedido)}</td>
-          <td class="num ${isOverdue(p)?"overdue":""}">${fmtFecha(p.fechaCompromiso)}${isOverdue(p)?" ⚠":""}</td>
+          <td class="num ${cump==="retraso"?"overdue":""}" ${cump==="riesgo"?`style="color:var(--warn);font-weight:700"`:""}>${fmtFecha(p.fechaCompromiso)}${cump==="retraso"?" ⚠":cump==="riesgo"?" ⏳":""}</td>
           <td class="num">${fmtFecha(p.fechaEnvio)}</td>
           <td>${pillEstado(p.estado)}</td>
-          <td><button class="iconbtn" data-edit-p="${p.id}" title="Editar">✏️</button></td>
+          <td><button class="iconbtn only-interno" data-edit-p="${p.id}" title="Editar">✏️</button></td>
         </tr>`;
       }).join("") : `<tr><td colspan="9"><div class="empty-note">Nada por aquí con estos filtros.</div></td></tr>`}
     </tbody>
@@ -570,6 +613,11 @@ function viewGestion(){
 /* =====================================================================
    VISTA 2 — PLANNING & PIEZAS
    ===================================================================== */
+function pillAprob(a){
+  if(a==="aprobado") return `<span class="pill ok" title="Aprobación del cliente">✓ Aprobado</span>`;
+  if(a==="ajustes") return `<span class="pill bad" title="Aprobación del cliente">✎ Con ajustes</span>`;
+  return `<span class="pill warn" title="Aprobación del cliente">✋ Por aprobar</span>`;
+}
 function pillStatusPieza(st){
   const map = { "por-hacer":["neutral","Por hacer"], "en-diseno":["warn","En diseño"], "enviado":["inside","Enviado a cliente"], "aprobado":["ok","Aprobado"], "programado":["brick","Programado"], "publicado":["ok","Publicado"] };
   const [cls,txt] = map[st] || ["neutral",st];
@@ -600,8 +648,14 @@ function viewPlanning(){
     </div>
     <div class="spacer"></div>
     ${monthSwitch()}
-    <button class="btn primary" data-act="nueva-pieza">＋ Nueva pieza</button>
+    <button class="btn primary only-interno" data-act="nueva-pieza">＋ Nueva pieza</button>
   </div>
+
+  ${(()=>{ const rg = items.filter(piezaEnRiesgo);
+    return rg.length ? `<div class="card" style="border-color:var(--warn)"><div class="card-body" style="padding:11px 16px">
+      ⚠️ <b>${rg.length} pieza${rg.length>1?"s":""} en riesgo:</b> publica${rg.length>1?"n":""} en los próximos días y el cliente aún no aprueba —
+      ${rg.map(i=>`<button class="btn small ghost" data-edit-i="${i.id}" style="color:var(--warn)">${fmtFecha(i.fecha)} · ${esc(i.tema.slice(0,45))}</button>`).join(" ")}
+    </div></div>` : ""; })()}
 
   <div class="card"><div class="card-body">
     <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
@@ -609,7 +663,7 @@ function viewPlanning(){
         <div class="k" style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Consumo del fee · ${fmtMes(mesActual)}</div>
         <div style="font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px">
           ${feeUsado}${hayCupo?` <span style="font-size:15px;color:var(--ink-2);font-weight:600">de</span> ${cupo}`:` <span style="font-size:15px;color:var(--ink-2);font-weight:600">piezas del fee</span>`}
-          <button class="iconbtn" data-act="edit-cupo" title="Editar cupo del fee">✏️</button>
+          <button class="iconbtn only-interno" data-act="edit-cupo" title="Editar cupo del fee">✏️</button>
         </div>
         ${hayCupo?`<div class="feebar"><div class="${feeUsado>cupo?"over":""}" style="width:${pct}%"></div></div>
         <div class="tnote" style="margin-top:5px">${feeUsado>cupo ? `⚠ Excede el cupo por ${feeUsado-cupo} pieza(s)` : `Quedan <b>${cupo-feeUsado}</b> piezas del fee para este mes`}</div>`
@@ -634,7 +688,7 @@ function viewPlanning(){
     return `<div class="card">
       <div class="card-head"><h3>Semana ${w}</h3><span class="pill neutral">${sem.reduce((a,i)=>a+Number(i.piezas||1),0)} piezas</span></div>
       <div class="tablewrap"><table>
-        <thead><tr><th>Publica</th><th>Tema</th><th>Formato</th><th class="num">Piezas</th><th>Fee / Extra</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Publica</th><th>Tema</th><th>Formato</th><th class="num">Piezas</th><th>Fee / Extra</th><th>Status</th><th>Cliente</th><th></th></tr></thead>
         <tbody>${sem.map(i=>`<tr>
           <td class="num">${fmtFecha(i.fecha)}</td>
           <td style="min-width:240px"><div class="tasktitle" data-edit-i="${i.id}">${esc(i.tema)}</div>${i.comentarios?`<div class="tnote">${esc(i.comentarios)}</div>`:""}</td>
@@ -642,7 +696,8 @@ function viewPlanning(){
           <td class="num">${i.piezas}</td>
           <td>${i.tipo==="extra" ? `<span class="pill warn">Extra · ${soles(i.costo)}</span>` : `<span class="pill ok">Fee</span>`}</td>
           <td>${pillStatusPieza(i.status)}</td>
-          <td><button class="iconbtn" data-edit-i="${i.id}" title="Editar">✏️</button></td>
+          <td>${pillAprob(i.aprobacion)}</td>
+          <td><button class="iconbtn only-interno" data-edit-i="${i.id}" title="Editar">✏️</button></td>
         </tr>`).join("")}</tbody>
       </table></div>
     </div>`;
@@ -677,7 +732,7 @@ function viewCalendario(){
     const its = (byDay[iso]||[]);
     cells += `<div class="calday ${isToday?"today":""}">
       <div class="dnum"><span>${d}</span>${its.length?`<span style="color:var(--ink-3);font-size:10.5px">${its.length}</span>`:""}</div>
-      ${its.map(i=>`<button class="calitem f-${esc(i.formato)}" data-edit-i="${i.id}" title="${esc(i.tema)}">${i.tipo==="extra"?`<span class="extra-flag">$</span> `:""}${esc(i.tema)}</button>`).join("")}
+      ${its.map(i=>`<button class="calitem f-${esc(i.formato)}" data-edit-i="${i.id}" title="${esc(i.tema)}${i.aprobacion==="pendiente"?" · por aprobar":""}">${i.tipo==="extra"?`<span class="extra-flag">$</span> `:""}${i.aprobacion==="pendiente"&&i.status!=="publicado"?"✋ ":""}${esc(i.tema)}</button>`).join("")}
     </div>`;
   }
 
@@ -689,7 +744,7 @@ function viewCalendario(){
     </div>
     <div class="spacer"></div>
     ${monthSwitch()}
-    <button class="btn primary" data-act="nueva-pieza">＋ Nueva pieza</button>
+    <button class="btn primary only-interno" data-act="nueva-pieza">＋ Nueva pieza</button>
   </div>
   <div class="card"><div class="card-body">
     <div class="calgrid">
@@ -703,6 +758,7 @@ function viewCalendario(){
       <span><i style="background:var(--lego)"></i>Reel / Video</span>
       <span><i style="background:#9061C2"></i>Animación</span>
       <span><b class="extra-flag" style="color:var(--warn)">$</b> Extra cotizado</span>
+      <span>✋ Por aprobar del cliente</span>
     </div>
   </div></div>`;
 }
@@ -723,7 +779,7 @@ function viewReuniones(){
       <div class="sub">Repositorio de reuniones · pega la transcripción y detecta los acuerdos automáticamente</div>
     </div>
     <div class="spacer"></div>
-    <button class="btn primary" data-act="nueva-reunion">＋ Nueva reunión</button>
+    <button class="btn primary only-interno" data-act="nueva-reunion">＋ Nueva reunión</button>
   </div>
 
   <div class="statrow">
@@ -750,8 +806,8 @@ function viewReuniones(){
         <div class="card-head">
           <h3>${esc(r.titulo)}</h3>
           <div class="spacer"></div>
-          <button class="btn small ghost" data-edit-r="${r.id}">✏️ Editar</button>
-          <button class="btn small ghost" data-del-r="${r.id}">🗑</button>
+          <button class="btn small ghost only-interno" data-edit-r="${r.id}">✏️ Editar</button>
+          <button class="btn small ghost only-interno" data-del-r="${r.id}">🗑</button>
         </div>
         <div class="card-body">
           <div class="tnote" style="margin-bottom:6px"><b>${fmtFecha(r.fecha)}</b>${r.duracion?` · ${esc(r.duracion)}`:""}</div>
@@ -764,25 +820,25 @@ function viewReuniones(){
         <div class="card-head">
           <h3>Acuerdos de esta reunión</h3>
           <div class="spacer"></div>
-          <button class="btn small" data-add-acuerdo="${r.id}">＋ Acuerdo</button>
+          <button class="btn small only-interno" data-add-acuerdo="${r.id}">＋ Acuerdo</button>
         </div>
         <div class="card-body">
           ${r.acuerdos.length ? r.acuerdos.map(a=>`
           <div class="acuerdo ${a.estado==="cumplido"?"done":""}">
-            <button class="checkbtn ${a.estado==="cumplido"?"done":""}" data-toggle-a="${r.id}|${a.id}" title="${a.estado==="cumplido"?"Reabrir":"Marcar cumplido"}">✓</button>
+            <button class="checkbtn only-interno ${a.estado==="cumplido"?"done":""}" data-toggle-a="${r.id}|${a.id}" title="${a.estado==="cumplido"?"Reabrir":"Marcar cumplido"}">✓</button>
             <div class="atext">
-              <p>${esc(a.texto)}</p>
+              <p>${a.estado==="cumplido"?"✅ ":""}${esc(a.texto)}</p>
               <div class="ameta">
                 ${pillResp(a.responsable)}
-                ${a.estado==="vigente"?`<button class="btn small ghost" data-a2p="${r.id}|${a.id}" title="Crear pendiente en Gestión">→ Convertir en pendiente</button>`:""}
-                <button class="btn small ghost" data-del-a="${r.id}|${a.id}">🗑</button>
+                ${a.estado==="vigente"?`<button class="btn small ghost only-interno" data-a2p="${r.id}|${a.id}" title="Crear pendiente en Gestión">→ Convertir en pendiente</button>`:""}
+                <button class="btn small ghost only-interno" data-del-a="${r.id}|${a.id}">🗑</button>
               </div>
             </div>
           </div>`).join("") : `<div class="empty-note">Sin acuerdos registrados. Usa “＋ Acuerdo” o pega la transcripción abajo.</div>`}
         </div>
       </div>
 
-      <div class="card">
+      <div class="card only-interno">
         <div class="card-head"><h3>🪄 Detectar acuerdos desde la transcripción</h3></div>
         <div class="card-body">
           <p class="tnote" style="margin-bottom:8px">Pega la transcripción (Tactiq, notas, minuta) y la herramienta propone los acuerdos que encuentre. Tú decides cuáles guardar.</p>
@@ -795,6 +851,43 @@ function viewReuniones(){
       </div>` : `<div class="card"><div class="empty-note">Crea tu primera reunión para empezar el repositorio.</div></div>`}
     </div>
   </div>`;
+}
+
+/* --- Cuadro de estatus en texto para correo / WhatsApp (idea Payless) --- */
+function textoEstatus(){
+  const abiertos = S.pendientes.filter(p=>p.estado!=="completado" && p.estado!=="enviado")
+    .sort((a,b)=>(a.fechaCompromiso||"9999").localeCompare(b.fechaCompromiso||"9999"));
+  const linea = p => `• ${p.prioridad==="alta"?"🔴 ":""}${p.tarea}${p.fechaCompromiso?` — límite ${fmtFecha(p.fechaCompromiso)}`:""}${cumplimiento(p)==="retraso"?" ⚠ EN RETRASO":""}`;
+  const cl = abiertos.filter(p=>p.responsable==="LEGO");
+  const ins = abiertos.filter(p=>p.responsable==="INSIDE");
+  const items = S.planning.filter(i=>i.mes===mesActual);
+  const porAprobar = items.filter(i=>i.aprobacion==="pendiente" && i.status!=="publicado")
+    .sort((a,b)=>(a.fecha||"9999").localeCompare(b.fecha||"9999"));
+  const extras = items.filter(i=>i.tipo==="extra");
+  const extrasS = extras.reduce((a,i)=>a+Number(i.costo||0),0);
+  const cerrados = S.pendientes.filter(p=>p.estado==="enviado"||p.estado==="completado");
+
+  let t = `ESTATUS LEGO · ${fmtFecha(new Date().toISOString().slice(0,10))}\n`;
+  t += `\n🧱 PENDIENTE DE LEGO (${cl.length}):\n${cl.map(linea).join("\n")||"• Nada pendiente"}\n`;
+  t += `\n🏠 EN CURSO POR INSIDE (${ins.length}):\n${ins.map(linea).join("\n")||"• Nada pendiente"}\n`;
+  if(porAprobar.length) t += `\n✋ PIEZAS POR APROBAR (${porAprobar.length}):\n${porAprobar.map(i=>`• ${fmtFecha(i.fecha)} · ${i.tema}`).join("\n")}\n`;
+  t += `\n💰 EXTRAS ${fmtMes(mesActual).toUpperCase()}: ${soles(extrasS)} (${extras.length} pieza${extras.length===1?"":"s"} fuera del fee)\n`;
+  if(cerrados.length) t += `\n✅ ENVIADOS / COMPLETADOS (${cerrados.length}):\n${cerrados.slice(-5).map(p=>`• ${p.tarea}`).join("\n")}\n`;
+  return t;
+}
+function copiarEstatus(){
+  const t = textoEstatus();
+  const listo = ()=>toast("Estatus copiado — pégalo en correo o WhatsApp ✓");
+  const fallback = ()=>{
+    openModal(`<h3>Cuadro de estatus</h3>
+      <p class="tnote" style="margin-bottom:8px">Cópialo manualmente (Ctrl/Cmd + C):</p>
+      <textarea style="width:100%;min-height:280px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px">${esc(t)}</textarea>
+      <div class="modal-actions"><button class="btn" id="st_cerrar">Cerrar</button></div>`);
+    const ta = document.querySelector("#modalRoot textarea"); ta.focus(); ta.select();
+    document.getElementById("st_cerrar").onclick = closeModal;
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo).catch(fallback);
+  else fallback();
 }
 
 /* --- Heurística: detectar frases de compromiso en la transcripción --- */
@@ -877,7 +970,7 @@ function modalPendiente(p){
 
 function modalPieza(i){
   const isNew = !i;
-  i = i || { id:uid(), mes:mesActual, semana:1, fecha:"", tema:"", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"" };
+  i = i || { id:uid(), mes:mesActual, semana:1, fecha:"", tema:"", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"por-hacer", aprobacion:"pendiente", comentarios:"" };
   openModal(`
     <h3>${isNew?"Nueva pieza":"Editar pieza"}</h3>
     <div class="formgrid">
@@ -895,6 +988,11 @@ function modalPieza(i){
         ${[["por-hacer","Por hacer"],["en-diseno","En diseño"],["enviado","Enviado a cliente"],["aprobado","Aprobado"],["programado","Programado"],["publicado","Publicado"]].map(([v,t])=>`<option value="${v}" ${i.status===v?"selected":""}>${t}</option>`).join("")}
       </select></div>
       <div><label>Mes</label><input id="g_mes" value="${esc(i.mes)}" placeholder="2026-08" /></div>
+      <div><label>Aprobación del cliente</label><select id="g_aprob">
+        <option value="pendiente" ${i.aprobacion==="pendiente"?"selected":""}>✋ Por aprobar</option>
+        <option value="aprobado" ${i.aprobacion==="aprobado"?"selected":""}>✓ Aprobado</option>
+        <option value="ajustes" ${i.aprobacion==="ajustes"?"selected":""}>✎ Con ajustes</option>
+      </select></div>
       <div class="full"><label>Comentarios</label><textarea id="g_com" rows="2">${esc(i.comentarios)}</textarea></div>
     </div>
     <div class="modal-actions">
@@ -911,7 +1009,7 @@ function modalPieza(i){
     if(!g("g_tema")) { toast("La pieza necesita un tema"); return; }
     Object.assign(i, { tema:g("g_tema"), fecha:g("g_fecha"), semana:Number(g("g_sem")), formato:g("g_fmt"),
       piezas:Number(g("g_pz"))||1, tipo:g("g_tipo"), costo:Number(g("g_costo"))||0, status:g("g_st"),
-      comentarios:g("g_com"), mes:(g("g_mes")||mesActual) });
+      aprobacion:g("g_aprob"), comentarios:g("g_com"), mes:(g("g_mes")||mesActual) });
     if(i.fecha) i.mes = i.fecha.slice(0,7);
     if(isNew) S.planning.push(i);
     save(); closeModal(); render(); toast(isNew?"Pieza agregada":"Guardado ✓");
@@ -970,22 +1068,33 @@ function modalAcuerdo(rid){
    ===================================================================== */
 function bindMain(){
   const main = document.getElementById("main");
+  const interno = esInterno();
 
   main.querySelectorAll("[data-fresp]").forEach(b=>b.onclick=()=>{ filtros.resp=b.dataset.fresp; render(); });
   main.querySelectorAll("[data-festado]").forEach(b=>b.onclick=()=>{ filtros.estado=b.dataset.festado; render(); });
+  const busca = main.querySelector("#buscaPend");
+  if(busca) busca.oninput = ()=>{
+    filtros.q = busca.value;
+    render();
+    const nb = document.getElementById("buscaPend");
+    if(nb){ nb.focus(); nb.setSelectionRange(nb.value.length, nb.value.length); }
+  };
 
   main.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>{
+    if(!interno) return;
     const p = S.pendientes.find(x=>x.id===b.dataset.toggle);
     if(p.estado==="enviado"||p.estado==="completado"){ p.estado="pendiente"; p.fechaEnvio=""; }
     else { p.estado="enviado"; p.fechaEnvio = new Date().toISOString().slice(0,10); }
     save(); render();
   });
-  main.querySelectorAll("[data-edit-p]").forEach(b=>b.onclick=()=>modalPendiente(S.pendientes.find(x=>x.id===b.dataset.editP)));
-  main.querySelectorAll("[data-edit-i]").forEach(b=>b.onclick=()=>modalPieza(S.planning.find(x=>x.id===b.dataset.editI)));
+  main.querySelectorAll("[data-edit-p]").forEach(b=>b.onclick=()=>{ if(interno) modalPendiente(S.pendientes.find(x=>x.id===b.dataset.editP)); });
+  main.querySelectorAll("[data-edit-i]").forEach(b=>b.onclick=()=>{ if(interno) modalPieza(S.planning.find(x=>x.id===b.dataset.editI)); });
 
   main.querySelectorAll("[data-act]").forEach(b=>{
     const act = b.dataset.act;
     b.onclick = ()=>{
+      if(act==="copiar-estatus") copiarEstatus();
+      if(!interno && act!=="mes-prev" && act!=="mes-next" && act!=="copiar-estatus") return;
       if(act==="nuevo-pendiente") modalPendiente(null);
       if(act==="nueva-pieza") modalPieza(null);
       if(act==="nueva-reunion") modalReunion(null);
@@ -1093,6 +1202,16 @@ document.getElementById("btnReset").onclick = ()=>{
     S = structuredClone(SEED); save(); render(); toast("Datos iniciales restaurados");
   }
 };
+
+/* ============ Modo Interno / Cliente ============ */
+document.querySelectorAll("#modePill button").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    if(S.settings.modo === b.dataset.mode) return;
+    S.settings.modo = b.dataset.mode;
+    save(); render();
+    toast(b.dataset.mode==="cliente" ? "Modo cliente: vista limpia de solo lectura 👁️" : "Modo interno: edición activada ✏️");
+  });
+});
 
 /* ============ Init ============ */
 load(); save(); render();
