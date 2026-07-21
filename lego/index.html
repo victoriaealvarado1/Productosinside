@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cerebro LEGO · Gestión Inside</title>
+<style>
+/* ============ Tokens ============ */
+:root{
+  --bg:#F6F5F1;
+  --panel:#FFFFFF;
+  --panel-2:#FBFAF7;
+  --ink:#1B1B1F;
+  --ink-2:#5A5A63;
+  --ink-3:#8B8B95;
+  --line:#E7E5DE;
+  --line-2:#D8D6CE;
+  --lego:#D01012;          /* rojo LEGO — marca / cliente */
+  --lego-soft:#FBE9E9;
+  --inside:#0055BF;        /* azul LEGO — equipo INSIDE */
+  --inside-soft:#E7EFFA;
+  --brick:#F5C518;         /* amarillo brick — resaltado */
+  --brick-soft:#FBF3D2;
+  --ok:#1F8A4C; --ok-soft:#E4F3EA;
+  --warn:#B7791F; --warn-soft:#FBF1DD;
+  --bad:#C22B2B; --bad-soft:#FBE9E9;
+  --shadow:0 1px 2px rgba(27,27,31,.05),0 8px 24px -12px rgba(27,27,31,.12);
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#17171A; --panel:#1F1F24; --panel-2:#26262C;
+    --ink:#F0EFEA; --ink-2:#B4B3BC; --ink-3:#84838E;
+    --line:#33333B; --line-2:#43434C;
+    --lego:#F0393B; --lego-soft:#3A2224;
+    --inside:#5C9BE8; --inside-soft:#1F2A3C;
+    --brick:#F5C518; --brick-soft:#3A331A;
+    --ok:#4CC07E; --ok-soft:#1E3128;
+    --warn:#E0A94E; --warn-soft:#37301F;
+    --bad:#F06A6A; --bad-soft:#3A2224;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F6F5F1; --panel:#FFFFFF; --panel-2:#FBFAF7;
+  --ink:#1B1B1F; --ink-2:#5A5A63; --ink-3:#8B8B95;
+  --line:#E7E5DE; --line-2:#D8D6CE;
+  --lego:#D01012; --lego-soft:#FBE9E9;
+  --inside:#0055BF; --inside-soft:#E7EFFA;
+  --brick:#F5C518; --brick-soft:#FBF3D2;
+  --ok:#1F8A4C; --ok-soft:#E4F3EA;
+  --warn:#B7791F; --warn-soft:#FBF1DD;
+  --bad:#C22B2B; --bad-soft:#FBE9E9;
+  --shadow:0 1px 2px rgba(27,27,31,.05),0 8px 24px -12px rgba(27,27,31,.12);
+}
+:root[data-theme="dark"]{
+  --bg:#17171A; --panel:#1F1F24; --panel-2:#26262C;
+  --ink:#F0EFEA; --ink-2:#B4B3BC; --ink-3:#84838E;
+  --line:#33333B; --line-2:#43434C;
+  --lego:#F0393B; --lego-soft:#3A2224;
+  --inside:#5C9BE8; --inside-soft:#1F2A3C;
+  --brick:#F5C518; --brick-soft:#3A331A;
+  --ok:#4CC07E; --ok-soft:#1E3128;
+  --warn:#E0A94E; --warn-soft:#37301F;
+  --bad:#F06A6A; --bad-soft:#3A2224;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+/* ============ Base ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line-2);border-radius:7px;padding:7px 10px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--inside);outline-offset:1px}
+::placeholder{color:var(--ink-3)}
+
+.app{display:flex;min-height:100vh}
+
+/* ============ Sidebar ============ */
+.sidebar{
+  width:248px;flex:0 0 248px;background:var(--panel);border-right:1px solid var(--line);
+  padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;
+}
+.brandblock{display:flex;align-items:center;gap:12px;padding:4px 8px 18px}
+.brick-logo{
+  width:44px;height:34px;background:var(--lego);border-radius:5px;position:relative;flex:0 0 auto;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.22);
+}
+.brick-logo::before{
+  content:"";position:absolute;top:-6px;left:5px;right:5px;height:8px;
+  background:
+    radial-gradient(circle at 5px 4px, var(--lego) 4.5px, transparent 5px),
+    radial-gradient(circle at 17px 4px, var(--lego) 4.5px, transparent 5px),
+    radial-gradient(circle at 29px 4px, var(--lego) 4.5px, transparent 5px);
+}
+.brandblock h1{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.brandblock small{color:var(--ink-2);font-size:11.5px;display:block}
+.nav-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:14px 10px 6px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:8px 10px;border-radius:8px;font-weight:600;color:var(--ink-2);font-size:13.5px;
+}
+.nav-item:hover{background:var(--panel-2);color:var(--ink)}
+.nav-item.active{background:var(--brick-soft);color:var(--ink)}
+.nav-item .ico{width:20px;text-align:center}
+.nav-item .cnt{margin-left:auto;font-size:11px;font-weight:700;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;padding:0 7px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.nav-item.active .cnt{background:var(--brick);border-color:var(--brick);color:#1B1B1F}
+.sidebar-foot{margin-top:auto;padding:12px 10px 0;border-top:1px solid var(--line);font-size:11px;color:var(--ink-3);line-height:1.6}
+.sidebar-foot .linkish{color:var(--ink-2);font-weight:600;text-decoration:underline;text-underline-offset:2px;padding:0}
+.sidebar-foot .linkish:hover{color:var(--lego)}
+
+/* ============ Main ============ */
+.main{flex:1;min-width:0;padding:26px 32px 60px}
+.topbar{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.topbar h2{font-size:23px;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+.topbar .sub{color:var(--ink-2);font-size:13px;margin-top:2px}
+.topbar .spacer{flex:1}
+.month-switch{display:flex;align-items:center;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px}
+.month-switch button{padding:5px 10px;border-radius:6px;font-weight:700;color:var(--ink-2);font-size:13px}
+.month-switch button:hover{background:var(--panel-2)}
+.month-switch .mlabel{font-weight:800;min-width:130px;text-align:center;font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;border:1px solid var(--line-2);background:var(--panel)}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--lego);border-color:var(--lego);color:#fff}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.small{padding:4px 9px;font-size:12px}
+.btn.ghost{border-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--panel-2);color:var(--ink)}
+
+/* ============ Cards / stats ============ */
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.stat .v{font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:2px}
+.stat .d{font-size:12px;color:var(--ink-2)}
+.stat.lego .v{color:var(--lego)} .stat.inside .v{color:var(--inside)}
+.stat.warn .v{color:var(--warn)} .stat.bad .v{color:var(--bad)} .stat.ok .v{color:var(--ok)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:18px}
+.card-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid var(--line)}
+.card-head h3{font-size:14.5px;font-weight:800}
+.card-head .spacer{flex:1}
+.card-body{padding:16px}
+
+/* ============ Filters / chips ============ */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.fchip{padding:5px 12px;border-radius:99px;border:1px solid var(--line-2);font-weight:600;font-size:12.5px;color:var(--ink-2);background:var(--panel)}
+.fchip:hover{border-color:var(--ink-3)}
+.fchip.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.fchip.on.f-lego{background:var(--lego);border-color:var(--lego);color:#fff}
+.fchip.on.f-inside{background:var(--inside);border-color:var(--inside);color:#fff}
+
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.pill.lego{background:var(--lego-soft);color:var(--lego)}
+.pill.inside{background:var(--inside-soft);color:var(--inside)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.neutral{background:var(--panel-2);color:var(--ink-2);border:1px solid var(--line)}
+.pill.brick{background:var(--brick-soft);color:#7A6206}
+:root[data-theme="dark"] .pill.brick,:root:not([data-theme="light"]) .dark-brick{color:var(--brick)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:0 0 auto}
+
+/* ============ Tables ============ */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--panel-2)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tasktitle{font-weight:600;cursor:pointer}
+.tasktitle:hover{color:var(--lego);text-decoration:underline;text-underline-offset:2px}
+.tnote{font-size:12px;color:var(--ink-2);font-weight:400;margin-top:2px}
+.overdue{color:var(--bad);font-weight:700}
+.rowdone td{opacity:.55}
+.rowdone .tasktitle{text-decoration:line-through}
+.iconbtn{padding:3px 7px;border-radius:6px;color:var(--ink-3);font-size:13px}
+.iconbtn:hover{background:var(--panel-2);color:var(--ink)}
+.checkbtn{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--line-2);display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:transparent;flex:0 0 auto}
+.checkbtn:hover{border-color:var(--ok);color:var(--ok)}
+.checkbtn.done{background:var(--ok);border-color:var(--ok);color:#fff}
+
+/* ============ Planning counters ============ */
+.countergrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.counter{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;text-align:center}
+.counter .cv{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums}
+.counter .ck{font-size:11px;color:var(--ink-2);font-weight:600}
+.feebar{height:9px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden;margin-top:8px}
+.feebar>div{height:100%;background:var(--brick);border-radius:99px 0 0 99px}
+.feebar>div.over{background:var(--bad)}
+
+/* ============ Calendar ============ */
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.calhead{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);text-align:center;padding:4px 0}
+.calday{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-height:96px;padding:6px;display:flex;flex-direction:column;gap:4px}
+.calday.empty{background:transparent;border-style:dashed;opacity:.5}
+.calday .dnum{font-size:12px;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;align-items:center}
+.calday.today{border-color:var(--lego);border-width:2px}
+.calday.today .dnum{color:var(--lego)}
+.calitem{font-size:11px;font-weight:600;line-height:1.3;padding:3px 6px;border-radius:5px;background:var(--panel-2);border-left:3px solid var(--ink-3);cursor:pointer;text-align:left;width:100%}
+.calitem:hover{filter:brightness(.96)}
+:root[data-theme="dark"] .calitem:hover{filter:brightness(1.15)}
+.calitem.f-Reel{border-left-color:var(--lego)}
+.calitem.f-Carrusel{border-left-color:var(--inside)}
+.calitem.f-Estático{border-left-color:var(--ok)}
+.calitem.f-Story{border-left-color:var(--brick)}
+.calitem.f-Animación,.calitem.f-Video{border-left-color:#9061C2}
+.calitem .extra-flag{color:var(--warn);font-weight:800}
+.callegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-2)}
+.callegend span{display:inline-flex;align-items:center;gap:6px}
+.callegend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* ============ Meetings ============ */
+.meetlayout{display:grid;grid-template-columns:290px 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.meetlayout{grid-template-columns:1fr}}
+.meetitem{width:100%;text-align:left;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);margin-bottom:8px;display:block}
+.meetitem:hover{border-color:var(--ink-3)}
+.meetitem.sel{border-color:var(--lego);border-width:2px;padding:11px 13px}
+.meetitem .mt{font-weight:700;font-size:13.5px}
+.meetitem .md{font-size:12px;color:var(--ink-2);margin-top:2px;font-variant-numeric:tabular-nums}
+.acuerdo{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.acuerdo:last-child{border-bottom:none}
+.acuerdo .atext{flex:1;min-width:0}
+.acuerdo .atext p{font-size:13.5px}
+.acuerdo.done .atext p{text-decoration:line-through;opacity:.55}
+.acuerdo .ameta{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.candidate{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:7px;background:var(--panel-2)}
+.candidate textarea{flex:1;min-height:38px;resize:vertical;background:var(--panel)}
+
+/* ============ Modal ============ */
+.modal-back{position:fixed;inset:0;background:rgba(20,20,24,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;z-index:50;overflow-y:auto}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);width:min(620px,100%);padding:22px}
+.modal h3{font-size:17px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.formgrid .full{grid-column:1/-1}
+.formgrid label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.formgrid input,.formgrid select,.formgrid textarea{width:100%}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.modal-actions .danger{color:var(--bad);margin-right:auto}
+textarea{resize:vertical}
+
+.empty-note{color:var(--ink-3);font-size:13px;padding:18px;text-align:center}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:99px;font-weight:700;font-size:13px;z-index:99;box-shadow:var(--shadow)}
+@media (prefers-reduced-motion:no-preference){
+  .toast{animation:pop .18s ease-out}
+  @keyframes pop{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+}
+@media (max-width:760px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;flex:none;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}
+  .sidebar-foot{display:none}
+  .main{padding:18px 14px 50px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brandblock">
+      <div class="brick-logo" aria-hidden="true"></div>
+      <div>
+        <h1>Cerebro LEGO</h1>
+        <small>Gestión de marca · INSIDE</small>
+      </div>
+    </div>
+    <div class="nav-label">Espacios</div>
+    <button class="nav-item" data-view="gestion"><span class="ico">📌</span> Gestión de la marca <span class="cnt" id="cntGestion">0</span></button>
+    <button class="nav-item" data-view="planning"><span class="ico">🧱</span> Planning &amp; piezas <span class="cnt" id="cntPlanning">0</span></button>
+    <button class="nav-item" data-view="calendario"><span class="ico">📅</span> Calendario</button>
+    <button class="nav-item" data-view="reuniones"><span class="ico">🤝</span> Reuniones &amp; acuerdos <span class="cnt" id="cntAcuerdos">0</span></button>
+    <div class="nav-label">Datos</div>
+    <button class="nav-item" id="btnExport"><span class="ico">⬇️</span> Exportar respaldo</button>
+    <button class="nav-item" id="btnImport"><span class="ico">⬆️</span> Importar respaldo</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none" />
+    <div class="sidebar-foot">
+      Todo se guarda automáticamente en este navegador.<br />
+      <button class="linkish" id="btnReset">Restaurar datos iniciales</button>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+<div id="modalRoot"></div>
+
+<script>
+/* =====================================================================
+   CEREBRO LEGO — datos semilla
+   Levantados del Planning Julio 2026 (matriz) y la reunión del 20.07.26
+   (Andrea Vasquez · LEGO — Victoria Alvarado & Roald Aedo · INSIDE)
+   ===================================================================== */
+const LS_KEY = "legoBrain_v1";
+const HOY = new Date(); HOY.setHours(0,0,0,0);
+
+const SEED = {
+  settings: { feeCupo: { "2026-08": 15 } },
+
+  pendientes: [
+    { id:"p1", tarea:"Enviar resumen de adicionales aprobados por correo", detalle:"Total extras hasta ahora: S/ 2,610 (Spiderman táctica 1,060 + Larcomar 1,200 + adicionales 350). Andrea lo revisa al recibirlo.", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-21", fechaEnvio:"", prioridad:"alta", estado:"pendiente", origen:"Reunión 20.07" },
+    { id:"p2", tarea:"Enviar temáticas y códigos de agosto para la segunda matriz", detalle:"Con eso INSIDE cruza las piezas faltantes de agosto (quedan 3 del fee) y arma la segunda quincena.", responsable:"LEGO", solicitadoPor:"Victoria (INSIDE)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-24", fechaEnvio:"", prioridad:"alta", estado:"pendiente", origen:"Reunión 20.07" },
+    { id:"p3", tarea:"Actualizar matriz de julio: eliminar los 2 videos tiktokeros", detalle:"Acordado en reunión: los 2 videos tiktokeros del Día del Niño no van; su lugar lo toman los reels de mundos.", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-21", fechaEnvio:"", prioridad:"media", estado:"pendiente", origen:"Reunión 20.07" },
+    { id:"p4", tarea:"Programar post Cumpleaños de Harry Potter", detalle:"Sale el miércoles 29.07 (evento viernes 31 y sábado 01). Se cuenta como EXTRA, no como pieza de agosto.", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-29", fechaEnvio:"", prioridad:"alta", estado:"pendiente", origen:"Reunión 20.07" },
+    { id:"p5", tarea:"Enviar flyer Spider para el post estático del 31.07", detalle:"El arte lo envía el cliente; INSIDE solo publica (costo S/ 0).", responsable:"LEGO", solicitadoPor:"Victoria (INSIDE)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-28", fechaEnvio:"", prioridad:"alta", estado:"pendiente", origen:"Planning julio" },
+    { id:"p6", tarea:"Confirmar Make & Take de agosto (Andre)", detalle:"2 fechas en agosto, segunda quincena. Si no es Make & Take serían eventos 'construye tu mascota'. Presupuesto ref.: S/ 200.", responsable:"LEGO", solicitadoPor:"Victoria (INSIDE)", fechaPedido:"2026-07-16", fechaCompromiso:"2026-07-28", fechaEnvio:"", prioridad:"media", estado:"pendiente", origen:"Planning julio" },
+    { id:"p7", tarea:"Revisar cotización BCP / Podio (6 piezas)", detalle:"Cliente tiene pendiente revisar la cotización LEGO–BCP del podio.", responsable:"LEGO", solicitadoPor:"Victoria (INSIDE)", fechaPedido:"2026-07-08", fechaCompromiso:"2026-07-22", fechaEnvio:"", prioridad:"media", estado:"en-curso", origen:"Planning julio" },
+    { id:"p8", tarea:"Guiones de reels de mundos alineados al mensaje clave de la matriz", detalle:"4 reels de mundos + 1 de Spiderman. Se graban cuando ingresen las novedades a tienda (primera producción de agosto).", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-07-31", fechaEnvio:"", prioridad:"alta", estado:"en-curso", origen:"Reunión 20.07" },
+    { id:"p9", tarea:"Propuesta Idea Larcomar (búsqueda del tesoro en 1 mall)", detalle:"Expectativa + anuncio en video + cierre. Adicional S/ 1,200. Se evalúa para 2.ª quincena de agosto o septiembre; Andrea quiere integrarla con tráfico a tienda.", responsable:"INSIDE", solicitadoPor:"Andrea (LEGO)", fechaPedido:"2026-07-20", fechaCompromiso:"2026-08-05", fechaEnvio:"", prioridad:"baja", estado:"pendiente", origen:"Reunión 20.07" }
+  ],
+
+  planning: [
+    /* ---- JULIO · Semana 1 ---- */
+    { id:"j01", mes:"2026-07", semana:1, fecha:"2026-07-01", tema:"Nunca dejes de construir", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j02", mes:"2026-07", semana:1, fecha:"2026-07-02", tema:"Carrusel trivia", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j03", mes:"2026-07", semana:1, fecha:"2026-07-03", tema:"Cosas que la trivia nunca sabrá", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j04", mes:"2026-07", semana:1, fecha:"2026-07-04", tema:"Carrusel mundial", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j05", mes:"2026-07", semana:1, fecha:"2026-07-04", tema:"Carrusel propagandas en las que pienso", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j06", mes:"2026-07", semana:1, fecha:"2026-07-05", tema:"Carrusel Toy Story", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j07", mes:"2026-07", semana:1, fecha:"2026-07-05", tema:"Post 10% BCP", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"BCP: por revisar cotización LEGO – Podio (6 piezas)" },
+
+    /* ---- JULIO · Semana 2 ---- */
+    { id:"j08", mes:"2026-07", semana:2, fecha:"2026-07-10", tema:"Moana: “El océano me eligió”", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j09", mes:"2026-07", semana:2, fecha:"2026-07-10", tema:"Reel Toy Story", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j10", mes:"2026-07", semana:2, fecha:"2026-07-10", tema:"Reel nuevos sets", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j11", mes:"2026-07", semana:2, fecha:"2026-07-11", tema:"Carrusel fútbol · 4tos de final", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j12", mes:"2026-07", semana:2, fecha:"2026-07-11", tema:"Toy Story · Plaza San Miguel", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j13", mes:"2026-07", semana:2, fecha:"2026-07-11", tema:"Hora de construir el pronóstico (fútbol)", formato:"Story", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j14", mes:"2026-07", semana:2, fecha:"2026-07-11", tema:"Reel Star Wars", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j15", mes:"2026-07", semana:2, fecha:"2026-07-12", tema:"Post gato", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j16", mes:"2026-07", semana:2, fecha:"2026-07-12", tema:"Cyber", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j17", mes:"2026-07", semana:2, fecha:"2026-07-12", tema:"Mundial", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j18", mes:"2026-07", semana:2, fecha:"2026-07-13", tema:"Mundial · storie", formato:"Story", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j19", mes:"2026-07", semana:2, fecha:"2026-07-13", tema:"Carrusel Avengers", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j20", mes:"2026-07", semana:2, fecha:"2026-07-14", tema:"Carrusel marmota", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j21", mes:"2026-07", semana:2, fecha:"2026-07-14", tema:"Carrusel Francia vs Paraguay", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+
+    /* ---- JULIO · Semana 3 ---- */
+    { id:"j22", mes:"2026-07", semana:3, fecha:"2026-07-13", tema:"Post fútbol", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j23", mes:"2026-07", semana:3, fecha:"2026-07-13", tema:"Etapas de un LEGO lover", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j24", mes:"2026-07", semana:3, fecha:"2026-07-14", tema:"Si eres mujer, desliza", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j25", mes:"2026-07", semana:3, fecha:"2026-07-15", tema:"Reel wishlist", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j26", mes:"2026-07", semana:3, fecha:"2026-07-15", tema:"Me siento en la final (fútbol)", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j27", mes:"2026-07", semana:3, fecha:"2026-07-15", tema:"Postal LEGO", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j28", mes:"2026-07", semana:3, fecha:"2026-07-16", tema:"Carrusel BCP · 3 PM", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j29", mes:"2026-07", semana:3, fecha:"2026-07-16", tema:"Reel “yo a los 30”", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j30", mes:"2026-07", semana:3, fecha:"2026-07-16", tema:"Ajuste KV Día del Niño", formato:"Estático", piezas:1, tipo:"extra", costo:50, status:"publicado", comentarios:"Dentro de campaña Día del Niño" },
+    { id:"j31", mes:"2026-07", semana:3, fecha:"2026-07-17", tema:"Reel ¿cuál te llevas primero?", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j32", mes:"2026-07", semana:3, fecha:"2026-07-17", tema:"Construye tu vehículo", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j33", mes:"2026-07", semana:3, fecha:"2026-07-18", tema:"Reel “Entendiste mal: invertir en la bolsa”", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j34", mes:"2026-07", semana:3, fecha:"2026-07-18", tema:"Post mundial: los que se robaron tu corazón", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+    { id:"j35", mes:"2026-07", semana:3, fecha:"2026-07-19", tema:"Post final del mundial", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"publicado", comentarios:"" },
+
+    /* ---- JULIO · Semana 4 ---- */
+    { id:"j36", mes:"2026-07", semana:4, fecha:"2026-07-20", tema:"Sorteo Toy Story · anuncio del ganador", formato:"Story", piezas:1, tipo:"extra", costo:50, status:"publicado", comentarios:"" },
+    { id:"j37", mes:"2026-07", semana:4, fecha:"2026-07-21", tema:"Día del Perro · Creator + Golden Retriever", formato:"Estático", piezas:1, tipo:"extra", costo:50, status:"programado", comentarios:"Sets: cachorro juguetón + golden retriever" },
+    { id:"j38", mes:"2026-07", semana:4, fecha:"2026-07-21", tema:"Spiderman · Carrusel lanzamiento postal", formato:"Carrusel", piezas:1, tipo:"extra", costo:50, status:"programado", comentarios:"Campaña táctica Spiderman" },
+    { id:"j39", mes:"2026-07", semana:4, fecha:"2026-07-21", tema:"Día del Niño · post de lanzamiento (carrusel)", formato:"Carrusel", piezas:1, tipo:"extra", costo:50, status:"programado", comentarios:"Dentro del fee campaña Día del Niño" },
+    { id:"j40", mes:"2026-07", semana:4, fecha:"2026-07-23", tema:"Día del Niño · Reel anuncio con host", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"en-diseno", comentarios:"Video 1 host + 3 niños (host y niños son cotización aparte S/ 600)" },
+    { id:"j41", mes:"2026-07", semana:4, fecha:"2026-07-23", tema:"Spiderman · video mantenimiento postal", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"en-diseno", comentarios:"Considerado en el fee" },
+    { id:"j42", mes:"2026-07", semana:4, fecha:"2026-07-25", tema:"Post de mantenimiento", formato:"Estático", piezas:1, tipo:"extra", costo:50, status:"por-hacer", comentarios:"Fechas patrias · acción táctica" },
+    { id:"j43", mes:"2026-07", semana:4, fecha:"2026-07-25", tema:"Spiderman · expectativa “Misión Arácnida”", formato:"Carrusel", piezas:1, tipo:"extra", costo:50, status:"por-hacer", comentarios:"" },
+    { id:"j44", mes:"2026-07", semana:4, fecha:"2026-07-26", tema:"Spiderman · video lanzamiento dinámica (1 pista por mall)", formato:"Reel", piezas:1, tipo:"extra", costo:860, status:"por-hacer", comentarios:"Grabación el mismo miércoles" },
+    { id:"j45", mes:"2026-07", semana:4, fecha:"2026-07-27", tema:"Spiderman · storie activación “HOY EMPIEZA LA BÚSQUEDA”", formato:"Story", piezas:1, tipo:"extra", costo:50, status:"por-hacer", comentarios:"Junto al reel de la dinámica" },
+    { id:"j46", mes:"2026-07", semana:4, fecha:"2026-07-27", tema:"Spiderman · storie de cierre con fotos", formato:"Story", piezas:1, tipo:"extra", costo:50, status:"por-hacer", comentarios:"En la tarde" },
+    { id:"j47", mes:"2026-07", semana:4, fecha:"2026-07-28", tema:"Post saludo Fechas Patrias", formato:"Estático", piezas:1, tipo:"extra", costo:50, status:"por-hacer", comentarios:"“Aprovecha los días libres para armar bricks”" },
+    { id:"j48", mes:"2026-07", semana:4, fecha:"2026-07-29", tema:"Cumpleaños de Harry Potter", formato:"Estático", piezas:1, tipo:"extra", costo:150, status:"por-hacer", comentarios:"Acordado 20.07: va como EXTRA. Evento vie 31 y sáb 01 (Warner)" },
+    { id:"j49", mes:"2026-07", semana:4, fecha:"2026-07-30", tema:"Sorteo · storie", formato:"Story", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"" },
+    { id:"j50", mes:"2026-07", semana:4, fecha:"2026-07-31", tema:"Post estático flyer Spider (arte del cliente)", formato:"Estático", piezas:1, tipo:"extra", costo:0, status:"por-hacer", comentarios:"Enviado por cliente · S/ 0" },
+
+    /* ---- AGOSTO · comprometido en reunión 20.07 (6 estáticas + 6 videos del fee de 15) ---- */
+    { id:"a01", mes:"2026-08", semana:1, fecha:"2026-08-03", tema:"Mundo 1 · Construcción sin límites", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Carrusel de mundos · Día del Niño" },
+    { id:"a02", mes:"2026-08", semana:1, fecha:"2026-08-05", tema:"Mundo 2 · Películas", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Carrusel de mundos" },
+    { id:"a03", mes:"2026-08", semana:1, fecha:"2026-08-07", tema:"Mundo 3 · Vehículos", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Carrusel de mundos" },
+    { id:"a04", mes:"2026-08", semana:2, fecha:"2026-08-10", tema:"Mundo 4 · Gaming", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Carrusel de mundos" },
+    { id:"a05", mes:"2026-08", semana:1, fecha:"2026-08-04", tema:"Post de la ruleta (adapt KV + dinámica)", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"" },
+    { id:"a06", mes:"2026-08", semana:3, fecha:"2026-08-17", tema:"Niño interior · carrusel adulto", formato:"Carrusel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Segunda quincena · foco adulto" },
+    { id:"a07", mes:"2026-08", semana:1, fecha:"2026-08-06", tema:"Reel Mundo 1 · Construcción sin límites", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Se graba cuando ingresen las novedades. Alinear a mensaje clave + trend/humor" },
+    { id:"a08", mes:"2026-08", semana:2, fecha:"2026-08-11", tema:"Reel Mundo 2 · Películas (multilínea)", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Novedades aún no ingresan a tienda" },
+    { id:"a09", mes:"2026-08", semana:2, fecha:"2026-08-13", tema:"Reel Mundo 3 · Vehículos", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Set: Esqueleto ataque al volador (info extra matriz)" },
+    { id:"a10", mes:"2026-08", semana:3, fecha:"2026-08-18", tema:"Reel Mundo 4 · Gaming", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"" },
+    { id:"a11", mes:"2026-08", semana:2, fecha:"2026-08-14", tema:"Reel Spiderman · foco novedades películas", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Ref: video Chile (persona vestida de Spiderman)" },
+    { id:"a12", mes:"2026-08", semana:4, fecha:"2026-08-29", tema:"Día del Gamer", formato:"Reel", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"Acordado 20.07: entra como pieza de agosto (video)" },
+    { id:"a13", mes:"2026-08", semana:1, fecha:"2026-08-07", tema:"Brickstation · Real Salaverry (07–16.08)", formato:"Estático", piezas:3, tipo:"extra", costo:300, status:"por-hacer", comentarios:"Intriga + estática + mantenimiento + 3 stories" },
+    { id:"a14", mes:"2026-08", semana:2, fecha:"2026-08-12", tema:"Speech Challenge · Plaza San Miguel + Plaza Norte", formato:"Estático", piezas:3, tipo:"extra", costo:150, status:"por-hacer", comentarios:"1 post anuncio + 1 storie por tienda (3 en total)" }
+  ],
+
+  reuniones: [
+    {
+      id:"r74",
+      titulo:"Revisión planning julio–agosto (Reunión #74)",
+      fecha:"2026-07-20",
+      duracion:"19 min",
+      participantes:"Andrea Vasquez (LEGO) · Victoria Alvarado (INSIDE) · Roald Aedo (INSIDE)",
+      resumen:"Se cerró el conteo de piezas de agosto (6 estáticas + 6 videos del fee de 15), se definió el destino de la Idea Larcomar y de Harry Potter, y se eliminaron los videos tiktokeros a favor de los reels de mundos.",
+      transcript:"",
+      acuerdos:[
+        { id:"a1", texto:"Agosto queda con 6 piezas estáticas + 6 videos consumidos del fee de 15; el resto se reserva para la segunda quincena.", responsable:"AMBOS", estado:"vigente" },
+        { id:"a2", texto:"Se eliminan los 2 videos tiktokeros del Día del Niño; en su lugar van 4 reels de mundos + 1 reel de Spiderman, grabados cuando ingresen las novedades a tienda.", responsable:"INSIDE", estado:"vigente" },
+        { id:"a3", texto:"Los reels de mundos deben alinearse al mensaje clave/objetivo de la matriz y vincularse a un trend o humor.", responsable:"INSIDE", estado:"vigente" },
+        { id:"a4", texto:"Día del Gamer (29.08) entra como pieza de agosto en formato video.", responsable:"INSIDE", estado:"vigente" },
+        { id:"a5", texto:"Cumpleaños de Harry Potter se publica el miércoles 29.07 y se cuenta como EXTRA, no como pieza de agosto (evento vie 31 y sáb 01).", responsable:"INSIDE", estado:"vigente" },
+        { id:"a6", texto:"Idea Larcomar (búsqueda del tesoro): se mantiene en consideración para la 2.ª quincena de agosto o septiembre; desarrollarla costaría S/ 1,200 adicionales.", responsable:"AMBOS", estado:"vigente" },
+        { id:"a7", texto:"Total de extras acordados a la fecha: S/ 2,610. Victoria lo envía por correo para revisión de Andrea.", responsable:"INSIDE", estado:"vigente" },
+        { id:"a8", texto:"Andrea envía las temáticas y códigos de agosto para que INSIDE arme la segunda matriz.", responsable:"LEGO", estado:"vigente" }
+      ]
+    }
+  ]
+};
+
+/* ============ Estado ============ */
+let S;
+function load(){
+  try{ const raw = localStorage.getItem(LS_KEY); S = raw ? JSON.parse(raw) : structuredClone(SEED); }
+  catch(e){ S = structuredClone(SEED); }
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); refreshCounts(); }
+function uid(){ return "x" + Math.random().toString(36).slice(2,9); }
+
+/* ============ Utilidades ============ */
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const FORMATOS = ["Estático","Story","Carrusel","Animación","Reel"];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function fmtFecha(iso){
+  if(!iso) return "—";
+  const [y,m,d] = iso.split("-").map(Number);
+  return `${String(d).padStart(2,"0")}.${String(m).padStart(2,"0")}.${String(y).slice(2)}`;
+}
+function fmtMes(mesKey){ const [y,m]=mesKey.split("-").map(Number); return MESES[m-1].charAt(0).toUpperCase()+MESES[m-1].slice(1)+" "+y; }
+function isOverdue(p){
+  return p.fechaCompromiso && p.estado!=="enviado" && p.estado!=="completado" && new Date(p.fechaCompromiso+"T00:00:00") < HOY;
+}
+function soles(n){ return "S/ " + Number(n||0).toLocaleString("es-PE"); }
+function toast(msg){
+  document.querySelectorAll(".toast").forEach(t=>t.remove());
+  const t = document.createElement("div"); t.className="toast"; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 2200);
+}
+
+/* ============ Navegación ============ */
+let view = "gestion";
+let mesActual = "2026-07";
+const filtros = { resp:"todos", estado:"activos" };
+let reunionSel = null;
+
+document.querySelectorAll(".nav-item[data-view]").forEach(b=>{
+  b.addEventListener("click", ()=>{ view = b.dataset.view; render(); });
+});
+
+function refreshCounts(){
+  const activos = S.pendientes.filter(p=>p.estado!=="completado" && p.estado!=="enviado");
+  document.getElementById("cntGestion").textContent = activos.length;
+  document.getElementById("cntPlanning").textContent = S.planning.filter(i=>i.mes===mesActual).reduce((a,i)=>a+Number(i.piezas||1),0);
+  document.getElementById("cntAcuerdos").textContent = S.reuniones.reduce((a,r)=>a+r.acuerdos.filter(x=>x.estado==="vigente").length,0);
+}
+
+function render(){
+  document.querySelectorAll(".nav-item[data-view]").forEach(b=>b.classList.toggle("active", b.dataset.view===view));
+  refreshCounts();
+  const main = document.getElementById("main");
+  if(view==="gestion") main.innerHTML = viewGestion();
+  else if(view==="planning") main.innerHTML = viewPlanning();
+  else if(view==="calendario") main.innerHTML = viewCalendario();
+  else main.innerHTML = viewReuniones();
+  bindMain();
+}
+
+/* =====================================================================
+   VISTA 1 — GESTIÓN DE LA MARCA
+   ===================================================================== */
+function pillResp(r){
+  if(r==="LEGO") return `<span class="pill lego"><span class="dot"></span>LEGO</span>`;
+  if(r==="INSIDE") return `<span class="pill inside"><span class="dot"></span>INSIDE</span>`;
+  return `<span class="pill neutral">Ambos</span>`;
+}
+function pillPrioridad(p){
+  if(p==="alta") return `<span class="pill bad">Alta</span>`;
+  if(p==="media") return `<span class="pill warn">Media</span>`;
+  return `<span class="pill neutral">Baja</span>`;
+}
+function pillEstado(e){
+  const map = { "pendiente":["neutral","Pendiente"], "en-curso":["warn","En curso"], "enviado":["ok","Enviado"], "completado":["ok","Completado"] };
+  const [cls,txt] = map[e] || ["neutral",e];
+  return `<span class="pill ${cls}">${txt}</span>`;
+}
+
+function viewGestion(){
+  const all = S.pendientes;
+  const lego = all.filter(p=>p.responsable==="LEGO" && p.estado!=="completado" && p.estado!=="enviado");
+  const inside = all.filter(p=>p.responsable==="INSIDE" && p.estado!=="completado" && p.estado!=="enviado");
+  const vencidos = all.filter(isOverdue);
+  const semana = all.filter(p=>{
+    if(!p.fechaCompromiso || p.estado==="completado" || p.estado==="enviado") return false;
+    const d = new Date(p.fechaCompromiso+"T00:00:00");
+    const in7 = new Date(HOY); in7.setDate(in7.getDate()+7);
+    return d>=HOY && d<=in7;
+  });
+
+  let rows = all.filter(p=>{
+    if(filtros.resp!=="todos" && p.responsable!==filtros.resp) return false;
+    if(filtros.estado==="activos" && (p.estado==="completado"||p.estado==="enviado")) return false;
+    if(filtros.estado==="cerrados" && p.estado!=="completado" && p.estado!=="enviado") return false;
+    return true;
+  });
+  const prioridadOrden = {alta:0, media:1, baja:2};
+  rows.sort((a,b)=>{
+    const closed = x => (x.estado==="completado"||x.estado==="enviado") ? 1 : 0;
+    if(closed(a)!==closed(b)) return closed(a)-closed(b);
+    if(isOverdue(b)!==isOverdue(a)) return isOverdue(b)-isOverdue(a);
+    if(prioridadOrden[a.prioridad]!==prioridadOrden[b.prioridad]) return prioridadOrden[a.prioridad]-prioridadOrden[b.prioridad];
+    return (a.fechaCompromiso||"9999").localeCompare(b.fechaCompromiso||"9999");
+  });
+
+  return `
+  <div class="topbar">
+    <div>
+      <h2>Gestión de la marca</h2>
+      <div class="sub">Pendientes LEGO ↔ INSIDE · quién lo pidió, para cuándo quedó y cuándo se envía</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn primary" data-act="nuevo-pendiente">＋ Nuevo pendiente</button>
+  </div>
+
+  <div class="statrow">
+    <div class="stat lego"><div class="k">Debe LEGO</div><div class="v">${lego.length}</div><div class="d">pendientes del cliente</div></div>
+    <div class="stat inside"><div class="k">Debe INSIDE</div><div class="v">${inside.length}</div><div class="d">pendientes de la agencia</div></div>
+    <div class="stat bad"><div class="k">Vencidos</div><div class="v">${vencidos.length}</div><div class="d">pasaron su fecha compromiso</div></div>
+    <div class="stat warn"><div class="k">Esta semana</div><div class="v">${semana.length}</div><div class="d">se envían en los próximos 7 días</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="fchip ${filtros.resp==="todos"?"on":""}" data-fresp="todos">Todos</button>
+    <button class="fchip f-lego ${filtros.resp==="LEGO"?"on":""}" data-fresp="LEGO">Debe LEGO</button>
+    <button class="fchip f-inside ${filtros.resp==="INSIDE"?"on":""}" data-fresp="INSIDE">Debe INSIDE</button>
+    <span style="color:var(--line-2)">|</span>
+    <button class="fchip ${filtros.estado==="activos"?"on":""}" data-festado="activos">Activos</button>
+    <button class="fchip ${filtros.estado==="cerrados"?"on":""}" data-festado="cerrados">✓ Cerrados</button>
+    <button class="fchip ${filtros.estado==="todos"?"on":""}" data-festado="todos">Historial completo</button>
+  </div>
+
+  <div class="card"><div class="tablewrap"><table>
+    <thead><tr>
+      <th></th><th>Pendiente</th><th>Responsable</th><th>Prioridad</th><th>Pedido</th><th>Compromiso</th><th>Enviado</th><th>Estado</th><th></th>
+    </tr></thead>
+    <tbody>
+      ${rows.length ? rows.map(p=>{
+        const closed = p.estado==="completado"||p.estado==="enviado";
+        return `<tr class="${closed?"rowdone":""}">
+          <td><button class="checkbtn ${closed?"done":""}" data-toggle="${p.id}" title="${closed?"Reabrir":"Marcar enviado"}">✓</button></td>
+          <td style="min-width:260px">
+            <div class="tasktitle" data-edit-p="${p.id}">${esc(p.tarea)}</div>
+            ${p.detalle?`<div class="tnote">${esc(p.detalle)}</div>`:""}
+            ${p.solicitadoPor||p.origen?`<div class="tnote">Pidió: ${esc(p.solicitadoPor||"—")}${p.origen?` · <span class="pill brick" style="font-size:10.5px">${esc(p.origen)}</span>`:""}</div>`:""}
+          </td>
+          <td>${pillResp(p.responsable)}</td>
+          <td>${pillPrioridad(p.prioridad)}</td>
+          <td class="num">${fmtFecha(p.fechaPedido)}</td>
+          <td class="num ${isOverdue(p)?"overdue":""}">${fmtFecha(p.fechaCompromiso)}${isOverdue(p)?" ⚠":""}</td>
+          <td class="num">${fmtFecha(p.fechaEnvio)}</td>
+          <td>${pillEstado(p.estado)}</td>
+          <td><button class="iconbtn" data-edit-p="${p.id}" title="Editar">✏️</button></td>
+        </tr>`;
+      }).join("") : `<tr><td colspan="9"><div class="empty-note">Nada por aquí con estos filtros.</div></td></tr>`}
+    </tbody>
+  </table></div></div>`;
+}
+
+/* =====================================================================
+   VISTA 2 — PLANNING & PIEZAS
+   ===================================================================== */
+function pillStatusPieza(st){
+  const map = { "por-hacer":["neutral","Por hacer"], "en-diseno":["warn","En diseño"], "enviado":["inside","Enviado a cliente"], "aprobado":["ok","Aprobado"], "programado":["brick","Programado"], "publicado":["ok","Publicado"] };
+  const [cls,txt] = map[st] || ["neutral",st];
+  return `<span class="pill ${cls}">${txt}</span>`;
+}
+
+function viewPlanning(){
+  const items = S.planning.filter(i=>i.mes===mesActual).sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||""));
+  const feeItems = items.filter(i=>i.tipo==="fee");
+  const extraItems = items.filter(i=>i.tipo==="extra");
+  const feeUsado = feeItems.reduce((a,i)=>a+Number(i.piezas||1),0);
+  const cupoRaw = S.settings.feeCupo[mesActual];
+  const hayCupo = cupoRaw != null && cupoRaw !== "";
+  const cupo = hayCupo ? Number(cupoRaw) : 0;
+  const extrasSoles = extraItems.reduce((a,i)=>a+Number(i.costo||0),0);
+  const porFormato = {};
+  FORMATOS.forEach(f=>porFormato[f]=0);
+  items.forEach(i=>{ porFormato[i.formato]=(porFormato[i.formato]||0)+Number(i.piezas||1); });
+  const pct = Math.min(100, Math.round(feeUsado/Math.max(cupo,1)*100));
+
+  const semanas = [...new Set(items.map(i=>i.semana))].sort((a,b)=>a-b);
+
+  return `
+  <div class="topbar">
+    <div>
+      <h2>Planning &amp; piezas</h2>
+      <div class="sub">Matriz mensual con conteo de piezas · fee vs. extras cotizados</div>
+    </div>
+    <div class="spacer"></div>
+    ${monthSwitch()}
+    <button class="btn primary" data-act="nueva-pieza">＋ Nueva pieza</button>
+  </div>
+
+  <div class="card"><div class="card-body">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:230px">
+        <div class="k" style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Consumo del fee · ${fmtMes(mesActual)}</div>
+        <div style="font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px">
+          ${feeUsado}${hayCupo?` <span style="font-size:15px;color:var(--ink-2);font-weight:600">de</span> ${cupo}`:` <span style="font-size:15px;color:var(--ink-2);font-weight:600">piezas del fee</span>`}
+          <button class="iconbtn" data-act="edit-cupo" title="Editar cupo del fee">✏️</button>
+        </div>
+        ${hayCupo?`<div class="feebar"><div class="${feeUsado>cupo?"over":""}" style="width:${pct}%"></div></div>
+        <div class="tnote" style="margin-top:5px">${feeUsado>cupo ? `⚠ Excede el cupo por ${feeUsado-cupo} pieza(s)` : `Quedan <b>${cupo-feeUsado}</b> piezas del fee para este mes`}</div>`
+        :`<div class="tnote" style="margin-top:5px">Cupo del fee sin definir para este mes — defínelo con el lápiz ✏️</div>`}
+      </div>
+      <div style="flex:0 0 auto;min-width:170px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Extras cotizados</div>
+        <div style="font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px;color:var(--warn)">${soles(extrasSoles)}</div>
+        <div class="tnote">${extraItems.length} pieza(s) fuera del fee</div>
+      </div>
+      <div style="flex:2;min-width:280px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Piezas por formato (fee + extras)</div>
+        <div class="countergrid">
+          ${FORMATOS.map(f=>`<div class="counter"><div class="cv">${porFormato[f]||0}</div><div class="ck">${f}${f==="Reel"?" / Video":""}</div></div>`).join("")}
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  ${semanas.map(w=>{
+    const sem = items.filter(i=>i.semana===w);
+    return `<div class="card">
+      <div class="card-head"><h3>Semana ${w}</h3><span class="pill neutral">${sem.reduce((a,i)=>a+Number(i.piezas||1),0)} piezas</span></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Publica</th><th>Tema</th><th>Formato</th><th class="num">Piezas</th><th>Fee / Extra</th><th>Status</th><th></th></tr></thead>
+        <tbody>${sem.map(i=>`<tr>
+          <td class="num">${fmtFecha(i.fecha)}</td>
+          <td style="min-width:240px"><div class="tasktitle" data-edit-i="${i.id}">${esc(i.tema)}</div>${i.comentarios?`<div class="tnote">${esc(i.comentarios)}</div>`:""}</td>
+          <td><span class="pill neutral">${esc(i.formato)}</span></td>
+          <td class="num">${i.piezas}</td>
+          <td>${i.tipo==="extra" ? `<span class="pill warn">Extra · ${soles(i.costo)}</span>` : `<span class="pill ok">Fee</span>`}</td>
+          <td>${pillStatusPieza(i.status)}</td>
+          <td><button class="iconbtn" data-edit-i="${i.id}" title="Editar">✏️</button></td>
+        </tr>`).join("")}</tbody>
+      </table></div>
+    </div>`;
+  }).join("") || `<div class="card"><div class="empty-note">Sin piezas cargadas para ${fmtMes(mesActual)}. Agrega la primera con “＋ Nueva pieza”.</div></div>`}`;
+}
+
+function monthSwitch(){
+  return `<div class="month-switch">
+    <button data-act="mes-prev" title="Mes anterior">‹</button>
+    <span class="mlabel">${fmtMes(mesActual)}</span>
+    <button data-act="mes-next" title="Mes siguiente">›</button>
+  </div>`;
+}
+
+/* =====================================================================
+   VISTA 3 — CALENDARIO
+   ===================================================================== */
+function viewCalendario(){
+  const [y,m] = mesActual.split("-").map(Number);
+  const first = new Date(y, m-1, 1);
+  const days = new Date(y, m, 0).getDate();
+  const startCol = (first.getDay()+6)%7; // lunes=0
+  const items = S.planning.filter(i=>i.mes===mesActual);
+  const byDay = {};
+  items.forEach(i=>{ if(i.fecha){ (byDay[i.fecha] = byDay[i.fecha]||[]).push(i); } });
+
+  let cells = "";
+  for(let i=0;i<startCol;i++) cells += `<div class="calday empty"></div>`;
+  for(let d=1; d<=days; d++){
+    const iso = `${y}-${String(m).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const isToday = new Date(iso+"T00:00:00").getTime()===HOY.getTime();
+    const its = (byDay[iso]||[]);
+    cells += `<div class="calday ${isToday?"today":""}">
+      <div class="dnum"><span>${d}</span>${its.length?`<span style="color:var(--ink-3);font-size:10.5px">${its.length}</span>`:""}</div>
+      ${its.map(i=>`<button class="calitem f-${esc(i.formato)}" data-edit-i="${i.id}" title="${esc(i.tema)}">${i.tipo==="extra"?`<span class="extra-flag">$</span> `:""}${esc(i.tema)}</button>`).join("")}
+    </div>`;
+  }
+
+  return `
+  <div class="topbar">
+    <div>
+      <h2>Calendario de publicaciones</h2>
+      <div class="sub">Lo mismo que el planning, visto por día · haz clic en una pieza para editarla</div>
+    </div>
+    <div class="spacer"></div>
+    ${monthSwitch()}
+    <button class="btn primary" data-act="nueva-pieza">＋ Nueva pieza</button>
+  </div>
+  <div class="card"><div class="card-body">
+    <div class="calgrid">
+      ${["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].map(d=>`<div class="calhead">${d}</div>`).join("")}
+      ${cells}
+    </div>
+    <div class="callegend">
+      <span><i style="background:var(--ok)"></i>Estático</span>
+      <span><i style="background:var(--brick)"></i>Story</span>
+      <span><i style="background:var(--inside)"></i>Carrusel</span>
+      <span><i style="background:var(--lego)"></i>Reel / Video</span>
+      <span><i style="background:#9061C2"></i>Animación</span>
+      <span><b class="extra-flag" style="color:var(--warn)">$</b> Extra cotizado</span>
+    </div>
+  </div></div>`;
+}
+
+/* =====================================================================
+   VISTA 4 — REUNIONES & ACUERDOS
+   ===================================================================== */
+function viewReuniones(){
+  const rs = [...S.reuniones].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+  if(!reunionSel || !rs.find(r=>r.id===reunionSel)) reunionSel = rs[0]?.id || null;
+  const r = rs.find(x=>x.id===reunionSel);
+  const vigentes = S.reuniones.flatMap(x=>x.acuerdos.filter(a=>a.estado==="vigente"));
+
+  return `
+  <div class="topbar">
+    <div>
+      <h2>Reuniones &amp; acuerdos</h2>
+      <div class="sub">Repositorio de reuniones · pega la transcripción y detecta los acuerdos automáticamente</div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn primary" data-act="nueva-reunion">＋ Nueva reunión</button>
+  </div>
+
+  <div class="statrow">
+    <div class="stat"><div class="k">Reuniones</div><div class="v">${S.reuniones.length}</div><div class="d">en el repositorio</div></div>
+    <div class="stat warn"><div class="k">Acuerdos vigentes</div><div class="v">${vigentes.length}</div><div class="d">en todas las reuniones</div></div>
+    <div class="stat ok"><div class="k">Cumplidos</div><div class="v">${S.reuniones.flatMap(x=>x.acuerdos).filter(a=>a.estado==="cumplido").length}</div><div class="d">acuerdos cerrados</div></div>
+  </div>
+
+  <div class="meetlayout">
+    <div>
+      ${rs.map(x=>`<button class="meetitem ${x.id===reunionSel?"sel":""}" data-sel-r="${x.id}">
+        <div class="mt">${esc(x.titulo)}</div>
+        <div class="md">${fmtFecha(x.fecha)}${x.duracion?` · ${esc(x.duracion)}`:""}</div>
+        <div class="ameta" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+          <span class="pill brick">${x.acuerdos.filter(a=>a.estado==="vigente").length} vigentes</span>
+          ${x.acuerdos.some(a=>a.estado==="cumplido")?`<span class="pill ok">${x.acuerdos.filter(a=>a.estado==="cumplido").length} ✓</span>`:""}
+        </div>
+      </button>`).join("") || `<div class="empty-note">Aún no hay reuniones.</div>`}
+    </div>
+
+    <div>
+      ${r ? `
+      <div class="card">
+        <div class="card-head">
+          <h3>${esc(r.titulo)}</h3>
+          <div class="spacer"></div>
+          <button class="btn small ghost" data-edit-r="${r.id}">✏️ Editar</button>
+          <button class="btn small ghost" data-del-r="${r.id}">🗑</button>
+        </div>
+        <div class="card-body">
+          <div class="tnote" style="margin-bottom:6px"><b>${fmtFecha(r.fecha)}</b>${r.duracion?` · ${esc(r.duracion)}`:""}</div>
+          ${r.participantes?`<div class="tnote" style="margin-bottom:6px">👥 ${esc(r.participantes)}</div>`:""}
+          ${r.resumen?`<p style="font-size:13.5px;margin-top:8px">${esc(r.resumen)}</p>`:""}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Acuerdos de esta reunión</h3>
+          <div class="spacer"></div>
+          <button class="btn small" data-add-acuerdo="${r.id}">＋ Acuerdo</button>
+        </div>
+        <div class="card-body">
+          ${r.acuerdos.length ? r.acuerdos.map(a=>`
+          <div class="acuerdo ${a.estado==="cumplido"?"done":""}">
+            <button class="checkbtn ${a.estado==="cumplido"?"done":""}" data-toggle-a="${r.id}|${a.id}" title="${a.estado==="cumplido"?"Reabrir":"Marcar cumplido"}">✓</button>
+            <div class="atext">
+              <p>${esc(a.texto)}</p>
+              <div class="ameta">
+                ${pillResp(a.responsable)}
+                ${a.estado==="vigente"?`<button class="btn small ghost" data-a2p="${r.id}|${a.id}" title="Crear pendiente en Gestión">→ Convertir en pendiente</button>`:""}
+                <button class="btn small ghost" data-del-a="${r.id}|${a.id}">🗑</button>
+              </div>
+            </div>
+          </div>`).join("") : `<div class="empty-note">Sin acuerdos registrados. Usa “＋ Acuerdo” o pega la transcripción abajo.</div>`}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>🪄 Detectar acuerdos desde la transcripción</h3></div>
+        <div class="card-body">
+          <p class="tnote" style="margin-bottom:8px">Pega la transcripción (Tactiq, notas, minuta) y la herramienta propone los acuerdos que encuentre. Tú decides cuáles guardar.</p>
+          <textarea id="transcriptBox" style="width:100%;min-height:110px" placeholder="Pega aquí la transcripción de la reunión…">${esc(r.transcript||"")}</textarea>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <button class="btn" data-scan="${r.id}">🪄 Detectar acuerdos</button>
+          </div>
+          <div id="candidatos" style="margin-top:12px"></div>
+        </div>
+      </div>` : `<div class="card"><div class="empty-note">Crea tu primera reunión para empezar el repositorio.</div></div>`}
+    </div>
+  </div>`;
+}
+
+/* --- Heurística: detectar frases de compromiso en la transcripción --- */
+const REGLAS_ACUERDO = /(quedamos|acordamos|se acord|compromiso|va a enviar|van a enviar|te env[ií]o|te paso|te mando|env[ií]ame|me env[ií]as|nos pasas|enviar[áé]|confirmar|va a confirmar|pendiente de|lo ponemos|ponlo como|se elimina|eliminar|se cuenta como|queda para|para la segunda quincena|para (agosto|septiembre|octubre)|cotizaci[oó]n|adicional(es)? de|as[ií] quedamos|listo,? as[ií]|deber[ií]a (estar|salir)|programado para)/i;
+function detectarAcuerdos(texto){
+  const limpio = texto
+    .replace(/https?:\/\/\S+/g,"")
+    .replace(/Hola, estoy transcribiendo esta llamada.*?(?=\n|$)/gi,"");
+  // separa por turnos de hablante (00:00 Nombre:) o por líneas
+  const trozos = limpio.split(/\n(?=\d{1,2}:\d{2})|\n{2,}/).flatMap(t=>t.split(/(?<=[.?!])\s+(?=[A-ZÁÉÍÓÚ¿])/));
+  const out = [];
+  trozos.forEach(t=>{
+    const s = t.replace(/^\d{1,2}:\d{2}\s+[^:]{2,30}:\s*/,"").replace(/\s+/g," ").trim();
+    if(s.length>25 && s.length<420 && REGLAS_ACUERDO.test(s)) out.push(s);
+  });
+  return [...new Set(out)].slice(0,14);
+}
+
+/* =====================================================================
+   MODALES
+   ===================================================================== */
+function openModal(html){
+  const root = document.getElementById("modalRoot");
+  root.innerHTML = `<div class="modal-back" id="modalBack"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+  root.querySelector("#modalBack").addEventListener("click", e=>{ if(e.target.id==="modalBack") closeModal(); });
+  document.addEventListener("keydown", escClose);
+}
+function escClose(e){ if(e.key==="Escape") closeModal(); }
+function closeModal(){ document.getElementById("modalRoot").innerHTML=""; document.removeEventListener("keydown", escClose); }
+
+function modalPendiente(p){
+  const isNew = !p;
+  p = p || { id:uid(), tarea:"", detalle:"", responsable:"INSIDE", solicitadoPor:"", fechaPedido:new Date().toISOString().slice(0,10), fechaCompromiso:"", fechaEnvio:"", prioridad:"media", estado:"pendiente", origen:"" };
+  openModal(`
+    <h3>${isNew?"Nuevo pendiente":"Editar pendiente"}</h3>
+    <div class="formgrid">
+      <div class="full"><label>Tarea</label><input id="f_tarea" value="${esc(p.tarea)}" placeholder="¿Qué hay que hacer?" /></div>
+      <div class="full"><label>Detalle / contexto</label><textarea id="f_detalle" rows="2">${esc(p.detalle)}</textarea></div>
+      <div><label>Responsable</label><select id="f_resp">
+        <option ${p.responsable==="INSIDE"?"selected":""}>INSIDE</option>
+        <option ${p.responsable==="LEGO"?"selected":""}>LEGO</option>
+      </select></div>
+      <div><label>Prioridad</label><select id="f_prio">
+        <option value="alta" ${p.prioridad==="alta"?"selected":""}>Alta</option>
+        <option value="media" ${p.prioridad==="media"?"selected":""}>Media</option>
+        <option value="baja" ${p.prioridad==="baja"?"selected":""}>Baja</option>
+      </select></div>
+      <div><label>¿Quién lo pidió?</label><input id="f_solic" value="${esc(p.solicitadoPor)}" placeholder="Andrea (LEGO) / Victoria…" /></div>
+      <div><label>Origen</label><input id="f_origen" value="${esc(p.origen)}" placeholder="Reunión 20.07 / correo…" /></div>
+      <div><label>Fecha pedido</label><input type="date" id="f_pedido" value="${esc(p.fechaPedido)}" /></div>
+      <div><label>Compromiso de envío</label><input type="date" id="f_comp" value="${esc(p.fechaCompromiso)}" /></div>
+      <div><label>Fecha envío real</label><input type="date" id="f_envio" value="${esc(p.fechaEnvio)}" /></div>
+      <div><label>Estado</label><select id="f_estado">
+        <option value="pendiente" ${p.estado==="pendiente"?"selected":""}>Pendiente</option>
+        <option value="en-curso" ${p.estado==="en-curso"?"selected":""}>En curso</option>
+        <option value="enviado" ${p.estado==="enviado"?"selected":""}>Enviado</option>
+        <option value="completado" ${p.estado==="completado"?"selected":""}>Completado</option>
+      </select></div>
+    </div>
+    <div class="modal-actions">
+      ${isNew?"":`<button class="btn ghost danger" id="f_del">Eliminar</button>`}
+      <button class="btn" id="f_cancel">Cancelar</button>
+      <button class="btn primary" id="f_save">${isNew?"Crear pendiente":"Guardar"}</button>
+    </div>`);
+  document.getElementById("f_cancel").onclick = closeModal;
+  if(!isNew) document.getElementById("f_del").onclick = ()=>{
+    S.pendientes = S.pendientes.filter(x=>x.id!==p.id); save(); closeModal(); render(); toast("Pendiente eliminado");
+  };
+  document.getElementById("f_save").onclick = ()=>{
+    const g = id=>document.getElementById(id).value.trim();
+    if(!g("f_tarea")) { toast("La tarea necesita un nombre"); return; }
+    Object.assign(p, { tarea:g("f_tarea"), detalle:g("f_detalle"), responsable:g("f_resp"), prioridad:g("f_prio"),
+      solicitadoPor:g("f_solic"), origen:g("f_origen"), fechaPedido:g("f_pedido"), fechaCompromiso:g("f_comp"),
+      fechaEnvio:g("f_envio"), estado:g("f_estado") });
+    if(p.estado==="enviado" && !p.fechaEnvio) p.fechaEnvio = new Date().toISOString().slice(0,10);
+    if(isNew) S.pendientes.push(p);
+    save(); closeModal(); render(); toast(isNew?"Pendiente creado":"Guardado ✓");
+  };
+}
+
+function modalPieza(i){
+  const isNew = !i;
+  i = i || { id:uid(), mes:mesActual, semana:1, fecha:"", tema:"", formato:"Estático", piezas:1, tipo:"fee", costo:0, status:"por-hacer", comentarios:"" };
+  openModal(`
+    <h3>${isNew?"Nueva pieza":"Editar pieza"}</h3>
+    <div class="formgrid">
+      <div class="full"><label>Tema / pieza</label><input id="g_tema" value="${esc(i.tema)}" placeholder="Ej. Reel Mundo 2 · Películas" /></div>
+      <div><label>Fecha de publicación</label><input type="date" id="g_fecha" value="${esc(i.fecha)}" /></div>
+      <div><label>Semana</label><select id="g_sem">${[1,2,3,4,5].map(w=>`<option ${i.semana===w?"selected":""}>${w}</option>`).join("")}</select></div>
+      <div><label>Formato</label><select id="g_fmt">${FORMATOS.map(f=>`<option ${i.formato===f?"selected":""}>${f}</option>`).join("")}</select></div>
+      <div><label># de piezas</label><input type="number" min="1" id="g_pz" value="${i.piezas}" /></div>
+      <div><label>Fee o extra</label><select id="g_tipo">
+        <option value="fee" ${i.tipo==="fee"?"selected":""}>Dentro del fee</option>
+        <option value="extra" ${i.tipo==="extra"?"selected":""}>Extra cotizado</option>
+      </select></div>
+      <div><label>Costo extra (S/)</label><input type="number" min="0" id="g_costo" value="${i.costo||0}" /></div>
+      <div><label>Status</label><select id="g_st">
+        ${[["por-hacer","Por hacer"],["en-diseno","En diseño"],["enviado","Enviado a cliente"],["aprobado","Aprobado"],["programado","Programado"],["publicado","Publicado"]].map(([v,t])=>`<option value="${v}" ${i.status===v?"selected":""}>${t}</option>`).join("")}
+      </select></div>
+      <div><label>Mes</label><input id="g_mes" value="${esc(i.mes)}" placeholder="2026-08" /></div>
+      <div class="full"><label>Comentarios</label><textarea id="g_com" rows="2">${esc(i.comentarios)}</textarea></div>
+    </div>
+    <div class="modal-actions">
+      ${isNew?"":`<button class="btn ghost danger" id="g_del">Eliminar</button>`}
+      <button class="btn" id="g_cancel">Cancelar</button>
+      <button class="btn primary" id="g_save">${isNew?"Agregar al planning":"Guardar"}</button>
+    </div>`);
+  document.getElementById("g_cancel").onclick = closeModal;
+  if(!isNew) document.getElementById("g_del").onclick = ()=>{
+    S.planning = S.planning.filter(x=>x.id!==i.id); save(); closeModal(); render(); toast("Pieza eliminada");
+  };
+  document.getElementById("g_save").onclick = ()=>{
+    const g = id=>document.getElementById(id).value.trim();
+    if(!g("g_tema")) { toast("La pieza necesita un tema"); return; }
+    Object.assign(i, { tema:g("g_tema"), fecha:g("g_fecha"), semana:Number(g("g_sem")), formato:g("g_fmt"),
+      piezas:Number(g("g_pz"))||1, tipo:g("g_tipo"), costo:Number(g("g_costo"))||0, status:g("g_st"),
+      comentarios:g("g_com"), mes:(g("g_mes")||mesActual) });
+    if(i.fecha) i.mes = i.fecha.slice(0,7);
+    if(isNew) S.planning.push(i);
+    save(); closeModal(); render(); toast(isNew?"Pieza agregada":"Guardado ✓");
+  };
+}
+
+function modalReunion(r){
+  const isNew = !r;
+  r = r || { id:uid(), titulo:"", fecha:new Date().toISOString().slice(0,10), duracion:"", participantes:"", resumen:"", transcript:"", acuerdos:[] };
+  openModal(`
+    <h3>${isNew?"Nueva reunión":"Editar reunión"}</h3>
+    <div class="formgrid">
+      <div class="full"><label>Título</label><input id="r_tit" value="${esc(r.titulo)}" placeholder="Ej. Revisión planning agosto" /></div>
+      <div><label>Fecha</label><input type="date" id="r_fecha" value="${esc(r.fecha)}" /></div>
+      <div><label>Duración</label><input id="r_dur" value="${esc(r.duracion)}" placeholder="30 min" /></div>
+      <div class="full"><label>Participantes</label><input id="r_part" value="${esc(r.participantes)}" placeholder="Nombre (LEGO) · Nombre (INSIDE)…" /></div>
+      <div class="full"><label>Resumen</label><textarea id="r_res" rows="3">${esc(r.resumen)}</textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="r_cancel">Cancelar</button>
+      <button class="btn primary" id="r_save">${isNew?"Crear reunión":"Guardar"}</button>
+    </div>`);
+  document.getElementById("r_cancel").onclick = closeModal;
+  document.getElementById("r_save").onclick = ()=>{
+    const g = id=>document.getElementById(id).value.trim();
+    if(!g("r_tit")) { toast("La reunión necesita un título"); return; }
+    Object.assign(r, { titulo:g("r_tit"), fecha:g("r_fecha"), duracion:g("r_dur"), participantes:g("r_part"), resumen:g("r_res") });
+    if(isNew){ S.reuniones.push(r); reunionSel = r.id; }
+    save(); closeModal(); render(); toast(isNew?"Reunión creada":"Guardado ✓");
+  };
+}
+
+function modalAcuerdo(rid){
+  openModal(`
+    <h3>Nuevo acuerdo</h3>
+    <div class="formgrid">
+      <div class="full"><label>Acuerdo</label><textarea id="a_txt" rows="3" placeholder="¿Qué se acordó?"></textarea></div>
+      <div><label>Responsable</label><select id="a_resp"><option>INSIDE</option><option>LEGO</option><option>AMBOS</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="a_cancel">Cancelar</button>
+      <button class="btn primary" id="a_save">Guardar acuerdo</button>
+    </div>`);
+  document.getElementById("a_cancel").onclick = closeModal;
+  document.getElementById("a_save").onclick = ()=>{
+    const txt = document.getElementById("a_txt").value.trim();
+    if(!txt){ toast("Escribe el acuerdo"); return; }
+    const r = S.reuniones.find(x=>x.id===rid);
+    r.acuerdos.push({ id:uid(), texto:txt, responsable:document.getElementById("a_resp").value, estado:"vigente" });
+    save(); closeModal(); render(); toast("Acuerdo guardado");
+  };
+}
+
+/* =====================================================================
+   EVENTOS
+   ===================================================================== */
+function bindMain(){
+  const main = document.getElementById("main");
+
+  main.querySelectorAll("[data-fresp]").forEach(b=>b.onclick=()=>{ filtros.resp=b.dataset.fresp; render(); });
+  main.querySelectorAll("[data-festado]").forEach(b=>b.onclick=()=>{ filtros.estado=b.dataset.festado; render(); });
+
+  main.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>{
+    const p = S.pendientes.find(x=>x.id===b.dataset.toggle);
+    if(p.estado==="enviado"||p.estado==="completado"){ p.estado="pendiente"; p.fechaEnvio=""; }
+    else { p.estado="enviado"; p.fechaEnvio = new Date().toISOString().slice(0,10); }
+    save(); render();
+  });
+  main.querySelectorAll("[data-edit-p]").forEach(b=>b.onclick=()=>modalPendiente(S.pendientes.find(x=>x.id===b.dataset.editP)));
+  main.querySelectorAll("[data-edit-i]").forEach(b=>b.onclick=()=>modalPieza(S.planning.find(x=>x.id===b.dataset.editI)));
+
+  main.querySelectorAll("[data-act]").forEach(b=>{
+    const act = b.dataset.act;
+    b.onclick = ()=>{
+      if(act==="nuevo-pendiente") modalPendiente(null);
+      if(act==="nueva-pieza") modalPieza(null);
+      if(act==="nueva-reunion") modalReunion(null);
+      if(act==="mes-prev"||act==="mes-next"){
+        let [y,m] = mesActual.split("-").map(Number);
+        m += act==="mes-next"?1:-1;
+        if(m===0){m=12;y--;} if(m===13){m=1;y++;}
+        mesActual = `${y}-${String(m).padStart(2,"0")}`;
+        render();
+      }
+      if(act==="edit-cupo"){
+        const cur = S.settings.feeCupo[mesActual] ?? 15;
+        const v = prompt(`Cupo de piezas del fee para ${fmtMes(mesActual)}:`, cur);
+        if(v!==null && !isNaN(Number(v))){ S.settings.feeCupo[mesActual]=Number(v); save(); render(); }
+      }
+    };
+  });
+
+  /* Reuniones */
+  main.querySelectorAll("[data-sel-r]").forEach(b=>b.onclick=()=>{ reunionSel=b.dataset.selR; render(); });
+  main.querySelectorAll("[data-edit-r]").forEach(b=>b.onclick=()=>modalReunion(S.reuniones.find(x=>x.id===b.dataset.editR)));
+  main.querySelectorAll("[data-del-r]").forEach(b=>b.onclick=()=>{
+    const r = S.reuniones.find(x=>x.id===b.dataset.delR);
+    if(confirm(`¿Eliminar la reunión “${r.titulo}” y sus acuerdos?`)){
+      S.reuniones = S.reuniones.filter(x=>x.id!==r.id); reunionSel=null; save(); render(); toast("Reunión eliminada");
+    }
+  });
+  main.querySelectorAll("[data-add-acuerdo]").forEach(b=>b.onclick=()=>modalAcuerdo(b.dataset.addAcuerdo));
+  main.querySelectorAll("[data-toggle-a]").forEach(b=>b.onclick=()=>{
+    const [rid,aid] = b.dataset.toggleA.split("|");
+    const a = S.reuniones.find(x=>x.id===rid).acuerdos.find(x=>x.id===aid);
+    a.estado = a.estado==="cumplido" ? "vigente" : "cumplido";
+    save(); render();
+  });
+  main.querySelectorAll("[data-del-a]").forEach(b=>b.onclick=()=>{
+    const [rid,aid] = b.dataset.delA.split("|");
+    const r = S.reuniones.find(x=>x.id===rid);
+    r.acuerdos = r.acuerdos.filter(x=>x.id!==aid);
+    save(); render();
+  });
+  main.querySelectorAll("[data-a2p]").forEach(b=>b.onclick=()=>{
+    const [rid,aid] = b.dataset.a2p.split("|");
+    const r = S.reuniones.find(x=>x.id===rid);
+    const a = r.acuerdos.find(x=>x.id===aid);
+    S.pendientes.push({ id:uid(), tarea:a.texto.slice(0,120), detalle:a.texto.length>120?a.texto:"", responsable:(a.responsable==="AMBOS"?"INSIDE":a.responsable),
+      solicitadoPor:"", fechaPedido:r.fecha, fechaCompromiso:"", fechaEnvio:"", prioridad:"media", estado:"pendiente", origen:`Acuerdo · ${fmtFecha(r.fecha)}` });
+    save(); toast("Creado como pendiente en Gestión ✓");
+  });
+
+  /* Detección de acuerdos */
+  main.querySelectorAll("[data-scan]").forEach(b=>b.onclick=()=>{
+    const rid = b.dataset.scan;
+    const r = S.reuniones.find(x=>x.id===rid);
+    const texto = document.getElementById("transcriptBox").value;
+    r.transcript = texto; save();
+    const cands = detectarAcuerdos(texto);
+    const box = document.getElementById("candidatos");
+    if(!cands.length){ box.innerHTML = `<div class="empty-note">No se detectaron frases de compromiso. Puedes agregar acuerdos manualmente con “＋ Acuerdo”.</div>`; return; }
+    box.innerHTML = `
+      <div class="tnote" style="margin-bottom:8px"><b>${cands.length}</b> posibles acuerdos detectados — edita el texto, marca los que quieras y guárdalos:</div>
+      ${cands.map((c,ix)=>`<div class="candidate">
+        <input type="checkbox" id="cand${ix}" checked style="margin-top:10px" />
+        <textarea data-cand="${ix}">${esc(c)}</textarea>
+        <select data-candresp="${ix}" style="align-self:flex-start"><option>INSIDE</option><option>LEGO</option><option>AMBOS</option></select>
+      </div>`).join("")}
+      <button class="btn primary" id="saveCands" style="margin-top:6px">Guardar acuerdos seleccionados</button>`;
+    document.getElementById("saveCands").onclick = ()=>{
+      let n=0;
+      cands.forEach((c,ix)=>{
+        if(document.getElementById("cand"+ix).checked){
+          const txt = box.querySelector(`[data-cand="${ix}"]`).value.trim();
+          const resp = box.querySelector(`[data-candresp="${ix}"]`).value;
+          if(txt){ r.acuerdos.push({ id:uid(), texto:txt, responsable:resp, estado:"vigente" }); n++; }
+        }
+      });
+      save(); render(); toast(`${n} acuerdo(s) guardado(s) ✓`);
+    };
+  });
+}
+
+/* ============ Datos: exportar / importar / reset ============ */
+document.getElementById("btnExport").onclick = ()=>{
+  const blob = new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "cerebro-lego-respaldo.json";
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("Respaldo descargado");
+};
+document.getElementById("btnImport").onclick = ()=>document.getElementById("importFile").click();
+document.getElementById("importFile").addEventListener("change", e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    try{ const data = JSON.parse(rd.result);
+      if(!data.pendientes || !data.planning || !data.reuniones) throw new Error("estructura");
+      S = data; save(); render(); toast("Respaldo importado ✓");
+    }catch(err){ toast("Ese archivo no parece un respaldo válido"); }
+  };
+  rd.readAsText(f);
+  e.target.value = "";
+});
+document.getElementById("btnReset").onclick = ()=>{
+  if(confirm("Esto borra tus cambios y vuelve a los datos del planning de julio y la reunión del 20.07. ¿Continuar?")){
+    S = structuredClone(SEED); save(); render(); toast("Datos iniciales restaurados");
+  }
+};
+
+/* ============ Init ============ */
+load(); save(); render();
+</script>
+</body>
+</html>
