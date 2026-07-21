@@ -104,6 +104,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .modepill button.active{background:var(--ink);color:var(--bg)}
 .modepill button.cli.active{background:var(--brick);color:#1B1B1F}
 body.modo-cliente .only-interno{display:none !important}
+.solo-cliente{display:none !important}
+body.modo-cliente .solo-cliente{display:inline-flex !important}
+.hist{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.hist .hlabel{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.hist .hrow{display:flex;gap:10px;font-size:12.5px;padding:3px 0;color:var(--ink-2)}
+.hist .hrow b{color:var(--ink-3);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .nav-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:14px 10px 6px}
 .nav-item{
   display:flex;align-items:center;gap:10px;width:100%;text-align:left;
@@ -434,8 +440,13 @@ function load(){
   S.settings.feeCupo = S.settings.feeCupo || { "2026-08": 15 };
   if(!S.settings.modo) S.settings.modo = "interno";
   S.planning.forEach(i=>{ if(i.aprobacion==null) i.aprobacion = APROB_PENDIENTE_SEED.has(i.id) ? "pendiente" : "aprobado"; });
+  S.pendientes.forEach(p=>{
+    if(!p.historial) p.historial = [{ fecha: p.fechaPedido || hoyISO(), texto: "📤 Solicitado" + (p.solicitadoPor ? " por " + p.solicitadoPor : "") }];
+  });
 }
 const esInterno = ()=> S.settings.modo !== "cliente";
+const hoyISO = ()=> new Date().toISOString().slice(0,10);
+function pushHist(p, texto){ (p.historial = p.historial || []).push({ fecha: hoyISO(), texto }); }
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); refreshCounts(); }
 function uid(){ return "x" + Math.random().toString(36).slice(2,9); }
 
@@ -596,13 +607,14 @@ function viewGestion(){
             <div class="tasktitle" data-edit-p="${p.id}">${esc(p.tarea)}</div>
             ${p.detalle?`<div class="tnote">${esc(p.detalle)}</div>`:""}
             ${p.solicitadoPor||p.origen?`<div class="tnote">Pidió: ${esc(p.solicitadoPor||"—")}${p.origen?` · <span class="pill brick" style="font-size:10.5px">${esc(p.origen)}</span>`:""}</div>`:""}
+            ${(p.historial&&p.historial.length>1)?(h=>`<div class="tnote">🕓 ${fmtFecha(h.fecha)} · ${esc(h.texto)}</div>`)(p.historial[p.historial.length-1]):""}
           </td>
           <td>${pillResp(p.responsable)}</td>
           <td>${pillPrioridad(p.prioridad)}</td>
           <td class="num">${fmtFecha(p.fechaPedido)}</td>
           <td class="num ${cump==="retraso"?"overdue":""}" ${cump==="riesgo"?`style="color:var(--warn);font-weight:700"`:""}>${fmtFecha(p.fechaCompromiso)}${cump==="retraso"?" ⚠":cump==="riesgo"?" ⏳":""}</td>
           <td class="num">${fmtFecha(p.fechaEnvio)}</td>
-          <td>${pillEstado(p.estado)}</td>
+          <td>${pillEstado(p.estado)}${!closed&&p.responsable==="LEGO"?`<div><button class="btn small solo-cliente" data-yaenvie="${p.id}" style="margin-top:5px">📬 Ya lo envié</button></div>`:""}</td>
           <td><button class="iconbtn only-interno" data-edit-p="${p.id}" title="Editar">✏️</button></td>
         </tr>`;
       }).join("") : `<tr><td colspan="9"><div class="empty-note">Nada por aquí con estos filtros.</div></td></tr>`}
@@ -696,7 +708,10 @@ function viewPlanning(){
           <td class="num">${i.piezas}</td>
           <td>${i.tipo==="extra" ? `<span class="pill warn">Extra · ${soles(i.costo)}</span>` : `<span class="pill ok">Fee</span>`}</td>
           <td>${pillStatusPieza(i.status)}</td>
-          <td>${pillAprob(i.aprobacion)}</td>
+          <td>${pillAprob(i.aprobacion)}${i.status!=="publicado"?`<div style="display:flex;gap:5px;margin-top:5px">
+            ${i.aprobacion!=="aprobado"?`<button class="btn small solo-cliente" data-aprobar="${i.id}">✓ Aprobar</button>`:""}
+            <button class="btn small ghost solo-cliente" data-ajustes="${i.id}">✎ Ajuste</button>
+          </div>`:""}</td>
           <td><button class="iconbtn only-interno" data-edit-i="${i.id}" title="Editar">✏️</button></td>
         </tr>`).join("")}</tbody>
       </table></div>
@@ -947,23 +962,50 @@ function modalPendiente(p){
         <option value="completado" ${p.estado==="completado"?"selected":""}>Completado</option>
       </select></div>
     </div>
+    ${isNew?"":`<div class="hist">
+      <div class="hlabel">Historial · la trazabilidad que mata el “yo te mandé esto”</div>
+      ${(p.historial||[]).slice().reverse().map(h=>`<div class="hrow"><b>${fmtFecha(h.fecha)}</b><span>${esc(h.texto)}</span></div>`).join("") || `<div class="hrow"><span>Sin eventos aún.</span></div>`}
+      <div style="display:flex;gap:8px;margin-top:9px">
+        <input id="f_nota" placeholder="Agregar nota al historial… (ej. 'se envió por correo v2')" style="flex:1" />
+        <button class="btn small" id="f_notaAdd">＋ Nota</button>
+      </div>
+    </div>`}
     <div class="modal-actions">
       ${isNew?"":`<button class="btn ghost danger" id="f_del">Eliminar</button>`}
       <button class="btn" id="f_cancel">Cancelar</button>
       <button class="btn primary" id="f_save">${isNew?"Crear pendiente":"Guardar"}</button>
     </div>`);
   document.getElementById("f_cancel").onclick = closeModal;
-  if(!isNew) document.getElementById("f_del").onclick = ()=>{
-    S.pendientes = S.pendientes.filter(x=>x.id!==p.id); save(); closeModal(); render(); toast("Pendiente eliminado");
-  };
+  if(!isNew){
+    document.getElementById("f_del").onclick = ()=>{
+      S.pendientes = S.pendientes.filter(x=>x.id!==p.id); save(); closeModal(); render(); toast("Pendiente eliminado");
+    };
+    document.getElementById("f_notaAdd").onclick = ()=>{
+      const txt = document.getElementById("f_nota").value.trim();
+      if(!txt) return;
+      pushHist(p, "📝 " + txt);
+      save(); modalPendiente(p); toast("Nota agregada al historial");
+    };
+  }
   document.getElementById("f_save").onclick = ()=>{
     const g = id=>document.getElementById(id).value.trim();
     if(!g("f_tarea")) { toast("La tarea necesita un nombre"); return; }
+    const antes = { estado:p.estado, comp:p.fechaCompromiso, resp:p.responsable };
     Object.assign(p, { tarea:g("f_tarea"), detalle:g("f_detalle"), responsable:g("f_resp"), prioridad:g("f_prio"),
       solicitadoPor:g("f_solic"), origen:g("f_origen"), fechaPedido:g("f_pedido"), fechaCompromiso:g("f_comp"),
       fechaEnvio:g("f_envio"), estado:g("f_estado") });
-    if(p.estado==="enviado" && !p.fechaEnvio) p.fechaEnvio = new Date().toISOString().slice(0,10);
-    if(isNew) S.pendientes.push(p);
+    if(p.estado==="enviado" && !p.fechaEnvio) p.fechaEnvio = hoyISO();
+    if(isNew){
+      pushHist(p, "📤 Solicitado" + (p.solicitadoPor ? " por " + p.solicitadoPor : ""));
+      S.pendientes.push(p);
+    } else {
+      if(antes.estado!==p.estado){
+        const ev = { "pendiente":"🔄 Reabierto", "en-curso":"▶️ En curso", "enviado":"📬 Enviado", "completado":"✅ Completado" }[p.estado];
+        if(ev) pushHist(p, ev);
+      }
+      if(antes.comp!==p.fechaCompromiso) pushHist(p, `📅 Compromiso movido a ${fmtFecha(p.fechaCompromiso)}`);
+      if(antes.resp!==p.responsable) pushHist(p, `👤 Ahora lo debe ${p.responsable}`);
+    }
     save(); closeModal(); render(); toast(isNew?"Pendiente creado":"Guardado ✓");
   };
 }
@@ -1042,6 +1084,58 @@ function modalReunion(r){
   };
 }
 
+/* --- Acciones del cliente sobre una pieza (modo Cliente) --- */
+function aprobarPieza(i){
+  i.aprobacion = "aprobado";
+  i.comentarios = (i.comentarios ? i.comentarios + "\n" : "") + `✓ Aprobada por el cliente (${fmtFecha(hoyISO())})`;
+  save(); closeModal(); render(); toast("Pieza aprobada ✓");
+}
+function pedirAjuste(i){
+  openModal(`
+    <h3>✎ Pedir ajuste</h3>
+    <p class="tnote" style="margin-bottom:8px">${esc(i.tema)} · ${fmtFecha(i.fecha)}</p>
+    <textarea id="aj_txt" style="width:100%;min-height:90px" placeholder="¿Qué ajuste necesita esta pieza?"></textarea>
+    <div class="modal-actions">
+      <button class="btn" id="aj_cancel">Cancelar</button>
+      <button class="btn primary" id="aj_save">Enviar ajuste</button>
+    </div>`);
+  document.getElementById("aj_cancel").onclick = closeModal;
+  document.getElementById("aj_save").onclick = ()=>{
+    const txt = document.getElementById("aj_txt").value.trim();
+    i.aprobacion = "ajustes";
+    i.comentarios = (i.comentarios ? i.comentarios + "\n" : "") + `✎ Ajuste del cliente (${fmtFecha(hoyISO())})${txt?": "+txt:""}`;
+    save(); closeModal(); render(); toast("Ajuste registrado — INSIDE lo verá en la pieza ✎");
+  };
+}
+/* Confirmación propia (los artifacts pueden bloquear confirm/prompt nativos) */
+function confirmModal(titulo, msg, onOk){
+  openModal(`
+    <h3>${esc(titulo)}</h3>
+    <p style="font-size:13.5px;color:var(--ink-2)">${esc(msg)}</p>
+    <div class="modal-actions">
+      <button class="btn" id="cf_no">Cancelar</button>
+      <button class="btn primary" id="cf_si">Sí, continuar</button>
+    </div>`);
+  document.getElementById("cf_no").onclick = closeModal;
+  document.getElementById("cf_si").onclick = ()=>{ closeModal(); onOk(); };
+}
+/* Modal de pieza en modo Cliente: ver y aprobar, no editar */
+function modalPiezaCliente(i){
+  openModal(`
+    <h3>${esc(i.tema)}</h3>
+    <div class="tnote" style="margin-bottom:8px">${fmtFecha(i.fecha)} · ${esc(i.formato)} · ${i.piezas} pieza(s) · ${i.tipo==="extra"?`Extra cotizado ${soles(i.costo)}`:"Dentro del fee"}</div>
+    <div style="display:flex;gap:7px;margin-bottom:10px">${pillStatusPieza(i.status)} ${pillAprob(i.aprobacion)}</div>
+    ${i.comentarios?`<p style="font-size:13px;white-space:pre-wrap;color:var(--ink-2)">${esc(i.comentarios)}</p>`:""}
+    <div class="modal-actions">
+      <button class="btn" id="pc_cerrar">Cerrar</button>
+      ${i.status!=="publicado"?`<button class="btn ghost" id="pc_ajustes">✎ Pedir ajuste</button>
+      ${i.aprobacion!=="aprobado"?`<button class="btn primary" id="pc_aprobar">✓ Aprobar</button>`:""}`:""}
+    </div>`);
+  document.getElementById("pc_cerrar").onclick = closeModal;
+  const bA = document.getElementById("pc_aprobar"); if(bA) bA.onclick = ()=>aprobarPieza(i);
+  const bJ = document.getElementById("pc_ajustes"); if(bJ) bJ.onclick = ()=>pedirAjuste(i);
+}
+
 function modalAcuerdo(rid){
   openModal(`
     <h3>Nuevo acuerdo</h3>
@@ -1083,12 +1177,23 @@ function bindMain(){
   main.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>{
     if(!interno) return;
     const p = S.pendientes.find(x=>x.id===b.dataset.toggle);
-    if(p.estado==="enviado"||p.estado==="completado"){ p.estado="pendiente"; p.fechaEnvio=""; }
-    else { p.estado="enviado"; p.fechaEnvio = new Date().toISOString().slice(0,10); }
+    if(p.estado==="enviado"||p.estado==="completado"){ p.estado="pendiente"; p.fechaEnvio=""; pushHist(p,"🔄 Reabierto"); }
+    else { p.estado="enviado"; p.fechaEnvio = hoyISO(); pushHist(p,"📬 Enviado"); }
     save(); render();
   });
+  main.querySelectorAll("[data-yaenvie]").forEach(b=>b.onclick=()=>{
+    const p = S.pendientes.find(x=>x.id===b.dataset.yaenvie);
+    p.estado = "enviado"; p.fechaEnvio = hoyISO();
+    pushHist(p, "📬 El cliente marcó: ya lo envié");
+    save(); render(); toast("Registrado: ya lo enviaste ✓ INSIDE lo verá en el historial");
+  });
   main.querySelectorAll("[data-edit-p]").forEach(b=>b.onclick=()=>{ if(interno) modalPendiente(S.pendientes.find(x=>x.id===b.dataset.editP)); });
-  main.querySelectorAll("[data-edit-i]").forEach(b=>b.onclick=()=>{ if(interno) modalPieza(S.planning.find(x=>x.id===b.dataset.editI)); });
+  main.querySelectorAll("[data-edit-i]").forEach(b=>b.onclick=()=>{
+    const i = S.planning.find(x=>x.id===b.dataset.editI);
+    if(interno) modalPieza(i); else modalPiezaCliente(i);
+  });
+  main.querySelectorAll("[data-aprobar]").forEach(b=>b.onclick=()=>aprobarPieza(S.planning.find(x=>x.id===b.dataset.aprobar)));
+  main.querySelectorAll("[data-ajustes]").forEach(b=>b.onclick=()=>pedirAjuste(S.planning.find(x=>x.id===b.dataset.ajustes)));
 
   main.querySelectorAll("[data-act]").forEach(b=>{
     const act = b.dataset.act;
@@ -1106,9 +1211,22 @@ function bindMain(){
         render();
       }
       if(act==="edit-cupo"){
-        const cur = S.settings.feeCupo[mesActual] ?? 15;
-        const v = prompt(`Cupo de piezas del fee para ${fmtMes(mesActual)}:`, cur);
-        if(v!==null && !isNaN(Number(v))){ S.settings.feeCupo[mesActual]=Number(v); save(); render(); }
+        const cur = S.settings.feeCupo[mesActual] ?? "";
+        openModal(`
+          <h3>Cupo del fee · ${fmtMes(mesActual)}</h3>
+          <p class="tnote" style="margin-bottom:8px">Cuántas piezas del fee cubre el contrato este mes. Déjalo vacío si aún no está definido.</p>
+          <input type="number" id="cu_val" min="0" value="${cur}" placeholder="Ej. 15" style="width:100%" />
+          <div class="modal-actions">
+            <button class="btn" id="cu_cancel">Cancelar</button>
+            <button class="btn primary" id="cu_save">Guardar</button>
+          </div>`);
+        document.getElementById("cu_cancel").onclick = closeModal;
+        document.getElementById("cu_save").onclick = ()=>{
+          const v = document.getElementById("cu_val").value.trim();
+          if(v==="") delete S.settings.feeCupo[mesActual];
+          else if(!isNaN(Number(v))) S.settings.feeCupo[mesActual] = Number(v);
+          save(); closeModal(); render();
+        };
       }
     };
   });
@@ -1118,9 +1236,9 @@ function bindMain(){
   main.querySelectorAll("[data-edit-r]").forEach(b=>b.onclick=()=>modalReunion(S.reuniones.find(x=>x.id===b.dataset.editR)));
   main.querySelectorAll("[data-del-r]").forEach(b=>b.onclick=()=>{
     const r = S.reuniones.find(x=>x.id===b.dataset.delR);
-    if(confirm(`¿Eliminar la reunión “${r.titulo}” y sus acuerdos?`)){
+    confirmModal("Eliminar reunión", `Se eliminará “${r.titulo}” con sus ${r.acuerdos.length} acuerdo(s). Esto no se puede deshacer.`, ()=>{
       S.reuniones = S.reuniones.filter(x=>x.id!==r.id); reunionSel=null; save(); render(); toast("Reunión eliminada");
-    }
+    });
   });
   main.querySelectorAll("[data-add-acuerdo]").forEach(b=>b.onclick=()=>modalAcuerdo(b.dataset.addAcuerdo));
   main.querySelectorAll("[data-toggle-a]").forEach(b=>b.onclick=()=>{
@@ -1198,10 +1316,15 @@ document.getElementById("importFile").addEventListener("change", e=>{
   e.target.value = "";
 });
 document.getElementById("btnReset").onclick = ()=>{
-  if(confirm("Esto borra tus cambios y vuelve a los datos del planning de julio y la reunión del 20.07. ¿Continuar?")){
-    S = structuredClone(SEED); save(); render(); toast("Datos iniciales restaurados");
-  }
+  confirmModal("Restaurar datos iniciales", "Esto borra tus cambios y vuelve a los datos del planning de julio y la reunión del 20.07.", ()=>{
+    S = structuredClone(SEED); load2(); save(); render(); toast("Datos iniciales restaurados");
+  });
 };
+/* re-aplica las migraciones sobre el seed recién clonado */
+function load2(){
+  S.planning.forEach(i=>{ if(i.aprobacion==null) i.aprobacion = APROB_PENDIENTE_SEED.has(i.id) ? "pendiente" : "aprobado"; });
+  S.pendientes.forEach(p=>{ if(!p.historial) p.historial = [{ fecha: p.fechaPedido || hoyISO(), texto: "📤 Solicitado" + (p.solicitadoPor ? " por " + p.solicitadoPor : "") }]; });
+}
 
 /* ============ Modo Interno / Cliente ============ */
 document.querySelectorAll("#modePill button").forEach(b=>{
