@@ -145,6 +145,7 @@ table.list th{position:sticky;top:0;background:var(--surface);text-align:left;fo
 table.list td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 table.list tr{cursor:pointer}
 table.list tr:hover td{background:var(--sunk)}
+.qhora{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 6px;font:inherit;width:110px}
 .rtag{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:12px}
 .rtag i{width:8px;height:8px;border-radius:2px;background:var(--rc)}
 .badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 8px;background:color-mix(in srgb,var(--s) 14%,transparent);color:var(--s);white-space:nowrap}
@@ -338,8 +339,10 @@ table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color
 .arte img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
 .arte figcaption{display:flex;justify-content:space-between;align-items:center;padding:4px 6px;font-size:11px;color:var(--ink-3)}
 .arte figcaption button{border:0;background:none;color:var(--ink-3);padding:2px 4px}
-.arte figcaption button:hover{color:var(--bad)}
-.drop-zone{border:1.5px dashed var(--line-strong);border-radius:10px;padding:18px;text-align:center;color:var(--ink-2);margin-top:12px}
+.arte figcaption button:hover{color:var(--accent)}
+.arte figcaption button[data-rmask]:hover{color:var(--bad)}
+.rmask{position:absolute;inset:0;background:color-mix(in srgb,var(--surface) 92%,transparent);display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;padding:8px;text-align:center;font-size:12px;font-weight:600}
+.drop-zone{display:block;cursor:pointer;border:1.5px dashed var(--line-strong);border-radius:10px;padding:18px;text-align:center;color:var(--ink-2);margin-top:14px}
 .drop-zone.over{border-color:var(--accent);background:var(--accent-soft)}
 .src{margin-top:18px;font-size:12px;color:var(--ink-3)}
 .confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px;border-radius:8px;background:var(--bad-soft);margin-top:10px}
@@ -427,6 +430,8 @@ function horaMin(h){
   if(m[3]==="pm"&&H<12) H+=12; if(m[3]==="am"&&H===12) H=0; if(m[3]==="m") H=12;
   return H*60+M;
 }
+function toHHMM(h){const m=horaMin(h);if(m>=24*60) return "";return pad(Math.floor(m/60))+":"+pad(m%60)}
+function fromHHMM(v){if(!v) return "";let [H,M]=v.split(":").map(Number);const ap=H>=12?"pm":"am";const h12=H%12||12;return `${h12}:${pad(M)} ${ap}`}
 function fmtDia(s,long){if(!s) return "Sin fecha"; const d=parseISO(s); const w=(d.getDay()+6)%7; return long?`${["lunes","martes","miércoles","jueves","viernes","sábado","domingo"][w]} ${d.getDate()} de ${MESES[d.getMonth()]}`:`${DOW[w]} ${d.getDate()} ${MESES[d.getMonth()].slice(0,3)}`}
 function imgSrc(x){return x.startsWith("asset:")?"/_blob/"+x.slice(6):x}
 function toast(msg){const r=$("#toastRoot");r.innerHTML=`<div class="toast" role="status">${esc(msg)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>r.innerHTML="",2600)}
@@ -593,7 +598,7 @@ function renderList(){
   const vs=visible().filter(p=>p.fecha?p.fecha.startsWith(pre):role()==="inside").sort(sortPosts);
   if(!vs.length){$("#view").innerHTML=emptyMonth();return}
   $("#view").innerHTML=`<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
-  ${vs.map(p=>`<tr data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${esc(p.hora||"—")}</td>
+  ${vs.map(p=>`<tr data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${canEdit()&&p.fecha?`<input class="qhora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300" aria-label="Hora de publicación">`:esc(p.hora||"—")}</td>
   <td><span class="rtag" style="--rc:${rv(p)}"><i></i>${region(p.region).corto}</span><div style="color:var(--ink-3);font-size:12px">${esc(p.paises.join(" · "))}</div></td>
   <td>${TIPOS[p.tipo]||p.tipo}</td><td>${esc(p.formato)}</td><td>${esc(p.campana)}${p.serie?`<div style="color:var(--ink-3);font-size:12px">${esc(p.serie)}</div>`:""}</td>
   <td style="max-width:280px">${esc(p.headline||"—")}</td><td><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span></td>
@@ -752,7 +757,7 @@ async function importXlsx(file){
       if(!targets.length){sueltas++;continue}
       const f=zip.file(a.media); if(!f) continue; const buf=await f.async("arraybuffer"); const h=await sha(buf);
       for(const p of targets){
-        const cur=S.posts.get(p.id); if(cur.imgHash===h){iguales++;continue}
+        const cur=S.posts.get(p.id); if(cur.arteManual||cur.imgHash===h){iguales++;continue}
         const key=h+"|"+cur.formato; let ids=cache.get(key);
         if(!ids){toast(`Subiendo imágenes… (${nuevas+1})`);const fr=await frames(new Blob([buf]),cur.formato);ids=[];for(const b of fr){const r=await S.assets.upload(b,{type:"image/jpeg"});ids.push("asset:"+r.id)}cache.set(key,ids)}
         await save(p.id,{imagenes:ids,imgHash:h}); nuevas++;
@@ -817,7 +822,7 @@ function capHTML(cap){
 }
 
 /* ============ hoja de detalle */
-function openPost(id,tab){S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null};S.confirmDel=false;renderSheet();}
+function openPost(id,tab){S.rmAsk=null;S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null};S.confirmDel=false;renderSheet();}
 function closeSheet(){S.openId=null;stopPlay();$("#sheetRoot").innerHTML="";document.body.style.overflow=""}
 function stopPlay(){clearInterval(S.pv.timer);S.pv.playing=false}
 function renderSheet(){
@@ -882,12 +887,16 @@ function tabBody(p,cms){
       <div class="f wide"><span class="lb">Caracteres del copy</span><div class="ro mono">${(p.copy||"").length} / 2.200 ${cap.prov?"· usando copy provisional":""}</div></div></div>`;
   }
   if(t==="arte"){
-    const imgs=p.imagenes||[];
-    return `${imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="Slide ${k+1}"><figcaption><span>${p.formato==="Historia"?"Frame":"Slide"} ${k+1}</span></figcaption></figure>`).join("")}</div>`
-      :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene arte cargado."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`}
-      ${role()!=="inside"?"":`<div class="panel" style="margin-top:14px"><h3>Dónde va la imagen</h3>
-        <p class="sub" style="margin:0 0 8px">${p.slot?`En el Excel del planning: <b>${esc(slotLabel(p))}</b>. Pega ahí la imagen (en carruseles, todos los slides en una sola tira, como el resto del documento).`:"Esta pieza no tiene casilla de imagen en el Excel porque viene de la parrilla o de la tabla de promos. Agrégala al calendario del documento con su fecha."}</p>
-        ${canEdit()&&S.assets?`<button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</div>`}`;
+    const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=p.formato==="Historia"?"Frame":"Slide";
+    const grid=imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="${lbl} ${k+1}"><figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
+      :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene fotos finales."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`;
+    const upl=ed?`<label class="drop-zone" id="dz" for="upl"><input type="file" id="upl" accept="image/*,video/mp4" multiple hidden><b>${imgs.length?"Agregar fotos finales aprobadas":"Subir fotos finales aprobadas"}</b><br><span style="font-size:12px">Arrastra aquí las imágenes o haz clic para elegirlas. En carruseles e historias, cada archivo es un slide y se agregan en el orden en que los eliges; después puedes reordenarlos con las flechas.</span></label>
+      ${imgs.length?`<label class="hint" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" id="uplReplace"> Reemplazar todas las fotos actuales con las nuevas</label>`:""}<div class="saved" id="uplMsg"></div>`
+      :(canEdit()?`<p class="hint">Para subir o borrar fotos necesitas permiso de edición en esta página.</p>`:"");
+    const xl=role()!=="inside"?"":`<details class="panel" style="margin-top:14px"><summary style="cursor:pointer;font-weight:700">También puedes cargarlas desde el Excel</summary>
+        <p class="sub" style="margin:8px 0">${p.slot?`Casilla en el planning: <b>${esc(slotLabel(p))}</b>.`:"Esta pieza no tiene casilla de imagen en el Excel."} ${p.arteManual?"Las fotos de esta pieza se cargaron a mano, así que la actualización desde el Excel no las reemplaza.":""}</p>
+        ${canEdit()&&S.assets?`<button class="btn" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</details>`;
+    return grid+upl+xl;
   }
   if(t==="aprob"){
     return `<div class="thread">${cms.length?cms.map(c=>{const pr=S.profiles[c.autorId];const nm=(pr&&pr.name)||c.autorNombre||"Alguien";return `<div class="cm ${c.tipo==="aprobado"?"apr":c.tipo==="cambios"?"cam":""}"><div class="av">${esc(nm.slice(0,1).toUpperCase())}</div><div class="bd"><header><b>${esc(nm)}</b><span>${c.tipo==="aprobado"?"aprobó":c.tipo==="cambios"?"pidió cambios":c.tipo==="envio"?"envió a aprobación":"comentó"}</span><span>${esc(new Date(c.fecha).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}</span></header>${c.texto?`<p>${esc(c.texto)}</p>`:""}</div></div>`}).join("")
@@ -908,7 +917,7 @@ function tabBody(p,cms){
     :p.vinculo==="manual"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Vinculada a la pieza de la parrilla «${esc(p.campanaParrilla)} · ${esc(p.serie)}».</p>`
     :linkable.length?`<div class="f wide" style="margin-bottom:14px"><label for="lnkParr">Vincular con una pieza de la parrilla</label><select id="lnkParr"><option value="">Elige la pieza que corresponde a este post…</option>${linkable.map(x=>`<option value="${esc(x.id)}">${x.fechaPropuesta?fmtDia(x.fechaPropuesta)+" · ":""}${esc(x.campana)} · ${esc(x.serie)} · ${esc((x.headline||"").slice(0,60))}</option>`).join("")}</select><span class="hint">Copia headline, idea, CTA, SKU y mandatories a este post y la quita de «Por asignar fecha».</span></div>`:"";
   return `${linkBox}<div class="fields">
-    ${inp("fecha","Fecha",p,"date")}${inp("hora","Hora (local)",p,"text",false,canEdit()?"Ej.: 8 am, 12 m, 8:30 PM":"")}
+    ${inp("fecha","Fecha",p,"date")}${canEdit()?`<div class="f"><label for="fld_hora">Hora de publicación (local)</label><div style="display:flex;gap:6px"><input id="fld_hora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300"><button class="btn" data-clearhora="${esc(p.id)}" title="Quitar hora">Sin hora</button></div><span class="hint">${p.hora?"Ahora: "+esc(p.hora):"Sin hora definida"}</span></div>`:fieldRO("Hora",p.hora)}
     ${inp("estado","Estado",p,ESTADOS.map(e=>e.id))}${inp("formato","Formato",p,FORMATOS)}
     ${canEdit()?inp("tipo","Tipo",{...p,tipo:TIPOS[p.tipo]},Object.values(TIPOS)):fieldRO("Tipo",TIPOS[p.tipo])}${inp("linea","Línea de campaña",p,LINEAS)}
     ${paisesCtl}
@@ -932,7 +941,11 @@ function tabBody(p,cms){
 
 /* interacción en la hoja */
 document.addEventListener("click",async e=>{
-  const o=e.target.closest("[data-open]"); if(o&&!S.justDragged){openPost(o.dataset.open);return}
+  const o=e.target.closest("[data-open]"); if(o&&!S.justDragged&&!e.target.closest("input,select,textarea,label")){openPost(o.dataset.open);return}
+  const ch=e.target.closest("[data-clearhora]"); if(ch){await save(ch.dataset.clearhora,{hora:""});toast("Hora quitada");return}
+  const rmA=e.target.closest("[data-rmask]"); if(rmA){S.rmAsk=+rmA.dataset.rmask;renderSheet();return}
+  if(e.target.closest("[data-rmno]")){S.rmAsk=null;renderSheet();return}
+  const mvR=e.target.closest("[data-mvr]"); if(mvR){const p=S.posts.get(S.openId);const k=+mvR.dataset.mvr;const a=[...p.imagenes];[a[k+1],a[k]]=[a[k],a[k+1]];await save(p.id,{imagenes:a,arteManual:true});return}
   if(e.target.closest("[data-x]")||e.target.matches("[data-close]")){closeSheet();return}
   const ex=e.target.closest("[data-expand]"); if(ex){const k=ex.dataset.expand;expanded.has(k)?expanded.delete(k):expanded.add(k);renderView();return}
   const nw=e.target.closest("[data-new]"); if(nw){createPost(nw.dataset.new);return}
@@ -942,8 +955,8 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("[data-more]")){S.pv.full=true;renderSheet();return}
   if(e.target.closest("[data-play]")){S.pv.playing?stopPlay():startPlay();renderSheet();return}
   const tp=e.target.closest("[data-tpais]"); if(tp){const p=S.posts.get(S.openId);const c=tp.dataset.tpais;let ps=p.paises.includes(c)?p.paises.filter(x=>x!==c):[...p.paises,c];if(!ps.length){toast("Debe salir en al menos un país");return}ps=region(p.region).paises.filter(x=>ps.includes(x));await save(p.id,{paises:ps});return}
-  const mv=e.target.closest("[data-mv]"); if(mv){const p=S.posts.get(S.openId);const k=+mv.dataset.mv;const a=[...p.imagenes];[a[k-1],a[k]]=[a[k],a[k-1]];await save(p.id,{imagenes:a});return}
-  const rm=e.target.closest("[data-rm]"); if(rm){const p=S.posts.get(S.openId);const a=p.imagenes.filter((_,k)=>k!==+rm.dataset.rm);await save(p.id,{imagenes:a});toast("Imagen quitada");return}
+  const mv=e.target.closest("[data-mv]"); if(mv){const p=S.posts.get(S.openId);const k=+mv.dataset.mv;const a=[...p.imagenes];[a[k-1],a[k]]=[a[k],a[k-1]];await save(p.id,{imagenes:a,arteManual:true});return}
+  const rm=e.target.closest("[data-rm]"); if(rm){const p=S.posts.get(S.openId);const a=p.imagenes.filter((_,k)=>k!==+rm.dataset.rm);S.rmAsk=null;await save(p.id,{imagenes:a,arteManual:true});toast("Foto borrada de la publicación");return}
   const act=e.target.closest("[data-act]"); if(act) doAct(act.dataset.act);
 });
 function startPlay(resume){
@@ -970,7 +983,8 @@ document.addEventListener("change",async e=>{
   if(k==="formato"&&v==="Historia"&&S.posts.get(S.openId).tipo==="feed") patch.tipo="historia";
   await save(S.openId,patch);
 });
-document.addEventListener("change",async e=>{if(e.target.id==="upl") upload([...e.target.files])});
+document.addEventListener("change",async e=>{if(e.target.id==="upl"){upload([...e.target.files],$("#uplReplace")?.checked);e.target.value=""}});
+document.addEventListener("change",async e=>{const h=e.target.closest("[data-hora]");if(!h) return;const v=fromHHMM(h.value);await save(h.dataset.hora,{hora:v});toast(v?`Hora: ${v}`:"Hora quitada")});
 document.addEventListener("change",async e=>{
   if(e.target.id!=="lnkParr"||!e.target.value) return;
   const p=S.posts.get(S.openId); const src=S.posts.get(e.target.value); if(!p||!src) return;
@@ -982,9 +996,9 @@ document.addEventListener("change",async e=>{
 });
 document.addEventListener("dragover",e=>{const dz=e.target.closest("#dz");if(dz&&e.dataTransfer.types.includes("Files")){e.preventDefault();dz.classList.add("over")}});
 document.addEventListener("dragleave",e=>{const dz=e.target.closest("#dz");if(dz) dz.classList.remove("over")});
-document.addEventListener("drop",e=>{const dz=e.target.closest("#dz");if(dz&&e.dataTransfer.files.length){e.preventDefault();dz.classList.remove("over");upload([...e.dataTransfer.files])}});
+document.addEventListener("drop",e=>{const dz=e.target.closest("#dz");if(dz&&e.dataTransfer.files.length){e.preventDefault();dz.classList.remove("over");upload([...e.dataTransfer.files].filter(f=>/^(image|video)\//.test(f.type)),$("#uplReplace")?.checked)}});
 
-async function upload(files){
+async function upload(files,replace){
   const p=S.posts.get(S.openId); if(!p||!S.assets||!files.length) return;
   const msg=$("#uplMsg"); const added=[];
   for(const [k,f] of files.entries()){
@@ -992,7 +1006,7 @@ async function upload(files){
     try{const r=await S.assets.upload(f);added.push("asset:"+r.id)}
     catch(err){toast(err&&err.code==="too_large"?`${f.name} pesa más de 20 MB`:err&&err.code==="unsupported_type"?`${f.name}: formato no admitido`:`No se pudo subir ${f.name}. Intenta de nuevo.`)}
   }
-  if(added.length){const cur=S.posts.get(p.id);await save(p.id,{imagenes:[...(cur.imagenes||[]),...added]});toast(added.length===1?"Arte cargado":`${added.length} imágenes cargadas`)}
+  if(added.length){const cur=S.posts.get(p.id);await save(p.id,{imagenes:replace?added:[...(cur.imagenes||[]),...added],arteManual:true});toast(replace?"Arte reemplazado":added.length===1?"Foto agregada":`${added.length} fotos agregadas`);if(msg) msg.textContent=""}
   else if(msg) msg.textContent="";
 }
 
