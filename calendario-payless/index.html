@@ -966,11 +966,6 @@ function tabBody(p,cms){
     ${paisesCtl}
     ${inp("campana","Campaña",p)}${inp("serie","Serie",p)}
     ${inp("headline","Headline / super",p,"text",true)}
-    ${inp("idea","Idea / descripción",p,"textarea",true)}
-    ${inp("objetivo","Objetivo",p)}${inp("tipoContenido","Tipo de contenido",p)}
-    ${inp("cta","CTA",p)}${inp("prioridad","Prioridad",p)}
-    ${inp("sku","SKU / lote",p,"textarea",true)}
-    ${inp("mandatories","Mandatories / observaciones",p,"textarea",true)}
     ${inp("responsable","Responsable → aprueba",p,"text",true)}
     ${inp("insumo","Insumo / recurso",p,"text",true)}
     ${p.tipo==="promo"||p.legal?`${inp("fase","Fase de la promo",p)}${inp("vigencia","Vigencia",p)}${inp("legal","Legal",p,"textarea",true)}${inp("estadoLegal","Estado del legal",p)}`:""}
