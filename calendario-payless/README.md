@@ -3,7 +3,8 @@
 Plataforma solo de calendario para la cuenta Payless: publicaciones orgánicas de Meta por región y país, con preview de Instagram de cada pieza.
 
 - **Publicada (privada):** https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp
-- **Fuente:** `PAYLESS _ Planning octubre meta cliente.xlsx` (octubre 2026)
+- **Fuente:** `PAYLESS _ Planning octubre meta cliente.xlsx` y las matrices CAM, SUR, RD y Caribbean (octubre 2026)
+- **Traspaso completo:** `TRASPASO-PAYLESS.md`
 
 ## Qué hace
 
@@ -18,7 +19,7 @@ Plataforma solo de calendario para la cuenta Payless: publicaciones orgánicas d
 
 ## Datos
 
-- `seed-octubre-2026.json`: las 271 piezas extraídas del Excel. La base compartida de la página se cargó desde aquí; si la página se abre sin conexión a esa base, muestra este archivo en modo lectura.
+- `seed-octubre-2026.json`: las 263 piezas de octubre (Excel + matrices). La base compartida de la página se cargó desde aquí; si la página se abre sin conexión a esa base, muestra este archivo en modo lectura.
 - `img/`: arte embebido en el Excel. Los carruseles se separaron en slides y las historias en frames.
 - Reglas de la extracción:
   - Los calendarios operativos (CAM, Sur y RD, de feed e historias) son la fuente de verdad de fecha, estado, arte y link.
