@@ -116,6 +116,10 @@ main{padding-block:16px 40px}
 .clipbar .sp{flex:1}
 .clipbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
 .pc.clip{outline:2px dashed var(--accent);outline-offset:1px}
+.pc.sel{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
+.day.sel{background:color-mix(in srgb,var(--accent) 8%,var(--surface));box-shadow:inset 0 0 0 2px var(--accent)}
+.selhint{font-size:12px;color:var(--ink-3);margin:-4px 0 10px}
+.selhint kbd{font:600 11px var(--f-mono);border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:var(--surface);color:var(--ink-2)}
 .more{border:0;background:transparent;color:var(--ink-2);font-size:12px;font-weight:600;text-align:left;padding:2px 4px}
 .more:hover{color:var(--accent)}
 
@@ -426,7 +430,7 @@ const S={
   db:null, assets:null, user:null,
   month:null,
   f:{region:"ALL",paises:[],tipo:"ALL",linea:"ALL",estado:"ALL",q:"",view:"cal",gridPais:"GT",gridSize:"phone",onlyArt:false,desde:"2026-10-01",hasta:"2026-10-10"},
-  openId:null, openTab:"info", pv:{slide:0}, dragId:null, clip:null,
+  openId:null, openTab:"info", pv:{slide:0}, dragId:null, clip:null, sel:null, selDay:null,
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
@@ -576,7 +580,7 @@ function chip(p,opts={}){
   const story=!isFeed(p)&&isStory(p);
   const drag=canEdit()?`draggable="true"`:"";
   const where=p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" ");
-  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
+  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""} ${S.sel===p.id?"sel":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
     <span style="min-width:0"><span class="t1"><span class="sd ${estadoC(p.estado)}"></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
@@ -603,7 +607,7 @@ function renderCal(){
     const LIM=4;
     main=`<div class="cal"><div class="cal-head">${DOW.map(d=>`<div>${d}</div>`).join("")}</div><div class="cal-body">${monthDays().map(d=>{
       const k=iso(d); const ps=byDay[k]||[]; const out=d.getMonth()!==m; const show=expanded.has(k)?ps:ps.slice(0,LIM);
-      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()&&S.clip&&S.posts.has(S.clip)?`<button class="dpaste" data-paste="${k}" title="Pegar la publicación copiada el ${fmtDia(k,true)}">Pegar</button>`:""}${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
+      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""} ${S.selDay===k?"sel":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()&&S.clip&&S.posts.has(S.clip)?`<button class="dpaste" data-paste="${k}" title="Pegar la publicación copiada el ${fmtDia(k,true)}">Pegar</button>`:""}${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
       ${show.map(p=>chip(p)).join("")}${ps.length>LIM?`<button class="more" data-expand="${k}">${expanded.has(k)?"Ver menos":`+${ps.length-LIM} más`}</button>`:""}</div>`}).join("")}</div></div>`;
   }
   const side=`<aside class="side">
@@ -612,14 +616,14 @@ function renderCal(){
     <section class="panel"><h3>Cómo leer el calendario</h3><div class="legend">
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
       <div style="margin-top:4px"></div>
-      <div><span class="cs pub"></span><b>Verde</b>: programado o publicado</div>
-      <div><span class="cs env"></span><b>Naranja</b>: esperando aprobación del cliente</div>
-      <div><span class="cs"></span><b>Blanco</b>: en desarrollo en Inside</div>
+      <div><span class="cs pub"></span><span><b>Verde</b>: programado o publicado</span></div>
+      <div><span class="cs env"></span><span><b>Naranja</b>: esperando aprobación del cliente</span></div>
+      <div><span class="cs"></span><span><b>Blanco</b>: en desarrollo en Inside</span></div>
       <div style="margin-top:4px"></div>
       ${ESTADOS.map(e=>`<div><span class="sd ${e.c}" style="width:9px;height:9px"></span>${e.id}</div>`).join("")}
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
-  $("#view").innerHTML=`${clipBar()}<div class="layout">${main}${side}</div>`;
+  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega</p>`:""}<div class="layout">${main}${side}</div>`;
 }
 function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes</h3><p>Cambia de mes o limpia los filtros para ver más.</p></div>`}
 
@@ -986,6 +990,10 @@ function tabBody(p,cms){
 
 /* interacción en la hoja */
 document.addEventListener("click",async e=>{
+  const pcEl=e.target.closest("#view .pc[data-open]");
+  if(pcEl&&selectMode()&&!S.justDragged){selectPost(pcEl.dataset.open,pcEl);return}
+  const dayEl=e.target.closest("#view .day[data-day]");
+  if(dayEl&&selectMode()&&!e.target.closest("button,a,input")){selectDay(dayEl.dataset.day);return}
   const o=e.target.closest("[data-open]"); if(o&&!S.justDragged&&!e.target.closest("input,select,textarea,label")){openPost(o.dataset.open);return}
   const ch=e.target.closest("[data-clearhora]"); if(ch){await save(ch.dataset.clearhora,{hora:""});toast("Hora quitada");return}
   const rmA=e.target.closest("[data-rmask]"); if(rmA){S.rmAsk=+rmA.dataset.rmask;renderSheet();return}
@@ -1075,12 +1083,12 @@ function clipBar(){
   if(!canEdit()||!S.clip) return "";
   const p=S.posts.get(S.clip); if(!p){S.clip=null;return ""}
   return `<div class="clipbar" role="status"><span>Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}</span>
-    <span>Toca <b>Pegar</b> en cada día donde la quieras (puedes pegar varias veces), o elige una fecha:</span>
+    <span>Haz clic en un día y presiona <b>Ctrl+V</b>, o toca <b>Pegar</b> en cada día (puedes pegar varias veces), o elige una fecha:</span>
     <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(p.fecha||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
 }
 function copyPost(id){
   if(!canEdit()||!S.posts.has(id)) return;
-  S.clip=id; renderView(); toast("Copiada. Toca «Pegar» en el día que quieras.");
+  S.clip=id; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
 }
 async function pastePost(day){
   const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
@@ -1095,6 +1103,21 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-pastedate]")){const v=$("#clipDate")?.value; if(!v){toast("Elige una fecha");return} pastePost(v);return}
   if(e.target.closest("[data-clipclear]")){S.clip=null;renderView();return}
 },true);
+/* selección: clic selecciona, doble clic abre (solo Inside con mouse) */
+function selectMode(){return canEdit()&&window.matchMedia("(pointer:fine)").matches}
+function selectPost(id,el){
+  S.sel=id; const p=S.posts.get(id); if(p&&p.fecha) S.selDay=p.fecha;
+  document.querySelectorAll("#view .pc.sel").forEach(x=>x.classList.remove("sel"));
+  document.querySelectorAll(`#view .pc[data-open="${CSS.escape(id)}"]`).forEach(x=>x.classList.add("sel"));
+  markDay();
+}
+function selectDay(day){S.selDay=day;markDay()}
+function markDay(){document.querySelectorAll("#view .day.sel").forEach(x=>x.classList.remove("sel"));if(S.selDay) document.querySelector(`#view .day[data-day="${S.selDay}"]`)?.classList.add("sel")}
+document.addEventListener("dblclick",e=>{const c=e.target.closest("#view .pc[data-open]");if(c&&selectMode()) openPost(c.dataset.open)});
+document.addEventListener("keydown",e=>{
+  if(S.openId||!S.sel||e.target.closest("input,textarea,select")) return;
+  if(e.key==="Enter"){e.preventDefault();openPost(S.sel)}
+});
 /* atajos: Ctrl/Cmd+C sobre una publicación, Ctrl/Cmd+V sobre un día */
 let hoverPost=null, hoverDay=null;
 document.addEventListener("mouseover",e=>{const c=e.target.closest("[data-open]");hoverPost=c&&c.closest("#view")?c.dataset.open:null;const d=e.target.closest(".day[data-day]");hoverDay=d?d.dataset.day:null});
@@ -1102,10 +1125,10 @@ document.addEventListener("keydown",e=>{
   if(!(e.ctrlKey||e.metaKey)||e.target.closest("input,textarea,select,[contenteditable]")||!canEdit()) return;
   if(window.getSelection&&String(window.getSelection()).length) return;
   const k=e.key.toLowerCase();
-  if(k==="c"){const id=S.openId||hoverPost; if(id){e.preventDefault();copyPost(id)}}
-  else if(k==="v"&&S.clip&&!S.openId&&hoverDay){e.preventDefault();pastePost(hoverDay)}
+  if(k==="c"){const id=S.openId||S.sel||hoverPost; if(id){e.preventDefault();copyPost(id)}}
+  else if(k==="v"&&S.clip&&!S.openId){const d=S.selDay||hoverDay; if(d){e.preventDefault();pastePost(d)}else toast("Haz clic en un día y vuelve a pegar")}
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.clip&&!S.openId){S.clip=null;renderView()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!S.openId&&(S.clip||S.sel||S.selDay)){S.clip=null;S.sel=null;S.selDay=null;renderView()}});
 async function createPost(fecha){
   if(!canEdit()) return;
   const reg=S.f.region!=="ALL"?S.f.region:"CENTRO"; const r=region(reg);
