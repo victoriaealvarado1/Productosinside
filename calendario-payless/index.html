@@ -257,6 +257,37 @@ table.list tr:hover td{background:var(--sunk)}
 .gridview.big .tile .na-h{font-size:16px}
 .gridview.big .tile .dt{font-size:12px}
 .pvmode{align-self:center}
+.ph.emptym{background:#e9e6e2;color:#6d655d;justify-content:center;align-items:center;text-align:center;gap:6px;padding:24px;font:500 12.5px/1.4 var(--f-body)}
+.ph.emptym b{font:700 15px var(--f-display);color:#3d3731}
+.ph.emptym .em-ic{width:44px;height:44px;border-radius:50%;border:2px dashed #a99f95;display:grid;place-items:center;font-size:22px;color:#8b8177}
+.gtabs button{flex:1;border:0;background:none;padding:9px 0;font-size:12px;color:var(--ig-mute);font-weight:600}
+.gtabs button.on{color:var(--ig-ink);box-shadow:inset 0 -1.5px 0 var(--ig-ink)}
+.igrid.stories .tile{aspect-ratio:9/16}
+.gapsview{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;align-items:start}
+.vh{font:800 22px/1.1 var(--f-display);letter-spacing:-.01em;margin:0 0 4px}
+.gaps .sub,.clientinfo .sub{color:var(--ink-3);font-size:13px;margin:0 0 12px}
+.gap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:8px}
+.gap summary{display:flex;gap:12px;align-items:center;padding:10px 12px;cursor:pointer;list-style:none}
+.gap summary::-webkit-details-marker{display:none}
+.gap summary small{display:block;color:var(--ink-3);font-size:12px;font-weight:400}
+.gn{min-width:34px;height:28px;border-radius:8px;background:var(--bad-soft);color:var(--bad);font:700 14px var(--f-mono);display:grid;place-items:center;padding:0 6px}
+.gn.zero{background:var(--ok-soft);color:var(--ok)}
+.gap ul{list-style:none;margin:0;padding:0 8px 8px;display:grid;gap:4px;max-height:420px;overflow:auto}
+.gi{display:grid;grid-template-columns:86px 90px minmax(0,1fr);gap:4px 10px;width:100%;text-align:left;border:1px solid var(--line);border-left:3px solid var(--rc);background:var(--bg);border-radius:6px;padding:6px 8px;font-size:12.5px}
+.gi:hover{border-color:var(--line-strong)}
+.gi .gc{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gi .gx{grid-column:1/-1;color:var(--ink-2);font-size:12px;white-space:pre-wrap;word-break:break-word}
+.gi .gx:empty{display:none}
+.callout{background:var(--accent-soft);color:var(--ink);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.cireg{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--rc,var(--line-strong));border-radius:var(--radius);padding:12px 14px;margin-bottom:12px}
+.cireg h3{margin:0 0 8px;font:700 16px var(--f-display)}
+.cireg h4{margin:12px 0 6px;font:700 13px var(--f-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.cireg dl{display:grid;grid-template-columns:130px minmax(0,1fr);gap:6px 12px;margin:0 0 10px;font-size:13px}
+.cireg dt{color:var(--ink-3);font-weight:600}
+.cireg dd{margin:0}
+table.mini{border-collapse:collapse;width:100%;font-size:12.5px;min-width:420px}
+table.mini th,table.mini td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3)}
 .sheet .left .screen{max-height:calc(100vh - 150px);overflow-y:auto}
 .emptygrid{padding:30px 16px;text-align:center;color:var(--ig-mute);font-size:13px}
 
@@ -313,7 +344,8 @@ table.list tr:hover td{background:var(--sunk)}
 @media (min-width:901px){.top{position:sticky;top:env(safe-area-inset-top,0px)}}
 @media (max-width:1100px){.layout{grid-template-columns:minmax(0,1fr)}.side{position:static}.backlog{max-height:none}}
 @media (max-width:900px){.sheet{grid-template-columns:minmax(0,1fr)}.sheet .left{border-right:0;border-bottom:1px solid var(--line)}.gridview,.gridview.big{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:640px){.fields{grid-template-columns:minmax(0,1fr)}.month{margin-left:0;width:100%;justify-content:space-between}.month h1{min-width:0}.views{margin-left:0}input.search{width:100%}.brand span{display:none}.phone{border-radius:34px;padding:9px}.screen{border-radius:26px}}
+@media (max-width:980px){.gapsview{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.cireg dl{grid-template-columns:minmax(0,1fr)}.gi{grid-template-columns:minmax(0,1fr) auto}.fields{grid-template-columns:minmax(0,1fr)}.month{margin-left:0;width:100%;justify-content:space-between}.month h1{min-width:0}.views{margin-left:0}input.search{width:100%}.brand span{display:none}.phone{border-radius:34px;padding:9px}.screen{border-radius:26px}}
 @media (prefers-reduced-motion:reduce){.track{transition:none}}
 </style>
 
@@ -402,6 +434,11 @@ function caption(p){
   return {text:t||p.campana||"",prov:true};
 }
 function phClass(p){return p.tipo==="promo"||p.linea==="Promociones"?"promo":p.linea==="Kids"||p.linea==="Halloween Kids"?"kids":p.linea==="Nuevas Llegadas"?"nl":""}
+function colLetter(n){let s="";while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
+function slotLabel(p){return p.slot?`hoja «${p.slot.sheet}», celdas ${p.slot.cell} (fila VIEW)`:""}
+function emptyMedia(p){
+  return `<div class="ph emptym"><span class="em-ic">＋</span><b>Sin imagen</b><span>${p.slot?`Pégala en el Excel: ${esc(slotLabel(p))}`:"Esta pieza no tiene casilla de imagen en el Excel. Ubícala primero en el calendario del documento."}</span></div>`;
+}
 function placeholder(p,extra=""){
   const en=p.paises.every(c=>EN_PAISES.has(c));
   return `<div class="ph ${phClass(p)} ${extra}"><span class="pend">${p.tipo==="promo"?"Arte de promo pendiente":"Arte pendiente"}</span><span class="k">${esc(p.campana||"")}${p.serie?" · "+esc(p.serie):""}</span><span class="phl">${esc(p.headline||p.campana||"Publicación")}</span><span class="sig">${en?"Only at":"Solo en"} Payless</span></div>`;
@@ -452,7 +489,7 @@ function renderFilters(){
   </div>
   <div class="fgroup views">
     <div class="seg" role="group" aria-label="Vista">
-      ${[["cal","Calendario"],["list","Lista"],["grid","Feed por país"]].map(([k,l])=>`<button data-view="${k}" aria-pressed="${f.view===k}">${l}</button>`).join("")}
+      ${[["cal","Calendario"],["list","Lista"],["grid","Feed por país"],["gaps","Faltantes"]].map(([k,l])=>`<button data-view="${k}" aria-pressed="${f.view===k}">${l}</button>`).join("")}
     </div>
     ${canEdit()?`<button class="btn primary" id="newPost">＋ Nueva</button>`:""}
   </div>`;
@@ -550,12 +587,13 @@ function renderList(){
 function countryFeed(c,useFilters){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
   const all=[...S.posts.values()].filter(p=>p.paises.includes(c)&&(!useFilters||matches({...p,paises:[c]},{ignoreTipo:true})));
-  const feed=all.filter(p=>p.tipo!=="historia"&&p.formato!=="Historia"&&p.fecha&&p.fecha<=`${pre}-31`).sort((a,b)=>sortPosts(b,a));
-  const stories=all.filter(p=>p.formato==="Historia"&&p.fecha&&p.fecha.startsWith(pre)).sort(sortPosts);
+  const feed=all.filter(p=>isFeed(p)&&p.fecha&&p.fecha<=`${pre}-31`).sort((a,b)=>sortPosts(b,a));
+  const stories=all.filter(p=>!isFeed(p)&&p.fecha&&p.fecha.startsWith(pre)).sort(sortPosts);
   return {feed,stories,pre,m};
 }
+function isFeed(p){return p.tipo==="feed"&&p.formato!=="Historia"}
 function handleOf(c){return `payless${c==="RD"?"rd":"."+c.toLowerCase()}`}
-function profileGrid(c,{highlight=null,useFilters=true,onlyArt=false}={}){
+function profileGrid(c,{highlight=null,useFilters=true,onlyArt=false,tab="feed"}={}){
   let {feed,stories,pre,m}=countryFeed(c,useFilters);
   const withArt=feed.filter(p=>p.imagenes&&p.imagenes.length).length;
   const shown=onlyArt?feed.filter(p=>p.imagenes&&p.imagenes.length||p.id===highlight):feed;
@@ -566,8 +604,8 @@ function profileGrid(c,{highlight=null,useFilters=true,onlyArt=false}={}){
      <div class="prof"><div class="row"><div class="av ring">P</div><div class="stats"><div><b>${inMonth.length}</b>en ${MESES[m]}</div><div><b>${withArt}</b>con arte</div><div><b>${stories.length}</b>historias</div></div></div>
      <div class="bio"><b>Payless ${esc(PAIS[c])}</b>${en?"Find your style in one place. Only at Payless.":"Todos los estilos en un solo lugar. Solo en Payless."}</div></div>
      <div class="hls">${sgroups.length?sgroups.map(s=>`<button class="hl" data-open="${esc(s.id)}"><span style="${s.imagenes&&s.imagenes[0]?`background-image:url('${esc(imgSrc(s.imagenes[0]))}')`:""}">${s.imagenes&&s.imagenes[0]?"":"P"}</span><em>${esc(s.campana)}</em></button>`).join(""):`<span style="color:var(--ig-mute);font-size:12px">Sin historias este mes</span>`}</div>
-     <div class="gtabs"><div class="on">▦</div><div>▷</div><div>◫</div></div>
-     ${shown.length?`<div class="igrid">${shown.map(p=>tile(p,!p.fecha.startsWith(pre),p.id===highlight)).join("")}</div>`:`<div class="emptygrid">${onlyArt?"Este país todavía no tiene piezas de feed con arte cargado.":"Este país no tiene publicaciones de feed con estos filtros."}</div>`}`;
+     <div class="gtabs"><button data-gtab="feed" class="${tab==="feed"?"on":""}">▦ Feed</button><button data-gtab="stories" class="${tab==="stories"?"on":""}">◎ Historias (${stories.length})</button></div>
+     ${tab==="stories"?(stories.length?`<div class="igrid stories">${stories.map(p=>storyTile(p,p.id===highlight)).join("")}</div>`:`<div class="emptygrid">Sin historias este mes.</div>`):shown.length?`<div class="igrid">${shown.map(p=>tile(p,!p.fecha.startsWith(pre),p.id===highlight)).join("")}</div>`:`<div class="emptygrid">${onlyArt?"Este país todavía no tiene piezas de feed con arte cargado.":"Este país no tiene publicaciones de feed con estos filtros."}</div>`}`;
 }
 function renderGrid(){
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
@@ -577,42 +615,134 @@ function renderGrid(){
   const withArt=feed.filter(p=>p.imagenes&&p.imagenes.length).length;
   const big=f.gridSize==="big";
   $("#view").innerHTML=`<div class="gridview ${big?"big":""}">
-   <div class="gridphone">${phone(profileGrid(c,{onlyArt:f.onlyArt}))}</div>
+   <div class="gridphone">${phone(profileGrid(c,{onlyArt:f.onlyArt,tab:f.gridTab||"feed"}))}</div>
    <div class="gridnote"><h2>Feed de ${esc(PAIS[c])}</h2>
      <div class="fgroup" style="margin:4px 0 14px"><div class="chips">${opts.map(x=>`<button class="chip" data-gpais="${x}" aria-pressed="${x===c}" title="${PAIS[x]}">${x} · ${PAIS[x]}</button>`).join("")}</div></div>
      <div class="fgroup" style="margin-bottom:14px">
        <div class="seg" role="group" aria-label="Tamaño"><button data-gsize="phone" aria-pressed="${!big}">Celular</button><button data-gsize="big" aria-pressed="${big}">Grande</button></div>
        <div class="seg" role="group" aria-label="Piezas"><button data-onlyart="0" aria-pressed="${!f.onlyArt}">Todas</button><button data-onlyart="1" aria-pressed="${!!f.onlyArt}">Solo con arte</button></div>
      </div>
-     <p><b>${withArt} de ${feed.length}</b> piezas de feed tienen arte cargado. ${withArt<feed.length?(canEdit()&&S.assets?"Arrastra una imagen sobre cualquier cuadro gris para cargarle el arte y ver cómo queda en la grilla.":"Los cuadros grises son piezas que todavía no tienen arte."):""}</p>
+     <p><b>${withArt} de ${feed.length}</b> piezas de feed tienen arte cargado. ${withArt<feed.length?"Los cuadros grises son publicaciones sin imagen: pega la imagen en su casilla VIEW del Excel (cada cuadro indica la celda) y usa «Actualizar desde el Excel».":""}</p>
+     ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button></p>`:""}
+     <p>Aquí solo aparece lo que se publica en el feed. Las historias y las promos (que van en historias) están en la pestaña <b>Historias</b> del perfil.</p>
      <p>Orden de salida, la más reciente arriba, con el recorte 3:4 del perfil de Instagram. Las piezas de meses anteriores aparecen atenuadas. Toca un cuadro para abrir la publicación.</p>
    </div></div>`;
+}
+function storyTile(p,hl){
+  const im=p.imagenes&&p.imagenes[0];
+  return `<button class="tile st ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">Sin imagen</span></span>`}<span class="dt">${p.fecha?fmtDia(p.fecha):""}${p.hora?" · "+esc(p.hora):""}</span></button>`;
 }
 function tile(p,ghost,hl){
   const im=p.imagenes&&p.imagenes[0];
   const ic=p.formato==="Carrusel"?ICON.multi:p.formato==="Reel"?ICON.reel:"";
-  const up=!im&&canEdit()&&S.assets;
-  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${esc(p.headline||p.campana||"Sin arte")}</span>${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
+  const up=false;
+  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">Sin imagen</span>${p.slot?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-gpais]");if(t){S.f.gridPais=t.dataset.gpais;persistF();renderView();return}
   const g=e.target.closest("[data-gsize]");if(g){S.f.gridSize=g.dataset.gsize;persistF();renderView();return}
   const o=e.target.closest("[data-onlyart]");if(o){S.f.onlyArt=o.dataset.onlyart==="1";persistF();renderView();return}
+  const gt=e.target.closest("[data-gtab]");if(gt){if(gt.closest(".sheet")){S.pv.gtab=gt.dataset.gtab;renderSheet()}else{S.f.gridTab=gt.dataset.gtab;persistF();renderView()}return}
   const fp=e.target.closest("[data-fpais]");if(fp){S.pv.feedPais=fp.dataset.fpais;S.pv.scrolled=false;renderSheet();return}
   const pm=e.target.closest("[data-pvmode]");if(pm){S.pv.mode=pm.dataset.pvmode;S.pv.scrolled=false;stopPlay();renderSheet();return}
 });
-/* soltar arte sobre un cuadro de la grilla */
-document.addEventListener("dragover",e=>{const t=e.target.closest("[data-tileup]");if(t&&e.dataTransfer&&[...e.dataTransfer.types].includes("Files")){e.preventDefault();t.classList.add("over")}});
-document.addEventListener("dragleave",e=>{const t=e.target.closest("[data-tileup]");if(t) t.classList.remove("over")});
-document.addEventListener("drop",async e=>{
-  const t=e.target.closest("[data-tileup]"); if(!t||!e.dataTransfer.files.length) return; e.preventDefault(); t.classList.remove("over");
-  const id=t.dataset.tileup; const files=[...e.dataTransfer.files].filter(f=>/^image\//.test(f.type)); if(!files.length){toast("Suelta una imagen (JPG o PNG)");return}
-  toast(files.length>1?`Subiendo ${files.length} imágenes…`:"Subiendo arte…");
-  const added=[]; for(const f of files){try{const r=await S.assets.upload(f);added.push("asset:"+r.id)}catch(err){toast(err&&err.code==="too_large"?"La imagen pesa más de 20 MB":"No se pudo subir la imagen")}}
-  if(added.length){const cur=S.posts.get(id);await save(id,{imagenes:[...(cur.imagenes||[]),...added]});toast("Arte cargado en la grilla")}
-});
+
 
 function phone(inner){return `<div class="phone"><div class="screen"><div class="statusbar"><span class="mono">9:41</span><span>●●● ▮</span></div>${inner}</div></div>`}
+
+/* ============ faltantes + información del cliente */
+let INFO=null;
+async function loadInfo(){if(INFO) return INFO;try{const r=await fetch("info-octubre-2026.json");if(r.ok) INFO=await r.json()}catch(e){}return INFO}
+const GAPS=[
+  {k:"feedimg",t:"Publicaciones de feed sin imagen",d:"Pega la imagen en su casilla VIEW del Excel.",f:p=>isFeed(p)&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.slot?`Excel: ${slotLabel(p)}`:"Sin casilla en el Excel"},
+  {k:"stimg",t:"Historias y promos sin imagen",d:"Pega la imagen en su casilla VIEW del Excel.",f:p=>!isFeed(p)&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.slot?`Excel: ${slotLabel(p)}`:"Sin casilla en el Excel (viene de la tabla de promos)"},
+  {k:"copy",t:"Publicaciones de feed sin copy",d:"El preview usa headline + CTA mientras tanto.",f:p=>isFeed(p)&&p.fecha&&!(p.copy||"").trim(),x:p=>p.headline?`Headline: ${p.headline}`:"Sin headline"},
+  {k:"fmt",t:"Formato por definir",d:"El Excel no dice si es estático, carrusel o reel.",f:p=>p.formatoPendiente&&p.formato==="Estático",x:p=>`Excel: ${p.fuente||""}`},
+  {k:"hora",t:"Hora de publicación por definir",f:p=>p.fecha&&!(p.hora||"").trim(),x:p=>p.vigencia?`Vigencia: ${p.vigencia}`:""},
+  {k:"sku",t:"SKU / lote pendiente",d:"Validar en Cloudinary o con el cliente.",f:p=>/pendiente/i.test(p.sku||""),x:p=>p.sku},
+  {k:"legal",t:"Legal por validar o corregir",d:"Ninguna promo se publica sin legal validado por Karla Poveda.",f:p=>(p.estadoLegal&&!/vigente|validad|aprobad/i.test(p.estadoLegal))||/^pendiente/i.test(p.legal||""),x:p=>[p.estadoLegal,p.vigencia].filter(Boolean).join(" · ")},
+  {k:"conf",t:"Por confirmar con el cliente",d:"Notas del planning que piden confirmación.",f:p=>/confirm|revisar|pendiente/i.test([p.mandatories,p.grupo,p.fase].join(" ")),x:p=>p.mandatories||p.grupo||p.fase},
+  {k:"parr",t:"Piezas de la parrilla sin día en el calendario",f:p=>p.origen==="parrilla"&&!p.fecha,x:p=>`${p.serie||""}${p.fechaPropuesta?" · propuesta "+fmtDia(p.fechaPropuesta):""}`},
+  {k:"apr",t:"Esperando aprobación del cliente",f:p=>p.estado==="Enviado a cliente",x:p=>p.headline||""},
+  {k:"cam",t:"Con cambios solicitados",f:p=>p.estado==="Cambios solicitados",x:p=>p.headline||""},
+];
+const openGaps=new Set(["feedimg"]);
+function renderGaps(){
+  const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
+  const vs=visible().filter(p=>!p.fecha||p.fecha.startsWith(pre)).sort(sortPosts);
+  const rows=GAPS.map(g=>({g,items:vs.filter(g.f)}));
+  const left=`<section class="gaps"><h2 class="vh">Lo que falta</h2><p class="sub">${MESES[m]} · con los filtros de arriba (región, país, tipo).</p>
+   ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button> <span class="hint">Lee las imágenes pegadas en las casillas VIEW del planning.</span></p>`:""}
+   ${rows.map(({g,items})=>`<details class="gap" ${openGaps.has(g.k)?"open":""} data-gap="${g.k}"><summary><span class="gn ${items.length?"":"zero"}">${items.length}</span><span><b>${g.t}</b>${g.d?`<small>${g.d}</small>`:""}</span></summary>
+     ${items.length?`<ul>${items.map(p=>`<li><button class="gi" data-open="${esc(p.id)}" style="--rc:${rv(p)}"><span class="mono">${p.fecha?fmtDia(p.fecha):"Sin fecha"}</span><span class="rtag"><i></i>${esc(p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" "))}</span><span class="gc">${esc(p.campana||"—")} · ${esc(p.formato)}</span><span class="gx">${esc(g.x?g.x(p)||"":"")}</span></button></li>`).join("")}</ul>`:`<p class="sub" style="padding:0 12px 10px">Nada pendiente.</p>`}</details>`).join("")}</section>`;
+  const info=INFO;
+  const regs=S.f.region!=="ALL"?[S.f.region]:REGIONES.map(r=>r.id);
+  const right=!info?`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">Cargando…</p></section>`:`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">${esc(info.titulo)} · presentación «${esc(info.presentacion)}»</p>
+    <div class="callout">${esc(info.reglaLegal)}</div>
+    ${regs.map(id=>{const r=info.regiones[id];const v=info.ventanas[id]||[];return `<article class="cireg" style="--rc:var(${region(id).var})"><h3><span class="rtag"><i></i>${region(id).nombre}</span></h3>
+      <dl><dt>Mercado</dt><dd>${esc(r.mercado)}</dd><dt>Aprueba</dt><dd>${esc(r.aprobador)}</dd><dt>Fuente</dt><dd>${esc(r.fuente)}</dd><dt>Lo que pide</dt><dd>${esc(r.resumen)}</dd><dt>Promos en historias</dt><dd>${r.promosHistorias} según la PPT</dd>${r.comfortPlus?`<dt>Comfort Plus</dt><dd>${r.comfortPlus} piezas, fuera de este planning (ya aprobadas)</dd>`:""}</dl>
+      ${v.length?`<div class="tablewrap"><table class="mini"><thead><tr><th>País</th><th>Campaña / promo</th><th>Inicio</th><th>Fin</th></tr></thead><tbody>${v.map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(x[1])}</td><td class="mono">${esc(x[2])}</td><td class="mono">${esc(x[3])}</td></tr>`).join("")}</tbody></table></div>`:""}</article>`}).join("")}
+    <article class="cireg"><h3>Lineamientos del mes</h3>
+      ${[["Mandato",info.lineamientos.mandato],["Texto en pieza",info.lineamientos.texto],["Tono por categoría",info.lineamientos.tono],["Series",info.lineamientos.series]].map(([t,arr])=>`<h4>${t}</h4><dl>${arr.map(x=>`<dt>${esc(x.nombre)}</dt><dd>${esc(x.detalle)}</dd>`).join("")}</dl>`).join("")}
+      <p class="sub">${esc(info.comfortNota)}</p></article></section>`;
+  $("#view").innerHTML=`<div class="gapsview">${left}${right}</div>`;
+  if(!INFO) loadInfo().then(()=>{if(S.f.view==="gaps") renderGaps()});
+}
+document.addEventListener("toggle",e=>{const d=e.target.closest&&e.target.closest("[data-gap]");if(d){d.open?openGaps.add(d.dataset.gap):openGaps.delete(d.dataset.gap)}},true);
+
+/* ============ actualizar imágenes desde el Excel */
+function loadScript(src){return new Promise((ok,ko)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
+document.addEventListener("click",e=>{if(!e.target.closest("[data-xlsx]")) return;let inp=$("#xlsxIn");if(!inp){inp=document.createElement("input");inp.type="file";inp.id="xlsxIn";inp.accept=".xlsx";inp.hidden=true;document.body.appendChild(inp);inp.addEventListener("change",()=>{if(inp.files[0]) importXlsx(inp.files[0]);inp.value=""})}inp.click()});
+const FRAME={"Carrusel":0.8,"Reel":0.8,"Historia":0.5625,"Estático":0.8};
+async function sha(buf){const h=await crypto.subtle.digest("SHA-256",buf);return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,"0")).join("")}
+async function frames(blob,fmt){
+  const bmp=await createImageBitmap(blob); const ratio=bmp.width/bmp.height; const exp=FRAME[fmt]||0.8;
+  let n=Math.round(ratio/exp); if(n<2||ratio<exp*1.5) n=1;
+  const out=[]; const fw=bmp.width/n;
+  for(let i=0;i<n;i++){const c=document.createElement("canvas");c.width=Math.round(fw);c.height=bmp.height;c.getContext("2d").drawImage(bmp,Math.round(i*fw),0,Math.round(fw),bmp.height,0,0,c.width,c.height);out.push(await new Promise(r=>c.toBlob(r,"image/jpeg",0.88)))}
+  return out;
+}
+function kids(el,name){return [...el.children].filter(c=>c.localName===name)}
+function desc(el,name){return [...el.getElementsByTagName("*")].filter(c=>c.localName===name)}
+async function importXlsx(file){
+  if(!S.assets){toast("Necesitas permiso de edición para actualizar imágenes.");return}
+  toast("Leyendo el Excel…");
+  try{
+    if(!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+    const zip=await JSZip.loadAsync(file); const P=new DOMParser();
+    const xml=async p=>{const f=zip.file(p);return f?P.parseFromString(await f.async("string"),"application/xml"):null};
+    const rels=async p=>{const d=await xml(p);const m={};if(d) for(const r of desc(d,"Relationship")) m[r.getAttribute("Id")]=r.getAttribute("Target");return m};
+    const resolve=(base,t)=>{if(t.startsWith("/")) return t.slice(1);const parts=base.split("/");parts.pop();for(const seg of t.split("/")){if(seg==="..")parts.pop();else if(seg!==".")parts.push(seg)}return parts.join("/")};
+    const wb=await xml("xl/workbook.xml"); const wbr=await rels("xl/_rels/workbook.xml.rels");
+    const anchors=[];
+    for(const sh of desc(wb,"sheet")){
+      const name=sh.getAttribute("name"); const rid=[...sh.attributes].find(a=>a.localName==="id").value;
+      const sp=resolve("xl/workbook.xml",wbr[rid]); const sr=await rels(sp.replace(/([^/]+)$/,"_rels/$1.rels"));
+      for(const t of Object.values(sr)){ if(!/drawings\//.test(t)) continue;
+        const dp=resolve(sp,t); const d=await xml(dp); if(!d) continue; const dr=await rels(dp.replace(/([^/]+)$/,"_rels/$1.rels"));
+        for(const an of [...desc(d,"twoCellAnchor"),...desc(d,"oneCellAnchor")]){
+          const fr=kids(an,"from")[0]; const blip=desc(an,"blip")[0]; if(!fr||!blip) continue;
+          const col=+desc(fr,"col")[0].textContent+1, row=+desc(fr,"row")[0].textContent+1;
+          const emb=[...blip.attributes].find(a=>a.localName==="embed"); if(!emb) continue;
+          anchors.push({sheet:name,col,row,media:resolve(dp,dr[emb.value])});
+        }}
+    }
+    const posts=[...S.posts.values()].filter(p=>p.slot);
+    let nuevas=0,iguales=0,sueltas=0; const cache=new Map();
+    for(const a of anchors){
+      const targets=posts.filter(p=>p.slot.sheet===a.sheet&&p.slot.col===a.col&&a.row>=p.slot.r1-1&&a.row<=p.slot.r2);
+      if(!targets.length){sueltas++;continue}
+      const f=zip.file(a.media); if(!f) continue; const buf=await f.async("arraybuffer"); const h=await sha(buf);
+      for(const p of targets){
+        const cur=S.posts.get(p.id); if(cur.imgHash===h){iguales++;continue}
+        const key=h+"|"+cur.formato; let ids=cache.get(key);
+        if(!ids){toast(`Subiendo imágenes… (${nuevas+1})`);const fr=await frames(new Blob([buf]),cur.formato);ids=[];for(const b of fr){const r=await S.assets.upload(b,{type:"image/jpeg"});ids.push("asset:"+r.id)}cache.set(key,ids)}
+        await save(p.id,{imagenes:ids,imgHash:h}); nuevas++;
+      }
+    }
+    toast(nuevas?`${nuevas} ${nuevas===1?"pieza":"piezas"} con imagen nueva · ${iguales} sin cambios`:`No hay imágenes nuevas (${iguales} sin cambios)`);
+  }catch(err){console.error(err);toast("No se pudo leer el Excel. Revisa que sea el planning en formato .xlsx.")}
+}
 
 /* ============ preview de una publicación */
 function preview(p){
@@ -626,14 +756,14 @@ function preview(p){
     return phone(`<div class="story"><div class="media r916">
       <div class="stbars">${Array.from({length:n},(_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
       <div class="sthead"><div class="av">P</div><b>${handle}</b><small>${esc(p.hora||"")}</small></div>
-      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):placeholder(p)}</div>
+      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):emptyMedia(p)}</div>
       ${n>1?`<button class="tapzone l" data-pv="-1" aria-label="Anterior"></button><button class="tapzone r" data-pv="1" aria-label="Siguiente"></button>`:""}
       <div class="stfoot"><div>Enviar mensaje</div>${ICON.heart.replace("<svg",'<svg style="width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8"')}${ICON.send.replace("<svg",'<svg style="width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8"')}</div>
     </div></div>`);
   }
   if(p.formato==="Reel"){
     return phone(`<div class="media r916">
-      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):placeholder(p)}</div>
+      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):emptyMedia(p)}</div>
       <span class="reeltag">Reels</span>
       ${imgs.length>1?`<button class="playbtn" data-play aria-label="Reproducir fotogramas">${S.pv.playing?"❚❚":"▶"}</button>`:""}
       <div class="reelside">${ICON.heart}<span>—</span>${ICON.com}<span>—</span>${ICON.send}</div>
@@ -644,7 +774,7 @@ function preview(p){
   return phone(`<div class="igtop"><b>Instagram</b><span style="font-size:18px">♡ ✉</span></div>
     <div class="ighead"><div class="av ring">P</div><div class="h"><b>${handle}</b><small>${esc(loc)}</small></div><span class="dots">···</span></div>
     <div class="media r45">
-      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):placeholder(p)}</div>
+      <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):emptyMedia(p)}</div>
       ${multi?`<span class="cnt">${i+1}/${imgs.length}</span>${i>0?`<button class="nav prev" data-pv="-1" aria-label="Anterior">‹</button>`:""}${i<imgs.length-1?`<button class="nav next" data-pv="1" aria-label="Siguiente">›</button>`:""}`:""}
     </div>
     <div class="igact">${ICON.heart}${ICON.com}${ICON.send}<span class="sp">${ICON.save}</span></div>
@@ -655,7 +785,7 @@ function feedPreview(p){
   if(!p.fecha) return `<div class="empty" style="max-width:340px">Esta pieza no tiene fecha. Asígnale un día para ver dónde cae en el feed.</div>`;
   const c=p.paises.includes(S.pv.feedPais)?S.pv.feedPais:p.paises[0];
   return `${p.paises.length>1?`<div class="chips" style="justify-content:center">${p.paises.map(x=>`<button class="chip" data-fpais="${x}" aria-pressed="${x===c}" title="${PAIS[x]}">${x}</button>`).join("")}</div>`:""}
-    ${phone(profileGrid(c,{highlight:p.id,useFilters:false}))}`;
+    ${phone(profileGrid(c,{highlight:p.id,useFilters:false,tab:S.pv.gtab||(isFeed(p)?"feed":"stories")}))}`;
 }
 function capHTML(cap){
   const t=cap.text; if(t.length<=140||S.pv.full) return esc(t);
@@ -663,7 +793,7 @@ function capHTML(cap){
 }
 
 /* ============ hoja de detalle */
-function openPost(id,tab){S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post"};S.confirmDel=false;renderSheet();}
+function openPost(id,tab){S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null};S.confirmDel=false;renderSheet();}
 function closeSheet(){S.openId=null;stopPlay();$("#sheetRoot").innerHTML="";document.body.style.overflow=""}
 function stopPlay(){clearInterval(S.pv.timer);S.pv.playing=false}
 function renderSheet(){
@@ -675,8 +805,8 @@ function renderSheet(){
   const scrollY=$(".sheet")?.scrollTop||0;
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Publicación">
     <div class="left">
-      ${p.formato!=="Historia"&&p.tipo!=="historia"?`<div class="seg pvmode" role="group" aria-label="Vista previa"><button data-pvmode="post" aria-pressed="${S.pv.mode!=="feed"}">Publicación</button><button data-pvmode="feed" aria-pressed="${S.pv.mode==="feed"}">En el feed</button></div>`:""}
-      ${S.pv.mode==="feed"&&p.formato!=="Historia"&&p.tipo!=="historia"?feedPreview(p):preview(p)}
+      <div class="seg pvmode" role="group" aria-label="Vista previa"><button data-pvmode="post" aria-pressed="${S.pv.mode!=="feed"}">${isFeed(p)?"Publicación":"Historia"}</button><button data-pvmode="feed" aria-pressed="${S.pv.mode==="feed"}">${isFeed(p)?"En el feed":"En el perfil"}</button></div>
+      ${S.pv.mode==="feed"?feedPreview(p):preview(p)}
       <div style="font-size:12px;color:var(--ink-3);text-align:center;max-width:340px">Vista previa de ${p.formato==="Historia"?"historia":p.formato==="Reel"?"reel":"publicación en el feed"} de Instagram${(p.imagenes||[]).length?"":" · se muestra el headline mientras no haya arte"}.</div>
     </div>
     <div class="right">
@@ -728,10 +858,11 @@ function tabBody(p,cms){
   }
   if(t==="arte"){
     const imgs=p.imagenes||[];
-    return `${imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="Slide ${k+1}"><figcaption><span>${p.formato==="Historia"?"Frame":"Slide"} ${k+1}</span>${canEdit()?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover antes">←</button>`:""}<button data-rm="${k}" aria-label="Quitar">✕</button></span>`:""}</figcaption></figure>`).join("")}</div>`
+    return `${imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="Slide ${k+1}"><figcaption><span>${p.formato==="Historia"?"Frame":"Slide"} ${k+1}</span></figcaption></figure>`).join("")}</div>`
       :`<p style="color:var(--ink-2)">Esta publicación todavía no tiene arte cargado.${p.link?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`}
-      ${canEdit()?(S.assets?`<label class="drop-zone" id="dz"><input type="file" id="upl" accept="image/*,video/mp4" multiple hidden><b>Sube el arte final</b><br><span style="font-size:12px">Arrastra imágenes aquí o haz clic. En carruseles, súbelas en orden; aparecen como slides.</span></label><div class="saved" id="uplMsg"></div>`
-        :`<p class="hint" style="color:var(--ink-3)">Para subir arte necesitas permiso de edición en esta página.</p>`):""}`;
+      <div class="panel" style="margin-top:14px"><h3>Dónde va la imagen</h3>
+        <p class="sub" style="margin:0 0 8px">${p.slot?`En el Excel del planning: <b>${esc(slotLabel(p))}</b>. Pega ahí la imagen (en carruseles, todos los slides en una sola tira, como el resto del documento).`:"Esta pieza no tiene casilla de imagen en el Excel porque viene de la parrilla o de la tabla de promos. Agrégala al calendario del documento con su fecha."}</p>
+        ${canEdit()&&S.assets?`<button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</div>`;
   }
   if(t==="aprob"){
     return `<div class="thread">${cms.length?cms.map(c=>{const pr=S.profiles[c.autorId];const nm=(pr&&pr.name)||c.autorNombre||"Alguien";return `<div class="cm ${c.tipo==="aprobado"?"apr":c.tipo==="cambios"?"cam":""}"><div class="av">${esc(nm.slice(0,1).toUpperCase())}</div><div class="bd"><header><b>${esc(nm)}</b><span>${c.tipo==="aprobado"?"aprobó":c.tipo==="cambios"?"pidió cambios":c.tipo==="envio"?"envió a aprobación":"comentó"}</span><span>${esc(new Date(c.fecha).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}</span></header>${c.texto?`<p>${esc(c.texto)}</p>`:""}</div></div>`}).join("")
@@ -909,7 +1040,7 @@ function renderView(){
   if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando el calendario…</h3><p>Conectando con los datos compartidos.</p></div>`;return}
   if(!S.posts.size){
     $("#view").innerHTML=`<div class="empty"><h3>Todavía no hay publicaciones</h3><p>Aquí aparecerán las piezas del planning con su fecha, estado y preview.</p>${canEdit()?`<p><button class="btn primary" id="importSeed">Cargar planning de octubre 2026</button></p>`:""}</div>`;return}
-  if(S.f.view==="list") renderList(); else if(S.f.view==="grid") renderGrid(); else renderCal();
+  if(S.f.view==="list") renderList(); else if(S.f.view==="grid") renderGrid(); else if(S.f.view==="gaps") renderGaps(); else renderCal();
 }
 function render(){renderTop();renderFilters();renderView()}
 $("#prevM").onclick=()=>{let [y,m]=S.month;m--;if(m<0){m=11;y--}S.month=[y,m];render()};

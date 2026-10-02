@@ -1,0 +1,266 @@
+{
+ "titulo": "Planning de contenido orgánico — Payless · Octubre 2026",
+ "presentacion": "El feed como vitrina",
+ "lineamientos": {
+  "mandato": [
+   {
+    "nombre": "De funcional a deseable",
+    "detalle": "El feed deja de ser catálogo y volante y pasa a ser la vitrina de marca. El orgánico ES la campaña: una sola comunicación."
+   },
+   {
+    "nombre": "La regla",
+    "detalle": "Ninguna pieza del feed abre con un descuento. Las promos se mantienen, con look + oferta, hora exacta y legal."
+   }
+  ],
+  "texto": [
+   {
+    "nombre": "Tagline (fijo)",
+    "detalle": "Sneakers: 'Todos los estilos en un solo lugar' / 'Find your style in one place'."
+   },
+   {
+    "nombre": "Headline / super (varía)",
+    "detalle": "Headline en estático y carrusel; super en video. Cambia en cada pieza y se ancla a un territorio del KV (columna 'Territorio / Tema'). Tipografía y jerarquía del KV."
+   },
+   {
+    "nombre": "Firma (fija)",
+    "detalle": "Logos de marca + 'Solo en Payless' / 'Only at Payless' + logo Payless.\nDEPENDE DE LA MARCA A MOSTRAR- esta en las adaptaciones del KV"
+   },
+   {
+    "nombre": "Prueba del headline",
+    "detalle": "1) ¿Refuerza un territorio del KV? 2) ¿Suena a la voz de la campaña? 3) ¿Solo lo diría Payless? Si otra marca lo puede firmar, no pasa."
+   }
+  ],
+  "series": [
+   {
+    "nombre": "Sneakers · 01 Un par, mil estilos",
+    "detalle": "ENSEÑA · Guardar · Carrusel 4–5 slides · Territorio: variedad"
+   },
+   {
+    "nombre": "Sneakers · 02 Encuentra tu match",
+    "detalle": "CONECTA · Comentar y compartir · Carrusel + historias interactivas · Territorio: match"
+   },
+   {
+    "nombre": "Sneakers · 03 Street Cast",
+    "detalle": "INSPIRA · Descubrir · Reel + carrusel (incluye cortes del spot y videos de marca) · Territorio: planes"
+   },
+   {
+    "nombre": "Nuevas Llegadas · 01 El Drop",
+    "detalle": "ANTOJA · Descubrir · Carrusel reveal"
+   },
+   {
+    "nombre": "Nuevas Llegadas · 02 El Styling",
+    "detalle": "ENSEÑA · Guardar · Carrusel 3–5 slides (incluye botas y cuero hombre en Sur)"
+   },
+   {
+    "nombre": "Nuevas Llegadas · 03 La It-Girl",
+    "detalle": "INSPIRA · Compartir · Reel + carrusel (incluye sandalias en Sur)"
+   },
+   {
+    "nombre": "Nuevas Llegadas · 04 El Imperdible",
+    "detalle": "CONECTA · Comentar · Historias interactivas + carrusel de exclusivos"
+   },
+   {
+    "nombre": "Kids · 01 Estrenar para jugar",
+    "detalle": "INSPIRA · Descubrir · Carrusel + reel"
+   },
+   {
+    "nombre": "Kids · 02 Guía para papás",
+    "detalle": "CONVIERTE · Guardar · Carrusel útil"
+   },
+   {
+    "nombre": "Halloween Kids · 01 La transformación",
+    "detalle": "INSPIRA · Compartir · Reel ≤15 s"
+   },
+   {
+    "nombre": "Halloween Kids · 02 Un par por personaje",
+    "detalle": "ANTOJA · Guardar · Carrusel"
+   },
+   {
+    "nombre": "Nuevas Llegadas · secuencia",
+    "detalle": "Teaser en historias → carrusel reveal → reel día a noche → destacado 'Nuevos estilos'"
+   }
+  ],
+  "tono": [
+   {
+    "nombre": "Sneakers",
+    "detalle": "Versátil, joven, diversión, energía. Nunca 'comodidad'."
+   },
+   {
+    "nombre": "Nuevas Llegadas Damas",
+    "detalle": "Chic, tendencia, editorial; segunda persona, nada de 'para dama'."
+   },
+   {
+    "nombre": "Botas",
+    "detalle": "Trendy, chic, a la moda. Nunca 'cómodo'."
+   },
+   {
+    "nombre": "Sandalias",
+    "detalle": "'Dale un break a la rutina': relajado con estilo."
+   },
+   {
+    "nombre": "Cuero hombre",
+    "detalle": "'Cuero que se lleva con actitud': moderno y seguro."
+   },
+   {
+    "nombre": "Kids",
+    "detalle": "'Estrenar para jugar': magia para el niño, argumentos para el adulto."
+   },
+   {
+    "nombre": "Halloween Kids",
+    "detalle": "'Su personaje empieza por los pies': spooky fun, nunca terrorífico."
+   }
+  ]
+ },
+ "regiones": {
+  "CENTRO": {
+   "mercado": "Mercado CENTRO · Octubre 2026 · GT · SV · HN · NI · CR",
+   "fuente": "Brief CENTRO oct-2026 + PPT 'El feed como vitrina'",
+   "aprobador": "Coordinadora Centro",
+   "resumen": "27 piezas de campaña: Sneakers 16 (P1, Atléticos Multimarca) · Nuevas Llegadas 8 · Kids 3. Mix: 18 carruseles · 6 reels · 3 historias. Exclusivos: sandalias solo GT, chanclas solo CR. Promos: 10 publicaciones (PPT). Comfort Plus fuera de este planning.",
+   "promosHistorias": 10,
+   "comfortPlus": 16
+  },
+  "SUR": {
+   "mercado": "Mercado SUR · Octubre 2026 · PAN · EC · CO · PE",
+   "fuente": "Brief SUR oct-2026 + PPT",
+   "aprobador": "Cristina Quezada",
+   "resumen": "18 piezas de campaña: Sneakers 12 (P1, por flight de marca) · Nuevas Llegadas 4 (sandalias 2 · botas y cuero 2) · Halloween Kids 2 (EC · CO · PAN). Mix: 14 carruseles · 3 reels · 1 historia. Promos: 11 publicaciones (PPT).",
+   "promosHistorias": 11,
+   "comfortPlus": 0
+  },
+  "RD": {
+   "mercado": "Mercado REPÚBLICA DOMINICANA · Octubre 2026",
+   "fuente": "Brief REP. DOM oct-2026 + PPT",
+   "aprobador": "Dainy Alcántara",
+   "resumen": "24 piezas de campaña: Sneakers 12 (Champion 6–26 oct · Multimarca desde el 27) · Nuevas Llegadas Damas 8 · Nuevas Llegadas Niños 4. Mix: 17 carruseles · 5 reels · 2 historias. Promos: 6 publicaciones (PPT).",
+   "promosHistorias": 6,
+   "comfortPlus": 12
+  },
+  "CARIBE": {
+   "mercado": "CARIBBEAN · October 2026 · TT · JM · BB · ECI · GY · USVI — copy nativo en inglés",
+   "fuente": "Monthly Brief CARIBBEAN oct-2026 + PPT",
+   "aprobador": "Stephanie Khan",
+   "resumen": "24 piezas de campaña: Sneakers LA Gear 12 · New Arrivals Ladies 8 · New Arrivals Kids 4. Mix: 17 carruseles · 5 reels · 2 historias. Promos: 5 publicaciones (PPT). Canal 'Goal' del brief = Meta.",
+   "promosHistorias": 5,
+   "comfortPlus": 12
+  }
+ },
+ "ventanas": {
+  "SUR": [
+   [
+    "PAN · EC · CO",
+    "Atléticos Champion, LA Gear, Airwalk, Reebok (principal)",
+    "6 oct",
+    "2 nov"
+   ],
+   [
+    "PAN · EC · CO",
+    "Aniversario",
+    "Por confirmar",
+    ""
+   ],
+   [
+    "PE",
+    "Atléticos",
+    "6 oct",
+    "2 nov"
+   ],
+   [
+    "EC-Guayaquil · CO-Cali/Medellín · PAN",
+    "Sandalias (secundaria)",
+    "20 oct",
+    "2 nov"
+   ],
+   [
+    "EC-Quito · CO-Bogotá",
+    "Botas (secundaria)",
+    "20 oct",
+    "2 nov"
+   ],
+   [
+    "PAN · CO",
+    "Cuero hombre (secundaria)",
+    "20 oct",
+    "2 nov"
+   ],
+   [
+    "EC · CO · PAN",
+    "Halloween (secundaria)",
+    "20 oct",
+    "31 oct"
+   ]
+  ],
+  "RD": [
+   [
+    "RD",
+    "Comfort Plus",
+    "8 sep",
+    "5 oct"
+   ],
+   [
+    "RD",
+    "Atléticos (Champion)",
+    "6 oct",
+    "26 oct"
+   ],
+   [
+    "RD",
+    "Atléticos Multimarca",
+    "27 oct",
+    "23 nov"
+   ],
+   [
+    "RD",
+    "Promo BOGO 50 · línea Comfort Plus · todos los canales",
+    "8 sep",
+    "1 oct"
+   ],
+   [
+    "RD",
+    "Promo Tú Eliges · línea Atléticos · todos los canales",
+    "2 oct",
+    "5 oct"
+   ],
+   [
+    "RD",
+    "Promo BOGO 50 · línea Atléticos · todos los canales",
+    "6 oct",
+    "2 nov"
+   ]
+  ],
+  "CARIBE": [
+   [
+    "TT · JM · BB · ECI · GY · USVI",
+    "Comfort Plus",
+    "1 oct",
+    "5 oct"
+   ],
+   [
+    "TT · JM · BB · ECI · GY · USVI",
+    "Athletics LA Gear 84",
+    "1 oct",
+    "5 oct"
+   ],
+   [
+    "TT · JM · BB · ECI · GY · USVI",
+    "Kids Concur",
+    "4 oct",
+    "31 oct"
+   ],
+   [
+    "TT · JM · BB · ECI · GY · USVI",
+    "Sandals",
+    "4 oct",
+    "31 oct"
+   ],
+   [
+    "TT",
+    "25th Anniversary",
+    "1 oct",
+    "31 oct"
+   ]
+  ]
+ },
+ "reglaLegal": "Ninguna pieza promocional se publica sin legal validado por Karla Poveda. Las historias se replican según la frecuencia de cada promo.",
+ "comfortNota": "Comfort Plus queda fuera de este planning porque ya fue entregado y aprobado por el cliente."
+}
