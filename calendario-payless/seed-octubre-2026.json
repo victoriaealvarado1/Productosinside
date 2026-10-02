@@ -161,7 +161,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Portada de Facebook (Atléticos 6 oct). No viene en la matriz de CAM: falta el arte.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -184,7 +184,7 @@
   "fecha": "2026-10-06",
   "hora": "9AM",
   "campana": "Atléticos",
-  "formato": "Estático",
+  "formato": "Portada",
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [],
@@ -200,20 +200,20 @@
   "linea": "Sneakers"
  },
  {
-  "copy": "",
+  "copy": "🔥 TODOS LOS ESTILOS. UN SOLO LUGAR. TU PRÓXIMO SNEAKER TE ESTÁ ESPERANDO. 👟\nDesde los clásicos que nunca fallan hasta los que le ponen el factor wow a tu outfit. Hay un sneaker para cada mood, cada plan y cada estilo.\n¿Cuál va contigo? 👀\n👉 Ven por el tuyo a Payless y encuentra tu próximo match.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "",
-  "headline": "",
+  "serie": "Sneakers",
+  "headline": "Todos los estilos de sneakers en un solo lugar",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Logos de Champion y LA Gear debajo (ajuste aplicado en la matriz).",
   "responsable": "",
-  "tipoContenido": "",
+  "tipoContenido": "Lifestyle editorial",
   "insumo": "",
   "prioridad": "",
   "link": "https://paylessshoes.sharepoint.com/:f:/r/sites/AZ-Marketing-CreativeTeam/Shared%20Documents/2026/GESTI%C3%93N%20INSIDE%202026/OCTUBRE/ORG%C3%81NICO/CENTRO/PIEZAS%20FINALES/SLIDE%205?d=w8c22e8a66d844a938fc0d605cb1e4d78&csf=1&web=1&e=snnDuQ",
@@ -238,7 +238,7 @@
   "formatoPendiente": false,
   "estado": "Enviado a cliente",
   "imagenes": [
-   "img/image7.jpg"
+   "img/m_cam5_0.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!B16",
   "slot": {
@@ -249,23 +249,24 @@
    "cell": "B19:B22"
   },
   "imgHash": "9fe8e270361061822db13cee5d0d565cef9785eb056c68011c5d344f54af8df7",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 5"
  },
  {
-  "copy": "",
+  "copy": "✨ Lo nuevo ya llegó. Y viene con mucho estilo. ✨\nLas ballerinas que van a elevar tus looks esta temporada 💗👯 Desde outfits casuales hasta los más chic, encuentra tu nuevo par favorito y dale ese toque fashion a cada paso. 👠✨\nNuevas llegadas. Nuevo estilo, solo en Payless. 💫",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "01 · Estrenar para jugar",
-  "headline": "Hechos para el recreo, elegidos por ellos.",
+  "serie": "Nuevas Llegadas · El Drop",
+  "headline": "New Arrivals",
   "idea": "Niños reales en juego con su par nuevo como protagonista; copy dirigido al adulto.",
   "objetivo": "Descubrir",
   "cta": "Conoce la colección",
-  "sku": "PENDIENTE · validar en Cloudinary",
+  "sku": "211999",
   "mandatories": "CTA siempre al adulto. Niños reales, diversidad, sin personajes licenciados.",
   "responsable": "Roberto → Sunny · Aprueba: Coord. Centro",
-  "tipoContenido": "Lifestyle editorial",
+  "tipoContenido": "Drop y tendencia",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
   "prioridad": "P2",
   "link": "https://paylessshoes.sharepoint.com/:f:/r/sites/AZ-Marketing-CreativeTeam/Shared%20Documents/2026/GESTI%C3%93N%20INSIDE%202026/OCTUBRE/ORG%C3%81NICO/CENTRO/PIEZAS%20FINALES/SLIDE%2017?d=wd38412948fdf44da8266f96418ef6073&csf=1&web=1&e=ElFS87",
@@ -290,7 +291,7 @@
   "formatoPendiente": false,
   "estado": "Enviado a cliente",
   "imagenes": [
-   "img/image4.jpg"
+   "img/m_cam12_0.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!C16",
   "slot": {
@@ -304,21 +305,22 @@
   "campanaParrilla": "Nuevas Llegadas Niños",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Kids"
+  "linea": "Kids",
+  "matriz": "Matriz CAM oct · pág. 12"
  },
  {
-  "copy": "",
+  "copy": "Tu vibe te define, acompáñala con un sneaker. 😏🔥 ¿Con qué estilos haces match al instante? 👟🤩",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "03 · Street Cast",
-  "headline": "¿Un solo estilo? Qué aburrido.",
+  "serie": "02 · Encuentra tu match",
+  "headline": "Sneakers que hacen match contigo",
   "idea": "Grupos de amigos latinos, estilizados, en la calle: caminan, conversan, saltan. Cámara baja/fisheye, sneaker completo. Incluye cortes del spot y videos de marca. Pieza de lanzamiento: corte de 15 s del spot.",
   "objetivo": "Descubrir",
   "cta": "Encuentra tu match",
   "sku": "PENDIENTE · validar en Cloudinary",
-  "mandatories": "Headline de la familia del KV + cierre con tagline + firma LA Gear · Airwalk · Champion · Cross Trekkers + 'Solo en Payless' + logo Payless.",
+  "mandatories": "Logo Champion en slides 1–3 y LA Gear en el slide 4. La matriz fecha esta pieza el 6 oct; el calendario la publica el 7 oct.",
   "responsable": "Roberto → Sunny · Aprueba: Coord. Centro",
   "tipoContenido": "Lifestyle editorial",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
@@ -345,10 +347,10 @@
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [
-   "img/image26_1.jpg",
-   "img/image26_2.jpg",
-   "img/image26_3.jpg",
-   "img/image26_4.jpg"
+   "img/m_cam6_0.jpg",
+   "img/m_cam6_1.jpg",
+   "img/m_cam6_2.jpg",
+   "img/m_cam6_3.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!D16",
   "slot": {
@@ -362,23 +364,24 @@
   "campanaParrilla": "Atléticos Multimarca",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 6"
  },
  {
-  "copy": "",
+  "copy": "👟🔥 Sneakers para todo lo que quieras hacer.\n✨ Prueba otros estilos, prueba diferentes moods.\n👉 Ven a Payless y encuentra tu próximo favorito.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "02 · Encuentra tu match",
-  "headline": "¿Cuál es tu match?",
+  "serie": "03 · Street Cast",
+  "headline": "Street Cast (reel)",
   "idea": "Estilos A, B y C: tres personalidades con su sneaker; la audiencia se identifica y elige. En historias: encuesta A/B.",
   "objetivo": "Comentar y compartir",
   "cta": "Encuentra tu match",
   "sku": "PENDIENTE · validar en Cloudinary",
-  "mandatories": "Headline de la familia del KV + cierre con tagline + firma LA Gear · Airwalk · Champion · Cross Trekkers + 'Solo en Payless' + logo Payless.",
+  "mandatories": "Video: usar 1 de los 3 videos libres de la carpeta (no \"ANTERIORES\"). La matriz indica países HN, NI, CR, RD: confirmar si sale también en GT y SV.",
   "responsable": "Roberto → Sunny · Aprueba: Coord. Centro",
-  "tipoContenido": "Comunidad / interactivo",
+  "tipoContenido": "Lifestyle editorial",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
   "prioridad": "P1",
   "link": "https://drive.google.com/file/d/1MRDKJ5FjvGTeCSOftBY2oNZ2je-GNpHz/view?usp=sharing",
@@ -403,7 +406,7 @@
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [
-   "img/image22.jpg"
+   "img/m_cam7_0.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!F16",
   "slot": {
@@ -417,23 +420,24 @@
   "campanaParrilla": "Atléticos Multimarca",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 7"
  },
  {
-  "copy": "",
+  "copy": "Un par que te sigue el ritmo. 🥰👠 Oficina, reunión o noche de chicas: cambia el plan, no el par. ¿Para cuál de estos looks lo usarías primero? 👇",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "01 · El Drop",
-  "headline": "Tu nuevo dress code ya llegó.",
+  "serie": "Un par, tres planes",
+  "headline": "Un par, tres planes",
   "idea": "Reveal de la temporada: la pieza nueva en contexto y con actitud, contada como lanzamiento de moda.",
   "objetivo": "Descubrir",
   "cta": "Descúbrelos",
-  "sku": "200599 (kitten heel) · 211999 (ballerinas)",
+  "sku": "200599",
   "mandatories": "Respetar exclusividad de lotes por país. Segunda persona: nada de 'para dama'.",
   "responsable": "Roberto → Sunny · Aprueba: Coord. Centro",
-  "tipoContenido": "Drop / tendencia",
+  "tipoContenido": "Styling",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
   "prioridad": "P2",
   "link": "https://paylessshoes.sharepoint.com/:f:/r/sites/AZ-Marketing-CreativeTeam/Shared%20Documents/2026/GESTI%C3%93N%20INSIDE%202026/OCTUBRE/ORG%C3%81NICO/CENTRO/PIEZAS%20FINALES/SLIDE%2018?d=w6afc54adb34146ce8e46dc55d576292f&csf=1&web=1&e=K0M94L",
@@ -458,10 +462,10 @@
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [
-   "img/image13_1.jpg",
-   "img/image13_2.jpg",
-   "img/image13_3.jpg",
-   "img/image13_4.jpg"
+   "img/m_cam13_0.jpg",
+   "img/m_cam13_1.jpg",
+   "img/m_cam13_2.jpg",
+   "img/m_cam13_3.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!G16",
   "slot": {
@@ -475,7 +479,8 @@
   "campanaParrilla": "Nuevas Llegadas Damas",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Nuevas Llegadas"
+  "linea": "Nuevas Llegadas",
+  "matriz": "Matriz CAM oct · pág. 13"
  },
  {
   "copy": "",
@@ -1212,7 +1217,8 @@
   },
   "imgHash": "910d7063bb9fce5e38e699027fa7b10c108961d490d2c7e82c148a81ae78b9d6",
   "vigencia": "2 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 19"
  },
  {
   "copy": "",
@@ -1265,7 +1271,8 @@
   },
   "imgHash": "ba7ccfa9f38d200a29f6059efb5035d118cf207d164fa18a790a82c27ce56b94",
   "vigencia": "3 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 19"
  },
  {
   "copy": "",
@@ -1315,7 +1322,8 @@
   },
   "imgHash": "",
   "vigencia": "4 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 19"
  },
  {
   "copy": "",
@@ -1365,11 +1373,12 @@
   },
   "imgHash": "",
   "vigencia": "5 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 19"
  },
  {
   "copy": "",
-  "legal": "Promoción válida del 30 de septiembre al 3 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com",
+  "legal": "Promoción válida del 30 de septiembre al 3 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. No es acumulable con otras promociones o descuentos. No aplica para compras por WhatsApp / tienda online. Consultas: servicioalclientehonduras@payless.com",
   "estadoLegal": "Por validar con Karla",
   "fase": "Mantenimiento",
   "grupo": "TU ELIGES / KV GENERICO / SEP 30 AL 3 OCT",
@@ -1415,11 +1424,12 @@
   },
   "imgHash": "c0e8cb15d5468bf33c005fe41a040aa7c8d17102bf7efc683ea33b2aa7de123a",
   "vigencia": "1 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 20"
  },
  {
   "copy": "",
-  "legal": "Promoción válida del 30 de septiembre al 3 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com",
+  "legal": "Promoción válida del 30 de septiembre al 3 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. No es acumulable con otras promociones o descuentos. No aplica para compras por WhatsApp / tienda online. Consultas: servicioalclientehonduras@payless.com",
   "estadoLegal": "Por validar con Karla",
   "fase": "Últimas horas",
   "grupo": "TU ELIGES / KV GENERICO / SEP 30 AL 3 OCT",
@@ -1465,7 +1475,8 @@
   },
   "imgHash": "e90a5aabe336429b98d4af909af971c26144024e1e1af590e9ec5f403ab7c673",
   "vigencia": "3 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 20"
  },
  {
   "copy": "",
@@ -1514,7 +1525,8 @@
    "cell": "O11:O14"
   },
   "imgHash": "6abe9c634fa43a54f6b01e83309d60c5b17fd8a778172d05310e3267963ed7fa",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 21"
  },
  {
   "copy": "",
@@ -1563,11 +1575,12 @@
    "cell": "P11:P14"
   },
   "imgHash": "c5e5ea051a279c781ad04a4745bd41550b7dff564e5087c07049dadd644af6b4",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 21"
  },
  {
   "copy": "",
-  "legal": "GT: Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precios originales claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso. Para consultas o reclamos: servicioalclienteguatemala@payless.com SV: Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. HN: Promoción válida del 3 del al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com NI: Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica exclusivamente para los productos incluidos en la oferta, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+  "legal": "Promoción válida del 1 al 4 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento.",
   "estadoLegal": "Por validar con Karla",
   "fase": "Mantenimiento",
   "grupo": "HISTORIA TU ELIGES 1 AL 4 OCT - KV DÍA DEL NIÑO",
@@ -1599,7 +1612,10 @@
   "formato": "Historia",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_cam21_4.jpg",
+   "img/m_cam21_6.jpg"
+  ],
   "fuente": "CALENDARIO CAM STORIES!Q7",
   "slot": {
    "sheet": "CALENDARIO CAM STORIES",
@@ -1610,7 +1626,8 @@
   },
   "imgHash": "",
   "vigencia": "4 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 21"
  },
  {
   "copy": "",
@@ -1660,7 +1677,8 @@
   },
   "imgHash": "8c8f7d55953682dc634bd8d63740aef28fdc9a90281d636e58d8066725ae4027",
   "vigencia": "1 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 22"
  },
  {
   "copy": "",
@@ -1710,7 +1728,8 @@
   },
   "imgHash": "0b1f81297c7bd475baa7e447fca948c27a95320e8fcd5f3bfb8a0282a1d6cc51",
   "vigencia": "3 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 22"
  },
  {
   "copy": "",
@@ -1757,7 +1776,8 @@
   },
   "imgHash": "",
   "vigencia": "5 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz CAM oct · pág. 22"
  },
  {
   "copy": "",
@@ -2892,13 +2912,13 @@
   "linea": "Promociones"
  },
  {
-  "copy": "",
+  "copy": "Un estilo para cada versión de ti. 😏👟 Encuentra tus sneakers en Payless. 🔥😎",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Todos los estilos de sneakers en un solo lugar",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -2929,7 +2949,7 @@
   "formatoPendiente": false,
   "estado": "Aprobado",
   "imagenes": [
-   "img/image32.jpg"
+   "img/m_sur5_0.jpg"
   ],
   "fuente": "CALENDARIO SUR FEED!C3",
   "slot": {
@@ -2940,16 +2960,17 @@
    "cell": "C7:C10"
   },
   "imgHash": "852727d4cd28d67806e8d9d73b097906e21aad2968468b796b508bcd2d18b2b3",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz SUR oct · pág. 5"
  },
  {
-  "copy": "",
+  "copy": "Los sneakers que combinan contigo están aquí, en Payless. 😍 ¿Ya fuiste por tu par? 😏🔥👟",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "03 · Street Cast",
-  "headline": "¿Un solo estilo? Qué aburrido.",
+  "headline": "¿Qué sneaker te representa mejor?",
   "idea": "Grupos de amigos latinos, estilizados, en la calle: caminan, conversan, saltan. Cámara baja/fisheye, sneaker completo. Incluye cortes del spot y videos de marca. Pieza de lanzamiento: corte de 15 s del spot.",
   "objetivo": "Descubrir",
   "cta": "Encuentra tu match",
@@ -2980,9 +3001,9 @@
   "formatoPendiente": false,
   "estado": "Aprobado",
   "imagenes": [
-   "img/image8_1.jpg",
-   "img/image8_2.jpg",
-   "img/image8_3.jpg"
+   "img/m_sur6_0.jpg",
+   "img/m_sur6_1.jpg",
+   "img/m_sur6_2.jpg"
   ],
   "fuente": "CALENDARIO SUR FEED!E3",
   "slot": {
@@ -2996,16 +3017,17 @@
   "campanaParrilla": "Atléticos — Champion / Airwalk",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz SUR oct · pág. 6"
  },
  {
-  "copy": "",
+  "copy": "Nuestros sneakers reflejan mejor tu forma de ser. 😍❤️ ¿Quién te entiende más que Payless? 😎👟",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "01 · Un par, mil estilos",
-  "headline": "Hoy, retro. Mañana, lo que quieras.",
+  "headline": "3 moods para usar tus sneakers",
   "idea": "Un mismo sneaker en 3 looks y 3 planes (calle, rooftop, noche). Slide 1 = escena con persona, nunca el zapato solo.",
   "objetivo": "Guardar",
   "cta": "Encuentra tu match",
@@ -3035,11 +3057,11 @@
   "formatoPendiente": false,
   "estado": "Aprobado",
   "imagenes": [
-   "img/image15_1.jpg",
-   "img/image15_2.jpg",
-   "img/image15_3.jpg",
-   "img/image15_4.jpg",
-   "img/image15_5.jpg"
+   "img/m_sur9_0.jpg",
+   "img/m_sur9_1.jpg",
+   "img/m_sur9_2.jpg",
+   "img/m_sur9_3.jpg",
+   "img/m_sur9_4.jpg"
   ],
   "fuente": "CALENDARIO SUR FEED!F3",
   "slot": {
@@ -3053,7 +3075,8 @@
   "campanaParrilla": "Atléticos — Champion / Airwalk",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz SUR oct · pág. 9"
  },
  {
   "copy": "",
@@ -3118,7 +3141,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Portada FB/IG Sneakers (matriz SUR pág. 33): sin arte ni copy todavía.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -3140,7 +3163,7 @@
   "fecha": "2026-10-06",
   "hora": "9AM",
   "campana": "Atléticos",
-  "formato": "Estático",
+  "formato": "Portada",
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [],
@@ -4052,7 +4075,7 @@
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Compra un artículo y lleva el segundo de igual o menor valor con 30% de descuento sobre el precio marcado. Válido del 01 al 05 de octubre de 2026. Aplica para compras realizadas en tiendas físicas Payless.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 30% / KV GENERICO / 1 al 5 oct",
@@ -4097,11 +4120,12 @@
    "cell": "D10:D13"
   },
   "imgHash": "1c82b6b71e325e1a7ab629e60d4d84f28a7029f65fe6af789ae937b2daa82b66",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 11"
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Compra un artículo y lleva el segundo de igual o menor valor con 30% de descuento sobre el precio marcado. Válido del 01 al 05 de octubre de 2026. Aplica para compras realizadas en tiendas físicas Payless.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 30% / KV GENERICO / 1 al 5 oct",
@@ -4146,11 +4170,12 @@
    "cell": "E10:E13"
   },
   "imgHash": "4f0c70d5e898687273f05e54200622f4a85affea3338b894063e75b0bfbc26d0",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 11"
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Compra un artículo y lleva el segundo de igual o menor valor con 30% de descuento sobre el precio marcado. Válido del 01 al 05 de octubre de 2026. Aplica para compras realizadas en tiendas físicas Payless.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 30% / KV GENERICO / 1 al 5 oct",
@@ -4195,7 +4220,8 @@
    "cell": "E10:E13"
   },
   "imgHash": "4f0c70d5e898687273f05e54200622f4a85affea3338b894063e75b0bfbc26d0",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 11"
  },
  {
   "copy": "",
@@ -4297,7 +4323,7 @@
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Consulte más condiciones en: https://www.payless.com/promos-ecuador",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 50% / KV GENERICO / REVISAR FECHAS",
@@ -4342,11 +4368,12 @@
    "cell": "K10:K13"
   },
   "imgHash": "707aec22fbafb5cfb893f685b7cfbfa52aa9523689a58eacd99a23970b7e744b",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 13"
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Consulte más condiciones en: https://www.payless.com/promos-ecuador",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 50% / KV GENERICO / REVISAR FECHAS",
@@ -4391,11 +4418,12 @@
    "cell": "L10:L13"
   },
   "imgHash": "283519306b41dca5c0722340763368b22a392d3b33b6f12c79564a46f1f6176b",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 13"
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Consulte más condiciones en: https://www.payless.com/promos-ecuador",
   "estadoLegal": "",
   "fase": "",
   "grupo": "BOGO 50% / KV GENERICO / REVISAR FECHAS",
@@ -4437,7 +4465,8 @@
    "cell": "M10:M13"
   },
   "imgHash": "",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 13"
  },
  {
   "copy": "",
@@ -4486,7 +4515,8 @@
    "cell": "D27:D30"
   },
   "imgHash": "731fc76c32e10b287bebadf02716104e882df34b6d168053e926134c6ae326ef",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 12"
  },
  {
   "copy": "",
@@ -4535,7 +4565,8 @@
    "cell": "E27:E30"
   },
   "imgHash": "7d4395b68b124229b2fe217db8fb1584cb15f9d95c69c9385fbdd58a23578c95",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 12"
  },
  {
   "copy": "",
@@ -5610,7 +5641,7 @@
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Promoción válida del 2 al 12 de octubre del 2026 en nuestras tiendas físicas. Recibe el 60% de descuento por la compra de un segundo artículo de igual o menor precio y si compras tres pares recibe el tercero gratis. Aplica para todos los productos de la tienda. Válida hasta agotar existencias.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "CYD / KV GENERICO / 02-12 oct",
@@ -5655,7 +5686,8 @@
    "cell": "K77:K80"
   },
   "imgHash": "9ba7a632c8db18a5434a4e7bb4f5682efd78568c90f7cc390c08bab71d624bf3",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 24"
  },
  {
   "copy": "",
@@ -5701,7 +5733,8 @@
    "cell": "L77:L80"
   },
   "imgHash": "",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 24"
  },
  {
   "copy": "",
@@ -5888,13 +5921,13 @@
   "linea": "Promociones"
  },
  {
-  "copy": "",
+  "copy": "Un estilo para cada versión de ti. Encuentra tus sneakers en Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Todos los estilos de sneakers en un solo lugar",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -5921,7 +5954,9 @@
   "formato": "Estático",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_rd5_0.jpg"
+  ],
   "fuente": "CALENDARIO RD!C3",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -5931,16 +5966,17 @@
    "cell": "C6:C9"
   },
   "imgHash": "",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 5"
  },
  {
-  "copy": "",
+  "copy": "Tu vibe te define, acompáñala con un sneaker. 😏🔥 ¿Con qué estilos haces match al instante? 👟🤩",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "03 · Street Cast",
-  "headline": "¿Un solo estilo? Qué aburrido.",
+  "headline": "¿Qué sneaker va con tu vibe?",
   "idea": "Grupos de amigos latinos, estilizados, en la calle: caminan, conversan, saltan. Cámara baja/fisheye, sneaker completo. Incluye cortes del spot y videos de marca. Pieza de lanzamiento: corte de 15 s del spot.",
   "objetivo": "Descubrir",
   "cta": "Encuentra tu match",
@@ -5967,7 +6003,12 @@
   "formato": "Carrusel",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_rd6_0.jpg",
+   "img/m_rd6_1.jpg",
+   "img/m_rd6_2.jpg",
+   "img/m_rd6_3.jpg"
+  ],
   "fuente": "CALENDARIO RD!E3",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -5980,21 +6021,22 @@
   "campanaParrilla": "Atléticos Champion",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 6"
  },
  {
-  "copy": "",
+  "copy": "👟🔥 TODOS LOS ESTILOS. UN SOLO LUGAR.\nEl sneaker que buscas, el que no sabías que necesitabas y ese que ya tienes en mente… están aquí. 🤩\n✨ Diferentes estilos. Diferentes vibes.\nUn solo lugar para encontrarlos todos.\n👉 Ven y encuentra el tuyo.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "01 · Un par, mil estilos",
-  "headline": "Hoy, retro. Mañana, lo que quieras.",
+  "headline": "Street Cast (reel)",
   "idea": "Un mismo sneaker en 3 looks y 3 planes (calle, rooftop, noche). Slide 1 = escena con persona, nunca el zapato solo.",
   "objetivo": "Guardar",
   "cta": "Encuentra tu match",
   "sku": "PENDIENTE · validar en Cloudinary",
-  "mandatories": "Headline de la familia del KV + cierre con tagline + firma LA Gear · Airwalk · Champion · Cross Trekkers + 'Solo en Payless' + logo Payless.",
+  "mandatories": "Video: usar 1 de los 3 videos libres de la carpeta.",
   "responsable": "Roberto → Sunny · Aprueba: Dainy Alcántara",
   "tipoContenido": "Styling",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
@@ -6016,7 +6058,9 @@
   "formato": "Reel",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_rd7_0.jpg"
+  ],
   "fuente": "CALENDARIO RD!F3",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -6029,7 +6073,8 @@
   "campanaParrilla": "Atléticos Champion",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 7"
  },
  {
   "copy": "",
@@ -6276,7 +6321,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Portada FB e IG Atléticos 6 de octubre (matriz RD pág. 17): sin arte todavía.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -6295,7 +6340,7 @@
   "fecha": "2026-10-06",
   "hora": "9AM",
   "campana": "Atléticos",
-  "formato": "Estático",
+  "formato": "Portada",
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [],
@@ -6692,7 +6737,7 @@
  },
  {
   "copy": "",
-  "legal": "",
+  "legal": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. Aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "TU ELIGES / KV ATLETICOS / 2 al 5 oct",
@@ -6737,11 +6782,12 @@
    "cell": "D8:D11"
   },
   "imgHash": "a8abae242f9bfcc06d0559b2d2521d41e0fdccc632e9b1ae57c948b324525a5f",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz RD oct · pág. 14"
  },
  {
   "copy": "",
-  "legal": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: Al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. La promoción aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+  "legal": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. Aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
   "estadoLegal": "Por validar con Karla",
   "fase": "Mantenimiento",
   "grupo": "TU ELIGES / KV ATLETICOS / 2 al 5 oct",
@@ -6787,11 +6833,12 @@
   },
   "imgHash": "5b3a86b1f833a5e059c55b2bda718ca074cb4afd2758f97716c9eb5e6ace521b",
   "vigencia": "3 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz RD oct · pág. 14"
  },
  {
   "copy": "",
-  "legal": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: Al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. La promoción aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+  "legal": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. Aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
   "estadoLegal": "Por validar con Karla",
   "fase": "Últimas horas",
   "grupo": "TU ELIGES / KV ATLETICOS / 2 al 5 oct",
@@ -6834,7 +6881,8 @@
   },
   "imgHash": "",
   "vigencia": "5 oct",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz RD oct · pág. 14"
  },
  {
   "copy": "",
@@ -7074,8 +7122,8 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
-  "idea": "",
+  "headline": "Celebrate with us · 25 Years, One Step at a Time",
+  "idea": "Foto de portada de Facebook para celebrar el 25.º aniversario de Payless TT.",
   "objetivo": "",
   "cta": "",
   "sku": "",
@@ -7092,21 +7140,18 @@
   "origen": "calendario",
   "region": "CARIBE",
   "paises": [
-   "TT",
-   "JM",
-   "BB",
-   "ECI",
-   "GY",
-   "USVI"
+   "TT"
   ],
   "tipo": "feed",
   "fecha": "2026-10-01",
   "hora": "",
-  "campana": "TT Aniversario",
-  "formato": "Estático",
+  "campana": "25th Anniversary",
+  "formato": "Portada",
   "formatoPendiente": true,
   "estado": "Sin iniciar",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_car7_1.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!E3",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -7116,7 +7161,8 @@
    "cell": "E6:E9"
   },
   "imgHash": "",
-  "linea": "Aniversario TT"
+  "linea": "Aniversario TT",
+  "matriz": "Matriz Caribbean oct · pág. 7"
  },
  {
   "copy": "",
@@ -7125,12 +7171,12 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "All sneaker styles in one place",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Copy pendiente en la matriz.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -7153,11 +7199,13 @@
   "tipo": "feed",
   "fecha": "2026-10-02",
   "hora": "",
-  "campana": "LA 84",
+  "campana": "Athletics LA Gear",
   "formato": "Estático",
   "formatoPendiente": true,
   "estado": "Sin iniciar",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_car4_0.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!F3",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -7167,7 +7215,8 @@
    "cell": "F6:F9"
   },
   "imgHash": "",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz Caribbean oct · pág. 4"
  },
  {
   "copy": "",
@@ -7176,12 +7225,12 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Elige darles lo mejor en su día",
   "idea": "",
   "objetivo": "",
   "cta": "",
-  "sku": "",
-  "mandatories": "",
+  "sku": "212279",
+  "mandatories": "Arte en español para un mercado de habla inglesa: confirmar versión en inglés. Copy pendiente en la matriz.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -7208,7 +7257,9 @@
   "formato": "Estático",
   "formatoPendiente": true,
   "estado": "Sin iniciar",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_car5_main.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!H3",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -7218,7 +7269,8 @@
    "cell": "H6:H9"
   },
   "imgHash": "",
-  "linea": "Kids"
+  "linea": "Kids",
+  "matriz": "Matriz Caribbean oct · pág. 5"
  },
  {
   "copy": "",
@@ -7286,7 +7338,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Sandals (matriz Caribbean pág. 6): sin arte ni copy todavía.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -7377,13 +7429,13 @@
   "linea": "Kids"
  },
  {
-  "copy": "",
-  "legal": "",
+  "copy": "🎉🧡 SPEND & WIN! 🧡🎉\nYour next shopping trip could turn into a TT$2,500 Payless Gift Card! 🛍️👟✨\nSpend TT$250 or more in a single purchase and enter for your chance to win!\n🎟️ How to participate:\n1️⃣ Scan the QR code in-store.\n2️⃣ Complete the registration form.\nDon't miss your chance to shop, enter & win! 🎁\n📌 Terms and conditions apply. Promotion subject to NLCB approval.",
+  "legal": "Promoción válida del 1 al 30 de octubre. Sujeta a aprobación de la NLCB.",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Spend & Win! TT$2,500 Payless Gift Card",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -7401,21 +7453,18 @@
   "origen": "calendario",
   "region": "CARIBE",
   "paises": [
-   "TT",
-   "JM",
-   "BB",
-   "ECI",
-   "GY",
-   "USVI"
+   "TT"
   ],
   "tipo": "feed",
   "fecha": "2026-10-08",
   "hora": "",
-  "campana": "TT Aniversario",
+  "campana": "25th Anniversary · Spend & Win",
   "formato": "Estático",
   "formatoPendiente": true,
   "estado": "Sin iniciar",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_car8_1.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!E16",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -7425,7 +7474,8 @@
    "cell": "E19:E22"
   },
   "imgHash": "",
-  "linea": "Aniversario TT"
+  "linea": "Aniversario TT",
+  "matriz": "Matriz Caribbean oct · pág. 8"
  },
  {
   "copy": "",
@@ -11642,7 +11692,7 @@
  },
  {
   "copy": "",
-  "legal": "PENDIENTE — archivo 'LEGAL SUR 2026 INPUT.xlsx' (no recibido)",
+  "legal": "Promoción válida el 1, del 13 al 31 de octubre y del 1 al 2 de noviembre del 2026 en nuestras tiendas físicas. Recibe el 50% de descuento por la compra de un segundo artículo de igual o menor precio. Aplica para todos los productos de la tienda, con precios originales y con descuento claramente indicados según corresponda. Válida hasta agotar existencias.",
   "estadoLegal": "PENDIENTE",
   "fase": "Lanzamiento",
   "grupo": "",
@@ -11670,15 +11720,19 @@
   "tipo": "promo",
   "vigencia": "1 oct",
   "fecha": "2026-10-01",
-  "hora": "",
+  "hora": "6 am",
   "campana": "BOGO 50",
   "kv": "",
   "formato": "Historia",
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "formatoPromo": "1 imagen + story",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_sur21_0.jpg",
+   "img/m_sur21_1.jpg"
+  ],
   "fuente": "Promos SUR · 1 oct · PENDIENTE (brief SUR sin horas)",
-  "linea": "Promociones"
+  "linea": "Promociones",
+  "matriz": "Matriz SUR oct · pág. 21"
  },
  {
   "copy": "",
