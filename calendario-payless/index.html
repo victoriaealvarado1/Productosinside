@@ -10,6 +10,7 @@
   --accent:#ea5b0c; --accent-ink:#ffffff; --accent-soft:#fde6d8;
   --r-centro:#0f8b8d; --r-sur:#4a56c9; --r-rd:#c2366b; --r-caribe:#6d8f12;
   --ok:#1d8a4e; --ok-soft:#dcf2e5; --warn:#b7791f; --warn-soft:#fbefd6; --bad:#c43c2f; --bad-soft:#fbe1dd; --info:#3a6ccf; --info-soft:#e1e9fa;
+  --pub-bg:#c9efd6; --pub-line:#5fbf86; --pub-ink:#14593a; --pend-bg:#ffdcc2; --pend-line:#f08a3e; --pend-ink:#8a3a07; --pend:#e8700f; --pro:#7a4fd0;
   --phone:#000; --phone-ink:#f5f5f5; --ig-bg:#ffffff; --ig-ink:#111; --ig-mute:#737373; --ig-line:#efefef;
   --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
   --f-body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
@@ -23,6 +24,7 @@
   --r-centro:#35b9bb; --r-sur:#8b95ff; --r-rd:#ff6fa3; --r-caribe:#a6c94a;
   --ok:#4cc884; --ok-soft:#173826; --warn:#e5b04f; --warn-soft:#3b2d12; --bad:#ff7b6d; --bad-soft:#40201c; --info:#86a8ff; --info-soft:#1d2a47;
   --ig-bg:#000; --ig-ink:#f5f5f5; --ig-mute:#a8a8a8; --ig-line:#262626;
+  --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#161311; --surface:#201c19; --sunk:#2a2522; --line:#352f2b; --line-strong:#4a423c;
@@ -31,6 +33,7 @@
   --r-centro:#35b9bb; --r-sur:#8b95ff; --r-rd:#ff6fa3; --r-caribe:#a6c94a;
   --ok:#4cc884; --ok-soft:#173826; --warn:#e5b04f; --warn-soft:#3b2d12; --bad:#ff7b6d; --bad-soft:#40201c; --info:#86a8ff; --info-soft:#1d2a47;
   --ig-bg:#000; --ig-ink:#f5f5f5; --ig-mute:#a8a8a8; --ig-line:#262626;
+  --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45); color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -119,7 +122,16 @@ main{padding-block:16px 40px}
 .pc .t1{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden}
 .pc .t2{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd{width:7px;height:7px;border-radius:50%;flex:none;background:var(--ink-3)}
-.st-sin{--s:var(--ink-3)} .st-des{--s:var(--warn)} .st-env{--s:var(--info)} .st-apr{--s:var(--ok)} .st-cam{--s:var(--bad)} .st-pro{--s:var(--accent)} .st-pub{--s:var(--ink)}
+.st-sin{--s:var(--ink-3)} .st-des{--s:var(--ink-2)} .st-env{--s:var(--pend)} .st-apr{--s:var(--info)} .st-cam{--s:var(--bad)} .st-pro{--s:var(--pro)} .st-pub{--s:var(--ok)}
+/* fondo por estado: verde = publicado, naranja = esperando al cliente, blanco = en desarrollo Inside */
+.pc.cs-pub{background:var(--pub-bg);border-color:var(--pub-line)} .pc.cs-pub .t1{color:var(--pub-ink)}
+.pc.cs-env{background:var(--pend-bg);border-color:var(--pend-line)} .pc.cs-env .t1{color:var(--pend-ink)}
+table.list tr.cs-pub td{background:var(--pub-bg)} table.list tr.cs-env td{background:var(--pend-bg)}
+.legend .cs{width:14px;height:10px;border-radius:3px;border:1px solid var(--line-strong);background:var(--surface)}
+.legend .cs.pub{background:var(--pub-bg);border-color:var(--pub-line)} .legend .cs.env{background:var(--pend-bg);border-color:var(--pend-line)}
+.fmts{display:flex;flex-wrap:wrap;gap:6px}
+.fmts .chip{font-size:13px;padding:5px 12px}
+.fmts .chip .n{font:600 10px var(--f-mono);opacity:.7;margin-left:4px}
 .sd{background:var(--s)}
 .fmt{font-family:var(--f-mono);font-size:10px;letter-spacing:.02em}
 
@@ -395,7 +407,7 @@ const TIPOS={feed:"Feed",historia:"Historia",promo:"Promo"};
 const LINEAS=["Sneakers","Nuevas Llegadas","Kids","Halloween Kids","Comfort Plus","Aniversario TT","Promociones","Otra"];
 const DOW=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
 const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-const FIELDS_EDIT=["fecha","hora","estado","formato","tipo","campana","linea","serie","headline","copy","cta","idea","objetivo","tipoContenido","sku","mandatories","responsable","insumo","prioridad","link","slide","legal","estadoLegal","fase","vigencia"];
+const FIELDS_EDIT=["fecha","hora","estado","formato","formatos","tipo","campana","linea","serie","headline","copy","cta","idea","objetivo","tipoContenido","sku","mandatories","responsable","insumo","prioridad","link","slide","legal","estadoLegal","fase","vigencia"];
 
 /* ============ estado */
 const S={
@@ -422,6 +434,7 @@ const todayISO=iso(new Date());
 const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const region=id=>REGIONES.find(r=>r.id===id)||REGIONES[0];
 const estadoC=e=>(ESTADOS.find(x=>x.id===e)||ESTADOS[0]).c;
+const colorC=e=>e==="Publicado"?"cs-pub":e==="Enviado a cliente"?"cs-env":"";
 function horaMin(h){
   if(!h) return 24*60;
   const s=String(h).toLowerCase().replace(/\s+/g,"");
@@ -464,6 +477,13 @@ const ICON={
   multi:'<svg viewBox="0 0 24 24"><path d="M7 3h12a2 2 0 0 1 2 2v12h-2V5H7z"/><rect x="3" y="7" width="14" height="14" rx="2"/></svg>',
   reel:'<svg viewBox="0 0 24 24"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm7 3v6l5-3z"/></svg>',
 };
+const FEED_FMT=["Estático","Carrusel","Reel"];
+function fmts(p){const a=(Array.isArray(p.formatos)&&p.formatos.length?p.formatos:[p.formato||"Estático"]).filter(f=>FORMATOS.includes(f));return a.length?FORMATOS.filter(f=>a.includes(f)):["Estático"]}
+function isStory(p){return fmts(p).includes("Historia")}
+function feedFmt(p){return fmts(p).find(f=>FEED_FMT.includes(f))||""}
+function fmtLabel(p){return fmts(p).join(" + ")}
+function fmtAbbr(p){return fmts(p).map(f=>FMT_ABBR[f]).join("·")}
+function pvFmt(p){const a=fmts(p);return a.includes(S.pv.fmt)?S.pv.fmt:a[0]}
 const FMT_ABBR={"Estático":"POST","Carrusel":"CARR","Reel":"REEL","Historia":"HIST","Portada":"PORT"};
 
 /* ============ filtros */
@@ -546,12 +566,12 @@ function renderSummary(){
 /* ============ vista calendario */
 function chip(p,opts={}){
   const im=p.imagenes&&p.imagenes[0];
-  const story=p.formato==="Historia";
+  const story=!isFeed(p)&&isStory(p);
   const drag=canEdit()?`draggable="true"`:"";
   const where=p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" ");
-  return `<button class="pc" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
+  return `<button class="pc ${colorC(p.estado)}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
-    <span style="min-width:0"><span class="t1"><span class="sd ${estadoC(p.estado)}"></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${FMT_ABBR[p.formato]||""}</span><span>${esc(where)}</span></span>
+    <span style="min-width:0"><span class="t1"><span class="sd ${estadoC(p.estado)}"></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
 }
 function monthDays(){
@@ -561,7 +581,7 @@ function monthDays(){
 }
 const expanded=new Set();
 function renderCal(){
-  const rank=p=>isFeed(p)?0:p.formato==="Portada"?1:2;
+  const rank=p=>isFeed(p)?0:fmts(p).includes("Portada")?1:2;
   const vs=visible().sort((a,b)=>sortPosts(a,b)); const byDay={}; for(const p of vs) if(p.fecha)(byDay[p.fecha]=byDay[p.fecha]||[]).push(p);
   for(const k in byDay) byDay[k].sort((a,b)=>rank(a)-rank(b)||horaMin(a.hora)-horaMin(b.hora));
   const sf=vs.filter(p=>!p.fecha);
@@ -585,8 +605,12 @@ function renderCal(){
     <section class="panel"><h3>Cómo leer el calendario</h3><div class="legend">
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
       <div style="margin-top:4px"></div>
+      <div><span class="cs pub"></span><b>Verde</b>: publicado</div>
+      <div><span class="cs env"></span><b>Naranja</b>: esperando aprobación del cliente</div>
+      <div><span class="cs"></span><b>Blanco</b>: en desarrollo en Inside</div>
+      <div style="margin-top:4px"></div>
       ${ESTADOS.map(e=>`<div><span class="sd ${e.c}" style="width:9px;height:9px"></span>${e.id}</div>`).join("")}
-      <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL e HIST indican el formato.</div>
+      <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
   $("#view").innerHTML=`<div class="layout">${main}${side}</div>`;
 }
@@ -598,9 +622,9 @@ function renderList(){
   const vs=visible().filter(p=>p.fecha?p.fecha.startsWith(pre):role()==="inside").sort(sortPosts);
   if(!vs.length){$("#view").innerHTML=emptyMonth();return}
   $("#view").innerHTML=`<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
-  ${vs.map(p=>`<tr data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${canEdit()&&p.fecha?`<input class="qhora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300" aria-label="Hora de publicación">`:esc(p.hora||"—")}</td>
+  ${vs.map(p=>`<tr class="${colorC(p.estado)}" data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${canEdit()&&p.fecha?`<input class="qhora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300" aria-label="Hora de publicación">`:esc(p.hora||"—")}</td>
   <td><span class="rtag" style="--rc:${rv(p)}"><i></i>${region(p.region).corto}</span><div style="color:var(--ink-3);font-size:12px">${esc(p.paises.join(" · "))}</div></td>
-  <td>${TIPOS[p.tipo]||p.tipo}</td><td>${esc(p.formato)}</td><td>${esc(p.campana)}${p.serie?`<div style="color:var(--ink-3);font-size:12px">${esc(p.serie)}</div>`:""}</td>
+  <td>${TIPOS[p.tipo]||p.tipo}</td><td>${esc(fmtLabel(p))}</td><td>${esc(p.campana)}${p.serie?`<div style="color:var(--ink-3);font-size:12px">${esc(p.serie)}</div>`:""}</td>
   <td style="max-width:280px">${esc(p.headline||"—")}</td><td><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span></td>
   <td>${p.imagenes&&p.imagenes.length?"✓":"—"}</td><td>${p.copy?"✓":"—"}</td></tr>`).join("")}</tbody></table></div>`;
 }
@@ -610,10 +634,10 @@ function countryFeed(c,useFilters){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
   const all=[...S.posts.values()].filter(p=>p.paises.includes(c)&&!(role()!=="inside"&&isDraft(p))&&(!useFilters||matches({...p,paises:[c]},{ignoreTipo:true})));
   const feed=all.filter(p=>isFeed(p)&&p.fecha&&p.fecha<=`${pre}-31`).sort((a,b)=>sortPosts(b,a));
-  const stories=all.filter(p=>!isFeed(p)&&p.formato!=="Portada"&&p.fecha&&p.fecha.startsWith(pre)).sort(sortPosts);
+  const stories=all.filter(p=>isStory(p)&&p.fecha&&p.fecha.startsWith(pre)).sort(sortPosts);
   return {feed,stories,pre,m};
 }
-function isFeed(p){return p.tipo==="feed"&&p.formato!=="Historia"&&p.formato!=="Portada"}
+function isFeed(p){return fmts(p).some(f=>FEED_FMT.includes(f))}
 function handleOf(c){return `payless${c==="RD"?"rd":"."+c.toLowerCase()}`}
 function profileGrid(c,{highlight=null,useFilters=true,onlyArt=false,tab="feed"}={}){
   let {feed,stories,pre,m}=countryFeed(c,useFilters);
@@ -656,7 +680,7 @@ function storyTile(p,hl){
 }
 function tile(p,ghost,hl){
   const im=p.imagenes&&p.imagenes[0];
-  const ic=p.formato==="Carrusel"?ICON.multi:p.formato==="Reel"?ICON.reel:"";
+  const ff=feedFmt(p); const ic=ff==="Carrusel"?ICON.multi:ff==="Reel"?ICON.reel:"";
   const up=false;
   return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":["Aprobado","Programado","Publicado"].includes(p.estado)?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
 }
@@ -666,6 +690,18 @@ document.addEventListener("click",e=>{
   const o=e.target.closest("[data-onlyart]");if(o){S.f.onlyArt=o.dataset.onlyart==="1";persistF();renderView();return}
   const gt=e.target.closest("[data-gtab]");if(gt){if(gt.closest(".sheet")){S.pv.gtab=gt.dataset.gtab;renderSheet()}else{S.f.gridTab=gt.dataset.gtab;persistF();renderView()}return}
   const fp=e.target.closest("[data-fpais]");if(fp){S.pv.feedPais=fp.dataset.fpais;S.pv.scrolled=false;renderSheet();return}
+  const pf=e.target.closest("[data-pvfmt]");if(pf){S.pv.fmt=pf.dataset.pvfmt;S.pv.slide=0;stopPlay();renderSheet();return}
+  const fb=e.target.closest("[data-fmt]");if(fb&&S.openId&&canEdit()){
+    const p=S.posts.get(S.openId); let a=fmts(p); const f=fb.dataset.fmt;
+    a=a.includes(f)?a.filter(x=>x!==f):[...a,f];
+    if(!a.length){toast("Deja al menos un formato");return}
+    a=FORMATOS.filter(x=>a.includes(x));
+    const main=a.find(x=>FEED_FMT.includes(x))||a[0];
+    const patch={formatos:a,formato:main};
+    if(p.tipo==="feed"&&!a.some(x=>FEED_FMT.includes(x))&&a.includes("Historia")) patch.tipo="historia";
+    if(p.tipo==="historia"&&a.some(x=>FEED_FMT.includes(x))) patch.tipo="feed";
+    if(!a.includes(S.pv.fmt)) S.pv.fmt=null;
+    save(S.openId,patch); return}
   const pm=e.target.closest("[data-pvmode]");if(pm){S.pv.mode=pm.dataset.pvmode;S.pv.scrolled=false;stopPlay();renderSheet();return}
 });
 
@@ -677,10 +713,10 @@ let INFO=null;
 async function loadInfo(){if(INFO) return INFO;try{const r=await fetch("info-octubre-2026.json");if(r.ok) INFO=await r.json()}catch(e){}return INFO}
 const GAPS=[
   {k:"feedimg",t:"Publicaciones de feed sin imagen",d:"Pega la imagen en su casilla VIEW del Excel.",f:p=>isFeed(p)&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.slot?`Excel: ${slotLabel(p)}`:"Sin casilla en el Excel"},
-  {k:"portada",t:"Portadas de Facebook sin arte",f:p=>p.formato==="Portada"&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.mandatories||""},
-  {k:"stimg",t:"Historias y promos sin imagen",d:"Pega la imagen en su casilla VIEW del Excel.",f:p=>!isFeed(p)&&p.formato!=="Portada"&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.slot?`Excel: ${slotLabel(p)}`:"Sin casilla en el Excel (viene de la tabla de promos)"},
+  {k:"portada",t:"Portadas de Facebook sin arte",f:p=>fmts(p).includes("Portada")&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.mandatories||""},
+  {k:"stimg",t:"Historias y promos sin imagen",d:"Pega la imagen en su casilla VIEW del Excel.",f:p=>isStory(p)&&p.fecha&&!(p.imagenes||[]).length,x:p=>p.slot?`Excel: ${slotLabel(p)}`:"Sin casilla en el Excel (viene de la tabla de promos)"},
   {k:"copy",t:"Publicaciones de feed sin copy",d:"El preview usa headline + CTA mientras tanto.",f:p=>isFeed(p)&&p.fecha&&!(p.copy||"").trim(),x:p=>p.headline?`Headline: ${p.headline}`:"Sin headline"},
-  {k:"fmt",t:"Formato por definir",d:"El Excel no dice si es estático, carrusel o reel.",f:p=>p.formatoPendiente&&p.formato==="Estático",x:p=>`Excel: ${p.fuente||""}`},
+  {k:"fmt",t:"Formato por definir",d:"El Excel no dice si es estático, carrusel o reel.",f:p=>p.formatoPendiente&&!p.formatos&&p.formato==="Estático",x:p=>`Excel: ${p.fuente||""}`},
   {k:"hora",t:"Hora de publicación por definir",f:p=>p.fecha&&!(p.hora||"").trim(),x:p=>p.vigencia?`Vigencia: ${p.vigencia}`:""},
   {k:"sku",t:"SKU / lote pendiente",d:"Validar en Cloudinary o con el cliente.",f:p=>/pendiente/i.test(p.sku||""),x:p=>p.sku},
   {k:"legal",t:"Legal por validar o corregir",d:"Ninguna promo se publica sin legal validado por Karla Poveda.",f:p=>(p.estadoLegal&&!/vigente|validad|aprobad/i.test(p.estadoLegal))||/^pendiente/i.test(p.legal||""),x:p=>[p.estadoLegal,p.vigencia].filter(Boolean).join(" · ")},
@@ -697,7 +733,7 @@ function renderGaps(){
   const left=`<section class="gaps"><h2 class="vh">Lo que falta</h2><p class="sub">${MESES[m]} · con los filtros de arriba (región, país, tipo).</p>
    ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button> <span class="hint">Lee las imágenes pegadas en las casillas VIEW del planning.</span></p>`:""}
    ${rows.map(({g,items})=>`<details class="gap" ${openGaps.has(g.k)?"open":""} data-gap="${g.k}"><summary><span class="gn ${items.length?"":"zero"}">${items.length}</span><span><b>${g.t}</b>${g.d?`<small>${g.d}</small>`:""}</span></summary>
-     ${items.length?`<ul>${items.map(p=>`<li><button class="gi" data-open="${esc(p.id)}" style="--rc:${rv(p)}"><span class="mono">${p.fecha?fmtDia(p.fecha):"Sin fecha"}</span><span class="rtag"><i></i>${esc(p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" "))}</span><span class="gc">${esc(p.campana||"—")} · ${esc(p.formato)}</span><span class="gx">${esc(g.x?g.x(p)||"":"")}</span></button></li>`).join("")}</ul>`:`<p class="sub" style="padding:0 12px 10px">Nada pendiente.</p>`}</details>`).join("")}</section>`;
+     ${items.length?`<ul>${items.map(p=>`<li><button class="gi" data-open="${esc(p.id)}" style="--rc:${rv(p)}"><span class="mono">${p.fecha?fmtDia(p.fecha):"Sin fecha"}</span><span class="rtag"><i></i>${esc(p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" "))}</span><span class="gc">${esc(p.campana||"—")} · ${esc(fmtLabel(p))}</span><span class="gx">${esc(g.x?g.x(p)||"":"")}</span></button></li>`).join("")}</ul>`:`<p class="sub" style="padding:0 12px 10px">Nada pendiente.</p>`}</details>`).join("")}</section>`;
   const info=INFO;
   const regs=S.f.region!=="ALL"?[S.f.region]:REGIONES.map(r=>r.id);
   const right=!info?`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">Cargando…</p></section>`:`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">${esc(info.titulo)} · presentación «${esc(info.presentacion)}»</p>
@@ -774,7 +810,8 @@ function preview(p){
   const loc=p.paises.length===1?PAIS[p.paises[0]]:region(p.region).nombre;
   const cap=caption(p);
   const i=Math.min(S.pv.slide,Math.max(0,imgs.length-1));
-  if(p.formato==="Historia"){
+  const F=pvFmt(p);
+  if(F==="Historia"){
     const n=Math.max(1,imgs.length);
     return phone(`<div class="story"><div class="media r916">
       <div class="stbars">${Array.from({length:n},(_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
@@ -784,13 +821,13 @@ function preview(p){
       <div class="stfoot"><div>Enviar mensaje</div>${ICON.heart.replace("<svg",'<svg style="width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8"')}${ICON.send.replace("<svg",'<svg style="width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8"')}</div>
     </div></div>`);
   }
-  if(p.formato==="Portada"){
+  if(F==="Portada"){
     return phone(`<div class="igtop"><b style="font-family:Helvetica,Arial,sans-serif;color:#1877f2">facebook</b><span style="font-size:18px">⌕</span></div>
       <div class="fbcover">${imgs.length?`<img src="${esc(imgs[0])}" alt="">`:emptyMedia(p)}</div>
       <div class="fbprof"><div class="av ring">P</div><div><b>${handle}</b><small>Foto de portada · ${esc(loc)}</small></div></div>
       <div class="igcap">${capHTML(cap)}<span class="tm">${p.fecha?fmtDia(p.fecha,true):"Sin fecha"}</span></div>`);
   }
-  if(p.formato==="Reel"){
+  if(F==="Reel"){
     return phone(`<div class="media r916">
       <div class="track" style="transform:translateX(-${i*100}%)">${imgs.length?imgs.map(s=>`<img src="${esc(s)}" alt="">`).join(""):emptyMedia(p)}</div>
       <span class="reeltag">Reels</span>
@@ -814,7 +851,7 @@ function feedPreview(p){
   if(!p.fecha) return `<div class="empty" style="max-width:340px">Esta pieza no tiene fecha. Asígnale un día para ver dónde cae en el feed.</div>`;
   const c=p.paises.includes(S.pv.feedPais)?S.pv.feedPais:p.paises[0];
   return `${p.paises.length>1?`<div class="chips" style="justify-content:center">${p.paises.map(x=>`<button class="chip" data-fpais="${x}" aria-pressed="${x===c}" title="${PAIS[x]}">${x}</button>`).join("")}</div>`:""}
-    ${phone(profileGrid(c,{highlight:p.id,useFilters:false,tab:S.pv.gtab||(isFeed(p)?"feed":"stories")}))}`;
+    ${phone(profileGrid(c,{highlight:p.id,useFilters:false,tab:S.pv.gtab||(FEED_FMT.includes(pvFmt(p))||!isStory(p)?"feed":"stories")}))}`;
 }
 function capHTML(cap){
   const t=cap.text; if(t.length<=140||S.pv.full) return esc(t);
@@ -822,7 +859,7 @@ function capHTML(cap){
 }
 
 /* ============ hoja de detalle */
-function openPost(id,tab){S.rmAsk=null;S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null};S.confirmDel=false;renderSheet();}
+function openPost(id,tab){S.rmAsk=null;S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null,fmt:null};S.confirmDel=false;renderSheet();}
 function closeSheet(){S.openId=null;stopPlay();$("#sheetRoot").innerHTML="";document.body.style.overflow=""}
 function stopPlay(){clearInterval(S.pv.timer);S.pv.playing=false}
 function renderSheet(){
@@ -835,12 +872,13 @@ function renderSheet(){
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Publicación">
     <div class="left">
       <div class="seg pvmode" role="group" aria-label="Vista previa"><button data-pvmode="post" aria-pressed="${S.pv.mode!=="feed"}">${isFeed(p)?"Publicación":"Historia"}</button><button data-pvmode="feed" aria-pressed="${S.pv.mode==="feed"}">${isFeed(p)?"En el feed":"En el perfil"}</button></div>
+      ${fmts(p).length>1&&S.pv.mode!=="feed"?`<div class="seg" role="group" aria-label="Formato del preview">${fmts(p).map(f=>`<button data-pvfmt="${f}" aria-pressed="${f===pvFmt(p)}">${f}</button>`).join("")}</div>`:""}
       ${S.pv.mode==="feed"?feedPreview(p):preview(p)}
-      <div style="font-size:12px;color:var(--ink-3);text-align:center;max-width:340px">Vista previa de ${p.formato==="Historia"?"historia de Instagram":p.formato==="Reel"?"reel de Instagram":p.formato==="Portada"?"portada de Facebook":"publicación en el feed de Instagram"}${(p.imagenes||[]).length?"":" · se muestra el headline mientras no haya arte"}.</div>
+      <div style="font-size:12px;color:var(--ink-3);text-align:center;max-width:340px">Vista previa de ${pvFmt(p)==="Historia"?"historia de Instagram":pvFmt(p)==="Reel"?"reel de Instagram":pvFmt(p)==="Portada"?"portada de Facebook":pvFmt(p)==="Carrusel"?"carrusel en el feed de Instagram":"publicación en el feed de Instagram"}${fmts(p).length>1?` · sale en ${fmts(p).length} formatos`:""}${(p.imagenes||[]).length?"":" · se muestra el headline mientras no haya arte"}.</div>
     </div>
     <div class="right">
       <div class="sheethead"><div style="min-width:0">
-        <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${r.nombre}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(p.formato)}</span></div>
+        <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${r.nombre}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(fmtLabel(p))}</span></div>
         <h2>${esc(p.headline||p.campana||"Publicación")}</h2>
         <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
       </div><button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div>
@@ -867,6 +905,11 @@ function approveBox(p){
   return "";
 }
 function fieldRO(label,v,wide){return `<div class="f ${wide?"wide":""}"><span class="lb">${label}</span><div class="ro ${v?"":"empty"}">${v?esc(v):"—"}</div></div>`}
+function fmtCtl(p){
+  const a=fmts(p);
+  if(!canEdit()) return fieldRO("Formatos",fmtLabel(p));
+  return `<div class="f wide"><span class="lb">Formatos de publicación</span><div class="fmts" role="group" aria-label="Formatos">${FORMATOS.map(f=>`<button type="button" class="chip" data-fmt="${f}" aria-pressed="${a.includes(f)}">${f}<span class="n">${FMT_ABBR[f]}</span></button>`).join("")}</div><span class="hint">Selecciona todos los formatos en los que sale esta pieza. Estático, Carrusel o Reel la ponen en el feed; Historia la pone en historias. El preview tiene un selector para ver cada formato.</span></div>`;
+}
 function inp(k,label,p,type="text",wide=false,hint=""){
   if(!canEdit()) return k==="link"&&p.link?`<div class="f ${wide?"wide":""}"><span class="lb">${label}</span><a class="ro" href="${esc(p.link)}" target="_blank" rel="noopener">Abrir en SharePoint ↗</a></div>`:fieldRO(label,p[k],wide);
   const id="fld_"+k; const v=p[k]??"";
@@ -887,7 +930,7 @@ function tabBody(p,cms){
       <div class="f wide"><span class="lb">Caracteres del copy</span><div class="ro mono">${(p.copy||"").length} / 2.200 ${cap.prov?"· usando copy provisional":""}</div></div></div>`;
   }
   if(t==="arte"){
-    const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=p.formato==="Historia"?"Frame":"Slide";
+    const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=fmts(p)[0]==="Historia"?"Frame":"Slide";
     const grid=imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="${lbl} ${k+1}"><figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
       :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene fotos finales."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`;
     const upl=ed?`<label class="drop-zone" id="dz" for="upl"><input type="file" id="upl" accept="image/*,video/mp4" multiple hidden><b>${imgs.length?"Agregar fotos finales aprobadas":"Subir fotos finales aprobadas"}</b><br><span style="font-size:12px">Arrastra aquí las imágenes o haz clic para elegirlas. En carruseles e historias, cada archivo es un slide y se agregan en el orden en que los eliges; después puedes reordenarlos con las flechas.</span></label>
@@ -907,7 +950,7 @@ function tabBody(p,cms){
   const r=region(p.region);
   if(role()!=="inside"){
     return `<div class="fields">${fieldRO("Fecha",p.fecha?cap1(fmtDia(p.fecha,true)):"Por definir")}${fieldRO("Hora",p.hora||"Por definir")}
-      ${fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true)}${fieldRO("Formato",p.formato)}${fieldRO("Campaña",p.campana)}
+      ${fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true)}${fieldRO("Formatos",fmtLabel(p))}${fieldRO("Campaña",p.campana)}
       ${p.serie?fieldRO("Serie",p.serie):""}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.copy?fieldRO("Copy",p.copy,true):""}
       ${p.cta?fieldRO("CTA",p.cta):""}${p.fase?fieldRO("Fase de la promo",p.fase):""}${p.legal&&!/^\(mismo/.test(p.legal)?fieldRO("Legal",p.legal,true):""}</div>`;
   }
@@ -918,7 +961,7 @@ function tabBody(p,cms){
     :linkable.length?`<div class="f wide" style="margin-bottom:14px"><label for="lnkParr">Vincular con una pieza de la parrilla</label><select id="lnkParr"><option value="">Elige la pieza que corresponde a este post…</option>${linkable.map(x=>`<option value="${esc(x.id)}">${x.fechaPropuesta?fmtDia(x.fechaPropuesta)+" · ":""}${esc(x.campana)} · ${esc(x.serie)} · ${esc((x.headline||"").slice(0,60))}</option>`).join("")}</select><span class="hint">Copia headline, idea, CTA, SKU y mandatories a este post y la quita de «Por asignar fecha».</span></div>`:"";
   return `${linkBox}<div class="fields">
     ${inp("fecha","Fecha",p,"date")}${canEdit()?`<div class="f"><label for="fld_hora">Hora de publicación (local)</label><div style="display:flex;gap:6px"><input id="fld_hora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300"><button class="btn" data-clearhora="${esc(p.id)}" title="Quitar hora">Sin hora</button></div><span class="hint">${p.hora?"Ahora: "+esc(p.hora):"Sin hora definida"}</span></div>`:fieldRO("Hora",p.hora)}
-    ${inp("estado","Estado",p,ESTADOS.map(e=>e.id))}${inp("formato","Formato",p,FORMATOS)}
+    ${inp("estado","Estado",p,ESTADOS.map(e=>e.id))}${fmtCtl(p)}
     ${canEdit()?inp("tipo","Tipo",{...p,tipo:TIPOS[p.tipo]},Object.values(TIPOS)):fieldRO("Tipo",TIPOS[p.tipo])}${inp("linea","Línea de campaña",p,LINEAS)}
     ${paisesCtl}
     ${inp("campana","Campaña",p)}${inp("serie","Serie",p)}
