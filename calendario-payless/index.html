@@ -411,8 +411,9 @@ const REGIONES=[
 const PAIS={GT:"Guatemala",SV:"El Salvador",HN:"Honduras",NI:"Nicaragua",CR:"Costa Rica",PA:"Panamá",CO:"Colombia",EC:"Ecuador",PE:"Perú",RD:"República Dominicana",TT:"Trinidad y Tobago",JM:"Jamaica",BB:"Barbados",ECI:"Eastern Caribbean",GY:"Guyana",USVI:"Islas Vírgenes EE. UU."};
 const EN_PAISES=new Set(["TT","JM","BB","ECI","GY","USVI"]);
 const ESTADOS=[
-  {id:"Sin iniciar",c:"st-sin"},{id:"En desarrollo",c:"st-des"},{id:"Enviado a cliente",c:"st-env"},
-  {id:"Cambios solicitados",c:"st-cam"},{id:"Aprobado",c:"st-apr"},{id:"Programado",c:"st-pro"},{id:"Publicado",c:"st-pub"}];
+  {id:"Sin iniciar",c:"st-sin"},{id:"Enviado a cliente",c:"st-env"},{id:"Programado",c:"st-pro"}];
+/* estados anteriores → los 3 vigentes (los datos viejos se leen así, sin reescribir la base) */
+const ESTADO_MAP={"En desarrollo":"Sin iniciar","Cambios solicitados":"Sin iniciar","Aprobado":"Programado","Publicado":"Programado"};
 const FORMATOS=["Estático","Carrusel","Reel","Historia","Portada"];
 const TIPOS={feed:"Feed",historia:"Historia",promo:"Promo"};
 const LINEAS=["Sneakers","Nuevas Llegadas","Kids","Halloween Kids","Comfort Plus","Aniversario TT","Promociones","Otra"];
@@ -434,6 +435,7 @@ const S={
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
+if(S.f.estado!=="ALL"&&!ESTADOS.some(e=>e.id===S.f.estado)) S.f.estado=ESTADO_MAP[S.f.estado]||"ALL";
 
 /* ============ utilidades */
 const $=(s,el=document)=>el.querySelector(s);
@@ -445,7 +447,7 @@ const todayISO=iso(new Date());
 const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const region=id=>REGIONES.find(r=>r.id===id)||REGIONES[0];
 const estadoC=e=>(ESTADOS.find(x=>x.id===e)||ESTADOS[0]).c;
-const colorC=e=>e==="Publicado"||e==="Programado"?"cs-pub":e==="Enviado a cliente"?"cs-env":"";
+const colorC=e=>e==="Programado"?"cs-pub":e==="Enviado a cliente"?"cs-env":"";
 function horaMin(h){
   if(!h) return 24*60;
   const s=String(h).toLowerCase().replace(/\s+/g,"");
@@ -472,7 +474,7 @@ function phClass(p){return p.tipo==="promo"||p.linea==="Promociones"?"promo":p.l
 function colLetter(n){let s="";while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
 function slotLabel(p){return p.slot?`hoja «${p.slot.sheet}», celdas ${p.slot.cell} (fila VIEW)`:""}
 function emptyMedia(p){
-  const ok=["Aprobado","Programado","Publicado"].includes(p.estado);
+  const ok=p.estado==="Programado";
   if(role()!=="inside") return `<div class="ph emptym"><b>${ok?"Pieza aprobada":"Arte en producción"}</b><span>${esc(p.campana||"")}${p.headline?" · "+esc(p.headline):""}</span></div>`;
   return `<div class="ph emptym"><span class="em-ic">＋</span><b>Sin imagen</b><span>${p.slot?`Pégala en el Excel: ${esc(slotLabel(p))}`:"Esta pieza no tiene casilla de imagen en el Excel. Ubícala primero en el calendario del documento."}</span></div>`;
 }
@@ -566,8 +568,8 @@ function renderSummary(){
   const vs=visible(); const inM=vs.filter(p=>p.fecha&&p.fecha.startsWith(pre));
   const by=k=>inM.filter(p=>p.tipo===k).length;
   const env=inM.filter(p=>p.estado==="Enviado a cliente").length;
-  const cam=inM.filter(p=>p.estado==="Cambios solicitados").length;
-  const soon=inM.filter(p=>p.fecha>=todayISO&&p.fecha<=iso(new Date(Date.now()+2*864e5))&&!["Aprobado","Programado","Publicado"].includes(p.estado)).length;
+  const cam=inM.filter(p=>p.cambiosPendientes).length;
+  const soon=inM.filter(p=>p.fecha>=todayISO&&p.fecha<=iso(new Date(Date.now()+2*864e5))&&!p.estado==="Programado").length;
   const sf=vs.filter(p=>!p.fecha).length;
   $("#summary").innerHTML=`<span><b>${inM.length}</b> publicaciones ${S.f.desde||S.f.hasta?`del ${S.f.desde?fmtDia(S.f.desde):"inicio"} al ${S.f.hasta?fmtDia(S.f.hasta):"fin"}`:"en "+MESES[m]}</span><span><b>${by("feed")}</b> feed · <b>${by("historia")}</b> historias · <b>${by("promo")}</b> promos</span>
    ${env?`<span><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</span>`:""}${cam?`<span class="warn"><b>${cam}</b> con cambios solicitados</span>`:""}
@@ -582,7 +584,7 @@ function chip(p,opts={}){
   const where=p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" ");
   return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""} ${S.sel===p.id?"sel":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
-    <span style="min-width:0"><span class="t1"><span class="sd ${estadoC(p.estado)}"></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
+    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
 }
 function monthDays(){
@@ -616,11 +618,12 @@ function renderCal(){
     <section class="panel"><h3>Cómo leer el calendario</h3><div class="legend">
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
       <div style="margin-top:4px"></div>
-      <div><span class="cs pub"></span><span><b>Verde</b>: programado o publicado</span></div>
+      <div><span class="cs pub"></span><span><b>Verde</b>: programado (aprobado por el cliente)</span></div>
       <div><span class="cs env"></span><span><b>Naranja</b>: esperando aprobación del cliente</span></div>
-      <div><span class="cs"></span><span><b>Blanco</b>: en desarrollo en Inside</span></div>
+      <div><span class="cs"></span><span><b>Blanco</b>: sin iniciar / en desarrollo en Inside</span></div>
       <div style="margin-top:4px"></div>
       ${ESTADOS.map(e=>`<div><span class="sd ${e.c}" style="width:9px;height:9px"></span>${e.id}</div>`).join("")}
+      <div><span class="sd st-cam" style="width:9px;height:9px"></span>Punto rojo: el cliente pidió cambios</div>
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
   $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega</p>`:""}<div class="layout">${main}${side}</div>`;
@@ -693,7 +696,7 @@ function tile(p,ghost,hl){
   const im=p.imagenes&&p.imagenes[0];
   const ff=feedFmt(p); const ic=ff==="Carrusel"?ICON.multi:ff==="Reel"?ICON.reel:"";
   const up=false;
-  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":["Aprobado","Programado","Publicado"].includes(p.estado)?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
+  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":p.estado==="Programado"?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-gpais]");if(t){S.f.gridPais=t.dataset.gpais;persistF();renderView();return}
@@ -734,7 +737,7 @@ const GAPS=[
   {k:"conf",t:"Por confirmar con el cliente",d:"Notas del planning que piden confirmación.",f:p=>/confirm|revisar|pendiente/i.test([p.mandatories,p.grupo,p.fase].join(" ")),x:p=>p.mandatories||p.grupo||p.fase},
   {k:"parr",t:"Piezas de la parrilla sin día en el calendario",f:p=>p.origen==="parrilla"&&!p.fecha,x:p=>`${p.serie||""}${p.fechaPropuesta?" · propuesta "+fmtDia(p.fechaPropuesta):""}`},
   {k:"apr",t:"Esperando aprobación del cliente",f:p=>p.estado==="Enviado a cliente",x:p=>p.headline||""},
-  {k:"cam",t:"Con cambios solicitados",f:p=>p.estado==="Cambios solicitados",x:p=>p.headline||""},
+  {k:"cam",t:"Con cambios solicitados",f:p=>!!p.cambiosPendientes,x:p=>p.headline||""},
 ];
 const openGaps=new Set(["feedimg"]);
 function renderGaps(){
@@ -906,13 +909,13 @@ function approveBox(p){
   if(!canApprove()) return "";
   const pend=p.estado==="Enviado a cliente";
   if(role()==="cliente"){
-    if(!pend&&p.estado!=="Cambios solicitados") return `<div class="approve"><span class="q">${p.estado==="Aprobado"||p.estado==="Programado"||p.estado==="Publicado"?"Esta pieza ya está aprobada.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Aprobación."}</span></div>`;
-    return `<div class="approve"><span class="q">${pend?"¿Apruebas esta publicación?":"Pediste cambios. ¿Ya está lista?"}</span>
+    if(!pend) return `<div class="approve"><span class="q">${p.estado==="Programado"?"Esta pieza ya está aprobada y programada.":p.cambiosPendientes?"Pediste cambios. El equipo de Inside está trabajando en ellos y te la vuelve a enviar.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Aprobación."}</span></div>`;
+    return `<div class="approve"><span class="q">¿Apruebas esta publicación?</span>
       <button class="btn ok" data-act="aprobar">Aprobar</button><button class="btn bad" data-act="cambios">Pedir cambios</button>
       ${S.askChanges?`<textarea id="chgTxt" placeholder="¿Qué hay que ajustar? Sé específico: texto, foto, país, fecha…"></textarea><button class="btn primary" data-act="enviarCambios">Enviar cambios</button>`:""}</div>`;
   }
-  if(p.estado==="Sin iniciar"||p.estado==="En desarrollo"||p.estado==="Cambios solicitados")
-    return `<div class="approve"><span class="q">${p.estado==="Cambios solicitados"?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-act="enviar">Enviar a aprobación</button></div>`;
+  if(p.estado==="Sin iniciar")
+    return `<div class="approve"><span class="q">${p.cambiosPendientes?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-act="enviar">Enviar a aprobación</button></div>`;
   return "";
 }
 function fieldRO(label,v,wide){return `<div class="f ${wide?"wide":""}"><span class="lb">${label}</span><div class="ro ${v?"":"empty"}">${v?esc(v):"—"}</div></div>`}
@@ -1066,13 +1069,13 @@ async function upload(files,replace){
 async function doAct(a){
   const p=S.posts.get(S.openId); if(!p) return;
   if(a==="cambios"){S.askChanges=true;renderSheet();$("#chgTxt")?.focus();return}
-  if(a==="aprobar"){await save(p.id,{estado:"Aprobado"});await addComment(p.id,"aprobado","");toast("Aprobada");return}
-  if(a==="enviarCambios"){const t=$("#chgTxt").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.askChanges=false;await save(p.id,{estado:"Cambios solicitados"});await addComment(p.id,"cambios",t);toast("Cambios enviados al equipo");return}
-  if(a==="enviar"){await save(p.id,{estado:"Enviado a cliente"});await addComment(p.id,"envio","");toast("Enviada a aprobación");return}
+  if(a==="aprobar"){await save(p.id,{estado:"Programado",cambiosPendientes:false});await addComment(p.id,"aprobado","");toast("Aprobada");return}
+  if(a==="enviarCambios"){const t=$("#chgTxt").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.askChanges=false;await save(p.id,{estado:"Sin iniciar",cambiosPendientes:true});await addComment(p.id,"cambios",t);toast("Cambios enviados al equipo");return}
+  if(a==="enviar"){await save(p.id,{estado:"Enviado a cliente",cambiosPendientes:false});await addComment(p.id,"envio","");toast("Enviada a aprobación");return}
   if(a==="comentar"){const t=$("#cmTxt").value.trim();if(!t) return;await addComment(p.id,"nota",t);toast("Comentario publicado");return}
   if(a==="sinfecha"){await save(p.id,{fecha:"",sinFecha:true,fechaPropuesta:p.fecha});toast("Movida a Por asignar fecha");return}
   if(a==="copiar"){copyPost(p.id);closeSheet();return}
-  if(a==="duplicar"){const id=newId(p);const c={...p,id,estado:"Sin iniciar",copy:p.copy,fuente:`Duplicada de ${p.id}`,creado:new Date().toISOString()};await write(id,c,true);toast("Duplicada");openPost(id);return}
+  if(a==="duplicar"){const id=newId(p);const c={...p,id,estado:"Sin iniciar",cambiosPendientes:false,copy:p.copy,fuente:`Duplicada de ${p.id}`,creado:new Date().toISOString()};await write(id,c,true);toast("Duplicada");openPost(id);return}
   if(a==="borrar"){S.confirmDel=true;renderSheet();return}
   if(a==="borrarNo"){S.confirmDel=false;renderSheet();return}
   if(a==="borrarSi"){try{await S.db.doc("posts/"+p.id).delete();S.posts.delete(p.id);closeSheet();render();toast("Publicación eliminada")}catch(e){toast("No se pudo eliminar. Revisa tu conexión.")}}
@@ -1093,7 +1096,7 @@ function copyPost(id){
 async function pastePost(day){
   const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
   const id=newId(src);
-  const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
+  const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",cambiosPendientes:false,creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
   for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo"]) delete c[k];
   if((c.imagenes||[]).length) c.arteManual=true;
   await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
@@ -1206,7 +1209,8 @@ function pickMonth(){
   if(!ds.length||ds.some(d=>d.startsWith(pre))) return [now.getFullYear(),now.getMonth()];
   const d=parseISO(ds.find(x=>x>=pre)||ds[ds.length-1]); return [d.getFullYear(),d.getMonth()];
 }
-function normalize(d){return {imagenes:[],paises:[],copy:"",headline:"",campana:"",hora:"",fecha:"",estado:"Sin iniciar",formato:"Estático",tipo:"feed",linea:"Otra",region:"CENTRO",...d}}
+function normEstado(d){const e=ESTADO_MAP[d.estado];if(!e) return {};return d.estado==="Cambios solicitados"?{estado:e,cambiosPendientes:true}:{estado:e}}
+function normalize(d){const n=normEstado(d);return {imagenes:[],paises:[],copy:"",headline:"",campana:"",hora:"",fecha:"",estado:"Sin iniciar",formato:"Estático",tipo:"feed",linea:"Otra",region:"CENTRO",...d,...n}}
 
 /* ============ arranque */
 async function loadSeed(){const r=await fetch("seed-octubre-2026.json");if(!r.ok) throw new Error("seed");return r.json()}
