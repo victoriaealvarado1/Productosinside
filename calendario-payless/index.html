@@ -443,7 +443,8 @@ function phClass(p){return p.tipo==="promo"||p.linea==="Promociones"?"promo":p.l
 function colLetter(n){let s="";while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
 function slotLabel(p){return p.slot?`hoja «${p.slot.sheet}», celdas ${p.slot.cell} (fila VIEW)`:""}
 function emptyMedia(p){
-  if(role()!=="inside") return `<div class="ph emptym"><b>Arte en producción</b><span>${esc(p.campana||"")}${p.headline?" · "+esc(p.headline):""}</span></div>`;
+  const ok=["Aprobado","Programado","Publicado"].includes(p.estado);
+  if(role()!=="inside") return `<div class="ph emptym"><b>${ok?"Pieza aprobada":"Arte en producción"}</b><span>${esc(p.campana||"")}${p.headline?" · "+esc(p.headline):""}</span></div>`;
   return `<div class="ph emptym"><span class="em-ic">＋</span><b>Sin imagen</b><span>${p.slot?`Pégala en el Excel: ${esc(slotLabel(p))}`:"Esta pieza no tiene casilla de imagen en el Excel. Ubícala primero en el calendario del documento."}</span></div>`;
 }
 function placeholder(p,extra=""){
@@ -472,7 +473,8 @@ function matches(p,opts={}){
   if(f.q){const q=f.q.toLowerCase();const hay=[p.campana,p.headline,p.copy,p.serie,p.idea,p.sku,p.fase,p.grupo,p.paises.join(" ")].join(" ").toLowerCase();if(!hay.includes(q)) return false}
   return true;
 }
-function visible(){return [...S.posts.values()].filter(p=>matches(p))}
+function isDraft(p){return !p.campana&&!p.headline&&!(p.imagenes||[]).length}
+function visible(){return [...S.posts.values()].filter(p=>matches(p)&&!(role()!=="inside"&&isDraft(p)))}
 function sortPosts(a,b){return (a.fecha||"9").localeCompare(b.fecha||"9")||horaMin(a.hora)-horaMin(b.hora)||a.region.localeCompare(b.region)}
 function persistF(){store.set("f",{...S.f,q:""})}
 
@@ -499,7 +501,7 @@ function renderFilters(){
   </div>
   <div class="fgroup views">
     <div class="seg" role="group" aria-label="Vista">
-      ${[["cal","Calendario"],["list","Lista"],["grid","Feed por país"],["gaps","Faltantes"]].map(([k,l])=>`<button data-view="${k}" aria-pressed="${f.view===k}">${l}</button>`).join("")}
+      ${[["cal","Calendario"],["list","Lista"],["grid","Feed por país"],...(role()==="inside"?[["gaps","Faltantes"]]:[])].map(([k,l])=>`<button data-view="${k}" aria-pressed="${f.view===k}">${l}</button>`).join("")}
     </div>
     ${canEdit()?`<button class="btn primary" id="newPost">＋ Nueva</button>`:""}
   </div>`;
@@ -532,8 +534,8 @@ function renderSummary(){
   const soon=inM.filter(p=>p.fecha>=todayISO&&p.fecha<=iso(new Date(Date.now()+2*864e5))&&!["Aprobado","Programado","Publicado"].includes(p.estado)).length;
   const sf=vs.filter(p=>!p.fecha).length;
   $("#summary").innerHTML=`<span><b>${inM.length}</b> publicaciones ${S.f.desde||S.f.hasta?`del ${S.f.desde?fmtDia(S.f.desde):"inicio"} al ${S.f.hasta?fmtDia(S.f.hasta):"fin"}`:"en "+MESES[m]}</span><span><b>${by("feed")}</b> feed · <b>${by("historia")}</b> historias · <b>${by("promo")}</b> promos</span>
-   ${env?`<span><b>${env}</b> esperando aprobación del cliente</span>`:""}${cam?`<span class="warn"><b>${cam}</b> con cambios solicitados</span>`:""}
-   ${soon?`<span class="warn"><b>${soon}</b> salen en ≤2 días sin aprobar</span>`:""}${sf?`<span><b>${sf}</b> por asignar fecha</span>`:""}`;
+   ${env?`<span><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</span>`:""}${cam?`<span class="warn"><b>${cam}</b> con cambios solicitados</span>`:""}
+   ${soon&&role()==="inside"?`<span class="warn"><b>${soon}</b> salen en ≤2 días sin aprobar</span>`:""}${sf&&role()==="inside"?`<span><b>${sf}</b> por asignar fecha</span>`:""}`;
 }
 
 /* ============ vista calendario */
@@ -554,7 +556,9 @@ function monthDays(){
 }
 const expanded=new Set();
 function renderCal(){
-  const vs=visible().sort(sortPosts); const byDay={}; for(const p of vs) if(p.fecha)(byDay[p.fecha]=byDay[p.fecha]||[]).push(p);
+  const rank=p=>isFeed(p)?0:p.formato==="Portada"?1:2;
+  const vs=visible().sort((a,b)=>sortPosts(a,b)); const byDay={}; for(const p of vs) if(p.fecha)(byDay[p.fecha]=byDay[p.fecha]||[]).push(p);
+  for(const k in byDay) byDay[k].sort((a,b)=>rank(a)-rank(b)||horaMin(a.hora)-horaMin(b.hora));
   const sf=vs.filter(p=>!p.fecha);
   const narrow=window.matchMedia("(max-width:760px)").matches;
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
@@ -571,8 +575,8 @@ function renderCal(){
       ${show.map(p=>chip(p)).join("")}${ps.length>LIM?`<button class="more" data-expand="${k}">${expanded.has(k)?"Ver menos":`+${ps.length-LIM} más`}</button>`:""}</div>`}).join("")}</div></div>`;
   }
   const side=`<aside class="side">
-    <section class="panel"><h3>Por asignar fecha <span style="font:600 13px var(--f-mono);color:var(--ink-3)">${sf.length}</span></h3><p class="sub">Piezas de la parrilla que no coinciden con ningún día del calendario operativo.${canEdit()?" Arrástralas a un día, o vincúlalas desde la ficha de un post.":""}</p>
-      <div class="backlog" data-day="">${sf.length?sf.map(p=>chip(p,{sf:true})).join(""):`<p class="sub" style="margin:0">Nada pendiente con estos filtros.</p>`}</div></section>
+    ${role()==="inside"?`<section class="panel"><h3>Por asignar fecha <span style="font:600 13px var(--f-mono);color:var(--ink-3)">${sf.length}</span></h3><p class="sub">Piezas de la parrilla que no coinciden con ningún día del calendario operativo.${canEdit()?" Arrástralas a un día, o vincúlalas desde la ficha de un post.":""}</p>
+      <div class="backlog" data-day="">${sf.length?sf.map(p=>chip(p,{sf:true})).join(""):`<p class="sub" style="margin:0">Nada pendiente con estos filtros.</p>`}</div></section>`:""}
     <section class="panel"><h3>Cómo leer el calendario</h3><div class="legend">
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
       <div style="margin-top:4px"></div>
@@ -586,7 +590,7 @@ function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes<
 /* ============ vista lista */
 function renderList(){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
-  const vs=visible().filter(p=>!p.fecha||p.fecha.startsWith(pre)).sort(sortPosts);
+  const vs=visible().filter(p=>p.fecha?p.fecha.startsWith(pre):role()==="inside").sort(sortPosts);
   if(!vs.length){$("#view").innerHTML=emptyMonth();return}
   $("#view").innerHTML=`<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
   ${vs.map(p=>`<tr data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${esc(p.hora||"—")}</td>
@@ -599,7 +603,7 @@ function renderList(){
 /* ============ vista feed por país */
 function countryFeed(c,useFilters){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
-  const all=[...S.posts.values()].filter(p=>p.paises.includes(c)&&(!useFilters||matches({...p,paises:[c]},{ignoreTipo:true})));
+  const all=[...S.posts.values()].filter(p=>p.paises.includes(c)&&!(role()!=="inside"&&isDraft(p))&&(!useFilters||matches({...p,paises:[c]},{ignoreTipo:true})));
   const feed=all.filter(p=>isFeed(p)&&p.fecha&&p.fecha<=`${pre}-31`).sort((a,b)=>sortPosts(b,a));
   const stories=all.filter(p=>!isFeed(p)&&p.formato!=="Portada"&&p.fecha&&p.fecha.startsWith(pre)).sort(sortPosts);
   return {feed,stories,pre,m};
@@ -649,7 +653,7 @@ function tile(p,ghost,hl){
   const im=p.imagenes&&p.imagenes[0];
   const ic=p.formato==="Carrusel"?ICON.multi:p.formato==="Reel"?ICON.reel:"";
   const up=false;
-  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
+  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":["Aprobado","Programado","Publicado"].includes(p.estado)?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-gpais]");if(t){S.f.gridPais=t.dataset.gpais;persistF();renderView();return}
@@ -799,7 +803,7 @@ function preview(p){
     </div>
     <div class="igact">${ICON.heart}${ICON.com}${ICON.send}<span class="sp">${ICON.save}</span></div>
     <div class="igdots">${multi?imgs.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join(""):""}</div>
-    <div class="igcap"><b>${handle}</b> ${capHTML(cap)}${cap.prov?`<span class="prov">Copy provisional: headline + CTA. Escribe el copy final en la ficha.</span>`:""}<span class="tm">${p.fecha?fmtDia(p.fecha,true):"Sin fecha"}${p.hora?" · "+esc(p.hora):""}</span></div>`);
+    <div class="igcap"><b>${handle}</b> ${capHTML(cap)}${cap.prov&&role()==="inside"?`<span class="prov">Copy provisional: headline + CTA. Escribe el copy final en la ficha.</span>`:""}<span class="tm">${p.fecha?fmtDia(p.fecha,true):"Sin fecha"}${p.hora?" · "+esc(p.hora):""}</span></div>`);
 }
 function feedPreview(p){
   if(!p.fecha) return `<div class="empty" style="max-width:340px">Esta pieza no tiene fecha. Asígnale un día para ver dónde cae en el feed.</div>`;
@@ -838,7 +842,7 @@ function renderSheet(){
       ${approveBox(p)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${S.openTab===k}">${l}</button>`).join("")}</div>
       <div id="tabBody">${tabBody(p,cms)}</div>
-      <div class="src">Fuente: ${esc(p.fuente||"Creada en la plataforma")}${p.actualizado?` · Última edición ${esc(new Date(p.actualizado).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}`:""}</div>
+      <div class="src" ${role()!=="inside"?"hidden":""}>Fuente: ${esc(p.fuente||"Creada en la plataforma")}${p.actualizado?` · Última edición ${esc(new Date(p.actualizado).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}`:""}</div>
     </div></div></div>`;
   $(".sheet").scrollTop=scrollY;
   if(S.pv.playing) startPlay(true);
@@ -871,6 +875,7 @@ function tabBody(p,cms){
   const t=S.openTab;
   if(t==="copy"){
     const cap=caption(p);
+    if(role()!=="inside") return `<div class="fields">${fieldRO("Copy del post",p.copy||"Copy en redacción",true)}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.legal?fieldRO("Legal",p.legal,true):""}</div>`;
     return `<div class="fields">${inp("copy","Copy del post (caption)",p,"textarea",true,canEdit()?"Se guarda al salir del campo. Mientras esté vacío, el preview muestra headline + CTA.":"")}
       ${inp("headline","Headline / super (texto en pieza)",p,"text",true)}${inp("cta","CTA",p)}${inp("mandatories","Mandatories / observaciones",p,"textarea",true)}
       ${p.legal?inp("legal","Legal (obligatorio en arte o copy)",p,"textarea",true):""}
@@ -879,10 +884,10 @@ function tabBody(p,cms){
   if(t==="arte"){
     const imgs=p.imagenes||[];
     return `${imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="Slide ${k+1}"><figcaption><span>${p.formato==="Historia"?"Frame":"Slide"} ${k+1}</span></figcaption></figure>`).join("")}</div>`
-      :`<p style="color:var(--ink-2)">Esta publicación todavía no tiene arte cargado.${p.link?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`}
-      <div class="panel" style="margin-top:14px"><h3>Dónde va la imagen</h3>
+      :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene arte cargado."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`}
+      ${role()!=="inside"?"":`<div class="panel" style="margin-top:14px"><h3>Dónde va la imagen</h3>
         <p class="sub" style="margin:0 0 8px">${p.slot?`En el Excel del planning: <b>${esc(slotLabel(p))}</b>. Pega ahí la imagen (en carruseles, todos los slides en una sola tira, como el resto del documento).`:"Esta pieza no tiene casilla de imagen en el Excel porque viene de la parrilla o de la tabla de promos. Agrégala al calendario del documento con su fecha."}</p>
-        ${canEdit()&&S.assets?`<button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</div>`;
+        ${canEdit()&&S.assets?`<button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</div>`}`;
   }
   if(t==="aprob"){
     return `<div class="thread">${cms.length?cms.map(c=>{const pr=S.profiles[c.autorId];const nm=(pr&&pr.name)||c.autorNombre||"Alguien";return `<div class="cm ${c.tipo==="aprobado"?"apr":c.tipo==="cambios"?"cam":""}"><div class="av">${esc(nm.slice(0,1).toUpperCase())}</div><div class="bd"><header><b>${esc(nm)}</b><span>${c.tipo==="aprobado"?"aprobó":c.tipo==="cambios"?"pidió cambios":c.tipo==="envio"?"envió a aprobación":"comentó"}</span><span>${esc(new Date(c.fecha).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}</span></header>${c.texto?`<p>${esc(c.texto)}</p>`:""}</div></div>`}).join("")
@@ -891,6 +896,12 @@ function tabBody(p,cms){
   }
   // ficha
   const r=region(p.region);
+  if(role()!=="inside"){
+    return `<div class="fields">${fieldRO("Fecha",p.fecha?cap1(fmtDia(p.fecha,true)):"Por definir")}${fieldRO("Hora",p.hora||"Por definir")}
+      ${fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true)}${fieldRO("Formato",p.formato)}${fieldRO("Campaña",p.campana)}
+      ${p.serie?fieldRO("Serie",p.serie):""}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.copy?fieldRO("Copy",p.copy,true):""}
+      ${p.cta?fieldRO("CTA",p.cta):""}${p.fase?fieldRO("Fase de la promo",p.fase):""}${p.legal&&!/^\(mismo/.test(p.legal)?fieldRO("Legal",p.legal,true):""}</div>`;
+  }
   const paisesCtl=canEdit()?`<div class="f wide"><span class="lb">Países donde sale</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-tpais="${c}" aria-pressed="${p.paises.includes(c)}" title="${PAIS[c]}">${c} · ${PAIS[c]}</button>`).join("")}</div></div>`:fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true);
   const linkable=canEdit()&&p.origen!=="parrilla"&&p.tipo!=="promo"&&!p.campanaParrilla?[...S.posts.values()].filter(x=>x.origen==="parrilla"&&!x.fecha&&x.region===p.region).sort((a,b)=>(a.fechaPropuesta||"").localeCompare(b.fechaPropuesta||"")):[];
   const linkBox=p.vinculo==="auto"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Headline, idea y CTA vienen de la parrilla de ${esc(region(p.region).corto)} (cruce automático por fecha y campaña: ${esc(p.campanaParrilla)}). Revisa que correspondan al arte.</p>`
@@ -1061,7 +1072,7 @@ function renderView(){
   if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando el calendario…</h3><p>Conectando con los datos compartidos.</p></div>`;return}
   if(!S.posts.size){
     $("#view").innerHTML=`<div class="empty"><h3>Todavía no hay publicaciones</h3><p>Aquí aparecerán las piezas del planning con su fecha, estado y preview.</p>${canEdit()?`<p><button class="btn primary" id="importSeed">Cargar planning de octubre 2026</button></p>`:""}</div>`;return}
-  if(S.f.view==="list") renderList(); else if(S.f.view==="grid") renderGrid(); else if(S.f.view==="gaps") renderGaps(); else renderCal();
+  if(S.f.view==="list") renderList(); else if(S.f.view==="grid") renderGrid(); else if(S.f.view==="gaps"&&role()==="inside") renderGaps(); else renderCal();
 }
 function render(){renderTop();renderFilters();renderView()}
 $("#prevM").onclick=()=>{let [y,m]=S.month;m--;if(m<0){m=11;y--}S.month=[y,m];render()};

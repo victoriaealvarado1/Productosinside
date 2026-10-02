@@ -6,12 +6,12 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Comfort Plus",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Comfort Plus: fuera de este planning, ya entregado y aprobado por el cliente.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -56,12 +56,12 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Comfort Plus",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Comfort Plus: fuera de este planning, ya entregado y aprobado por el cliente.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -106,12 +106,12 @@
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Comfort Plus",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Comfort Plus: fuera de este planning, ya entregado y aprobado por el cliente.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -483,20 +483,20 @@
   "matriz": "Matriz CAM oct · pág. 13"
  },
  {
-  "copy": "",
+  "copy": "Para salir, para estar con amigos o para ser tú mismo. 🤩👟 ¿Qué sneaker combina mejor con tu esencia? 😉🔥",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "¿Qué sneaker te representa mejor?",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Logo Champion en slides 1 y 3; Crosstrekker y Airwalk en el slide 2.",
   "responsable": "",
-  "tipoContenido": "",
+  "tipoContenido": "Comunidad",
   "insumo": "",
   "prioridad": "",
   "link": "https://paylessshoes.sharepoint.com/:f:/r/sites/AZ-Marketing-CreativeTeam/Shared%20Documents/2026/GESTI%C3%93N%20INSIDE%202026/OCTUBRE/ORG%C3%81NICO/CENTRO/PIEZAS%20FINALES/SLIDE%208?d=w7ccdf37d07ba49f69a13a138f029acb6&csf=1&web=1&e=7nTO2Z",
@@ -521,9 +521,9 @@
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [
-   "img/image20_1.jpg",
-   "img/image20_2.jpg",
-   "img/image20_3.jpg"
+   "img/m_cam8_s1.jpg",
+   "img/m_cam8_0.jpg",
+   "img/m_cam8_1.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!H16",
   "slot": {
@@ -534,23 +534,24 @@
    "cell": "H19:H22"
   },
   "imgHash": "63e44255bf7dc565e9b9c16cbd04d841440953d02dc6858024247bbf65abf7c0",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 8"
  },
  {
-  "copy": "",
+  "copy": "De día una, de noche otra, pero siempre con el mismo par. ✨ Así es la versatilidad de nuestros nuevos modelos. Conócelos en tu Payless más cercano.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "De la oficina a la noche, sin cambiarte.",
   "idea": "",
   "objetivo": "",
   "cta": "",
-  "sku": "",
-  "mandatories": "",
+  "sku": "200599",
+  "mandatories": "Reel: oficina → close up → brunch → noche. Texto en video: \"De la oficina a la noche, sin cambiarte.\"",
   "responsable": "",
-  "tipoContenido": "",
+  "tipoContenido": "Styling",
   "insumo": "",
   "prioridad": "",
   "link": "",
@@ -573,13 +574,9 @@
   "campana": "Nuevas Llegadas",
   "formato": "Reel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
-   "img/image2_1.jpg",
-   "img/image2_2.jpg",
-   "img/image2_3.jpg",
-   "img/image2_4.jpg",
-   "img/image2_5.jpg"
+   "img/m_cam14_0.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!B28",
   "slot": {
@@ -590,16 +587,17 @@
    "cell": "B31:B34"
   },
   "imgHash": "e81c353c41d9b84b99b2fe7f6325f51254034784135b2180af607dc82d120986",
-  "linea": "Nuevas Llegadas"
+  "linea": "Nuevas Llegadas",
+  "matriz": "Matriz CAM oct · pág. 14"
  },
  {
-  "copy": "",
+  "copy": "Mañana, tarde o noche, tus sneakers siempre combinarán con ellos. ✨ ¿Ya elegiste tu look? ¡Escríbelo en los comentarios! 👟👇",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "01 · Un par, mil estilos",
-  "headline": "Un par, mil estilos.",
+  "headline": "3 moods para usar tus sneakers",
   "idea": "Un mismo sneaker en 3 looks y 3 planes (calle, rooftop, noche). Slide 1 = escena con persona, nunca el zapato solo.",
   "objetivo": "Guardar",
   "cta": "Encuentra tu match",
@@ -630,7 +628,13 @@
   "formato": "Carrusel",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_cam9_0.jpg",
+   "img/m_cam9_1.jpg",
+   "img/m_cam9_2.jpg",
+   "img/m_cam9_3.jpg",
+   "img/m_cam9_4.jpg"
+  ],
   "fuente": "CALENDARIO CAM FEED!C28",
   "slot": {
    "sheet": "CALENDARIO CAM FEED",
@@ -643,16 +647,17 @@
   "campanaParrilla": "Atléticos Multimarca",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 9"
  },
  {
-  "copy": "",
+  "copy": "Nada grita mejor \"tengo estilo\" que uno de nuestros sneakers. 😎 Pero no te conformes con uno, tenlos todos. Solo en Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Street Cast (reel)",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -682,8 +687,10 @@
   "campana": "Sneakers",
   "formato": "Reel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
-  "imagenes": [],
+  "estado": "En desarrollo",
+  "imagenes": [
+   "img/m_cam10_0.jpg"
+  ],
   "fuente": "CALENDARIO CAM FEED!E28",
   "slot": {
    "sheet": "CALENDARIO CAM FEED",
@@ -693,21 +700,22 @@
    "cell": "E31:E34"
   },
   "imgHash": "",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 10"
  },
  {
-  "copy": "",
+  "copy": "Tus amigos, tu mundo, tu estilo, tus sneakers. 🤩 Encuentra todo eso en Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "03 · Street Cast",
-  "headline": "El plan empieza por los pies.",
+  "headline": "Street Cast",
   "idea": "Grupos de amigos latinos, estilizados, en la calle: caminan, conversan, saltan. Cámara baja/fisheye, sneaker completo. Incluye cortes del spot y videos de marca.",
   "objetivo": "Descubrir",
   "cta": "Encuentra tu match",
   "sku": "PENDIENTE · validar en Cloudinary",
-  "mandatories": "Headline de la familia del KV + cierre con tagline + firma LA Gear · Airwalk · Champion · Cross Trekkers + 'Solo en Payless' + logo Payless.",
+  "mandatories": "Logo Champion en el slide 1; Airwalk y Crosstrekker en el 2; Champion y LA Gear en el 3.",
   "responsable": "Roberto → Sunny · Aprueba: Coord. Centro",
   "tipoContenido": "Lifestyle editorial",
   "insumo": "Fotos/videos de producción (J. Ugalde · F. Alvarado) · banco aprobado",
@@ -734,9 +742,9 @@
   "formatoPendiente": false,
   "estado": "En desarrollo",
   "imagenes": [
-   "img/image11_1.jpg",
-   "img/image11_2.jpg",
-   "img/image11_3.jpg"
+   "img/m_cam11_0.jpg",
+   "img/m_cam11_1.jpg",
+   "img/m_cam11_2.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!F28",
   "slot": {
@@ -750,7 +758,8 @@
   "campanaParrilla": "Atléticos Multimarca",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz CAM oct · pág. 11"
  },
  {
   "copy": "",
@@ -803,17 +812,17 @@
   "linea": "Sneakers"
  },
  {
-  "copy": "",
+  "copy": "El par que está cambiando el mood de los looks esta temporada. ✨ Descubre las nuevas ballerinas de Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Tu nuevo dress code ya llegó",
   "idea": "",
   "objetivo": "",
   "cta": "",
-  "sku": "",
+  "sku": "211999",
   "mandatories": "",
   "responsable": "",
   "tipoContenido": "",
@@ -839,9 +848,9 @@
   "campana": "Nuevas Llegadas",
   "formato": "Estático",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
-   "img/image6.jpg"
+   "img/m_cam15_0.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!H28",
   "slot": {
@@ -852,7 +861,8 @@
    "cell": "H31:H34"
   },
   "imgHash": "dd7fce83105cbc4f09fea10277aeaf27543d75f77d5e527ba007ead008472aed",
-  "linea": "Nuevas Llegadas"
+  "linea": "Nuevas Llegadas",
+  "matriz": "Matriz CAM oct · pág. 15"
  },
  {
   "copy": "",
@@ -1011,17 +1021,17 @@
   "linea": "Sneakers"
  },
  {
-  "copy": "",
+  "copy": "Porque toda mujer tiene su imperdible. 💖 ¿Cuál es el tuyo, ballerinas o kitten heels?",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
-  "serie": "",
-  "headline": "",
+  "serie": "04 · El Imperdible",
+  "headline": "¿Cuál debe ser tu must-have?",
   "idea": "",
   "objetivo": "",
   "cta": "",
-  "sku": "",
+  "sku": "211999 / 200599",
   "mandatories": "",
   "responsable": "",
   "tipoContenido": "",
@@ -1047,9 +1057,12 @@
   "campana": "Nuevas Llegadas",
   "formato": "Carrusel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
-   "img/image1.jpg"
+   "img/m_cam16_0.jpg",
+   "img/m_cam16_1.jpg",
+   "img/m_cam16_2.jpg",
+   "img/m_cam16_3.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!F40",
   "slot": {
@@ -1060,23 +1073,24 @@
    "cell": "F43:F46"
   },
   "imgHash": "3222e8477b00f31cc5c23ad0bf101fba85f7098b653f9c32198054887a7bb761",
-  "linea": "Nuevas Llegadas"
+  "linea": "Nuevas Llegadas",
+  "matriz": "Matriz CAM oct · pág. 16"
  },
  {
-  "copy": "",
+  "copy": "Dos pares, dos moods, mil planes. ✨ Arma tu dúo y dale a cada par su momento. ¿Cuál sería tu combinación? 👇",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Arma tu dúo · 2 pares, 2 planes",
   "idea": "",
   "objetivo": "",
   "cta": "",
-  "sku": "",
+  "sku": "212004 / 211848 / 211849 / 210768 / 200599 / 211915",
   "mandatories": "",
   "responsable": "",
-  "tipoContenido": "",
+  "tipoContenido": "Tips y checks",
   "insumo": "",
   "prioridad": "",
   "link": "https://paylessshoes.sharepoint.com/:f:/r/sites/AZ-Marketing-CreativeTeam/Shared%20Documents/2026/GESTI%C3%93N%20INSIDE%202026/OCTUBRE/ORG%C3%81NICO/CENTRO/PIEZAS%20FINALES/SLIDE%2022?d=wd34aeff1ae6544e280340e7c8b186f1a&csf=1&web=1&e=o43vce",
@@ -1099,11 +1113,11 @@
   "campana": "Nuevas Llegadas",
   "formato": "Carrusel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
-   "img/image12_1.jpg",
-   "img/image12_2.jpg",
-   "img/image12_3.jpg"
+   "img/m_cam17_0.jpg",
+   "img/m_cam17_1.jpg",
+   "img/m_cam17_2.jpg"
   ],
   "fuente": "CALENDARIO CAM FEED!H40",
   "slot": {
@@ -1114,7 +1128,8 @@
    "cell": "H43:H46"
   },
   "imgHash": "a54d41df6959bf81504986e1f0cc4d1308a5d1c2337dfe5648ce996da52c8358",
-  "linea": "Nuevas Llegadas"
+  "linea": "Nuevas Llegadas",
+  "matriz": "Matriz CAM oct · pág. 17"
  },
  {
   "copy": "",
@@ -3079,13 +3094,13 @@
   "matriz": "Matriz SUR oct · pág. 9"
  },
  {
-  "copy": "",
+  "copy": "La mejor manera de vivir tu mundo es con unos sneakers que te complementan. 😎👟 Encuéntralos en Payless. 😉🧡",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Street Cast (reel)",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -3127,7 +3142,8 @@
    "cell": "H7:H10"
   },
   "imgHash": "eaddc83ce6a040378afb27069d3e72ca67b78d9c590325169a10c248e57b93ef",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz SUR oct · pág. 8"
  },
  {
   "copy": "",
@@ -3228,7 +3244,7 @@
   "linea": "Sneakers"
  },
  {
-  "copy": "",
+  "copy": "Tus planes siempre acompañados de tus sneakers. ¿Ya sabes cuál elegir? Encuéntralos en Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
@@ -3263,9 +3279,11 @@
   "campana": "Sneakers",
   "formato": "Carrusel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
-   "img/image25.jpg"
+   "img/m_sur7_0.jpg",
+   "img/m_sur7_1.jpg",
+   "img/m_sur7_2.jpg"
   ],
   "fuente": "CALENDARIO SUR FEED!D16",
   "slot": {
@@ -3279,7 +3297,8 @@
   "campanaParrilla": "Atléticos — Champion / Airwalk",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz SUR oct · pág. 7"
  },
  {
   "copy": "",
@@ -5794,7 +5813,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "En el Excel, la sección \"PERÚ HISTORIAS\" tenía \"PANAMA\" en la columna de país; se corrigió a Perú.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -5807,7 +5826,7 @@
   "origen": "calendario",
   "region": "SUR",
   "paises": [
-   "PA"
+   "PE"
   ],
   "tipo": "promo",
   "fecha": "2026-10-06",
@@ -5840,7 +5859,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "En el Excel, la sección \"PERÚ HISTORIAS\" tenía \"PANAMA\" en la columna de país; se corrigió a Perú.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -5853,7 +5872,7 @@
   "origen": "calendario",
   "region": "SUR",
   "paises": [
-   "PA"
+   "PE"
   ],
   "tipo": "promo",
   "fecha": "2026-10-15",
@@ -5886,7 +5905,7 @@
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Sección \"PERÚ HISTORIAS\": el Excel decía Panamá y 25 de noviembre; se corrigió a Perú y 25 de octubre (la matriz SUR indica historias el 6, 15 y 25).",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -5899,10 +5918,10 @@
   "origen": "calendario",
   "region": "SUR",
   "paises": [
-   "PA"
+   "PE"
   ],
   "tipo": "promo",
-  "fecha": "2026-11-25",
+  "fecha": "2026-10-25",
   "hora": "6 am",
   "campana": "BOGO 60",
   "formato": "Historia",
@@ -6077,20 +6096,20 @@
   "matriz": "Matriz RD oct · pág. 7"
  },
  {
-  "copy": "",
+  "copy": "Del skatepark a la calle, sin cambiarte de par. Airwalk ya está en Payless. ¿Dónde lo llevarías tú?",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "¿Qué sneaker te representa mejor?",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "Mismo arte que el carrusel de CAM del 11 oct (en la matriz de RD las imágenes vienen en baja resolución).",
   "responsable": "",
-  "tipoContenido": "",
+  "tipoContenido": "Comunidad",
   "insumo": "",
   "prioridad": "",
   "link": "",
@@ -6110,7 +6129,11 @@
   "formato": "Carrusel",
   "formatoPendiente": false,
   "estado": "En desarrollo",
-  "imagenes": [],
+  "imagenes": [
+   "img/m_cam8_s1.jpg",
+   "img/m_cam8_0.jpg",
+   "img/m_cam8_1.jpg"
+  ],
   "fuente": "CALENDARIO RD!H3",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -6120,16 +6143,17 @@
    "cell": "H6:H9"
   },
   "imgHash": "",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 8"
  },
  {
-  "copy": "",
+  "copy": "¿Mañana, tarde o noche? Tus sneakers siempre combinarán con ellos. ✨ ¿Ya elegiste tu look? ¡Escríbelo en los comentarios! 👟👇",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "3 moods para usar tus sneakers",
   "idea": "",
   "objetivo": "",
   "cta": "",
@@ -6155,8 +6179,14 @@
   "campana": "Sneakers",
   "formato": "Carrusel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
-  "imagenes": [],
+  "estado": "En desarrollo",
+  "imagenes": [
+   "img/m_rd9_0.jpg",
+   "img/m_rd9_1.jpg",
+   "img/m_rd9_2.jpg",
+   "img/m_rd9_3.jpg",
+   "img/m_rd9_4.jpg"
+  ],
   "fuente": "CALENDARIO RD!B15",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -6166,16 +6196,17 @@
    "cell": "B18:B21"
   },
   "imgHash": "",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 9"
  },
  {
-  "copy": "",
+  "copy": "Cambia de sneakers, no de actitud. 😏🔥 Encuentra todos los estilos en Payless.",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "03 · Street Cast",
-  "headline": "Cambia de par. Cambia de plan.",
+  "headline": "Street Cast (reel)",
   "idea": "Grupos de amigos latinos, estilizados, en la calle: caminan, conversan, saltan. Cámara baja/fisheye, sneaker completo. Incluye cortes del spot y videos de marca.",
   "objetivo": "Descubrir",
   "cta": "Encuentra tu match",
@@ -6201,8 +6232,10 @@
   "campana": "Sneakers",
   "formato": "Reel",
   "formatoPendiente": false,
-  "estado": "Sin iniciar",
-  "imagenes": [],
+  "estado": "En desarrollo",
+  "imagenes": [
+   "img/m_rd10_0.jpg"
+  ],
   "fuente": "CALENDARIO RD!D15",
   "slot": {
    "sheet": "CALENDARIO RD",
@@ -6215,7 +6248,8 @@
   "campanaParrilla": "Atléticos Champion",
   "vinculo": "auto",
   "estadoParrilla": "Por diseñar (Content)",
-  "linea": "Sneakers"
+  "linea": "Sneakers",
+  "matriz": "Matriz RD oct · pág. 10"
  },
  {
   "copy": "",
@@ -7148,7 +7182,7 @@
   "campana": "25th Anniversary",
   "formato": "Portada",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
    "img/m_car7_1.jpg"
   ],
@@ -7202,7 +7236,7 @@
   "campana": "Athletics LA Gear",
   "formato": "Estático",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
    "img/m_car4_0.jpg"
   ],
@@ -7256,7 +7290,7 @@
   "campana": "Kids Concurso",
   "formato": "Estático",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
    "img/m_car5_main.jpg"
   ],
@@ -7461,7 +7495,7 @@
   "campana": "25th Anniversary · Spend & Win",
   "formato": "Estático",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
+  "estado": "En desarrollo",
   "imagenes": [
    "img/m_car8_1.jpg"
   ],
@@ -7793,18 +7827,18 @@
   "linea": "Nuevas Llegadas"
  },
  {
-  "copy": "",
+  "copy": "📰👀 Keep an eye out for your 10% OFF coupon!\nCheck your local Trinidad & Tobago Guardian Newspaper and look out for the coupon in the SEA supplement as we support the next generation of our nation through education. 📚✨\n🗓️ Valid in-store from October 1–31\nTerms & conditions apply.\n🧡 Don't miss yours! Find your coupon, bring it to Payless, and enjoy 10% OFF! 🛍️👟",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Newspaper coupon reminder · 10% OFF",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "La matriz no fija fecha para este post; se ubicó en el slot TT Aniversario del 18 oct. Confirmar fecha.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -7817,21 +7851,18 @@
   "origen": "calendario",
   "region": "CARIBE",
   "paises": [
-   "TT",
-   "JM",
-   "BB",
-   "ECI",
-   "GY",
-   "USVI"
+   "TT"
   ],
   "tipo": "feed",
   "fecha": "2026-10-18",
   "hora": "",
-  "campana": "TT Aniversario",
+  "campana": "25th Anniversary · Coupon",
   "formato": "Estático",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
-  "imagenes": [],
+  "estado": "En desarrollo",
+  "imagenes": [
+   "img/m_car9_1.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!H28",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -7841,7 +7872,8 @@
    "cell": "H31:H34"
   },
   "imgHash": "",
-  "linea": "Aniversario TT"
+  "linea": "Aniversario TT",
+  "matriz": "Matriz Caribbean oct · pág. 9"
  },
  {
   "copy": "",
@@ -8312,18 +8344,18 @@
   "linea": "Nuevas Llegadas"
  },
  {
-  "copy": "",
+  "copy": "⏰🧡 IT'S THE LAST DAY!\nToday is your last chance to enjoy 25% OFF merchandise at Payless T&T stores! 👟🔥\n🗓️ ONE DAY ONLY — OCTOBER 30\n🎁 Plus, stay tuned for our Spend & Win winner announcement!\nDon't miss out on this final opportunity to celebrate with us! 🛍️✨\n👉 Visit your nearest Payless store today!",
   "legal": "",
   "estadoLegal": "",
   "fase": "",
   "grupo": "",
   "serie": "",
-  "headline": "",
+  "headline": "Last Day! 25% OFF · October 30",
   "idea": "",
   "objetivo": "",
   "cta": "",
   "sku": "",
-  "mandatories": "",
+  "mandatories": "El calendario lo tenía el 31 oct; la matriz dice \"One day only — October 30\": se movió al 30 oct.",
   "responsable": "",
   "tipoContenido": "",
   "insumo": "",
@@ -8336,21 +8368,18 @@
   "origen": "calendario",
   "region": "CARIBE",
   "paises": [
-   "TT",
-   "JM",
-   "BB",
-   "ECI",
-   "GY",
-   "USVI"
+   "TT"
   ],
   "tipo": "feed",
-  "fecha": "2026-10-31",
+  "fecha": "2026-10-30",
   "hora": "",
-  "campana": "TT Aniversario",
+  "campana": "25th Anniversary · Grand Finale",
   "formato": "Estático",
   "formatoPendiente": true,
-  "estado": "Sin iniciar",
-  "imagenes": [],
+  "estado": "En desarrollo",
+  "imagenes": [
+   "img/m_car10_1.jpg"
+  ],
   "fuente": "CALENDARIO CARIBE!G52",
   "slot": {
    "sheet": "CALENDARIO CARIBE",
@@ -8360,7 +8389,8 @@
    "cell": "G55:G58"
   },
   "imgHash": "",
-  "linea": "Aniversario TT"
+  "linea": "Aniversario TT",
+  "matriz": "Matriz Caribbean oct · pág. 10"
  },
  {
   "copy": "",
