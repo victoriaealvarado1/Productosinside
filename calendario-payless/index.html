@@ -109,6 +109,13 @@ main{padding-block:16px 40px}
 .dnum{font:600 12px/1 var(--f-mono);padding:4px 6px;border-radius:6px;color:var(--ink-2)}
 .dadd{opacity:0;border:0;background:transparent;color:var(--ink-3);font-size:16px;line-height:1;padding:0 4px}
 .day:hover .dadd{opacity:1}
+.dpaste{border:1px dashed var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:5px;font:700 10px/1 var(--f-body);padding:3px 6px;margin-left:auto;margin-right:2px}
+.dpaste:hover{background:var(--accent);color:var(--accent-ink)}
+.clipbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--radius);padding:8px 12px;margin-bottom:12px;font-size:13px}
+.clipbar b{font-weight:700}
+.clipbar .sp{flex:1}
+.clipbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
+.pc.clip{outline:2px dashed var(--accent);outline-offset:1px}
 .more{border:0;background:transparent;color:var(--ink-2);font-size:12px;font-weight:600;text-align:left;padding:2px 4px}
 .more:hover{color:var(--accent)}
 
@@ -419,7 +426,7 @@ const S={
   db:null, assets:null, user:null,
   month:null,
   f:{region:"ALL",paises:[],tipo:"ALL",linea:"ALL",estado:"ALL",q:"",view:"cal",gridPais:"GT",gridSize:"phone",onlyArt:false,desde:"2026-10-01",hasta:"2026-10-10"},
-  openId:null, openTab:"info", pv:{slide:0}, dragId:null,
+  openId:null, openTab:"info", pv:{slide:0}, dragId:null, clip:null,
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
@@ -569,7 +576,7 @@ function chip(p,opts={}){
   const story=!isFeed(p)&&isStory(p);
   const drag=canEdit()?`draggable="true"`:"";
   const where=p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" ");
-  return `<button class="pc ${colorC(p.estado)}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
+  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
     <span style="min-width:0"><span class="t1"><span class="sd ${estadoC(p.estado)}"></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
@@ -596,7 +603,7 @@ function renderCal(){
     const LIM=4;
     main=`<div class="cal"><div class="cal-head">${DOW.map(d=>`<div>${d}</div>`).join("")}</div><div class="cal-body">${monthDays().map(d=>{
       const k=iso(d); const ps=byDay[k]||[]; const out=d.getMonth()!==m; const show=expanded.has(k)?ps:ps.slice(0,LIM);
-      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
+      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()&&S.clip&&S.posts.has(S.clip)?`<button class="dpaste" data-paste="${k}" title="Pegar la publicación copiada el ${fmtDia(k,true)}">Pegar</button>`:""}${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
       ${show.map(p=>chip(p)).join("")}${ps.length>LIM?`<button class="more" data-expand="${k}">${expanded.has(k)?"Ver menos":`+${ps.length-LIM} más`}</button>`:""}</div>`}).join("")}</div></div>`;
   }
   const side=`<aside class="side">
@@ -612,7 +619,7 @@ function renderCal(){
       ${ESTADOS.map(e=>`<div><span class="sd ${e.c}" style="width:9px;height:9px"></span>${e.id}</div>`).join("")}
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
-  $("#view").innerHTML=`<div class="layout">${main}${side}</div>`;
+  $("#view").innerHTML=`${clipBar()}<div class="layout">${main}${side}</div>`;
 }
 function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes</h3><p>Cambia de mes o limpia los filtros para ver más.</p></div>`}
 
@@ -621,7 +628,7 @@ function renderList(){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
   const vs=visible().filter(p=>p.fecha?p.fecha.startsWith(pre):role()==="inside").sort(sortPosts);
   if(!vs.length){$("#view").innerHTML=emptyMonth();return}
-  $("#view").innerHTML=`<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
+  $("#view").innerHTML=`${clipBar()}<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
   ${vs.map(p=>`<tr class="${colorC(p.estado)}" data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${canEdit()&&p.fecha?`<input class="qhora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300" aria-label="Hora de publicación">`:esc(p.hora||"—")}</td>
   <td><span class="rtag" style="--rc:${rv(p)}"><i></i>${region(p.region).corto}</span><div style="color:var(--ink-3);font-size:12px">${esc(p.paises.join(" · "))}</div></td>
   <td>${TIPOS[p.tipo]||p.tipo}</td><td>${esc(fmtLabel(p))}</td><td>${esc(p.campana)}${p.serie?`<div style="color:var(--ink-3);font-size:12px">${esc(p.serie)}</div>`:""}</td>
@@ -973,7 +980,7 @@ function tabBody(p,cms){
     ${inp("link","Link al contenido",p,"url",true)}${inp("slide","Slide en la presentación",p)}
     ${p.matriz?fieldRO("Arte y copy tomados de",p.matriz,true):""}
   </div>
-  ${canEdit()?`<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="duplicar">Duplicar</button>${p.fecha?`<button class="btn" data-act="sinfecha">Quitar fecha</button>`:""}<button class="btn bad" data-act="borrar">Eliminar</button></div>
+  ${canEdit()?`<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="copiar" title="Copia la publicación para pegarla en otros días (Ctrl/Cmd + C)">Copiar para pegar en otros días</button><button class="btn" data-act="duplicar">Duplicar</button>${p.fecha?`<button class="btn" data-act="sinfecha">Quitar fecha</button>`:""}<button class="btn bad" data-act="borrar">Eliminar</button></div>
   ${S.confirmDel?`<div class="confirm"><span>¿Eliminar esta publicación? No se puede deshacer.</span><button class="btn bad" data-act="borrarSi">Sí, eliminar</button><button class="btn ghost" data-act="borrarNo">Cancelar</button></div>`:""}`:""}`;
 }
 
@@ -1056,12 +1063,49 @@ async function doAct(a){
   if(a==="enviar"){await save(p.id,{estado:"Enviado a cliente"});await addComment(p.id,"envio","");toast("Enviada a aprobación");return}
   if(a==="comentar"){const t=$("#cmTxt").value.trim();if(!t) return;await addComment(p.id,"nota",t);toast("Comentario publicado");return}
   if(a==="sinfecha"){await save(p.id,{fecha:"",sinFecha:true,fechaPropuesta:p.fecha});toast("Movida a Por asignar fecha");return}
+  if(a==="copiar"){copyPost(p.id);closeSheet();return}
   if(a==="duplicar"){const id=newId(p);const c={...p,id,estado:"Sin iniciar",copy:p.copy,fuente:`Duplicada de ${p.id}`,creado:new Date().toISOString()};await write(id,c,true);toast("Duplicada");openPost(id);return}
   if(a==="borrar"){S.confirmDel=true;renderSheet();return}
   if(a==="borrarNo"){S.confirmDel=false;renderSheet();return}
   if(a==="borrarSi"){try{await S.db.doc("posts/"+p.id).delete();S.posts.delete(p.id);closeSheet();render();toast("Publicación eliminada")}catch(e){toast("No se pudo eliminar. Revisa tu conexión.")}}
 }
 function newId(p){return `${(p.region||"cen").slice(0,3).toLowerCase()}-n-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`}
+/* ============ copiar y pegar publicaciones */
+function clipBar(){
+  if(!canEdit()||!S.clip) return "";
+  const p=S.posts.get(S.clip); if(!p){S.clip=null;return ""}
+  return `<div class="clipbar" role="status"><span>Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}</span>
+    <span>Toca <b>Pegar</b> en cada día donde la quieras (puedes pegar varias veces), o elige una fecha:</span>
+    <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(p.fecha||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
+}
+function copyPost(id){
+  if(!canEdit()||!S.posts.has(id)) return;
+  S.clip=id; renderView(); toast("Copiada. Toca «Pegar» en el día que quieras.");
+}
+async function pastePost(day){
+  const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
+  const id=newId(src);
+  const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
+  for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo"]) delete c[k];
+  if((c.imagenes||[]).length) c.arteManual=true;
+  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
+}
+document.addEventListener("click",e=>{
+  const ps=e.target.closest("[data-paste]"); if(ps){e.stopPropagation();pastePost(ps.dataset.paste);return}
+  if(e.target.closest("[data-pastedate]")){const v=$("#clipDate")?.value; if(!v){toast("Elige una fecha");return} pastePost(v);return}
+  if(e.target.closest("[data-clipclear]")){S.clip=null;renderView();return}
+},true);
+/* atajos: Ctrl/Cmd+C sobre una publicación, Ctrl/Cmd+V sobre un día */
+let hoverPost=null, hoverDay=null;
+document.addEventListener("mouseover",e=>{const c=e.target.closest("[data-open]");hoverPost=c&&c.closest("#view")?c.dataset.open:null;const d=e.target.closest(".day[data-day]");hoverDay=d?d.dataset.day:null});
+document.addEventListener("keydown",e=>{
+  if(!(e.ctrlKey||e.metaKey)||e.target.closest("input,textarea,select,[contenteditable]")||!canEdit()) return;
+  if(window.getSelection&&String(window.getSelection()).length) return;
+  const k=e.key.toLowerCase();
+  if(k==="c"){const id=S.openId||hoverPost; if(id){e.preventDefault();copyPost(id)}}
+  else if(k==="v"&&S.clip&&!S.openId&&hoverDay){e.preventDefault();pastePost(hoverDay)}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.clip&&!S.openId){S.clip=null;renderView()}});
 async function createPost(fecha){
   if(!canEdit()) return;
   const reg=S.f.region!=="ALL"?S.f.region:"CENTRO"; const r=region(reg);
@@ -1094,13 +1138,15 @@ async function addComment(postId,tipo,texto){
 }
 
 /* ============ arrastrar entre días */
-document.addEventListener("dragstart",e=>{const c=e.target.closest("[data-drag]");if(!c||!canEdit()) return;S.dragId=c.dataset.drag;c.classList.add("dragging");e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",S.dragId)}catch(_){}});
+document.addEventListener("dragstart",e=>{const c=e.target.closest("[data-drag]");if(!c||!canEdit()) return;S.dragId=c.dataset.drag;c.classList.add("dragging");e.dataTransfer.effectAllowed="copyMove";try{e.dataTransfer.setData("text/plain",S.dragId)}catch(_){}});
 document.addEventListener("dragend",e=>{const c=e.target.closest("[data-drag]");if(c) c.classList.remove("dragging");document.querySelectorAll(".drop").forEach(x=>x.classList.remove("drop"));S.dragId=null;S.justDragged=true;setTimeout(()=>S.justDragged=false,60)});
 document.addEventListener("dragover",e=>{if(!S.dragId) return;const d=e.target.closest("[data-day]");if(!d) return;e.preventDefault();document.querySelectorAll(".drop").forEach(x=>x!==d&&x.classList.remove("drop"));d.classList.add("drop")});
 document.addEventListener("drop",async e=>{
   if(!S.dragId) return; const d=e.target.closest("[data-day]"); if(!d) return; e.preventDefault();
   const id=S.dragId; const day=d.dataset.day; const p=S.posts.get(id); d.classList.remove("drop");
-  if(!p||p.fecha===day) return;
+  if(!p) return;
+  if(day&&(e.altKey||e.ctrlKey||e.metaKey)){const prev=S.clip;S.clip=id;await pastePost(day);S.clip=prev;return}
+  if(p.fecha===day) return;
   if(day) {await save(id,{fecha:day,sinFecha:false}); toast(`Movida al ${fmtDia(day,true)}`)}
   else {await save(id,{fecha:"",sinFecha:true,fechaPropuesta:p.fecha||p.fechaPropuesta}); toast("Movida a Por asignar fecha")}
 });
