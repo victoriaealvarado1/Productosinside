@@ -629,7 +629,7 @@ function renderCal(){
       <div><span class="sd st-cam" style="width:9px;height:9px"></span>Punto rojo: el cliente pidió cambios</div>
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
-  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega · <kbd>Supr</kbd> elimina</p>`:""}<div class="layout">${main}${side}</div>`;
+  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega · <kbd>Supr</kbd> elimina · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}<div class="layout">${main}${side}</div>`;
 }
 function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes</h3><p>Cambia de mes o limpia los filtros para ver más.</p></div>`}
 
@@ -1084,7 +1084,7 @@ async function doAct(a){
   if(a==="duplicar"){const id=newId(p);const c={...p,id,estado:"Sin iniciar",cambiosPendientes:false,copy:p.copy,fuente:`Duplicada de ${p.id}`,creado:new Date().toISOString()};await write(id,c,true);toast("Duplicada");openPost(id);return}
   if(a==="borrar"){S.confirmDel=true;renderSheet();return}
   if(a==="borrarNo"){S.confirmDel=false;renderSheet();return}
-  if(a==="borrarSi"){try{await S.db.doc("posts/"+p.id).delete();S.posts.delete(p.id);closeSheet();render();toast("Publicación eliminada")}catch(e){toast("No se pudo eliminar. Revisa tu conexión.")}}
+  if(a==="borrarSi"){closeSheet();await deletePost(p.id)}
 }
 function newId(p){return `${(p.region||"cen").slice(0,3).toLowerCase()}-n-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`}
 /* ============ copiar y pegar publicaciones */
@@ -1129,13 +1129,29 @@ async function deletePost(id){
   const p=S.posts.get(id); if(!p||!canEdit()) return;
   try{await S.db.doc("posts/"+id).delete()}catch(e){toast("No se pudo eliminar. Revisa tu conexión.");return}
   S.posts.delete(id); if(S.sel===id) S.sel=null; if(S.clip===id) S.clip=null; render();
-  const r=$("#toastRoot"); r.innerHTML=`<div class="toast" role="status">Publicación eliminada<button class="undo" data-undodel>Deshacer</button></div>`;
-  S.lastDeleted=p; clearTimeout(toast.t); toast.t=setTimeout(()=>{r.innerHTML="";S.lastDeleted=null},7000);
+  pushUndo({type:"delete",doc:p,label:"la eliminación"}); toastUndo("Publicación eliminada");
 }
-document.addEventListener("click",async e=>{
-  if(!e.target.closest("[data-undodel]")||!S.lastDeleted) return;
-  const p=S.lastDeleted; S.lastDeleted=null; $("#toastRoot").innerHTML="";
-  const {actualizado,actualizadoPor,...doc}=p; await write(p.id,doc,true); S.sel=p.id; render(); toast("Publicación recuperada");
+/* ============ deshacer (Ctrl/Cmd + Z) */
+function undoLabel(ch){const k=Object.keys(ch);return k.includes("fecha")?"el cambio de fecha":k.includes("estado")?"el cambio de estado":k.includes("region")?"el cambio de región":k.includes("imagenes")?"el cambio de arte":k.includes("hora")?"el cambio de hora":"la edición"}
+function pushUndo(op){if(!canEdit()) return;(S.undo=S.undo||[]).push(op);if(S.undo.length>50) S.undo.shift()}
+function toastUndo(msg){const r=$("#toastRoot");r.innerHTML=`<div class="toast" role="status">${esc(msg)}<button class="undo" data-undo>Deshacer</button></div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>r.innerHTML="",7000)}
+async function undoLast(){
+  const op=(S.undo||[]).pop(); if(!op){toast("No hay nada que deshacer");return}
+  S.undoing=true;
+  try{
+    if(op.type==="edit"){ if(!S.posts.has(op.id)){toast("Esa publicación ya no existe");return} await save(op.id,op.prev); S.sel=op.id; }
+    else if(op.type==="create"){ if(S.posts.has(op.id)){await S.db.doc("posts/"+op.id).delete(); S.posts.delete(op.id); if(S.openId===op.id) closeSheet(); if(S.sel===op.id) S.sel=null; if(S.clip===op.id) S.clip=null} }
+    else if(op.type==="delete"){ const {actualizado,actualizadoPor,...doc}=op.doc; await write(doc.id,doc,true); S.sel=doc.id; }
+    render(); if(S.openId) renderSheet();
+    toast(`Deshecho: ${op.label}`);
+  }catch(e){toast("No se pudo deshacer. Revisa tu conexión.")}
+  finally{S.undoing=false}
+}
+document.addEventListener("click",e=>{if(e.target.closest("[data-undo]")){$("#toastRoot").innerHTML="";undoLast()}});
+document.addEventListener("keydown",e=>{
+  if(!(e.ctrlKey||e.metaKey)||e.shiftKey||e.key.toLowerCase()!=="z"||!canEdit()) return;
+  if(e.target.closest("input,textarea,select,[contenteditable]")) return; // dentro de un campo, Ctrl+Z deshace el texto
+  e.preventDefault(); undoLast();
 });
 document.addEventListener("keydown",e=>{
   if(S.openId||!S.sel||!canEdit()||e.target.closest("input,textarea,select,[contenteditable]")) return;
@@ -1173,12 +1189,14 @@ async function save(id,patch){
   const cur=S.posts.get(id); if(!cur) return;
   const changed={}; for(const k in patch) if(JSON.stringify(cur[k])!==JSON.stringify(patch[k])) changed[k]=patch[k];
   if(!Object.keys(changed).length) return;
+  if(!S.undoing){const prev={};for(const k in changed) prev[k]=cur[k]===undefined?null:cur[k];pushUndo({type:"edit",id,prev,label:undoLabel(changed)})}
   changed.actualizado=new Date().toISOString(); if(S.myId) changed.actualizadoPor=S.myId;
   S.posts.set(id,{...cur,...changed}); render(); if(S.openId===id) renderSheet();
   try{await enqueue(id,()=>S.db.doc("posts/"+id).update(changed))}
   catch(e){S.posts.set(id,cur);render();if(S.openId===id) renderSheet();toast(e&&e.code==="invalid_argument"?"No tienes permiso para editar esta publicación.":"No se guardó el cambio. Revisa tu conexión e inténtalo otra vez.")}
 }
 async function write(id,doc,create){
+  if(!S.undoing) pushUndo({type:"create",id,label:"la creación"});
   S.posts.set(id,doc); render();
   try{await enqueue(id,()=>S.db.doc("posts/"+id).set(doc))}catch(e){S.posts.delete(id);render();toast(e&&e.code==="quota_exceeded"?"Se llenó el espacio de la base de datos.":"No se pudo crear la publicación.")}
 }
