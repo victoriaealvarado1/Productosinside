@@ -114,6 +114,7 @@ main{padding-block:16px 40px}
 .clipbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--radius);padding:8px 12px;margin-bottom:12px;font-size:13px}
 .clipbar b{font-weight:700}
 .clipbar .sp{flex:1}
+.clipbar select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
 .clipbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
 .pc.clip{outline:2px dashed var(--accent);outline-offset:1px}
 .pc.sel{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
@@ -140,6 +141,7 @@ main{padding-block:16px 40px}
 table.list tr.cs-pub td{background:var(--pub-bg)} table.list tr.cs-env td{background:var(--pend-bg)}
 .legend .cs{width:14px;height:10px;border-radius:3px;border:1px solid var(--line-strong);background:var(--surface)}
 .legend .cs.pub{background:var(--pub-bg);border-color:var(--pub-line)} .legend .cs.env{background:var(--pend-bg);border-color:var(--pend-line)}
+.chip[data-treg][aria-pressed="true"]{background:var(--rc);border-color:var(--rc);color:#fff}
 .fmts{display:flex;flex-wrap:wrap;gap:6px}
 .fmts .chip{font-size:13px;padding:5px 12px}
 .fmts .chip .n{font:600 10px var(--f-mono);opacity:.7;margin-left:4px}
@@ -969,7 +971,8 @@ function tabBody(p,cms){
       ${p.serie?fieldRO("Serie",p.serie):""}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.copy?fieldRO("Copy",p.copy,true):""}
       ${p.cta?fieldRO("CTA",p.cta):""}${p.fase?fieldRO("Fase de la promo",p.fase):""}${p.legal&&!/^\(mismo/.test(p.legal)?fieldRO("Legal",p.legal,true):""}</div>`;
   }
-  const paisesCtl=canEdit()?`<div class="f wide"><span class="lb">Países donde sale</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-tpais="${c}" aria-pressed="${p.paises.includes(c)}" title="${PAIS[c]}">${c} · ${PAIS[c]}</button>`).join("")}</div></div>`:fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true);
+  const regionCtl=canEdit()?`<div class="f wide"><span class="lb">Región</span><div class="chips">${REGIONES.map(x=>`<button class="chip" data-treg="${x.id}" aria-pressed="${p.region===x.id}" style="--rc:var(${x.var})">${x.nombre}</button>`).join("")}</div><span class="hint">Al cambiar de región la pieza sale en todos sus países; luego ajusta abajo.</span></div>`:"";
+  const paisesCtl=regionCtl+(canEdit()?`<div class="f wide"><span class="lb">Países donde sale</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-tpais="${c}" aria-pressed="${p.paises.includes(c)}" title="${PAIS[c]}">${c} · ${PAIS[c]}</button>`).join("")}</div></div>`:fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true));
   const linkable=canEdit()&&p.origen!=="parrilla"&&p.tipo!=="promo"&&!p.campanaParrilla?[...S.posts.values()].filter(x=>x.origen==="parrilla"&&!x.fecha&&x.region===p.region).sort((a,b)=>(a.fechaPropuesta||"").localeCompare(b.fechaPropuesta||"")):[];
   const linkBox=p.vinculo==="auto"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Headline, idea y CTA vienen de la parrilla de ${esc(region(p.region).corto)} (cruce automático por fecha y campaña: ${esc(p.campanaParrilla)}). Revisa que correspondan al arte.</p>`
     :p.vinculo==="manual"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Vinculada a la pieza de la parrilla «${esc(p.campanaParrilla)} · ${esc(p.serie)}».</p>`
@@ -1011,6 +1014,7 @@ document.addEventListener("click",async e=>{
   const pv=e.target.closest("[data-pv]"); if(pv){const p=S.posts.get(S.openId);const n=(p.imagenes||[]).length;S.pv.slide=Math.max(0,Math.min(n-1,S.pv.slide+ +pv.dataset.pv));renderSheet();return}
   if(e.target.closest("[data-more]")){S.pv.full=true;renderSheet();return}
   if(e.target.closest("[data-play]")){S.pv.playing?stopPlay():startPlay();renderSheet();return}
+  const tr=e.target.closest("[data-treg]"); if(tr){const p=S.posts.get(S.openId);const nr=tr.dataset.treg;if(!p||p.region===nr) return;await save(p.id,{region:nr,paises:[...region(nr).paises]});toast(`Ahora va a ${region(nr).nombre}`);return}
   const tp=e.target.closest("[data-tpais]"); if(tp){const p=S.posts.get(S.openId);const c=tp.dataset.tpais;let ps=p.paises.includes(c)?p.paises.filter(x=>x!==c):[...p.paises,c];if(!ps.length){toast("Debe salir en al menos un país");return}ps=region(p.region).paises.filter(x=>ps.includes(x));await save(p.id,{paises:ps});return}
   const mv=e.target.closest("[data-mv]"); if(mv){const p=S.posts.get(S.openId);const k=+mv.dataset.mv;const a=[...p.imagenes];[a[k-1],a[k]]=[a[k],a[k-1]];await save(p.id,{imagenes:a,arteManual:true});return}
   const rm=e.target.closest("[data-rm]"); if(rm){const p=S.posts.get(S.openId);const a=p.imagenes.filter((_,k)=>k!==+rm.dataset.rm);S.rmAsk=null;await save(p.id,{imagenes:a,arteManual:true});toast("Foto borrada de la publicación");return}
@@ -1040,6 +1044,7 @@ document.addEventListener("change",async e=>{
   if(k==="formato"&&v==="Historia"&&S.posts.get(S.openId).tipo==="feed") patch.tipo="historia";
   await save(S.openId,patch);
 });
+document.addEventListener("change",e=>{if(e.target.id==="clipReg") S.clipReg=e.target.value});
 document.addEventListener("change",async e=>{if(e.target.id==="upl"){upload([...e.target.files],$("#uplReplace")?.checked);e.target.value=""}});
 document.addEventListener("change",async e=>{const h=e.target.closest("[data-hora]");if(!h) return;const v=fromHHMM(h.value);await save(h.dataset.hora,{hora:v});toast(v?`Hora: ${v}`:"Hora quitada")});
 document.addEventListener("change",async e=>{
@@ -1088,11 +1093,12 @@ function clipBar(){
   const p=S.posts.get(S.clip); if(!p){S.clip=null;return ""}
   return `<div class="clipbar" role="status"><span>Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}</span>
     <span>Haz clic en un día y presiona <b>Ctrl+V</b>, o toca <b>Pegar</b> en cada día (puedes pegar varias veces), o elige una fecha:</span>
+    <label style="display:flex;align-items:center;gap:6px">Región <select id="clipReg" aria-label="Región de la copia"><option value="">La misma (${esc(region(p.region).corto)})</option>${REGIONES.filter(x=>x.id!==p.region).map(x=>`<option value="${x.id}" ${S.clipReg===x.id?"selected":""}>${x.nombre}</option>`).join("")}</select></label>
     <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(p.fecha||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
 }
 function copyPost(id){
   if(!canEdit()||!S.posts.has(id)) return;
-  S.clip=id; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
+  S.clip=id; S.clipReg=""; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
 }
 async function pastePost(day){
   const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
@@ -1100,7 +1106,8 @@ async function pastePost(day){
   const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",cambiosPendientes:false,creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
   for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo"]) delete c[k];
   if((c.imagenes||[]).length) c.arteManual=true;
-  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
+  if(S.clipReg&&S.clipReg!==src.region){c.region=S.clipReg;c.paises=[...region(S.clipReg).paises]}
+  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${c.region!==src.region?" en "+region(c.region).nombre:""}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
 }
 document.addEventListener("click",e=>{
   const ps=e.target.closest("[data-paste]"); if(ps){e.stopPropagation();pastePost(ps.dataset.paste);return}
