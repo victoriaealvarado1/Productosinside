@@ -116,6 +116,8 @@ main{padding-block:16px 40px}
 .clipbar .sp{flex:1}
 .clipbar select{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
 .clipbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
+.pc.multi{position:relative;border-left-color:transparent}
+.pc.multi::before{content:"";position:absolute;left:-3px;top:-1px;bottom:-1px;width:3px;border-radius:6px 0 0 6px;background:var(--rg)}
 .pc.clip{outline:2px dashed var(--accent);outline-offset:1px}
 .pc.sel{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
 .day.sel{background:color-mix(in srgb,var(--accent) 8%,var(--surface));box-shadow:inset 0 0 0 2px var(--accent)}
@@ -141,7 +143,7 @@ main{padding-block:16px 40px}
 table.list tr.cs-pub td{background:var(--pub-bg)} table.list tr.cs-env td{background:var(--pend-bg)}
 .legend .cs{width:14px;height:10px;border-radius:3px;border:1px solid var(--line-strong);background:var(--surface)}
 .legend .cs.pub{background:var(--pub-bg);border-color:var(--pub-line)} .legend .cs.env{background:var(--pend-bg);border-color:var(--pend-line)}
-.chip[data-treg][aria-pressed="true"]{background:var(--rc);border-color:var(--rc);color:#fff}
+.chip[data-treg][aria-pressed="true"],.chip[data-clipreg][aria-pressed="true"]{background:var(--rc);border-color:var(--rc);color:#fff}
 .fmts{display:flex;flex-wrap:wrap;gap:6px}
 .fmts .chip{font-size:13px;padding:5px 12px}
 .fmts .chip .n{font:600 10px var(--f-mono);opacity:.7;margin-left:4px}
@@ -467,7 +469,13 @@ function toast(msg){const r=$("#toastRoot");r.innerHTML=`<div class="toast" role
 function role(){return S.viewAs||S.role}
 const canEdit=()=>S.mode==="live"&&role()==="inside";
 const canApprove=()=>S.mode==="live"&&(role()==="cliente"||role()==="inside");
-function rv(p){return `var(${region(p.region).var})`}
+function rv(p){return `var(${region(regsOf(p)[0]).var})`}
+const ALL_PAISES=REGIONES.flatMap(r=>r.paises);
+/* una publicación puede ir a varias regiones: las regiones salen de sus países */
+function regsOf(p){const rs=REGIONES.filter(r=>r.paises.some(c=>(p.paises||[]).includes(c))).map(r=>r.id);return rs.length?rs:[p.region||"CENTRO"]}
+function regNames(p,k="nombre"){return regsOf(p).map(id=>region(id)[k]).join(" + ")}
+function whereLabel(p){const rs=regsOf(p);return rs.map(id=>{const r=region(id);const ps=p.paises.filter(c=>r.paises.includes(c));return ps.length===r.paises.length&&ps.length>1?r.corto:ps.join(" ")}).join(" · ")}
+function regStripe(p){const rs=regsOf(p);if(rs.length<2) return "";const n=rs.length;return `--rg:linear-gradient(${rs.map((id,i)=>`var(${region(id).var}) ${i*100/n}% ${(i+1)*100/n}%`).join(",")})`}
 function caption(p){
   if(p.copy&&p.copy.trim()) return {text:p.copy.trim(),prov:false};
   const t=[p.headline,p.cta?`👉 ${p.cta}`:""].filter(Boolean).join("\n\n");
@@ -505,7 +513,7 @@ const FMT_ABBR={"Estático":"POST","Carrusel":"CARR","Reel":"REEL","Historia":"H
 /* ============ filtros */
 function matches(p,opts={}){
   const f=S.f;
-  if(f.region!=="ALL"&&p.region!==f.region) return false;
+  if(f.region!=="ALL"&&!regsOf(p).includes(f.region)) return false;
   if(f.paises.length&&!p.paises.some(c=>f.paises.includes(c))) return false;
   if(!opts.ignoreTipo&&f.tipo!=="ALL"&&p.tipo!==f.tipo) return false;
   if(f.linea!=="ALL"&&p.linea!==f.linea) return false;
@@ -521,7 +529,7 @@ function persistF(){store.set("f",{...S.f,q:""})}
 
 function renderFilters(){
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
-  const counts={}; for(const p of S.posts.values()){counts[p.region]=(counts[p.region]||0)+1}
+  const counts={}; for(const p of S.posts.values()) for(const id of regsOf(p)) counts[id]=(counts[id]||0)+1;
   $("#filters").innerHTML=`
   <div class="fgroup"><span class="flabel">Región</span>
     <div class="seg" role="group" aria-label="Región">
@@ -584,8 +592,8 @@ function chip(p,opts={}){
   const im=p.imagenes&&p.imagenes[0];
   const story=!isFeed(p)&&isStory(p);
   const drag=canEdit()?`draggable="true"`:"";
-  const where=p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" ");
-  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""} ${S.sel===p.id?"sel":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
+  const where=whereLabel(p); const stripe=regStripe(p);
+  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""} ${S.sel===p.id?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
     <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
@@ -640,7 +648,7 @@ function renderList(){
   if(!vs.length){$("#view").innerHTML=emptyMonth();return}
   $("#view").innerHTML=`${clipBar()}<div class="tablewrap"><table class="list"><thead><tr><th>Fecha</th><th>Hora</th><th>Región · países</th><th>Tipo</th><th>Formato</th><th>Campaña</th><th>Headline</th><th>Estado</th><th>Arte</th><th>Copy</th></tr></thead><tbody>
   ${vs.map(p=>`<tr class="${colorC(p.estado)}" data-open="${esc(p.id)}"><td class="mono">${p.fecha?fmtDia(p.fecha):`<span style="color:var(--ink-3)">Por asignar</span>`}</td><td class="mono">${canEdit()&&p.fecha?`<input class="qhora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300" aria-label="Hora de publicación">`:esc(p.hora||"—")}</td>
-  <td><span class="rtag" style="--rc:${rv(p)}"><i></i>${region(p.region).corto}</span><div style="color:var(--ink-3);font-size:12px">${esc(p.paises.join(" · "))}</div></td>
+  <td><span class="rtag" style="--rc:${rv(p)}"><i></i>${esc(regNames(p,"corto"))}</span><div style="color:var(--ink-3);font-size:12px">${esc(p.paises.join(" · "))}</div></td>
   <td>${TIPOS[p.tipo]||p.tipo}</td><td>${esc(fmtLabel(p))}</td><td>${esc(p.campana)}${p.serie?`<div style="color:var(--ink-3);font-size:12px">${esc(p.serie)}</div>`:""}</td>
   <td style="max-width:280px">${esc(p.headline||"—")}</td><td><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span></td>
   <td>${p.imagenes&&p.imagenes.length?"✓":"—"}</td><td>${p.copy?"✓":"—"}</td></tr>`).join("")}</tbody></table></div>`;
@@ -750,7 +758,7 @@ function renderGaps(){
   const left=`<section class="gaps"><h2 class="vh">Lo que falta</h2><p class="sub">${MESES[m]} · con los filtros de arriba (región, país, tipo).</p>
    ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button> <span class="hint">Lee las imágenes pegadas en las casillas VIEW del planning.</span></p>`:""}
    ${rows.map(({g,items})=>`<details class="gap" ${openGaps.has(g.k)?"open":""} data-gap="${g.k}"><summary><span class="gn ${items.length?"":"zero"}">${items.length}</span><span><b>${g.t}</b>${g.d?`<small>${g.d}</small>`:""}</span></summary>
-     ${items.length?`<ul>${items.map(p=>`<li><button class="gi" data-open="${esc(p.id)}" style="--rc:${rv(p)}"><span class="mono">${p.fecha?fmtDia(p.fecha):"Sin fecha"}</span><span class="rtag"><i></i>${esc(p.paises.length===region(p.region).paises.length&&p.paises.length>1?region(p.region).corto:p.paises.join(" "))}</span><span class="gc">${esc(p.campana||"—")} · ${esc(fmtLabel(p))}</span><span class="gx">${esc(g.x?g.x(p)||"":"")}</span></button></li>`).join("")}</ul>`:`<p class="sub" style="padding:0 12px 10px">Nada pendiente.</p>`}</details>`).join("")}</section>`;
+     ${items.length?`<ul>${items.map(p=>`<li><button class="gi" data-open="${esc(p.id)}" style="--rc:${rv(p)}"><span class="mono">${p.fecha?fmtDia(p.fecha):"Sin fecha"}</span><span class="rtag"><i></i>${esc(whereLabel(p))}</span><span class="gc">${esc(p.campana||"—")} · ${esc(fmtLabel(p))}</span><span class="gx">${esc(g.x?g.x(p)||"":"")}</span></button></li>`).join("")}</ul>`:`<p class="sub" style="padding:0 12px 10px">Nada pendiente.</p>`}</details>`).join("")}</section>`;
   const info=INFO;
   const regs=S.f.region!=="ALL"?[S.f.region]:REGIONES.map(r=>r.id);
   const right=!info?`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">Cargando…</p></section>`:`<section class="clientinfo"><h2 class="vh">Lo que dice el cliente</h2><p class="sub">${esc(info.titulo)} · presentación «${esc(info.presentacion)}»</p>
@@ -824,7 +832,7 @@ async function importXlsx(file){
 function preview(p){
   const imgs=(p.imagenes||[]).map(imgSrc);
   const handle=`payless${p.paises.length===1?(p.paises[0]==="RD"?"rd":"."+p.paises[0].toLowerCase()):""}`;
-  const loc=p.paises.length===1?PAIS[p.paises[0]]:region(p.region).nombre;
+  const loc=p.paises.length===1?PAIS[p.paises[0]]:regNames(p);
   const cap=caption(p);
   const i=Math.min(S.pv.slide,Math.max(0,imgs.length-1));
   const F=pvFmt(p);
@@ -895,7 +903,7 @@ function renderSheet(){
     </div>
     <div class="right">
       <div class="sheethead"><div style="min-width:0">
-        <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${r.nombre}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(fmtLabel(p))}</span></div>
+        <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${esc(regNames(p))}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(fmtLabel(p))}</span></div>
         <h2>${esc(p.headline||p.campana||"Publicación")}</h2>
         <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
       </div><button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div>
@@ -971,8 +979,9 @@ function tabBody(p,cms){
       ${p.serie?fieldRO("Serie",p.serie):""}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.copy?fieldRO("Copy",p.copy,true):""}
       ${p.cta?fieldRO("CTA",p.cta):""}${p.fase?fieldRO("Fase de la promo",p.fase):""}${p.legal&&!/^\(mismo/.test(p.legal)?fieldRO("Legal",p.legal,true):""}</div>`;
   }
-  const regionCtl=canEdit()?`<div class="f wide"><span class="lb">Región</span><div class="chips">${REGIONES.map(x=>`<button class="chip" data-treg="${x.id}" aria-pressed="${p.region===x.id}" style="--rc:var(${x.var})">${x.nombre}</button>`).join("")}</div><span class="hint">Al cambiar de región la pieza sale en todos sus países; luego ajusta abajo.</span></div>`:"";
-  const paisesCtl=regionCtl+(canEdit()?`<div class="f wide"><span class="lb">Países donde sale</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-tpais="${c}" aria-pressed="${p.paises.includes(c)}" title="${PAIS[c]}">${c} · ${PAIS[c]}</button>`).join("")}</div></div>`:fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true));
+  const rsel=regsOf(p);
+  const regionCtl=canEdit()?`<div class="f wide"><span class="lb">Regiones</span><div class="chips">${REGIONES.map(x=>`<button class="chip" data-treg="${x.id}" aria-pressed="${rsel.includes(x.id)}" style="--rc:var(${x.var})">${x.nombre}</button>`).join("")}</div><span class="hint">Puedes marcar varias regiones: al activar una, la pieza sale en todos sus países; luego ajusta abajo.</span></div>`:"";
+  const paisesCtl=regionCtl+(canEdit()?`<div class="f wide"><span class="lb">Países donde sale</span><div class="chips">${rsel.map(id=>region(id).paises.map(c=>`<button class="chip" data-tpais="${c}" aria-pressed="${p.paises.includes(c)}" title="${PAIS[c]}">${c} · ${PAIS[c]}</button>`).join("")).join(`<span style="width:100%;height:0"></span>`)}</div></div>`:fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true));
   const linkable=canEdit()&&p.origen!=="parrilla"&&p.tipo!=="promo"&&!p.campanaParrilla?[...S.posts.values()].filter(x=>x.origen==="parrilla"&&!x.fecha&&x.region===p.region).sort((a,b)=>(a.fechaPropuesta||"").localeCompare(b.fechaPropuesta||"")):[];
   const linkBox=p.vinculo==="auto"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Headline, idea y CTA vienen de la parrilla de ${esc(region(p.region).corto)} (cruce automático por fecha y campaña: ${esc(p.campanaParrilla)}). Revisa que correspondan al arte.</p>`
     :p.vinculo==="manual"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Vinculada a la pieza de la parrilla «${esc(p.campanaParrilla)} · ${esc(p.serie)}».</p>`
@@ -1014,8 +1023,12 @@ document.addEventListener("click",async e=>{
   const pv=e.target.closest("[data-pv]"); if(pv){const p=S.posts.get(S.openId);const n=(p.imagenes||[]).length;S.pv.slide=Math.max(0,Math.min(n-1,S.pv.slide+ +pv.dataset.pv));renderSheet();return}
   if(e.target.closest("[data-more]")){S.pv.full=true;renderSheet();return}
   if(e.target.closest("[data-play]")){S.pv.playing?stopPlay():startPlay();renderSheet();return}
-  const tr=e.target.closest("[data-treg]"); if(tr){const p=S.posts.get(S.openId);const nr=tr.dataset.treg;if(!p||p.region===nr) return;await save(p.id,{region:nr,paises:[...region(nr).paises]});toast(`Ahora va a ${region(nr).nombre}`);return}
-  const tp=e.target.closest("[data-tpais]"); if(tp){const p=S.posts.get(S.openId);const c=tp.dataset.tpais;let ps=p.paises.includes(c)?p.paises.filter(x=>x!==c):[...p.paises,c];if(!ps.length){toast("Debe salir en al menos un país");return}ps=region(p.region).paises.filter(x=>ps.includes(x));await save(p.id,{paises:ps});return}
+  const tr=e.target.closest("[data-treg]"); if(tr){const p=S.posts.get(S.openId);if(!p) return;const r=region(tr.dataset.treg);const on=regsOf(p).includes(r.id);
+    let ps=on?p.paises.filter(c=>!r.paises.includes(c)):[...p.paises,...r.paises];
+    if(!ps.length){toast("Debe ir al menos a una región");return}
+    ps=ALL_PAISES.filter(c=>ps.includes(c));const np={...p,paises:ps};
+    await save(p.id,{paises:ps,region:regsOf(np)[0]});toast(on?`Quitada ${r.nombre}`:`Agregada ${r.nombre}`);return}
+  const tp=e.target.closest("[data-tpais]"); if(tp){const p=S.posts.get(S.openId);const c=tp.dataset.tpais;let ps=p.paises.includes(c)?p.paises.filter(x=>x!==c):[...p.paises,c];if(!ps.length){toast("Debe salir en al menos un país");return}ps=ALL_PAISES.filter(x=>ps.includes(x));await save(p.id,{paises:ps,region:regsOf({...p,paises:ps})[0]});return}
   const mv=e.target.closest("[data-mv]"); if(mv){const p=S.posts.get(S.openId);const k=+mv.dataset.mv;const a=[...p.imagenes];[a[k-1],a[k]]=[a[k],a[k-1]];await save(p.id,{imagenes:a,arteManual:true});return}
   const rm=e.target.closest("[data-rm]"); if(rm){const p=S.posts.get(S.openId);const a=p.imagenes.filter((_,k)=>k!==+rm.dataset.rm);S.rmAsk=null;await save(p.id,{imagenes:a,arteManual:true});toast("Foto borrada de la publicación");return}
   const act=e.target.closest("[data-act]"); if(act) doAct(act.dataset.act);
@@ -1044,7 +1057,7 @@ document.addEventListener("change",async e=>{
   if(k==="formato"&&v==="Historia"&&S.posts.get(S.openId).tipo==="feed") patch.tipo="historia";
   await save(S.openId,patch);
 });
-document.addEventListener("change",e=>{if(e.target.id==="clipReg") S.clipReg=e.target.value});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-clipreg]");if(!b) return;const p=S.posts.get(S.clip);if(!p) return;let a=[...clipRegs(p)];const id=b.dataset.clipreg;a=a.includes(id)?a.filter(x=>x!==id):[...a,id];if(!a.length){toast("Deja al menos una región");return}S.clipRegs=REGIONES.map(r=>r.id).filter(x=>a.includes(x));renderView()});
 document.addEventListener("change",async e=>{if(e.target.id==="upl"){upload([...e.target.files],$("#uplReplace")?.checked);e.target.value=""}});
 document.addEventListener("change",async e=>{const h=e.target.closest("[data-hora]");if(!h) return;const v=fromHHMM(h.value);await save(h.dataset.hora,{hora:v});toast(v?`Hora: ${v}`:"Hora quitada")});
 document.addEventListener("change",async e=>{
@@ -1093,12 +1106,13 @@ function clipBar(){
   const p=S.posts.get(S.clip); if(!p){S.clip=null;return ""}
   return `<div class="clipbar" role="status"><span>Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}</span>
     <span>Haz clic en un día y presiona <b>Ctrl+V</b>, o toca <b>Pegar</b> en cada día (puedes pegar varias veces), o elige una fecha:</span>
-    <label style="display:flex;align-items:center;gap:6px">Región <select id="clipReg" aria-label="Región de la copia"><option value="">La misma (${esc(region(p.region).corto)})</option>${REGIONES.filter(x=>x.id!==p.region).map(x=>`<option value="${x.id}" ${S.clipReg===x.id?"selected":""}>${x.nombre}</option>`).join("")}</select></label>
+    <span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">Regiones <span class="chips">${REGIONES.map(x=>`<button class="chip" data-clipreg="${x.id}" aria-pressed="${clipRegs(p).includes(x.id)}" style="--rc:var(${x.var})">${x.corto}</button>`).join("")}</span></span>
     <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(p.fecha||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
 }
+function clipRegs(p){return S.clipRegs&&S.clipRegs.length?S.clipRegs:regsOf(p)}
 function copyPost(id){
   if(!canEdit()||!S.posts.has(id)) return;
-  S.clip=id; S.clipReg=""; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
+  S.clip=id; S.clipRegs=null; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
 }
 async function pastePost(day){
   const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
@@ -1106,8 +1120,9 @@ async function pastePost(day){
   const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",cambiosPendientes:false,creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
   for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo"]) delete c[k];
   if((c.imagenes||[]).length) c.arteManual=true;
-  if(S.clipReg&&S.clipReg!==src.region){c.region=S.clipReg;c.paises=[...region(S.clipReg).paises]}
-  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${c.region!==src.region?" en "+region(c.region).nombre:""}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
+  const want=clipRegs(src), have=regsOf(src);
+  if(want.join()!==have.join()){c.paises=want.flatMap(id=>have.includes(id)?region(id).paises.filter(x=>src.paises.includes(x)):region(id).paises);c.paises=ALL_PAISES.filter(x=>c.paises.includes(x));c.region=regsOf(c)[0]}
+  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${regNames(c)!==regNames(src)?" en "+regNames(c):""}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
 }
 document.addEventListener("click",e=>{
   const ps=e.target.closest("[data-paste]"); if(ps){e.stopPropagation();pastePost(ps.dataset.paste);return}
