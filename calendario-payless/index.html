@@ -369,6 +369,7 @@ table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color
 .drop-zone.over{border-color:var(--accent);background:var(--accent-soft)}
 .src{margin-top:18px;font-size:12px;color:var(--ink-3)}
 .confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px;border-radius:8px;background:var(--bad-soft);margin-top:10px}
+.toast .undo{margin-left:12px;border:0;background:transparent;color:var(--accent);font:700 13px var(--f-body);text-decoration:underline;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;z-index:80;box-shadow:var(--shadow)}
 .empty{padding:40px 20px;text-align:center;color:var(--ink-2);background:var(--surface);border:1px dashed var(--line-strong);border-radius:var(--radius)}
 .empty h3{font:700 18px var(--f-display);margin:0 0 6px;color:var(--ink)}
@@ -626,7 +627,7 @@ function renderCal(){
       <div><span class="sd st-cam" style="width:9px;height:9px"></span>Punto rojo: el cliente pidió cambios</div>
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
-  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega</p>`:""}<div class="layout">${main}${side}</div>`;
+  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega · <kbd>Supr</kbd> elimina</p>`:""}<div class="layout">${main}${side}</div>`;
 }
 function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes</h3><p>Cambia de mes o limpia los filtros para ver más.</p></div>`}
 
@@ -1116,6 +1117,23 @@ function selectPost(id,el){
 }
 function selectDay(day){S.selDay=day;markDay()}
 function markDay(){document.querySelectorAll("#view .day.sel").forEach(x=>x.classList.remove("sel"));if(S.selDay) document.querySelector(`#view .day[data-day="${S.selDay}"]`)?.classList.add("sel")}
+/* Supr / Delete (o Backspace) elimina la publicación seleccionada, con Deshacer */
+async function deletePost(id){
+  const p=S.posts.get(id); if(!p||!canEdit()) return;
+  try{await S.db.doc("posts/"+id).delete()}catch(e){toast("No se pudo eliminar. Revisa tu conexión.");return}
+  S.posts.delete(id); if(S.sel===id) S.sel=null; if(S.clip===id) S.clip=null; render();
+  const r=$("#toastRoot"); r.innerHTML=`<div class="toast" role="status">Publicación eliminada<button class="undo" data-undodel>Deshacer</button></div>`;
+  S.lastDeleted=p; clearTimeout(toast.t); toast.t=setTimeout(()=>{r.innerHTML="";S.lastDeleted=null},7000);
+}
+document.addEventListener("click",async e=>{
+  if(!e.target.closest("[data-undodel]")||!S.lastDeleted) return;
+  const p=S.lastDeleted; S.lastDeleted=null; $("#toastRoot").innerHTML="";
+  const {actualizado,actualizadoPor,...doc}=p; await write(p.id,doc,true); S.sel=p.id; render(); toast("Publicación recuperada");
+});
+document.addEventListener("keydown",e=>{
+  if(S.openId||!S.sel||!canEdit()||e.target.closest("input,textarea,select,[contenteditable]")) return;
+  if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();deletePost(S.sel)}
+});
 document.addEventListener("dblclick",e=>{const c=e.target.closest("#view .pc[data-open]");if(c&&selectMode()) openPost(c.dataset.open)});
 document.addEventListener("keydown",e=>{
   if(S.openId||!S.sel||e.target.closest("input,textarea,select")) return;
