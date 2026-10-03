@@ -118,6 +118,8 @@ main{padding-block:16px 40px}
 .clipbar input{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit}
 .pc.multi{position:relative;border-left-color:transparent}
 .pc.multi::before{content:"";position:absolute;left:-3px;top:-1px;bottom:-1px;width:3px;border-radius:6px 0 0 6px;background:var(--rg)}
+.selbar{position:fixed;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;padding:6px 8px 6px 16px;box-shadow:var(--shadow);z-index:70;font-size:13px}
+.selbar kbd{font:600 10px var(--f-mono);opacity:.7;margin-left:4px}
 .pc.clip{outline:2px dashed var(--accent);outline-offset:1px}
 .pc.sel{box-shadow:0 0 0 2px var(--ink);border-color:var(--ink)}
 .day.sel{background:color-mix(in srgb,var(--accent) 8%,var(--surface));box-shadow:inset 0 0 0 2px var(--accent)}
@@ -438,7 +440,7 @@ const S={
   db:null, assets:null, user:null,
   month:null,
   f:{region:"ALL",paises:[],tipo:"ALL",linea:"ALL",estado:"ALL",q:"",view:"cal",gridPais:"GT",gridSize:"phone",onlyArt:false,desde:"2026-10-01",hasta:"2026-10-10"},
-  openId:null, openTab:"info", pv:{slide:0}, dragId:null, clip:null, sel:null, selDay:null,
+  openId:null, openTab:"info", pv:{slide:0}, dragId:null, clip:null, sel:null, sels:new Set(), selDay:null, group:null,
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
@@ -595,7 +597,7 @@ function chip(p,opts={}){
   const story=!isFeed(p)&&isStory(p);
   const drag=canEdit()?`draggable="true"`:"";
   const where=whereLabel(p); const stripe=regStripe(p);
-  return `<button class="pc ${colorC(p.estado)} ${S.clip===p.id?"clip":""} ${S.sel===p.id?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
+  return `<button class="pc ${colorC(p.estado)} ${(S.clip||[]).includes(p.id)?"clip":""} ${S.sels&&S.sels.has(p.id)?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
     <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
     <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
@@ -622,7 +624,7 @@ function renderCal(){
     const LIM=4;
     main=`<div class="cal"><div class="cal-head">${DOW.map(d=>`<div>${d}</div>`).join("")}</div><div class="cal-body">${monthDays().map(d=>{
       const k=iso(d); const ps=byDay[k]||[]; const out=d.getMonth()!==m; const show=expanded.has(k)?ps:ps.slice(0,LIM);
-      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""} ${S.selDay===k?"sel":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()&&S.clip&&S.posts.has(S.clip)?`<button class="dpaste" data-paste="${k}" title="Pegar la publicación copiada el ${fmtDia(k,true)}">Pegar</button>`:""}${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
+      return `<div class="day ${out?"out":""} ${k===todayISO?"today":""} ${S.selDay===k?"sel":""}" data-day="${k}"><div class="dhead"><span class="dnum">${d.getDate()}</span>${canEdit()&&clipIds().length?`<button class="dpaste" data-paste="${k}" title="Pegar la publicación copiada el ${fmtDia(k,true)}">Pegar</button>`:""}${canEdit()?`<button class="dadd" data-new="${k}" aria-label="Nueva publicación el ${fmtDia(k,true)}">＋</button>`:""}</div>
       ${show.map(p=>chip(p)).join("")}${ps.length>LIM?`<button class="more" data-expand="${k}">${expanded.has(k)?"Ver menos":`+${ps.length-LIM} más`}</button>`:""}</div>`}).join("")}</div></div>`;
   }
   const side=`<aside class="side">
@@ -640,7 +642,7 @@ function renderCal(){
       <div><span class="sd st-cam" style="width:9px;height:9px"></span>Punto rojo: el cliente pidió cambios</div>
       <div style="margin-top:4px;color:var(--ink-3)">Las historias llevan aro naranja. POST, CARR, REEL, HIST y PORT indican los formatos; una pieza puede salir en varios.</div>
     </div></section></aside>`;
-  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona una publicación · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega · <kbd>Supr</kbd> elimina · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}<div class="layout">${main}${side}</div>`;
+  $("#view").innerHTML=`${clipBar()}${selectMode()&&!S.clip?`<p class="selhint"><b>Clic</b> selecciona · <b>Ctrl/Shift + clic</b> suma varias · <kbd>Ctrl</kbd>+<kbd>A</kbd> todas las del día · <b>doble clic</b> la abre · <kbd>Ctrl</kbd>+<kbd>C</kbd> copia · clic en un día y <kbd>Ctrl</kbd>+<kbd>V</kbd> pega · <kbd>Supr</kbd> elimina · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}<div class="layout">${main}${side}</div>`;
 }
 function emptyMonth(){return `<div class="empty"><h3>Sin publicaciones este mes</h3><p>Cambia de mes o limpia los filtros para ver más.</p></div>`}
 
@@ -1010,7 +1012,7 @@ function tabBody(p,cms){
 /* interacción en la hoja */
 document.addEventListener("click",async e=>{
   const pcEl=e.target.closest("#view .pc[data-open]");
-  if(pcEl&&selectMode()&&!S.justDragged){selectPost(pcEl.dataset.open,pcEl);return}
+  if(pcEl&&selectMode()&&!S.justDragged){selectPost(pcEl.dataset.open,pcEl,e.ctrlKey||e.metaKey||e.shiftKey);return}
   const dayEl=e.target.closest("#view .day[data-day]");
   if(dayEl&&selectMode()&&!e.target.closest("button,a,input")){selectDay(dayEl.dataset.day);return}
   const o=e.target.closest("[data-open]"); if(o&&!S.justDragged&&!e.target.closest("input,select,textarea,label")){openPost(o.dataset.open);return}
@@ -1060,7 +1062,7 @@ document.addEventListener("change",async e=>{
   if(k==="formato"&&v==="Historia"&&S.posts.get(S.openId).tipo==="feed") patch.tipo="historia";
   await save(S.openId,patch);
 });
-document.addEventListener("click",e=>{const b=e.target.closest("[data-clipreg]");if(!b) return;const p=S.posts.get(S.clip);if(!p) return;let a=[...clipRegs(p)];const id=b.dataset.clipreg;a=a.includes(id)?a.filter(x=>x!==id):[...a,id];if(!a.length){toast("Deja al menos una región");return}S.clipRegs=REGIONES.map(r=>r.id).filter(x=>a.includes(x));renderView()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-clipreg]");if(!b||!clipIds().length) return;let a=[...(S.clipRegs&&S.clipRegs.length?S.clipRegs:clipUnionRegs())];const id=b.dataset.clipreg;a=a.includes(id)?a.filter(x=>x!==id):[...a,id];if(!a.length){toast("Deja al menos una región");return}S.clipRegs=REGIONES.map(r=>r.id).filter(x=>a.includes(x));renderView()});
 document.addEventListener("change",async e=>{if(e.target.id==="upl"){upload([...e.target.files],$("#uplReplace")?.checked);e.target.value=""}});
 document.addEventListener("change",async e=>{const h=e.target.closest("[data-hora]");if(!h) return;const v=fromHHMM(h.value);await save(h.dataset.hora,{hora:v});toast(v?`Hora: ${v}`:"Hora quitada")});
 document.addEventListener("change",async e=>{
@@ -1103,63 +1105,108 @@ async function doAct(a){
   if(a==="borrarSi"){closeSheet();await deletePost(p.id)}
 }
 function newId(p){return `${(p.region||"cen").slice(0,3).toLowerCase()}-n-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`}
-/* ============ copiar y pegar publicaciones */
+/* ============ copiar y pegar publicaciones (una o varias) */
+function clipIds(){return (S.clip||[]).filter(id=>S.posts.has(id))}
+function clipUnionRegs(){return REGIONES.map(r=>r.id).filter(id=>clipIds().some(x=>regsOf(S.posts.get(x)).includes(id)))}
 function clipBar(){
   if(!canEdit()||!S.clip) return "";
-  const p=S.posts.get(S.clip); if(!p){S.clip=null;return ""}
-  return `<div class="clipbar" role="status"><span>Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}</span>
-    <span>Haz clic en un día y presiona <b>Ctrl+V</b>, o toca <b>Pegar</b> en cada día (puedes pegar varias veces), o elige una fecha:</span>
-    <span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">Regiones <span class="chips">${REGIONES.map(x=>`<button class="chip" data-clipreg="${x.id}" aria-pressed="${clipRegs(p).includes(x.id)}" style="--rc:var(${x.var})">${x.corto}</button>`).join("")}</span></span>
-    <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(p.fecha||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
+  const ids=clipIds(); if(!ids.length){S.clip=null;return ""}
+  const p=S.posts.get(ids[0]); const many=ids.length>1;
+  const shown=S.clipRegs&&S.clipRegs.length?S.clipRegs:clipUnionRegs();
+  const ds=ids.map(id=>S.posts.get(id).fecha).filter(Boolean).sort();
+  return `<div class="clipbar" role="status"><span>${many?`Copiadas: <b>${ids.length} publicaciones</b>${ds.length?` · del ${fmtDia(ds[0])} al ${fmtDia(ds[ds.length-1])}`:""}`:`Copiada: <b>${esc(p.campana||p.headline||"Publicación")}</b> · ${esc(fmtLabel(p))} · ${esc(p.paises.join(" "))}${p.fecha?" · "+fmtDia(p.fecha):""}`}</span>
+    <span>Haz clic en un día y presiona <b>Ctrl+V</b>, o toca <b>Pegar</b> en cada día${many?" (se respeta la separación de días entre ellas, empezando en el día que elijas)":" (puedes pegar varias veces)"}, o elige una fecha:</span>
+    <span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">Regiones <span class="chips">${REGIONES.map(x=>`<button class="chip" data-clipreg="${x.id}" aria-pressed="${shown.includes(x.id)}" style="--rc:var(${x.var})">${x.corto}</button>`).join("")}</span></span>
+    <input type="date" id="clipDate" aria-label="Fecha para pegar" value="${esc(ds[0]||"")}"><button class="btn primary" data-pastedate>Pegar</button><span class="sp"></span><button class="btn ghost" data-clipclear>Terminar</button></div>`;
 }
-function clipRegs(p){return S.clipRegs&&S.clipRegs.length?S.clipRegs:regsOf(p)}
-function copyPost(id){
-  if(!canEdit()||!S.posts.has(id)) return;
-  S.clip=id; S.clipRegs=null; renderView(); toast("Copiada. Haz clic en un día y presiona Ctrl+V.");
+function copyPost(id){copyPosts([id])}
+function copyPosts(ids){
+  ids=ids.filter(id=>S.posts.has(id)); if(!canEdit()||!ids.length) return;
+  S.clip=ids; S.clipRegs=null; renderView(); toast(ids.length>1?`${ids.length} publicaciones copiadas. Haz clic en un día y presiona Ctrl+V.`:"Copiada. Haz clic en un día y presiona Ctrl+V.");
 }
-async function pastePost(day){
-  const src=S.posts.get(S.clip); if(!canEdit()||!src||!day) return;
+const dOf=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=dOf(s);d.setDate(d.getDate()+n);return iso(d)};
+const diffDays=(a,b)=>Math.round((dOf(a)-dOf(b))/864e5);
+function copyOf(src,day){
   const id=newId(src);
   const c={...src,id,origen:"manual",fecha:day,sinFecha:false,estado:"Sin iniciar",cambiosPendientes:false,creado:new Date().toISOString(),fuente:`Copiada de ${src.id}${src.fecha?" ("+fmtDia(src.fecha)+")":""}`};
   for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo"]) delete c[k];
   if((c.imagenes||[]).length) c.arteManual=true;
-  const want=clipRegs(src), have=regsOf(src);
-  if(want.join()!==have.join()){c.paises=want.flatMap(id=>have.includes(id)?region(id).paises.filter(x=>src.paises.includes(x)):region(id).paises);c.paises=ALL_PAISES.filter(x=>c.paises.includes(x));c.region=regsOf(c)[0]}
-  await write(id,c,true); toast(`Pegada el ${fmtDia(day,true)}${regNames(c)!==regNames(src)?" en "+regNames(c):""}${matches(c)?"":" (no se ve con los filtros actuales)"}`);
+  const want=S.clipRegs&&S.clipRegs.length?S.clipRegs:regsOf(src), have=regsOf(src);
+  if(want.join()!==have.join()){c.paises=want.flatMap(r=>have.includes(r)?region(r).paises.filter(x=>src.paises.includes(x)):region(r).paises);c.paises=ALL_PAISES.filter(x=>c.paises.includes(x));c.region=regsOf(c)[0]}
+  return c;
+}
+async function pastePost(day){
+  const ids=clipIds(); if(!canEdit()||!ids.length||!day) return;
+  const srcs=ids.map(id=>S.posts.get(id)); const base=srcs.map(p=>p.fecha).filter(Boolean).sort()[0];
+  const out=srcs.map(src=>copyOf(src,src.fecha&&base?addDays(day,diffDays(src.fecha,base)):day));
+  beginGroup(); try{for(const c of out) await write(c.id,c,true)} finally{endGroup(out.length>1?`el pegado de ${out.length} publicaciones`:"el pegado")}
+  const hidden=out.filter(c=>!matches(c)).length;
+  toast(out.length>1?`${out.length} publicaciones pegadas desde el ${fmtDia(day,true)}${hidden?` (${hidden} no se ven con los filtros actuales)`:""}`
+    :`Pegada el ${fmtDia(day,true)}${regNames(out[0])!==regNames(srcs[0])?" en "+regNames(out[0]):""}${hidden?" (no se ve con los filtros actuales)":""}`);
 }
 document.addEventListener("click",e=>{
   const ps=e.target.closest("[data-paste]"); if(ps){e.stopPropagation();pastePost(ps.dataset.paste);return}
   if(e.target.closest("[data-pastedate]")){const v=$("#clipDate")?.value; if(!v){toast("Elige una fecha");return} pastePost(v);return}
   if(e.target.closest("[data-clipclear]")){S.clip=null;renderView();return}
 },true);
-/* selección: clic selecciona, doble clic abre (solo Inside con mouse) */
+/* selección: clic selecciona, Ctrl/Cmd/Shift + clic suma varias, doble clic abre (solo Inside con mouse) */
 function selectMode(){return canEdit()&&window.matchMedia("(pointer:fine)").matches}
-function selectPost(id,el){
-  S.sel=id; const p=S.posts.get(id); if(p&&p.fecha) S.selDay=p.fecha;
-  document.querySelectorAll("#view .pc.sel").forEach(x=>x.classList.remove("sel"));
-  document.querySelectorAll(`#view .pc[data-open="${CSS.escape(id)}"]`).forEach(x=>x.classList.add("sel"));
-  markDay();
+function selIds(){return [...(S.sels||new Set())].filter(id=>S.posts.has(id))}
+function selectPost(id,el,add){
+  S.sels=S.sels||new Set();
+  if(add){S.sels.has(id)?S.sels.delete(id):S.sels.add(id)} else S.sels=new Set([id]);
+  S.sel=S.sels.has(id)?id:selIds().slice(-1)[0]||null;
+  const p=S.posts.get(id); if(p&&p.fecha&&!add) S.selDay=p.fecha;
+  markSel(); markDay();
 }
+function markSel(){
+  document.querySelectorAll("#view .pc.sel").forEach(x=>x.classList.remove("sel"));
+  for(const id of selIds()) document.querySelectorAll(`#view .pc[data-open="${CSS.escape(id)}"]`).forEach(x=>x.classList.add("sel"));
+  const n=selIds().length; let bar=$("#selBar");
+  if(n<2||!canEdit()){bar&&bar.remove();return}
+  if(!bar){bar=document.createElement("div");bar.id="selBar";bar.className="selbar";document.body.appendChild(bar)}
+  bar.innerHTML=`<b>${n} seleccionadas</b><button class="btn" data-selcopy>Copiar <kbd>Ctrl+C</kbd></button><button class="btn bad" data-seldel>Eliminar <kbd>Supr</kbd></button><button class="btn ghost" data-selclear aria-label="Quitar selección">✕</button>`;
+}
+function clearSel(){S.sels=new Set();S.sel=null;$("#selBar")?.remove()}
+document.addEventListener("click",e=>{
+  if(e.target.closest("[data-selcopy]")){copyPosts(selIds());return}
+  if(e.target.closest("[data-seldel]")){deletePosts(selIds());return}
+  if(e.target.closest("[data-selclear]")){clearSel();markSel();return}
+});
 function selectDay(day){S.selDay=day;markDay()}
 function markDay(){document.querySelectorAll("#view .day.sel").forEach(x=>x.classList.remove("sel"));if(S.selDay) document.querySelector(`#view .day[data-day="${S.selDay}"]`)?.classList.add("sel")}
-/* Supr / Delete (o Backspace) elimina la publicación seleccionada, con Deshacer */
-async function deletePost(id){
-  const p=S.posts.get(id); if(!p||!canEdit()) return;
-  try{await S.db.doc("posts/"+id).delete()}catch(e){toast("No se pudo eliminar. Revisa tu conexión.");return}
-  S.posts.delete(id); if(S.sel===id) S.sel=null; if(S.clip===id) S.clip=null; render();
-  pushUndo({type:"delete",doc:p,label:"la eliminación"}); toastUndo("Publicación eliminada");
+/* Supr / Delete (o Backspace) elimina las publicaciones seleccionadas, con Deshacer */
+async function deletePost(id){return deletePosts([id])}
+async function deletePosts(ids){
+  ids=ids.filter(id=>S.posts.has(id)); if(!ids.length||!canEdit()) return;
+  let ok=0; beginGroup();
+  try{for(const id of ids){const p=S.posts.get(id);try{await S.db.doc("posts/"+id).delete()}catch(e){continue}
+    S.posts.delete(id); ok++; if(S.sels) S.sels.delete(id); if(S.sel===id) S.sel=null; if(S.clip) S.clip=S.clip.filter(x=>x!==id);
+    pushUndo({type:"delete",doc:p,label:"la eliminación"})}}
+  finally{endGroup(ok>1?`la eliminación de ${ok} publicaciones`:"la eliminación")}
+  render();
+  if(!ok){toast("No se pudo eliminar. Revisa tu conexión.");return}
+  toastUndo(ok>1?`${ok} publicaciones eliminadas`:"Publicación eliminada");
 }
 /* ============ deshacer (Ctrl/Cmd + Z) */
 function undoLabel(ch){const k=Object.keys(ch);return k.includes("fecha")?"el cambio de fecha":k.includes("estado")?"el cambio de estado":k.includes("region")?"el cambio de región":k.includes("imagenes")?"el cambio de arte":k.includes("hora")?"el cambio de hora":"la edición"}
-function pushUndo(op){if(!canEdit()) return;(S.undo=S.undo||[]).push(op);if(S.undo.length>50) S.undo.shift()}
+function pushUndo(op){if(!canEdit()) return;if(S.group){S.group.push(op);return}(S.undo=S.undo||[]).push(op);if(S.undo.length>50) S.undo.shift()}
+function beginGroup(){S.group=[]}
+function endGroup(label){const g=S.group;S.group=null;if(!g||!g.length) return;pushUndo(g.length===1?g[0]:{type:"group",ops:g,label})}
 function toastUndo(msg){const r=$("#toastRoot");r.innerHTML=`<div class="toast" role="status">${esc(msg)}<button class="undo" data-undo>Deshacer</button></div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>r.innerHTML="",7000)}
+async function undoOne(op){
+  if(op.type==="edit"){ if(!S.posts.has(op.id)) return; await save(op.id,op.prev); }
+  else if(op.type==="create"){ if(S.posts.has(op.id)){await S.db.doc("posts/"+op.id).delete(); S.posts.delete(op.id); if(S.openId===op.id) closeSheet(); if(S.sels) S.sels.delete(op.id); if(S.sel===op.id) S.sel=null; if(S.clip) S.clip=S.clip.filter(x=>x!==op.id)} }
+  else if(op.type==="delete"){ const {actualizado,actualizadoPor,...doc}=op.doc; await write(doc.id,doc,true); S.sels=S.sels||new Set(); S.sels.add(doc.id); S.sel=doc.id; }
+}
 async function undoLast(){
   const op=(S.undo||[]).pop(); if(!op){toast("No hay nada que deshacer");return}
   S.undoing=true;
   try{
-    if(op.type==="edit"){ if(!S.posts.has(op.id)){toast("Esa publicación ya no existe");return} await save(op.id,op.prev); S.sel=op.id; }
-    else if(op.type==="create"){ if(S.posts.has(op.id)){await S.db.doc("posts/"+op.id).delete(); S.posts.delete(op.id); if(S.openId===op.id) closeSheet(); if(S.sel===op.id) S.sel=null; if(S.clip===op.id) S.clip=null} }
-    else if(op.type==="delete"){ const {actualizado,actualizadoPor,...doc}=op.doc; await write(doc.id,doc,true); S.sel=doc.id; }
+    const ops=op.type==="group"?[...op.ops].reverse():[op];
+    if(op.type==="group") clearSel();
+    for(const o of ops) await undoOne(o);
     render(); if(S.openId) renderSheet();
     toast(`Deshecho: ${op.label}`);
   }catch(e){toast("No se pudo deshacer. Revisa tu conexión.")}
@@ -1172,8 +1219,8 @@ document.addEventListener("keydown",e=>{
   e.preventDefault(); undoLast();
 });
 document.addEventListener("keydown",e=>{
-  if(S.openId||!S.sel||!canEdit()||e.target.closest("input,textarea,select,[contenteditable]")) return;
-  if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();deletePost(S.sel)}
+  if(S.openId||!selIds().length||!canEdit()||e.target.closest("input,textarea,select,[contenteditable]")) return;
+  if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();deletePosts(selIds())}
 });
 document.addEventListener("dblclick",e=>{const c=e.target.closest("#view .pc[data-open]");if(c&&selectMode()) openPost(c.dataset.open)});
 document.addEventListener("keydown",e=>{
@@ -1187,10 +1234,11 @@ document.addEventListener("keydown",e=>{
   if(!(e.ctrlKey||e.metaKey)||e.target.closest("input,textarea,select,[contenteditable]")||!canEdit()) return;
   if(window.getSelection&&String(window.getSelection()).length) return;
   const k=e.key.toLowerCase();
-  if(k==="c"){const id=S.openId||S.sel||hoverPost; if(id){e.preventDefault();copyPost(id)}}
+  if(k==="c"){const ids=S.openId?[S.openId]:selIds().length?selIds():hoverPost?[hoverPost]:[]; if(ids.length){e.preventDefault();copyPosts(ids)}}
+  else if(k==="a"&&!S.openId&&S.f.view==="cal"){const day=S.selDay; const ids=visible().filter(p=>day?p.fecha===day:p.fecha).map(p=>p.id); if(day&&!expanded.has(day)){expanded.add(day);renderView()} if(ids.length){e.preventDefault();S.sels=new Set(ids);S.sel=ids[ids.length-1];markSel()}}
   else if(k==="v"&&S.clip&&!S.openId){const d=S.selDay||hoverDay; if(d){e.preventDefault();pastePost(d)}else toast("Haz clic en un día y vuelve a pegar")}
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!S.openId&&(S.clip||S.sel||S.selDay)){S.clip=null;S.sel=null;S.selDay=null;renderView()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!S.openId&&(S.clip||selIds().length||S.selDay)){S.clip=null;clearSel();S.selDay=null;renderView()}});
 async function createPost(fecha){
   if(!canEdit()) return;
   const reg=S.f.region!=="ALL"?S.f.region:"CENTRO"; const r=region(reg);
@@ -1232,7 +1280,7 @@ document.addEventListener("drop",async e=>{
   if(!S.dragId) return; const d=e.target.closest("[data-day]"); if(!d) return; e.preventDefault();
   const id=S.dragId; const day=d.dataset.day; const p=S.posts.get(id); d.classList.remove("drop");
   if(!p) return;
-  if(day&&(e.altKey||e.ctrlKey||e.metaKey)){const prev=S.clip;S.clip=id;await pastePost(day);S.clip=prev;return}
+  if(day&&(e.altKey||e.ctrlKey||e.metaKey)){const prev=S.clip,pr=S.clipRegs;S.clip=[id];S.clipRegs=null;await pastePost(day);S.clip=prev;S.clipRegs=pr;return}
   if(p.fecha===day) return;
   if(day) {await save(id,{fecha:day,sinFecha:false}); toast(`Movida al ${fmtDia(day,true)}`)}
   else {await save(id,{fecha:"",sinFecha:true,fechaPropuesta:p.fecha||p.fechaPropuesta}); toast("Movida a Por asignar fecha")}
@@ -1252,7 +1300,8 @@ function renderTop(){
   else b.innerHTML="";
 }
 document.addEventListener("click",e=>{if(e.target.closest("#toggleView")){S.viewAs=S.viewAs?null:"cliente";render();if(S.openId) renderSheet()}});
-function renderView(){
+function renderView(){renderViewInner();if(typeof markSel==="function") markSel()}
+function renderViewInner(){
   renderSummary();
   if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando el calendario…</h3><p>Conectando con los datos compartidos.</p></div>`;return}
   if(!S.posts.size){
