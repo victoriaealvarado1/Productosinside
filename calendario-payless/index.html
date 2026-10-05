@@ -656,6 +656,44 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .catm li .iconbtn{width:22px;height:22px;font-size:11px;opacity:.5} .catm li:hover .iconbtn{opacity:1}
 .catadd{display:flex;gap:4px;margin-top:4px} .catadd input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:inherit;font-size:12px;background:var(--bg);color:var(--ink)}
 .catadd .btn.sm{margin-top:0}
+
+.srt{font:700 9px var(--f-mono);color:#7a4fd0;background:color-mix(in srgb,#7a4fd0 12%,transparent);border-radius:3px;padding:0 3px;white-space:nowrap}
+.seriebox{background:color-mix(in srgb,#7a4fd0 6%,var(--surface));border:1px solid color-mix(in srgb,#7a4fd0 30%,var(--line));border-radius:10px;padding:8px 12px;margin-bottom:14px;display:flex;flex-direction:column;gap:8px}
+.seriebox.empty{flex-direction:row;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-3)}
+.seriebox header{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .seriebox header small{color:var(--ink-3);margin-left:auto}
+.sline{list-style:none;margin:0;padding:0;display:flex;gap:6px;overflow-x:auto}
+.sline li{flex:1;min-width:150px}
+.sline button{width:100%;display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:5px 6px;cursor:pointer;font:inherit;color:inherit}
+.sline .ta-th{width:28px;height:28px;border-radius:4px;background:var(--sunk) center/cover no-repeat;display:grid;place-items:center;font-size:11px;color:var(--ink-3)}
+.sline button span{display:flex;flex-direction:column;min-width:0} .sline small{font-size:11px;color:var(--ink-3)} .sline b{font-size:12px}
+.sline li.on button{outline:2px solid #7a4fd0}
+.sline button.cs-env{background:var(--pend-bg)} .sline button.cs-pub{background:var(--pub-bg)} .sline button.cs-done{background:var(--done-bg);color:#fff} .sline button.cs-done small{color:#dff}
+.stbl{width:100%;border-collapse:collapse;font-size:13px} .stbl th{text-align:left;font-size:11px;color:var(--ink-3);text-transform:uppercase;padding:2px 4px} .stbl td{padding:2px 4px}
+.stbl input{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:inherit;background:var(--surface);color:var(--ink);width:100%;box-sizing:border-box}
+.stbl tr.on td{background:color-mix(in srgb,#7a4fd0 8%,transparent)}
+.tile[draggable="true"]{cursor:grab} .tile.dragging{opacity:.35} .tile.fdrop{outline:3px solid var(--accent);outline-offset:-3px}
+.tsr{position:absolute;left:4px;top:4px;font:700 9px var(--f-mono);background:rgba(122,79,208,.9);color:#fff;border-radius:3px;padding:1px 4px}
+.fordbox{background:var(--surface);border:1px dashed var(--line-strong);border-radius:10px;padding:8px 10px;margin:0 0 12px;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.fordbox.on{border-color:var(--accent);background:var(--accent-soft)}
+
+.sumlink{border:0;background:none;font:inherit;color:inherit;cursor:pointer;padding:0;text-decoration:underline dotted;text-underline-offset:3px}
+.sumlink.warn{color:var(--bad)}
+.nbadge{font-style:normal;background:var(--bad);color:#fff;border-radius:999px;padding:1px 6px;margin-left:6px;font-size:10px}
+.dialog.inbox2{width:min(1000px,100%)}
+.ibcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:start}
+.ibcols h4{margin:0 0 8px;font:800 15px var(--f-display);display:flex;gap:8px;align-items:baseline} .ibcols h4 span{font:600 12px var(--f-mono);color:var(--ink-3)}
+.ibcols section{display:flex;flex-direction:column;gap:8px;max-height:65vh;overflow:auto}
+.nlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.nlist button{width:100%;text-align:left;display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:8px 10px;cursor:pointer;font:inherit;color:inherit}
+.nlist button p{flex-basis:100%;margin:0;font-size:13px;white-space:pre-wrap} .nlist button small{flex-basis:100%;color:var(--ink-3);font-size:11px}
+.nlist li.new button{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)} .nlist li.res button{opacity:.7}
+.nlist .ok{color:var(--ok);font-weight:700;font-size:12px}
+@media (max-width:760px){.ibcols{grid-template-columns:minmax(0,1fr)}}
+
+[data-artk]{cursor:grab} [data-artk].dragging{opacity:.35} [data-artk].adrop{outline:3px solid var(--accent);outline-offset:2px}
+
+.tl-lab.cs-env{background:var(--pend-bg)} .tl-lab.cs-pub{background:var(--pub-bg)} .tl-lab.cs-done{background:var(--done-bg);color:#fff} .tl-lab.cs-done small{color:#dff}
+.tl-bar.cs-env .bt,.tl-bar.cs-pub .bt{color:var(--ink)}
 </style>
 
 <div class="top">
@@ -709,7 +747,7 @@ const S={
   db:null, assets:null, user:null,
   month:null,
   f:{region:"ALL",paises:[],tipo:"ALL",linea:"ALL",estado:"ALL",q:"",view:"cal",gridPais:"GT",gridSize:"phone",onlyArt:false,desde:"2026-10-01",hasta:"2026-10-10",section:"org",matriz:"ALL"},
-  openId:null, openTab:"info", pv:{slide:0}, dragId:null, medios:new Map(), openMed:null, clip:null, sel:null, sels:new Set(), selDay:null, group:null,
+  openId:null, openTab:"info", pv:{slide:0}, dragId:null, medios:new Map(), series:new Map(), feedOrd:{}, openMed:null, clip:null, sel:null, sels:new Set(), selDay:null, group:null,
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
@@ -873,7 +911,7 @@ function renderSummary(){
   const soon=inM.filter(p=>p.fecha>=todayISO&&p.fecha<=iso(new Date(Date.now()+2*864e5))&&!isOk(p)).length;
   const sf=vs.filter(p=>!p.fecha).length;
   $("#summary").innerHTML=`<span><b>${inM.length}</b> publicaciones ${S.f.desde||S.f.hasta?`del ${S.f.desde?fmtDia(S.f.desde):"inicio"} al ${S.f.hasta?fmtDia(S.f.hasta):"fin"}`:"en "+MESES[m]}</span><span><b>${by("feed")}</b> feed · <b>${by("historia")}</b> historias · <b>${by("promo")}</b> promos</span>
-   ${env?`<span><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</span>`:""}${cam?`<span class="warn"><b>${cam}</b> con cambios solicitados</span>`:""}
+   ${env?`<button class="sumlink" data-openinbox=""><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</button>`:""}${cam?`<button class="sumlink warn" data-openinbox="abiertos"><b>${cam}</b> con cambios solicitados</button>`:""}${(()=>{const n=notifList().filter(x=>x.org==="cliente"&&!x.res).length;return n?`<button class="sumlink" data-openinbox="cliente">💬 <b>${n}</b> comentarios del cliente sin resolver</button>`:""})()}
    ${soon&&role()==="inside"?`<span class="warn"><b>${soon}</b> salen en ≤2 días sin aprobar</span>`:""}${sf&&role()==="inside"?`<span><b>${sf}</b> por asignar fecha</span>`:""}${(()=>{if(role()!=="inside") return "";const n=[...S.posts.values()].filter(x=>x.campSug).length, z=vs.filter(needsCamp).length;return n||z?`<button class="sumlink" data-redcenter="cat">${n?`<b>${n}</b> campañas sugeridas por confirmar`:""}${n&&z?" · ":""}${z?`<b>${z}</b> sin campaña`:""}</button>`:""})()}`;
 }
 
@@ -885,7 +923,7 @@ function chip(p,opts={}){
   const where=whereLabel(p); const stripe=regStripe(p);
   return `<button class="pc ${colorC(p.estado)} ${(S.clip||[]).includes(p.id)?"clip":""} ${S.sels&&S.sels.has(p.id)?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
-    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
+    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span>${serieTag(p)}<span>${esc(where)}</span></span>
     <span class="t2">${esc(campDisp(p)||p.headline||"Sin campaña")}${p.campSug&&canEdit()?` <i class="sugdot" title="Sugerencia de campaña por confirmar">✨</i>`:""}</span></span></button>`;
 }
 function monthDays(){
@@ -914,7 +952,7 @@ function renderCal(){
       ${show.map(p=>chip(p)).join("")}${ps.length>LIM?`<button class="more" data-expand="${k}">${expanded.has(k)?"Ver menos":`+${ps.length-LIM} más`}</button>`:""}</div>`}).join("")}</div></div>`;
   }
   const side=`<aside class="side">
-    ${role()==="inside"?`<section class="panel"><h3>Por asignar fecha <span style="font:600 13px var(--f-mono);color:var(--ink-3)">${sf.length}</span></h3><p class="sub">Piezas de la parrilla que no coinciden con ningún día del calendario operativo.${canEdit()?" Arrástralas a un día, o vincúlalas desde la ficha de un post.":""}</p>
+    ${role()==="inside"?`<section class="panel"><h3>Por asignar fecha <span style="font:600 13px var(--f-mono);color:var(--ink-3)">${sf.length}</span></h3><p class="sub">Piezas sin fecha. Las que vienen de la parrilla con fecha propuesta ya se ubicaron solas en su día.${canEdit()?" Arrástralas a un día, o vincúlalas desde la ficha de un post.":""}</p>
       <div class="backlog" data-day="">${sf.length?sf.map(p=>chip(p,{sf:true})).join(""):`<p class="sub" style="margin:0">Nada pendiente con estos filtros.</p>`}</div></section>`:""}
     <section class="panel"><h3>Cómo leer el calendario</h3><div class="legend">
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
@@ -956,7 +994,7 @@ function countryFeed(c,useFilters){
 function isFeed(p){return fmts(p).some(f=>FEED_FMT.includes(f))}
 function handleOf(c){return `payless${c==="RD"?"rd":"."+c.toLowerCase()}`}
 function profileGrid(c,{highlight=null,useFilters=true,onlyArt=false,tab="feed"}={}){
-  let {feed,stories,pre,m}=countryFeed(c,useFilters);
+  let {feed,stories,pre,m}=countryFeed(c,useFilters); const ordInfo=orderedFeed(c,feed,pre); feed=ordInfo.list;
   const withArt=feed.filter(p=>p.imagenes&&p.imagenes.length).length;
   const shown=onlyArt?feed.filter(p=>p.imagenes&&p.imagenes.length||p.id===highlight):feed;
   const sgroups=[]; const seen=new Set(); for(const s of [...stories.filter(x=>(x.imagenes||[]).length),...stories]){if(!seen.has(s.campana)){seen.add(s.campana);sgroups.push(s)}}
@@ -977,13 +1015,15 @@ function renderGrid(){
   const withArt=feed.filter(p=>p.imagenes&&p.imagenes.length).length;
   const big=f.gridSize==="big";
   $("#view").innerHTML=`<div class="gridview ${big?"big":""}">
-   <div class="gridphone">${phone(profileGrid(c,{onlyArt:f.onlyArt,tab:f.gridTab||"feed"}))}</div>
+   <div class="gridphone">${(()=>{S._gridDrag=canEdit()&&(f.gridTab||"feed")==="feed";const h=phone(profileGrid(c,{onlyArt:f.onlyArt,tab:f.gridTab||"feed"}));S._gridDrag=false;return h})()}</div>
    <div class="gridnote"><h2>Feed de ${esc(PAIS[c])}</h2>
      <div class="fgroup" style="margin:4px 0 14px"><div class="chips">${opts.map(x=>`<button class="chip" data-gpais="${x}" aria-pressed="${x===c}" title="${PAIS[x]}">${x} · ${PAIS[x]}</button>`).join("")}</div></div>
      <div class="fgroup" style="margin-bottom:14px">
        <div class="seg" role="group" aria-label="Tamaño"><button data-gsize="phone" aria-pressed="${!big}">Celular</button><button data-gsize="big" aria-pressed="${big}">Grande</button></div>
        <div class="seg" role="group" aria-label="Piezas"><button data-onlyart="0" aria-pressed="${!f.onlyArt}">Todas</button><button data-onlyart="1" aria-pressed="${!!f.onlyArt}">Solo con arte</button></div>
      </div>
+     ${(()=>{const [yy,mm]=S.month;const pre=`${yy}-${pad(mm+1)}`;const oi=orderedFeed(c,feed,pre);const mis=oi.custom?feedMismatch(oi.list,pre):0;
+       return canEdit()?`<div class="fordbox ${oi.custom?"on":""}"><b>🧩 Acomoda el feed</b><span>${oi.custom?(mis?`Orden propuesto: ${mis} publicaciones no coinciden con sus fechas.`:"Orden propuesto: ya coincide con las fechas."):"Arrastra los cuadros del celular para probar cómo se ve el feed. Las tríadas se mueven juntas."}</span>${oi.custom?`<div class="drow wrap">${mis?`<button class="btn primary sm" data-fordapply>Aplicar este orden a las fechas</button>`:""}<button class="btn ghost sm" data-fordreset>Volver al orden por fecha</button></div>`:""}</div>`:oi.custom?`<p class="hint">Este es el orden propuesto por Inside para el feed de este mes.</p>`:""})()}
      <p><b>${withArt} de ${feed.length}</b> piezas de feed tienen arte cargado. ${withArt<feed.length?"Los cuadros grises son publicaciones sin imagen: pega la imagen en su casilla VIEW del Excel (cada cuadro indica la celda) y usa «Actualizar desde el Excel».":""}</p>
      ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button></p>`:""}
      <p>Aquí solo aparece lo que se publica en el feed. Las historias y las promos (que van en historias) están en la pestaña <b>Historias</b> del perfil.</p>
@@ -998,7 +1038,8 @@ function tile(p,ghost,hl){
   const im=p.imagenes&&p.imagenes[0];
   const ff=feedFmt(p); const ic=ff==="Carrusel"?ICON.multi:ff==="Reel"?ICON.reel:"";
   const up=false;
-  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":isOk(p)?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
+  const dr=S._gridDrag&&!ghost;
+  return `<button class="tile ${ghost?"ghost":""} ${hl?"hl-on":""} ${im?"":"noart"}" ${dr?`draggable="true" data-ftile="${esc(p.id)}"`:""} data-open="${esc(p.id)}" ${up?`data-tileup="${esc(p.id)}"`:""} style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}" aria-label="${esc(p.headline||p.campana)}">${im?"":`<span class="na"><span class="na-k">${esc(p.campana||"")}</span><span class="na-h">${role()==="inside"?"Sin imagen":isOk(p)?"Pieza aprobada":"Arte en producción"}</span>${p.slot&&role()==="inside"?`<span class="na-u" style="opacity:.75">Excel ${esc(p.slot.cell.split(":")[0])}</span>`:""}${up?`<span class="na-u">Suelta el arte aquí</span>`:""}</span>`}${ic?ic.replace("<svg",'<svg class="ic"'):""}${p.serieId&&serieOf(p)?`<span class="tsr">⛓ ${esc(p.serieFase||"")}</span>`:""}<span class="dt">${p.fecha?fmtDia(p.fecha):""}</span></button>`;
 }
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-gpais]");if(t){S.f.gridPais=t.dataset.gpais;persistF();renderView();return}
@@ -1247,7 +1288,7 @@ function tabBody(p,cms){
   }
   if(t==="arte"){
     const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=fmts(p)[0]==="Historia"?"Frame":"Slide";
-    const grid=imgs.length?`<div class="arte">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt="${lbl} ${k+1}"><figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
+    const grid=imgs.length?`${ed&&imgs.length>1?`<p class="hint" style="margin:0 0 6px">Arrastra las imágenes para cambiar el orden de los slides.</p>`:""}<div class="arte">${imgs.map((s,k)=>`<figure ${ed?`draggable="true" data-artk="${k}" data-artkind="post"`:""}><img src="${esc(imgSrc(s))}" alt="${lbl} ${k+1}"><figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
       :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene fotos finales."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`;
     const upl=ed?`<label class="drop-zone" id="dz" for="upl"><input type="file" id="upl" accept="image/*,video/mp4" multiple hidden><b>${imgs.length?"Agregar fotos finales aprobadas":"Subir fotos finales aprobadas"}</b><br><span style="font-size:12px">Arrastra aquí las imágenes o haz clic para elegirlas. En carruseles e historias, cada archivo es un slide y se agregan en el orden en que los eliges; después puedes reordenarlos con las flechas.</span></label>
       ${imgs.length?`<label class="hint" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" id="uplReplace"> Reemplazar todas las fotos actuales con las nuevas</label>`:""}<div class="saved" id="uplMsg"></div>`
@@ -1261,7 +1302,7 @@ function tabBody(p,cms){
   // ficha
   const r=region(p.region);
   if(role()!=="inside"){
-    return `<div class="fields">${fieldRO("Fecha",p.fecha?cap1(fmtDia(p.fecha,true)):"Por definir")}${fieldRO("Hora",p.hora||"Por definir")}
+    return `${serieBox(p)}<div class="fields">${fieldRO("Fecha",p.fecha?cap1(fmtDia(p.fecha,true)):"Por definir")}${fieldRO("Hora",p.hora||"Por definir")}
       ${fieldRO("Países",p.paises.map(c=>PAIS[c]).join(", "),true)}${fieldRO("Formatos",fmtLabel(p))}${fieldRO("Campaña",p.campana)}
       ${p.serie?fieldRO("Serie",p.serie):""}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.copy?fieldRO("Copy",p.copy,true):""}
       ${p.cta?fieldRO("CTA",p.cta):""}${p.fase?fieldRO("Fase de la promo",p.fase):""}${p.legal&&!/^\(mismo/.test(p.legal)?fieldRO("Legal",p.legal,true):""}</div>`;
@@ -1273,13 +1314,13 @@ function tabBody(p,cms){
   const linkBox=p.vinculo==="auto"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Headline, idea y CTA vienen de la parrilla de ${esc(region(p.region).corto)} (cruce automático por fecha y campaña: ${esc(p.campanaParrilla)}). Revisa que correspondan al arte.</p>`
     :p.vinculo==="manual"?`<p class="hint" style="margin:0 0 14px;color:var(--ink-2)">Vinculada a la pieza de la parrilla «${esc(p.campanaParrilla)} · ${esc(p.serie)}».</p>`
     :linkable.length?`<div class="f wide" style="margin-bottom:14px"><label for="lnkParr">Vincular con una pieza de la parrilla</label><select id="lnkParr"><option value="">Elige la pieza que corresponde a este post…</option>${linkable.map(x=>`<option value="${esc(x.id)}">${x.fechaPropuesta?fmtDia(x.fechaPropuesta)+" · ":""}${esc(x.campana)} · ${esc(x.serie)} · ${esc((x.headline||"").slice(0,60))}</option>`).join("")}</select><span class="hint">Copia headline, idea, CTA, SKU y mandatories a este post y la quita de «Por asignar fecha».</span></div>`:"";
-  return `${linkBox}<div class="fields">
+  return `${dupBox(p)}${linkBox}${serieBox(p)}<div class="fields">
     ${inp("fecha","Fecha",p,"date")}${canEdit()?`<div class="f"><label for="fld_hora">Hora de publicación (local)</label><div style="display:flex;gap:6px"><input id="fld_hora" type="time" data-hora="${esc(p.id)}" value="${toHHMM(p.hora)}" step="300"><button class="btn" data-clearhora="${esc(p.id)}" title="Quitar hora">Sin hora</button></div><span class="hint">${p.hora?"Ahora: "+esc(p.hora):"Sin hora definida"}</span></div>`:fieldRO("Hora",p.hora)}
     ${inp("estado","Estado",p,ESTADOS.map(e=>e.id))}${fmtCtl(p)}
     ${canEdit()?inp("tipo","Tipo",{...p,tipo:TIPOS[p.tipo]},Object.values(TIPOS)):fieldRO("Tipo",TIPOS[p.tipo])}${inp("linea","Línea de campaña",p,LINEAS)}
     ${paisesCtl}
     ${campCtl(p)}
-    ${inp("campana","Nombre de la campaña (como viene en el planning)",p)}${inp("serie","Serie",p)}
+    ${inp("campana","Nombre de la campaña (como viene en el planning)",p)}${inp("serie","Serie del planning",p)}
     ${inp("headline","Headline / super",p,"text",true)}
     ${inp("responsable","Responsable → aprueba",p,"text",true)}
     ${inp("insumo","Insumo / recurso",p,"text",true)}
@@ -1449,7 +1490,7 @@ function markSel(){
   const n=selIds().length; let bar=$("#selBar");
   if(n<2||!canEdit()){bar&&bar.remove();return}
   if(!bar){bar=document.createElement("div");bar.id="selBar";bar.className="selbar";document.body.appendChild(bar)}
-  bar.innerHTML=`<b>${n} seleccionadas</b><button class="btn" data-selcopy>Copiar <kbd>Ctrl+C</kbd></button><button class="btn primary" data-selsend>Enviar al cliente</button><button class="btn bad" data-seldel>Eliminar <kbd>Supr</kbd></button><button class="btn ghost" data-selclear aria-label="Quitar selección">✕</button>`;
+  bar.innerHTML=`<b>${n} seleccionadas</b><button class="btn" data-selcopy>Copiar <kbd>Ctrl+C</kbd></button><button class="btn" data-sellink>⛓ Enlazar como serie</button><button class="btn primary" data-selsend>Enviar al cliente</button><button class="btn bad" data-seldel>Eliminar <kbd>Supr</kbd></button><button class="btn ghost" data-selclear aria-label="Quitar selección">✕</button>`;
 }
 function clearSel(){S.sels=new Set();S.sel=null;$("#selBar")?.remove()}
 document.addEventListener("click",e=>{
@@ -1652,7 +1693,7 @@ function renderMedSummary(){
   const env=vs.filter(x=>x.estado==="Enviado a cliente").length; const cms=vs.reduce((a,x)=>a+medPendientes(x.id),0);
   $("#summary").innerHTML=`<span><b>${enMes.length}</b> piezas de medios al aire en ${MESES[m]}</span>
     ${MATRICES.map(x=>`<span><b>${enMes.filter(v=>v.matriz===x.id).length}</b> ${x.nombre}</span>`).join("")}
-    ${sf.length?`<span class="warn"><b>${sf.length}</b> por asignar fechas</span>`:""}${env?`<span><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</span>`:""}${cms?`<span class="warn"><b>${cms}</b> comentarios por revisar</span>`:""}`;
+    ${sf.length?`<span class="warn"><b>${sf.length}</b> por asignar fechas</span>`:""}${env?`<button class="sumlink" data-openinbox=""><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</button>`:""}${cms?`<button class="sumlink warn" data-openinbox="abiertos"><b>${cms}</b> comentarios por revisar</button>`:""}`;
 }
 function renderMedios(){
   if(!S.medios.size){
@@ -1667,7 +1708,7 @@ function renderMedios(){
   const head=`<div class="tl-row tl-head" style="${cols}"><div class="tl-lab">Pieza</div>${days.map(d=>{const dt=new Date(y,mo,d);const w=(dt.getDay()+6)%7;return `<div class="tl-d ${w>4?"we":""} ${iso(dt)===todayISO?"today":""}"><small>${DOW[w].slice(0,1)}</small>${d}</div>`}).join("")}</div>`;
   const bg=days.map(d=>{const dt=new Date(y,mo,d);const w=(dt.getDay()+6)%7;return `<div class="tl-c ${w>4?"we":""} ${iso(dt)===todayISO?"today":""}" style="grid-column:${d+1}" data-mday="${iso(dt)}"></div>`}).join("");
   const row=m=>{
-    const lab=`<button class="tl-lab" data-mopen="${esc(m.id)}" title="${esc(m.nombre)}"><span class="mz mz-${m.matriz.toLowerCase()}">${esc(matrizN(m.matriz))}</span><b>${esc(m.nombre||"Sin nombre")}</b><small>${esc(whereLabel(m))}${m.plataforma?" · "+esc(m.plataforma):""}</small>${medPendientes(m.id)?`<i class="cmb" title="Comentarios por revisar">${medPendientes(m.id)}</i>`:""}</button>`;
+    const lab=`<button class="tl-lab ${colorC(m.estado)}" data-mopen="${esc(m.id)}" title="${esc(m.nombre)} · ${esc(m.estado)}"><span class="mz mz-${m.matriz.toLowerCase()}">${esc(matrizN(m.matriz))}</span><b>${esc(m.nombre||"Sin nombre")}</b><small>${esc(whereLabel(m))}${m.plataforma?" · "+esc(m.plataforma):""}</small>${medPendientes(m.id)?`<i class="cmb" title="Comentarios por revisar">${medPendientes(m.id)}</i>`:""}</button>`;
     let bar="";
     if(m.inicio){
       const s=m.inicio<`${pre}-01`?1:parseISO(m.inicio).getDate(); const fin=m.fin||m.inicio; const e=fin>`${pre}-${pad(last)}`?last:parseISO(fin).getDate();
@@ -1681,7 +1722,7 @@ function renderMedios(){
   };
   const body=groups.filter(x=>x.rows.length).map(x=>`<div class="tl-group"><span class="mz mz-${x.g.id.toLowerCase()}">${x.g.nombre}</span> ${x.g.desc} · ${x.rows.length} piezas</div>${x.rows.map(row).join("")}`).join("")
     +(sf.length?`<div class="tl-group warn">Por asignar fechas · ${sf.length} piezas${role()==="inside"?" · la matriz no trae fecha ni legal con vigencia":""}</div>${sf.map(row).join("")}`:"");
-  $("#view").innerHTML=`${selectMode()?`<p class="selhint"><span class="tl-env" style="position:static">◆</span> enviado por Inside · <span class="tl-env" style="position:static">◇</span> envío programado (rojo: después del inicio del legal) · <span class="tlleg"></span> barra: vigencia del legal · <b>Clic</b> en el nombre abre la pieza · arrastra la barra para mover las fechas · arrastra los extremos para cambiar inicio o fin · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}
+  $("#view").innerHTML=`${selectMode()?`<div class="ta-leg" style="margin:0 0 6px"><span class="stl"><i style="background:var(--surface)"></i>Sin iniciar (Inside)</span><span class="stl"><i style="background:var(--pend-bg);border-color:var(--pend-line)"></i>Enviado al cliente, por revisar</span><span class="stl"><i style="background:var(--pub-bg);border-color:var(--pub-line)"></i>Aprobado / programado</span><span class="stl"><i style="background:var(--done-bg);border-color:var(--done)"></i>Publicado / al aire</span></div><p class="selhint"><span class="tl-env" style="position:static">◆</span> enviado por Inside · <span class="tl-env" style="position:static">◇</span> envío programado (rojo: después del inicio del legal) · <span class="tlleg"></span> barra: vigencia del legal · <b>Clic</b> en el nombre abre la pieza · arrastra la barra para mover las fechas · arrastra los extremos para cambiar inicio o fin · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}
     <div class="tl-wrap"><div class="tl" id="tl">${head}${body||`<div class="empty" style="grid-column:1/-1"><h3>Sin piezas con estos filtros</h3><p>Cambia de mes, matriz o región.</p></div>`}</div></div>
     ${fuera?`<p class="sub" style="margin-top:8px;color:var(--ink-3)">${fuera} piezas están al aire en otros meses: usa ‹ › para verlas.</p>`:""}`;
 }
@@ -1772,7 +1813,7 @@ function medTab(m){
   }
   if(t==="arte"){
     const imgs=m.imagenes||[]; const ed=canEdit()&&S.assets;
-    return (imgs.length?`<div class="artgrid">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt=""><figcaption>${k+1}${ed?` <button class="iconbtn" data-mmv="${k}" ${k===imgs.length-1?"disabled":""} aria-label="Mover a la derecha">→</button><button class="iconbtn" data-mrm="${k}" aria-label="Quitar">✕</button>`:""}</figcaption></figure>`).join("")}</div>`:`<p style="color:var(--ink-2)">${role()==="inside"?"Esta pieza todavía no tiene arte.":"El arte de esta pieza está en producción."}</p>`)
+    return (imgs.length?`<div class="artgrid">${imgs.map((s,k)=>`<figure ${ed?`draggable="true" data-artk="${k}" data-artkind="medio"`:""}><img src="${esc(imgSrc(s))}" alt=""><figcaption>${k+1}${ed?` <button class="iconbtn" data-mmv="${k}" ${k===imgs.length-1?"disabled":""} aria-label="Mover a la derecha">→</button><button class="iconbtn" data-mrm="${k}" aria-label="Quitar">✕</button>`:""}</figcaption></figure>`).join("")}</div>`:`<p style="color:var(--ink-2)">${role()==="inside"?"Esta pieza todavía no tiene arte.":"El arte de esta pieza está en producción."}</p>`)
       +(ed?`<label class="drop-zone" for="mupl" style="display:block;margin-top:12px"><input type="file" id="mupl" accept="image/*,video/mp4" multiple hidden><b>Subir arte</b><br><span style="font-size:12px">Imágenes o video. Se agregan al final.</span></label>`:"");
   }
   if(role()!=="inside") return `<div class="fields">${fieldRO("Matriz",matrizN(m.matriz))}${fieldRO("Envío de Inside",m.fechaEnvio?fmtCorto(m.fechaEnvio):"")}${fieldRO("Vigencia del legal",medRange(m))}${fieldRO("Plataforma",m.plataforma)}${fieldRO("Formato",m.formato)}${fieldRO("Países",m.paises.map(c=>PAIS[c]).join(", "),true)}</div>`;
@@ -1847,7 +1888,7 @@ const PARTES={general:"General",arte:"Arte",copy:"Copy",legal:"Legal",fecha:"Fec
 const ARTIFACT_URL="https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp";
 function orgOf(c){if(c.autorOrg) return c.autorOrg;const pr=S.profiles[c.autorId];return pr&&pr.guest===true?"cliente":pr&&pr.guest===false?"inside":"inside"}
 function nameOf(id,fallback){const pr=S.profiles[id];return (pr&&pr.name)||fallback||(id===S.myId?"Tú":"Alguien")}
-function initials(n){return (n||"?").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"?"}
+function initials(n){return (n||"?").replace(/[^\p{L}\s]/gu,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"?"}
 function whoHTML(id,org,fallback){const n=nameOf(id,fallback);return `<span class="cav ${org}">${esc(initials(n))}</span><span class="cwho"><b>${esc(n)}</b><span class="corg ${org}">${org==="cliente"?"Payless · Cliente":"Inside"}</span></span>`}
 function when(s){if(!s) return "";const d=new Date(s),now=new Date(),m=Math.round((now-d)/6e4);if(m<1) return "ahora";if(m<60) return `hace ${m} min`;if(m<1440&&d.getDate()===now.getDate()) return d.toLocaleTimeString("es",{hour:"numeric",minute:"2-digit"});return d.toLocaleString("es",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
 /* hilos de una pieza: comentarios y pedidos de cambio de primer nivel + el comentario fijo de la matriz */
@@ -1986,20 +2027,14 @@ function renderInbox(){
   const rb=$("#redBtn"); if(rb) rb.hidden=!(S.mode==="live"&&role()==="inside"&&canEdit());
   const b=$("#inboxBtn"); if(!b) return;
   const n=pendingItems().length, cms=role()==="inside"?[...S.posts.keys(),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
-  b.hidden=S.mode!=="live"; b.innerHTML=role()==="cliente"?`Por revisar <b>${n}</b>`:`Con el cliente <b>${n}</b>${cms?` · <span title="Comentarios del cliente sin resolver">💬 ${cms}</span>`:""}`;
+  const nw=newClientCount();
+  b.hidden=S.mode!=="live"; b.innerHTML=role()==="cliente"?`Por revisar <b>${n}</b>`:`Con el cliente <b>${n}</b>${cms?` · <span title="Comentarios del cliente sin resolver">💬 ${cms}</span>`:""}${nw?`<i class="nbadge" title="Comentarios nuevos del cliente">${nw} nuevos</i>`:""}`;
   b.classList.toggle("hot",role()==="cliente"&&n>0);
   if(S.inboxOpen) renderInboxPanel();
 }
-function renderInboxPanel(){
-  let root=$("#inboxRoot"); if(!S.inboxOpen){root&&root.remove();return}
-  if(!root){root=document.createElement("div");root.id="inboxRoot";document.body.appendChild(root)}
-  const items=pendingItems().map(x=>({...x,info:pieceInfo(x.kind,x.id)})).filter(x=>x.info);
-  root.innerHTML=`<div class="scrim modal" data-inboxclose><div class="dialog" role="dialog" aria-label="Por revisar"><header><h3>${role()==="cliente"?"Por revisar":"Piezas esperando al cliente"}</h3><button class="iconbtn" data-inboxclose aria-label="Cerrar">✕</button></header>
-    ${items.length?`<ul class="slist clickable">${items.map(x=>`<li><button data-inopen="${esc(x.id)}" data-inkind="${x.kind}"><b>${esc(x.info.name)}</b><small>${x.kind==="medio"?"Medios":"Orgánico"} · ${esc(x.info.sub)}${x.en?` · enviada ${esc(when(x.en))}`:""}</small>${openCount(x.id)?`<span class="cmb">💬 ${openCount(x.id)}</span>`:""}</button></li>`).join("")}</ul>`:`<p class="hint">${role()==="cliente"?"No tienes piezas pendientes de aprobación. ¡Todo al día!":"No hay piezas esperando aprobación del cliente."}</p>`}
-  </div></div>`;
-}
+
 document.addEventListener("click",e=>{
-  if(e.target.closest("#inboxBtn")){S.inboxOpen=true;renderInboxPanel();return}
+  if(e.target.closest("#inboxBtn")){S.inboxF=null;S.inboxSeen=lastSeen();S.inboxOpen=true;renderInboxPanel();markSeen();renderInbox();return}
   if(S.inboxOpen&&(e.target.matches("[data-inboxclose]")||e.target.closest("button[data-inboxclose]"))){S.inboxOpen=false;renderInboxPanel();return}
   const o=e.target.closest("[data-inopen]"); if(o){S.inboxOpen=false;renderInboxPanel();openPieceFrom(o.dataset.inkind,o.dataset.inopen);return}
 });
@@ -2078,9 +2113,9 @@ function renderTodoSummary(){
   const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`; const last=new Date(y,mo+1,0).getDate();
   const ps=[...S.posts.values()].filter(p=>todoPostMatch(p)&&p.fecha.startsWith(pre)); const ms=[...S.medios.values()].filter(m=>todoMedMatch(m)&&inMonth(m,pre,last));
   const env=ps.filter(p=>p.estado==="Enviado a cliente").length+ms.filter(m=>m.estado==="Enviado a cliente").length;
-  $("#summary").innerHTML=`<span>Todo ${MESES[mo]}: <b>${ps.length+ms.length}</b> piezas</span><span><b>${ps.filter(p=>isFeed(p)).length}</b> feed · <b>${ps.filter(p=>!isFeed(p)).length}</b> historias y promos</span><span><b>${ms.length}</b> piezas de medios al aire</span>${env?`<span><b>${env}</b> ${role()==="cliente"?"esperan tu aprobación":"esperando aprobación del cliente"}</span>`:""}`;
+  $("#summary").innerHTML=`<span>Todo ${MESES[mo]}: <b>${ps.length+ms.length}</b> piezas</span><span><b>${ps.filter(p=>isFeed(p)).length}</b> feed · <b>${ps.filter(p=>!isFeed(p)).length}</b> historias y promos</span><span><b>${ms.length}</b> piezas de medios al aire</span>${env?`<button class="sumlink" data-openinbox=""><b>${env}</b> ${role()==="cliente"?"esperan tu aprobación":"esperando aprobación del cliente"}</button>`:""}${(()=>{const n=notifList().filter(x=>x.org==="cliente"&&!x.res).length;return n?`<button class="sumlink" data-openinbox="cliente">💬 <b>${n}</b> comentarios del cliente sin resolver</button>`:""})()}`;
 }
-function todoItem(p){const c=canal(canalOfPost(p));const im=p.imagenes&&p.imagenes[0];const story=!isFeed(p);return `<button class="ta-it ${colorC(p.estado)}" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)};${regStripe(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="ta-th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span><span class="ta-tx"><span class="ta-l1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora||"—")}</span><span class="ta-f">${fmtAbbr(p)}</span><span class="ta-w">${esc(whereLabel(p))}</span></span><span class="ta-t">${esc(campDisp(p)||p.headline||"Publicación")}</span></span></button>`}
+function todoItem(p){const c=canal(canalOfPost(p));const im=p.imagenes&&p.imagenes[0];const story=!isFeed(p);return `<button class="ta-it ${colorC(p.estado)}" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)};${regStripe(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="ta-th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span><span class="ta-tx"><span class="ta-l1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora||"—")}</span><span class="ta-f">${fmtAbbr(p)}</span>${serieTag(p)}<span class="ta-w">${esc(whereLabel(p))}</span></span><span class="ta-t">${esc(campDisp(p)||p.headline||"Publicación")}</span></span></button>`}
 function renderTodo(){
   const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`;
   const first=new Date(y,mo,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
@@ -2621,6 +2656,223 @@ document.addEventListener("click",async e=>{
   const dl=e.target.closest("[data-catdel]"); if(dl){const [m,s]=dl.dataset.catdel.split("|");const cat=JSON.parse(JSON.stringify(catalogo()));const mm=cat.madres.find(x=>x.nombre===m);if(mm) mm.subs=mm.subs.filter(x=>x.nombre!==s);await saveCat(cat);toast(`Subcampaña «${s}» quitada del catálogo`);return}
 });
 
+/* ============ SERIES DE PUBLICACIONES (promo en fases, tríada, lanzamiento, libre) */
+const PLANTILLAS={promo:{nombre:"Promo en 3 fases",pasos:["Lanzamiento","Mantenimiento","Últimas horas"],gap:[0,2,4]},
+  triada:{nombre:"Tríada de Instagram",pasos:["1/3","2/3","3/3"],gap:[0,0,0]},
+  lanz:{nombre:"Secuencia de lanzamiento",pasos:["Teaser","Reveal","Recordación"],gap:[0,2,5]},
+  libre:{nombre:"Libre",pasos:["Paso 1","Paso 2"],gap:[0,3]}};
+function serieOf(p){return p&&p.serieId&&S.series?S.series.get(p.serieId):null}
+function serieItems(sid){return [...S.posts.values()].filter(p=>p.serieId===sid).sort((a,b)=>(a.seriePaso??0)-(b.seriePaso??0)||(a.fecha||"9").localeCompare(b.fecha||"9"))}
+function serieTag(p){const s=serieOf(p);if(!s) return "";const n=(s.pasos||[]).length||serieItems(s.id).length;return `<span class="srt" title="Serie: ${esc(s.nombre)}">⛓ ${s.plantilla==="triada"?esc(p.serieFase||""):`${(p.seriePaso??0)+1}/${n}`}</span>`}
+function serieBox(p){
+  const s=serieOf(p);
+  if(s){
+    const items=serieItems(s.id);
+    return `<div class="seriebox"><header><b>⛓ ${esc(s.nombre)}</b><span class="cpart">${esc((PLANTILLAS[s.plantilla]||{}).nombre||"Serie")}</span><small>${items.length} piezas</small></header>
+      ${s.plantilla==="triada"?`<p class="hint" style="margin:0">Tríada: publícalas seguidas (3/3 primero, luego 2/3 y al final 1/3) para que en la cuadrícula queden juntas y se lean 1·2·3 de izquierda a derecha.</p>`:""}
+      <ol class="sline">${items.map(x=>{const im=x.imagenes&&x.imagenes[0];return `<li class="${x.id===p.id?"on":""}"><button data-open="${esc(x.id)}" class="${colorC(x.estado)}"><span class="ta-th" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":"▢"}</span><span><b>${esc(x.serieFase||`Paso ${(x.seriePaso??0)+1}`)}</b><small>${x.fecha?esc(cap1(fmtDia(x.fecha,true))):"Sin fecha"}${x.hora?" · "+esc(x.hora):""} · ${esc(x.estado)}</small></span></button></li>`}).join("")}</ol>
+      ${canEdit()?`<div class="drow wrap"><button class="btn ghost sm" data-srsout="${esc(p.id)}">Quitar esta pieza de la serie</button><button class="btn ghost sm" data-srsren="${esc(s.id)}">Renombrar serie</button></div>`:""}</div>`;
+  }
+  if(!canEdit()) return "";
+  const f=S.srsForm&&S.srsForm.id===p.id?S.srsForm:null;
+  if(!f) return `<div class="seriebox empty"><span>Esta publicación no es parte de una serie.</span><button class="btn sm" data-srsnew="${esc(p.id)}">⛓ Convertir en serie</button></div>`;
+  return `<div class="seriebox"><header><b>⛓ Nueva serie desde esta publicación</b></header>
+    <div class="redcfg"><label>Tipo de serie<select data-srsf="plantilla">${Object.entries(PLANTILLAS).map(([k,v])=>`<option value="${k}" ${k===f.plantilla?"selected":""}>${v.nombre}</option>`).join("")}</select></label>
+    <label>Nombre de la serie<input data-srsf="nombre" value="${esc(f.nombre)}"></label></div>
+    <table class="stbl"><thead><tr><th>Paso</th><th>Fecha</th><th>Hora</th><th></th></tr></thead><tbody>${f.pasos.map((x,i)=>`<tr class="${i===f.yo?"on":""}"><td><input data-srsp="${i}" data-k="fase" value="${esc(x.fase)}"></td><td><input type="date" data-srsp="${i}" data-k="fecha" value="${esc(x.fecha)}"></td><td><input type="time" data-srsp="${i}" data-k="hora" value="${esc(toHHMM(x.hora))}"></td><td>${i===f.yo?`<small>esta pieza</small>`:`<button class="clink" data-srsyo="${i}">es esta</button>`}${f.plantilla==="libre"&&f.pasos.length>2?` <button class="iconbtn" data-srsdel="${i}" aria-label="Quitar paso">✕</button>`:""}</td></tr>`).join("")}</tbody></table>
+    ${f.plantilla==="libre"?`<button class="clink" data-srsadd>+ Agregar paso</button>`:""}
+    <label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" data-srsf="copiar" ${f.copiar?"checked":""}> Crear las otras piezas copiando el arte y el copy de esta como base</label>
+    <div class="drow"><button class="btn ghost" data-srscancel>Cancelar</button><button class="btn primary" data-srsgo>Crear serie</button></div></div>`;
+}
+function srsDefaults(p,plantilla){
+  const t=PLANTILLAS[plantilla]; const base=p.fecha||todayISO; const c=campOf(p);
+  return {id:p.id,plantilla,yo:0,copiar:true,nombre:`${(c&&c.sub)||p.campana||"Serie"} · ${t.nombre}`,pasos:t.pasos.map((fase,i)=>({fase,fecha:addDays(base,t.gap[i]||0),hora:plantilla==="triada"?["","",""][i]||p.hora||"":p.hora||""}))};
+}
+const hhmm=h=>!h?"":/^\d{1,2}:\d{2}$/.test(h)?(fromHHMM(h)||h):h;
+async function createSerie(p,f){
+  const sid=`srs-${Date.now().toString(36)}`;
+  const doc={id:sid,nombre:f.nombre.trim()||"Serie",plantilla:f.plantilla,pasos:f.pasos.map(x=>x.fase),creado:new Date().toISOString(),porId:S.myId||""};
+  try{await S.db.doc("series/"+sid).set(doc);S.series.set(sid,doc)}catch(e){toast("No se pudo crear la serie.");return}
+  beginGroup();
+  try{for(const [i,x] of f.pasos.entries()){
+    if(i===f.yo){await save(p.id,{serieId:sid,seriePaso:i,serieFase:x.fase,...(x.fecha?{fecha:x.fecha,sinFecha:false}:{}),...(x.hora?{hora:hhmm(x.hora)}:{})});continue}
+    const id=newId(p);
+    const base=f.copiar?{...p}:{region:p.region,paises:[...p.paises],tipo:p.tipo,formato:p.formato,formatos:p.formatos,linea:p.linea,campana:p.campana,campMadre:p.campMadre,campSub:p.campSub,imagenes:[],copy:"",headline:""};
+    const c={...base,id,origen:"manual",fecha:x.fecha||"",sinFecha:!x.fecha,hora:hhmm(x.hora),estado:"Sin iniciar",cambiosPendientes:false,campSug:null,serieId:sid,seriePaso:i,serieFase:x.fase,creado:new Date().toISOString(),fuente:`Serie «${doc.nombre}» (${x.fase})`};
+    for(const k of ["slot","imgHash","fechaPropuesta","actualizado","actualizadoPor","vinculo","enviadoEn"]) delete c[k];
+    if((c.imagenes||[]).length) c.arteManual=true;
+    await write(id,c,true);
+  }}finally{endGroup("la creación de la serie")}
+  S.srsForm=null; toast(`Serie creada con ${f.pasos.length} piezas`); renderSheet();
+}
+async function linkAsSerie(ids,nombre,plantilla){
+  const ps=ids.map(id=>S.posts.get(id)).filter(Boolean).sort((a,b)=>(a.fecha||"9").localeCompare(b.fecha||"9")||horaMin(a.hora)-horaMin(b.hora));
+  const t=PLANTILLAS[plantilla]; const fases=ps.map((_,i)=>plantilla==="libre"?`Paso ${i+1}`:(t.pasos[i]||`Paso ${i+1}`));
+  const sid=`srs-${Date.now().toString(36)}`; const doc={id:sid,nombre,plantilla,pasos:fases,creado:new Date().toISOString(),porId:S.myId||""};
+  try{await S.db.doc("series/"+sid).set(doc);S.series.set(sid,doc)}catch(e){toast("No se pudo crear la serie.");return}
+  beginGroup();try{for(const [i,p] of ps.entries()) await save(p.id,{serieId:sid,seriePaso:i,serieFase:fases[i]})}finally{endGroup("el enlace de la serie")}
+  toast(`Serie «${nombre}» con ${ps.length} piezas`);
+}
+document.addEventListener("click",async e=>{
+  const nw=e.target.closest("[data-srsnew]"); if(nw){const p=S.posts.get(nw.dataset.srsnew);S.srsForm=srsDefaults(p,"promo");renderSheet();return}
+  if(!S.srsForm&&!e.target.closest("[data-srsout],[data-srsren],[data-srslink],[data-srslinkgo],[data-srslinkno]")) return;
+  if(e.target.closest("[data-srscancel]")){S.srsForm=null;renderSheet();return}
+  const yo=e.target.closest("[data-srsyo]"); if(yo){S.srsForm.yo=+yo.dataset.srsyo;renderSheet();return}
+  if(e.target.closest("[data-srsadd]")){const f=S.srsForm;const last=f.pasos[f.pasos.length-1];f.pasos.push({fase:`Paso ${f.pasos.length+1}`,fecha:last.fecha?addDays(last.fecha,2):"",hora:last.hora});renderSheet();return}
+  const dl=e.target.closest("[data-srsdel]"); if(dl){const f=S.srsForm;f.pasos.splice(+dl.dataset.srsdel,1);if(f.yo>=f.pasos.length) f.yo=0;renderSheet();return}
+  if(e.target.closest("[data-srsgo]")){const p=S.posts.get(S.srsForm.id);if(p) await createSerie(p,S.srsForm);return}
+  const out=e.target.closest("[data-srsout]"); if(out){await save(out.dataset.srsout,{serieId:"",seriePaso:null,serieFase:""});toast("Pieza quitada de la serie");return}
+  const rn=e.target.closest("[data-srsren]"); if(rn){const s=S.series.get(rn.dataset.srsren);const v=prompt("Nombre de la serie",s.nombre);if(v&&v.trim()){const d={...s,nombre:v.trim()};S.series.set(s.id,d);try{await S.db.doc("series/"+s.id).set(d)}catch(err){}renderSheet();render()}return}
+});
+document.addEventListener("change",e=>{
+  if(!S.srsForm) return;
+  const f=e.target.closest("[data-srsf]"); if(f){const k=f.dataset.srsf;if(k==="copiar"){S.srsForm.copiar=f.checked;return}if(k==="nombre"){S.srsForm.nombre=f.value;return}
+    if(k==="plantilla"){const p=S.posts.get(S.srsForm.id);const nf=srsDefaults(p,f.value);nf.nombre=S.srsForm.nombre.replace(/· [^·]+$/,"· "+PLANTILLAS[f.value].nombre);S.srsForm=nf;renderSheet()}return}
+  const sp=e.target.closest("[data-srsp]"); if(sp){S.srsForm.pasos[+sp.dataset.srsp][sp.dataset.k]=sp.value}
+});
+document.addEventListener("input",e=>{if(S.srsForm&&e.target.matches('[data-srsf="nombre"]')) S.srsForm.nombre=e.target.value});
+/* enlazar seleccionadas */
+function renderLinkDlg(){
+  let root=$("#srsRoot"); if(!S.srsLink){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="srsRoot";document.body.appendChild(root)}
+  const ps=S.srsLink.ids.map(id=>S.posts.get(id)).filter(Boolean).sort((a,b)=>(a.fecha||"9").localeCompare(b.fecha||"9"));
+  const t=PLANTILLAS[S.srsLink.plantilla];
+  root.innerHTML=`<div class="scrim modal" data-srslinkno><div class="dialog" role="dialog" aria-label="Enlazar como serie"><header><h3>⛓ Enlazar como serie</h3><button class="iconbtn" data-srslinkno aria-label="Cerrar">✕</button></header>
+    <div class="redcfg"><label>Tipo de serie<select id="slPl">${Object.entries(PLANTILLAS).map(([k,v])=>`<option value="${k}" ${k===S.srsLink.plantilla?"selected":""}>${v.nombre}</option>`).join("")}</select></label><label>Nombre<input id="slNom" value="${esc(S.srsLink.nombre)}"></label></div>
+    <ol class="slist">${ps.map((p,i)=>`<li><b>${esc(S.srsLink.plantilla==="libre"?`Paso ${i+1}`:(t.pasos[i]||`Paso ${i+1}`))} · ${esc(p.headline||p.campana||"Publicación")}</b><small>${p.fecha?esc(cap1(fmtDia(p.fecha,true))):"Sin fecha"} · ${esc(whereLabel(p))}${p.serieId?" · ya estaba en otra serie (se moverá)":""}</small></li>`).join("")}</ol>
+    <p class="hint">El orden de los pasos sigue las fechas. Cada pieza conserva su arte, copy y estado.</p>
+    <div class="drow"><button class="btn ghost" data-srslinkno>Cancelar</button><button class="btn primary" data-srslinkgo>Enlazar ${ps.length} piezas</button></div></div></div>`;
+}
+document.addEventListener("click",async e=>{
+  if(e.target.closest("[data-sellink]")){const ids=selIds();const p=S.posts.get(ids[0]);const c=p&&campOf(p);S.srsLink={ids,plantilla:ids.length===3?"promo":"libre",nombre:`${(c&&c.sub)||p.campana||"Serie"} · serie`};renderLinkDlg();return}
+  if(!S.srsLink) return;
+  if(e.target.matches("[data-srslinkno]")||e.target.closest("button[data-srslinkno]")){S.srsLink=null;renderLinkDlg();return}
+  if(e.target.closest("[data-srslinkgo]")){const {ids}=S.srsLink;const nombre=($("#slNom").value||"Serie").trim();const pl=$("#slPl").value;S.srsLink=null;renderLinkDlg();await linkAsSerie(ids,nombre,pl);clearSel();render();return}
+});
+document.addEventListener("change",e=>{if(S.srsLink&&e.target.id==="slPl"){S.srsLink.plantilla=e.target.value;S.srsLink.nombre=$("#slNom").value;renderLinkDlg()}});
+
+/* ============ FEED ROMPECABEZAS: orden propuesto por país */
+function feedKey(c,pre){return `${c}|${pre}`}
+function orderedFeed(c,feed,pre){
+  const ord=S.feedOrd&&S.feedOrd[feedKey(c,pre)]; if(!ord||!ord.length) return {list:feed,custom:false};
+  const cur=feed.filter(p=>p.fecha&&p.fecha.startsWith(pre)), old=feed.filter(p=>!(p.fecha&&p.fecha.startsWith(pre)));
+  const byId=new Map(cur.map(p=>[p.id,p])); const out=ord.map(id=>byId.get(id)).filter(Boolean); const rest=cur.filter(p=>!ord.includes(p.id));
+  for(const p of rest){let i=out.findIndex(x=>sortPosts(p,x)>0);if(i<0) i=out.length;out.splice(i,0,p)}
+  return {list:[...out,...old],custom:true};
+}
+function feedMismatch(list,pre){const cur=list.filter(p=>p.fecha&&p.fecha.startsWith(pre));const byDate=[...cur].sort((a,b)=>sortPosts(b,a));return cur.filter((p,i)=>byDate[i]!==p).length}
+async function saveFeedOrder(c,pre,ids){
+  S.feedOrd=S.feedOrd||{}; const k=feedKey(c,pre); if(ids) S.feedOrd[k]=ids; else delete S.feedOrd[k];
+  const id=k.replace("|","-");
+  try{if(ids) await S.db.doc("feedorden/"+id).set({pais:c,mes:pre,orden:ids,actualizado:new Date().toISOString(),porId:S.myId||""}); else await S.db.doc("feedorden/"+id).delete()}catch(e){toast("No se pudo guardar el orden.")}
+  renderView();
+}
+let fdrag=null;
+document.addEventListener("dragstart",e=>{const t=e.target.closest("[data-ftile]");if(!t) return;fdrag=t.dataset.ftile;t.classList.add("dragging");e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",fdrag)}catch(_){}});
+document.addEventListener("dragend",e=>{const t=e.target.closest("[data-ftile]");if(t){t.classList.remove("dragging");S.justDragged=true;setTimeout(()=>S.justDragged=false,80)}document.querySelectorAll(".tile.fdrop").forEach(x=>x.classList.remove("fdrop"));setTimeout(()=>fdrag=null,30)});
+document.addEventListener("dragover",e=>{if(!fdrag) return;const t=e.target.closest("[data-ftile]");if(!t) return;e.preventDefault();document.querySelectorAll(".tile.fdrop").forEach(x=>x!==t&&x.classList.remove("fdrop"));t.classList.add("fdrop")});
+document.addEventListener("drop",async e=>{
+  if(!fdrag) return; const t=e.target.closest("[data-ftile]"); if(!t) return; e.preventDefault();
+  const target=t.dataset.ftile; if(target===fdrag) return;
+  const c=S.f.gridPais; const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`;
+  const {feed}=countryFeed(c,true); const cur=orderedFeed(c,feed,pre).list.filter(p=>p.fecha&&p.fecha.startsWith(pre)).map(p=>p.id);
+  const dp=S.posts.get(fdrag); const s=serieOf(dp);
+  const block=s&&s.plantilla==="triada"?cur.filter(id=>S.posts.get(id).serieId===s.id):[fdrag];
+  if(block.includes(target)) return;
+  const rest=cur.filter(id=>!block.includes(id)); const ti=rest.indexOf(target); const from=cur.indexOf(fdrag), to=cur.indexOf(target);
+  rest.splice(to>from?ti+1:ti,0,...block);
+  await saveFeedOrder(c,pre,rest);
+});
+async function applyFeedOrder(c,pre){
+  const {feed}=countryFeed(c,true); const list=orderedFeed(c,feed,pre).list.filter(p=>p.fecha&&p.fecha.startsWith(pre));
+  const slots=[...list].sort((a,b)=>sortPosts(b,a)).map(p=>({fecha:p.fecha,hora:p.hora}));
+  const multi=list.filter((p,i)=>p.paises.length>1&&(slots[i].fecha!==p.fecha||slots[i].hora!==p.hora)).length;
+  const changes=list.filter((p,i)=>slots[i].fecha!==p.fecha||slots[i].hora!==p.hora).length;
+  if(!changes){toast("Las fechas ya coinciden con este orden.");return}
+  if(!confirm(`Se cambiarán las fechas y horas de ${changes} publicaciones para que el feed de ${PAIS[c]} quede en este orden.${multi?`\n\nAtención: ${multi} de ellas también salen en otros países y su fecha cambiará allí.`:""}\n\nPuedes deshacerlo con Ctrl+Z.`)) return;
+  beginGroup();try{for(const [i,p] of list.entries()){const sl=slots[i];if(sl.fecha!==p.fecha||sl.hora!==p.hora) await save(p.id,{fecha:sl.fecha,hora:sl.hora||"",sinFecha:false})}}finally{endGroup("el reordenamiento del feed")}
+  await saveFeedOrder(c,pre,null); toast("Fechas actualizadas según el orden del feed");
+}
+document.addEventListener("click",async e=>{
+  if(e.target.closest("[data-fordapply]")){const [y,mo]=S.month;await applyFeedOrder(S.f.gridPais,`${y}-${pad(mo+1)}`);return}
+  if(e.target.closest("[data-fordreset]")){const [y,mo]=S.month;await saveFeedOrder(S.f.gridPais,`${y}-${pad(mo+1)}`,null);toast("Volvió al orden por fecha");return}
+});
+
+/* ============ PIEZAS DE PARRILLA CON FECHA PROPUESTA → a su fecha (una sola vez) */
+async function migrateParrillaDates(){
+  if(S._migParr||!canEdit()) return; S._migParr=true;
+  const pend=[...S.posts.values()].filter(p=>!p.fecha&&p.fechaPropuesta&&!p.fechaDesdeParrilla);
+  if(!pend.length) return;
+  for(const p of pend){
+    const dup=[...S.posts.values()].find(c=>c.id!==p.id&&c.origen!=="parrilla"&&c.fecha===p.fechaPropuesta&&c.region===p.region&&c.tipo===p.tipo&&c.paises.some(x=>p.paises.includes(x)));
+    const patch={fecha:p.fechaPropuesta,sinFecha:false,fechaDesdeParrilla:true,...(dup?{posibleDuplicado:dup.id}:{})};
+    S.undoing=true; try{await save(p.id,patch)}finally{S.undoing=false}
+  }
+  toast(`${pend.length} piezas de la parrilla se ubicaron en su fecha propuesta`);
+}
+function dupBox(p){
+  if(!p.posibleDuplicado||!canEdit()) return ""; const d=S.posts.get(p.posibleDuplicado); if(!d) return "";
+  return `<div class="revisar"><b>¿Es la misma publicación?</b><span>Ese día ya hay otra publicación del mismo tipo en ${esc(region(p.region).nombre)}: «${esc(d.headline||d.campana||"Publicación")}» (${esc(fmtLabel(d))}). Esta pieza viene de la parrilla con su headline, idea y serie.</span>
+    <div class="drow wrap"><button class="btn primary sm" data-dupmerge="${esc(p.id)}">Unir: pasar headline, idea y serie a la del calendario</button><button class="btn ghost sm" data-dupopen="${esc(d.id)}">Ver la otra</button><button class="btn ghost sm" data-dupno="${esc(p.id)}">Son distintas</button></div></div>`;
+}
+document.addEventListener("click",async e=>{
+  const m=e.target.closest("[data-dupmerge]"); if(m){const p=S.posts.get(m.dataset.dupmerge);const d=p&&S.posts.get(p.posibleDuplicado);if(!d) return;
+    const patch={vinculo:"manual",campanaParrilla:p.campana||""};for(const k of ["headline","idea","cta","copy","serie","sku","mandatories","objetivo","tipoContenido","legal"]) if(!(d[k]||"").trim()&&(p[k]||"").trim()) patch[k]=p[k];
+    if(!(d.imagenes||[]).length&&(p.imagenes||[]).length) patch.imagenes=p.imagenes;
+    beginGroup();try{await save(d.id,patch);closeSheet();await deletePosts([p.id])}finally{endGroup("la unión con la parrilla")}openPost(d.id);toast("Unidas: la publicación del calendario tiene ahora el contenido de la parrilla");return}
+  const o=e.target.closest("[data-dupopen]"); if(o){openPost(o.dataset.dupopen);return}
+  const n=e.target.closest("[data-dupno]"); if(n){await save(n.dataset.dupno,{posibleDuplicado:""});toast("Marcadas como publicaciones distintas");return}
+});
+
+/* ============ BANDEJA: enviados al cliente + notificaciones de comentarios */
+function seenKey(){return "cpay:seen:"+(S.myId||"x")}
+function lastSeen(){try{return localStorage.getItem(seenKey())||""}catch(e){return ""}}
+function markSeen(){try{localStorage.setItem(seenKey(),new Date().toISOString())}catch(e){}}
+function pieceById(id){const p=S.posts.get(id);if(p) return {kind:"post",x:p};const m=S.medios&&S.medios.get(id);return m?{kind:"medio",x:m}:null}
+function notifList(){
+  const out=[];
+  for(const c of S.comments){if(!["comentario","cambios","respuesta","nota"].includes(c.tipo)) continue;const pc=pieceById(c.postId);if(!pc) continue;
+    const top=c.parentId?S.comments.find(x=>x._id===c.parentId):c;
+    out.push({c,pc,org:orgOf(c),res:!!(top&&top.resuelto),fecha:c.fecha})}
+  for(const m of (S.medios||new Map()).values()) if(m.comentariosSlide) out.push({c:{texto:m.comentariosSlide,autorNombre:"Payless (matriz)",tipo:"comentario",postId:m.id},pc:{kind:"medio",x:m},org:"cliente",res:!!m.slideResuelto,fecha:"",matriz:true});
+  return out.sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+}
+function newClientCount(){const ls=lastSeen();return notifList().filter(n=>n.org==="cliente"&&!n.res&&n.fecha&&n.fecha>ls&&n.c.autorId!==S.myId).length}
+function renderInboxPanel(){
+  let root=$("#inboxRoot"); if(!S.inboxOpen){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="inboxRoot";document.body.appendChild(root)}
+  const items=pendingItems().map(x=>({...x,info:pieceInfo(x.kind,x.id)})).filter(x=>x.info);
+  const f=S.inboxF||(role()==="inside"?"cliente":"todos"); const ls=S.inboxSeen||lastSeen();
+  let ns=notifList(); if(f==="cliente") ns=ns.filter(n=>n.org==="cliente"); if(f==="abiertos") ns=ns.filter(n=>!n.res);
+  const pname=pc=>pc.kind==="medio"?(pc.x.nombre||"Pieza de medios"):(pc.x.headline||pc.x.campana||"Publicación");
+  root.innerHTML=`<div class="scrim modal" data-inboxclose><div class="dialog inbox2" role="dialog" aria-label="Bandeja"><header><h3>${role()==="cliente"?"Tu bandeja":"Bandeja con el cliente"}</h3><button class="iconbtn" data-inboxclose aria-label="Cerrar">✕</button></header>
+    <div class="ibcols">
+      <section><h4>${role()==="cliente"?"Por revisar":"Enviadas al cliente · por aprobar"} <span>${items.length}</span></h4>
+        ${items.length?`<ul class="slist clickable">${items.map(x=>`<li><button data-inopen="${esc(x.id)}" data-inkind="${x.kind}"><b>${esc(x.info.name)}</b><small>${x.kind==="medio"?"Medios":"Orgánico"} · ${esc(x.info.sub)}${x.en?` · enviada ${esc(when(x.en))}`:""}</small>${openCount(x.id)?`<span class="cmb">💬 ${openCount(x.id)}</span>`:""}</button></li>`).join("")}</ul>`:`<p class="cempty">${role()==="cliente"?"No tienes piezas pendientes. ¡Todo al día!":"No hay piezas esperando aprobación."}</p>`}</section>
+      <section><h4>Comentarios <span>${ns.length}</span></h4>
+        <div class="seg" role="group"><button data-inf="cliente" aria-pressed="${f==="cliente"}">Del cliente</button><button data-inf="abiertos" aria-pressed="${f==="abiertos"}">Sin resolver</button><button data-inf="todos" aria-pressed="${f==="todos"}">Todos</button></div>
+        ${ns.length?`<ul class="nlist">${ns.slice(0,120).map(n=>`<li class="${n.res?"res":""} ${n.fecha&&n.fecha>ls&&n.c.autorId!==S.myId?"new":""}"><button data-ncopen="${esc(n.pc.x.id)}" data-nckind="${n.pc.kind}">${whoHTML(n.c.autorId,n.org,n.c.autorNombre)}<span class="cwhen">${n.matriz?"en la matriz":esc(when(n.fecha))}</span>${n.c.tipo==="cambios"?`<span class="cchg">Cambios</span>`:n.c.tipo==="respuesta"?`<span class="cpart">Respuesta</span>`:""}${n.res?`<span class="ok">✓ Resuelto</span>`:""}<p>${esc((n.c.texto||"").slice(0,220))}</p><small>${n.pc.kind==="medio"?"Medios":"Orgánico"} · ${esc(pname(n.pc))}</small></button></li>`).join("")}</ul>`:`<p class="cempty">No hay comentarios con este filtro.</p>`}</section>
+    </div></div></div>`;
+}
+document.addEventListener("click",e=>{
+  const ob=e.target.closest("[data-openinbox]"); if(ob){S.inboxF=ob.dataset.openinbox||null;S.inboxSeen=lastSeen();S.inboxOpen=true;renderInboxPanel();markSeen();renderInbox();return}
+  const fi=e.target.closest("[data-inf]"); if(fi){S.inboxF=fi.dataset.inf;renderInboxPanel();return}
+  const nc=e.target.closest("[data-ncopen]"); if(nc){S.inboxOpen=false;renderInboxPanel();openPieceFrom(nc.dataset.nckind,nc.dataset.ncopen);S.cTab="open";if(nc.dataset.nckind==="medio"){S.mTab="cms";renderMedioSheet()}else{S.openTab="aprob";renderSheet()}return}
+},true);
+
+/* arrastrar slides del arte para reordenar */
+let artDrag=null;
+document.addEventListener("dragstart",e=>{const f=e.target.closest("[data-artk]");if(!f) return;artDrag={k:+f.dataset.artk,kind:f.dataset.artkind};f.classList.add("dragging");e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain","art")}catch(_){}});
+document.addEventListener("dragend",e=>{const f=e.target.closest("[data-artk]");if(f) f.classList.remove("dragging");document.querySelectorAll("[data-artk].adrop").forEach(x=>x.classList.remove("adrop"));setTimeout(()=>artDrag=null,30)});
+document.addEventListener("dragover",e=>{if(!artDrag) return;const f=e.target.closest("[data-artk]");if(!f) return;e.preventDefault();document.querySelectorAll("[data-artk].adrop").forEach(x=>x!==f&&x.classList.remove("adrop"));f.classList.add("adrop")});
+document.addEventListener("drop",async e=>{
+  if(!artDrag) return; const f=e.target.closest("[data-artk]"); if(!f) return; e.preventDefault();
+  const to=+f.dataset.artk, from=artDrag.k; if(to===from) return;
+  if(artDrag.kind==="medio"){const m=S.medios.get(S.openMed);if(!m) return;const a=[...m.imagenes];const [x]=a.splice(from,1);a.splice(to,0,x);await saveMed(m.id,{imagenes:a})}
+  else{const p=S.posts.get(S.openId);if(!p) return;const a=[...p.imagenes];const [x]=a.splice(from,1);a.splice(to,0,x);await save(p.id,{imagenes:a,arteManual:true});S.pv.slide=to}
+  toast(`Slide movido a la posición ${to+1}`);
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -2642,7 +2894,7 @@ async function boot(){
   db.collection("posts").onSnapshot(snap=>{
     const m=new Map(); for(const d of snap.docs) m.set(d.id,normalize({...d.data(),id:d.id}));
     S.posts=m; S.mode="live";
-    if(first){first=false;S.month=pickMonth();setTimeout(handleDeepLink,400)}
+    if(first){first=false;S.month=pickMonth();setTimeout(handleDeepLink,400);setTimeout(()=>{if(S.role==="inside") migrateParrillaDates()},1500)}
     render(); if(S.openId) renderSheet();
   },err=>{if(!S.posts.size) offline(); else toast("Se perdió la conexión en vivo. Recarga la página.")});
   db.collection("comentarios").onSnapshot(async snap=>{
@@ -2651,6 +2903,8 @@ async function boot(){
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
+  db.collection("series").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,{...d.data(),id:d.id});S.series=m;render();if(S.openId) renderSheet()},()=>{});
+  db.collection("feedorden").onSnapshot(snap=>{const o={};for(const d of snap.docs){const v=d.data();if(v&&v.pais&&v.mes) o[feedKey(v.pais,v.mes)]=v.orden||[]}S.feedOrd=o;if(S.f.view==="grid") renderView()},()=>{});
   db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}; else if(d.id==="catalogo") r.catalogo=v}S.red=r;if(S.redC) renderRedCenter()},()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
