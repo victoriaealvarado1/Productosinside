@@ -641,6 +641,21 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .ta-hist .dots i{width:7px;height:7px;border-radius:50%;background:var(--s,var(--ink-3));border:1px solid rgba(0,0,0,.15)}
 .ta-leg .stl{display:inline-flex;align-items:center;gap:5px}
 .ta-leg .stl i{width:14px;height:10px;border-radius:3px;border:1px solid var(--line-strong);margin:0}
+
+.campctl .redcfg{margin-top:2px}
+.campsug{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:color-mix(in srgb,#7a4fd0 8%,var(--surface));border:1px solid color-mix(in srgb,#7a4fd0 35%,var(--line));border-radius:8px;padding:6px 10px;font-size:13px;margin-top:6px}
+.campsug span{flex:1;min-width:180px} .campsug em{color:#7a4fd0;font-style:normal;font-weight:700}
+.campsug .btn.sm{margin-top:0}
+.sugdot{font-style:normal;font-size:10px}
+.sumlink{border:0;background:none;color:#7a4fd0;font:inherit;cursor:pointer;padding:0}
+.cattree{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.catm{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.catm header{display:flex;justify-content:space-between;align-items:baseline} .catm header small,.catm li small{color:var(--ink-3);font:600 11px var(--f-mono)}
+.catm ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.catm li{display:flex;gap:6px;align-items:center;font-size:13px} .catm li span{flex:1}
+.catm li .iconbtn{width:22px;height:22px;font-size:11px;opacity:.5} .catm li:hover .iconbtn{opacity:1}
+.catadd{display:flex;gap:4px;margin-top:4px} .catadd input{flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font:inherit;font-size:12px;background:var(--bg);color:var(--ink)}
+.catadd .btn.sm{margin-top:0}
 </style>
 
 <div class="top">
@@ -859,7 +874,7 @@ function renderSummary(){
   const sf=vs.filter(p=>!p.fecha).length;
   $("#summary").innerHTML=`<span><b>${inM.length}</b> publicaciones ${S.f.desde||S.f.hasta?`del ${S.f.desde?fmtDia(S.f.desde):"inicio"} al ${S.f.hasta?fmtDia(S.f.hasta):"fin"}`:"en "+MESES[m]}</span><span><b>${by("feed")}</b> feed · <b>${by("historia")}</b> historias · <b>${by("promo")}</b> promos</span>
    ${env?`<span><b>${env}</b> ${role()==="inside"?"esperando aprobación del cliente":"esperan tu aprobación"}</span>`:""}${cam?`<span class="warn"><b>${cam}</b> con cambios solicitados</span>`:""}
-   ${soon&&role()==="inside"?`<span class="warn"><b>${soon}</b> salen en ≤2 días sin aprobar</span>`:""}${sf&&role()==="inside"?`<span><b>${sf}</b> por asignar fecha</span>`:""}`;
+   ${soon&&role()==="inside"?`<span class="warn"><b>${soon}</b> salen en ≤2 días sin aprobar</span>`:""}${sf&&role()==="inside"?`<span><b>${sf}</b> por asignar fecha</span>`:""}${(()=>{if(role()!=="inside") return "";const n=[...S.posts.values()].filter(x=>x.campSug).length, z=vs.filter(needsCamp).length;return n||z?`<button class="sumlink" data-redcenter="cat">${n?`<b>${n}</b> campañas sugeridas por confirmar`:""}${n&&z?" · ":""}${z?`<b>${z}</b> sin campaña`:""}</button>`:""})()}`;
 }
 
 /* ============ vista calendario */
@@ -871,7 +886,7 @@ function chip(p,opts={}){
   return `<button class="pc ${colorC(p.estado)} ${(S.clip||[]).includes(p.id)?"clip":""} ${S.sels&&S.sels.has(p.id)?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
     <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span><span class="fmt">${fmtAbbr(p)}</span><span>${esc(where)}</span></span>
-    <span class="t2">${esc(p.campana||p.headline||"Sin campaña")}</span></span></button>`;
+    <span class="t2">${esc(campDisp(p)||p.headline||"Sin campaña")}${p.campSug&&canEdit()?` <i class="sugdot" title="Sugerencia de campaña por confirmar">✨</i>`:""}</span></span></button>`;
 }
 function monthDays(){
   const [y,m]=S.month; const first=new Date(y,m,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
@@ -1263,7 +1278,8 @@ function tabBody(p,cms){
     ${inp("estado","Estado",p,ESTADOS.map(e=>e.id))}${fmtCtl(p)}
     ${canEdit()?inp("tipo","Tipo",{...p,tipo:TIPOS[p.tipo]},Object.values(TIPOS)):fieldRO("Tipo",TIPOS[p.tipo])}${inp("linea","Línea de campaña",p,LINEAS)}
     ${paisesCtl}
-    ${inp("campana","Campaña",p)}${inp("serie","Serie",p)}
+    ${campCtl(p)}
+    ${inp("campana","Nombre de la campaña (como viene en el planning)",p)}${inp("serie","Serie",p)}
     ${inp("headline","Headline / super",p,"text",true)}
     ${inp("responsable","Responsable → aprueba",p,"text",true)}
     ${inp("insumo","Insumo / recurso",p,"text",true)}
@@ -1527,6 +1543,7 @@ async function save(id,patch){
   const changed={}; for(const k in patch) if(JSON.stringify(cur[k])!==JSON.stringify(patch[k])) changed[k]=patch[k];
   if(!Object.keys(changed).length) return;
   if(!S.undoing){const prev={};for(const k in changed) prev[k]=cur[k]===undefined?null:cur[k];pushUndo({type:"edit",id,prev,label:undoLabel(changed)})}
+  if(!S.undoing&&!("campMadre" in changed)&&["headline","copy","imagenes","campana","serie"].some(k=>k in changed)&&typeof campAutoOnEdit==="function") setTimeout(()=>campAutoOnEdit(id),0);
   changed.actualizado=new Date().toISOString(); if(S.myId) changed.actualizadoPor=S.myId;
   S.posts.set(id,{...cur,...changed}); render(); if(S.openId===id) renderSheet();
   try{await enqueue(id,()=>S.db.doc("posts/"+id).update(changed))}
@@ -1767,6 +1784,7 @@ function medTab(m){
     ${m.notaFecha?`<p class="hint wide" style="grid-column:1/-1;color:var(--bad);margin:-4px 0 0">${esc(m.notaFecha)}</p>`:""}
     ${mInp("estado","Estado",m,ESTADOS.map(e=>e.id))}${mInp("matriz","Matriz",m,MATRICES.map(x=>[x.id,x.nombre]))}
     ${mInp("nombre","Nombre de la pieza",m,"text",true)}
+    ${campCtl(m)}
     ${mInp("plataforma","Plataforma / medio",m)}${mInp("formato","Formato",m)}
     <div class="f wide"><span class="lb">Regiones</span><div class="chips">${REGIONES.map(x=>`<button class="chip" data-mreg="${x.id}" aria-pressed="${rsel.includes(x.id)}" style="--rc:var(${x.var})">${x.nombre}</button>`).join("")}</div></div>
     <div class="f wide"><span class="lb">Países</span><div class="chips">${rsel.map(id=>region(id).paises.map(c=>`<button class="chip" data-mpais="${c}" aria-pressed="${m.paises.includes(c)}">${c} · ${PAIS[c]}</button>`).join("")).join(`<span style="width:100%;height:0"></span>`)}</div></div>
@@ -1780,6 +1798,7 @@ async function saveMed(id,patch){
   const ch={}; for(const k in patch) if(JSON.stringify(cur[k])!==JSON.stringify(patch[k])) ch[k]=patch[k];
   if(!Object.keys(ch).length) return;
   if(!S.undoing){const prev={};for(const k in ch) prev[k]=cur[k]===undefined?null:cur[k];pushUndo({type:"medit",id,prev,label:ch.inicio||ch.fin?"el cambio de fechas":"la edición"})}
+  if(!S.undoing&&!("campMadre" in ch)&&["nombre","titular","textoPrincipal","mencion","imagenes"].some(k=>k in ch)) setTimeout(()=>campAutoOnEdit(id),0);
   ch.actualizado=new Date().toISOString(); if(S.myId) ch.actualizadoPor=S.myId;
   S.medios.set(id,{...cur,...ch}); renderView(); if(S.openMed===id) renderMedioSheet();
   try{await enqueue("m:"+id,()=>S.db.doc("medios/"+id).update(ch))}
@@ -2061,7 +2080,7 @@ function renderTodoSummary(){
   const env=ps.filter(p=>p.estado==="Enviado a cliente").length+ms.filter(m=>m.estado==="Enviado a cliente").length;
   $("#summary").innerHTML=`<span>Todo ${MESES[mo]}: <b>${ps.length+ms.length}</b> piezas</span><span><b>${ps.filter(p=>isFeed(p)).length}</b> feed · <b>${ps.filter(p=>!isFeed(p)).length}</b> historias y promos</span><span><b>${ms.length}</b> piezas de medios al aire</span>${env?`<span><b>${env}</b> ${role()==="cliente"?"esperan tu aprobación":"esperando aprobación del cliente"}</span>`:""}`;
 }
-function todoItem(p){const c=canal(canalOfPost(p));const im=p.imagenes&&p.imagenes[0];const story=!isFeed(p);return `<button class="ta-it ${colorC(p.estado)}" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)};${regStripe(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="ta-th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span><span class="ta-tx"><span class="ta-l1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora||"—")}</span><span class="ta-f">${fmtAbbr(p)}</span><span class="ta-w">${esc(whereLabel(p))}</span></span><span class="ta-t">${esc(p.campana||p.headline||"Publicación")}</span></span></button>`}
+function todoItem(p){const c=canal(canalOfPost(p));const im=p.imagenes&&p.imagenes[0];const story=!isFeed(p);return `<button class="ta-it ${colorC(p.estado)}" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)};${regStripe(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="ta-th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span><span class="ta-tx"><span class="ta-l1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora||"—")}</span><span class="ta-f">${fmtAbbr(p)}</span><span class="ta-w">${esc(whereLabel(p))}</span></span><span class="ta-t">${esc(campDisp(p)||p.headline||"Publicación")}</span></span></button>`}
 function renderTodo(){
   const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`;
   const first=new Date(y,mo,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
@@ -2138,6 +2157,7 @@ function infoCampText(linea){
   return [...pick(L.tono),...pick(L.series)].join("\n");
 }
 function lineaOf(piece,kind){
+  const cc=campOf(piece); if(cc&&LINEAS.includes(cc.madre)) return cc.madre;
   if(kind==="post") return piece.linea&&piece.linea!=="Otra"?piece.linea:(piece.campana||"Otra");
   const n=(piece.nombre||"").toLowerCase();
   if(/halloween/.test(n)) return "Halloween Kids"; if(/kid|niñ/.test(n)) return "Kids"; if(/comfort/.test(n)) return "Comfort Plus";
@@ -2271,6 +2291,7 @@ function renderRedCenter(){
       ${[["insumos","Insumos / brief de la campaña","Pega aquí el brief, el concepto, el KV, referencias, insights… todo lo que el asistente debe saber.",6],["objetivo","Objetivo","Ej.: posicionar Payless como destino de sneakers multimarca.",2],["publico","Público","Ej.: jóvenes 18–30, urbanos, sneakers como moda.",2],["tono","Tono","Ej.: versátil, joven, energía; nunca «comodidad».",2],["mensajes","Mensajes clave","Ej.: cuatro marcas en un solo lugar; un par, mil estilos.",2],["prohibido","Palabras o enfoques prohibidos","Ej.: «cómodo», «para dama», abrir con el %.",2]].map(([k,l,ph,r])=>`<label class="lb">${l}</label><textarea data-rc="${k}" rows="${r}" placeholder="${esc(ph)}">${esc(c[k]||"")}</textarea>`).join("")}
       <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
     :t==="docs"?docsTab()
+    :t==="cat"?catTab()
     :`<p class="hint">Reglas que el Asistente INSIDE aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
       <ul class="rclist">${(m.aprendizajes||[]).map((a,i)=>`<li><span>${esc(a.texto)}${a.fuente?`<small>${esc(a.fuente)}</small>`:""}</span><button class="iconbtn" data-rcdel="${i}" aria-label="Quitar">✕</button></li>`).join("")||`<li class="cempty">Todavía no hay aprendizajes.</li>`}</ul>
       <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
@@ -2278,7 +2299,7 @@ function renderRedCenter(){
       ${S.redC.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.err)}</p>`:""}
       ${(S.redC.props||[]).length?`<div class="redout"><b>Propuestas (elige cuáles guardar)</b>${S.redC.props.map((p,i)=>`<label class="pickr"><input type="checkbox" data-rcp="${i}" checked><span><b>${esc(p.regla)}</b><small>${esc(p.evidencia||"")}</small></span></label>`).join("")}<div class="drow"><button class="btn primary" data-rcpsave>Guardar seleccionados</button></div></div>`:""}`;
   root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Asistente INSIDE"><header><h3>✨ Asistente INSIDE</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
-    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Campañas y archivos</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
+    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Campañas y archivos</button><button data-rctab="cat" aria-pressed="${t==="cat"}">Catálogo de campañas${(()=>{const n=[...S.posts.values(),...S.medios.values()].filter(x=>x.campSug).length;return n?` (${n})`:""})()}</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
     ${body}</div></div>`;
 }
 async function saveRed(id,patch){
@@ -2445,6 +2466,161 @@ document.addEventListener("change",async e=>{
     st.att="Adjuntando…";rerenderOpen();await attachFiles(fs,st.linea,"Archivo de campaña",m=>{st.att=m;const el=$("#redAtt");if(el) el.textContent=m});st.att="";rerenderOpen();return}
 });
 
+/* ============ CATÁLOGO DE CAMPAÑAS (madre + subcampaña) y asociación inteligente */
+const CAT_BASE={madres:[
+  {nombre:"Sneakers",subs:[{nombre:"Multimarca",alias:["sneakers","atleticos multimarca","atleticos","todos los estilos","sneakers lanzamiento","street cast","un par, mil estilos","encuentra tu match"]},{nombre:"LA Gear",alias:["la gear","athletics la gear","athletics — la gear","la 84","lgear"]},{nombre:"Champion",alias:["champion","atleticos champion"]},{nombre:"Champion / Airwalk",alias:["airwalk","champion / airwalk"]},{nombre:"Reebok / Cross Trekker",alias:["reebok","cross trekker","cross trekkers"]}]},
+  {nombre:"Nuevas Llegadas",subs:[{nombre:"Damas",alias:["nuevas llegadas damas","new arrivals ladies","it-girl","el styling","el drop"]},{nombre:"Niños",alias:["nuevas llegadas ninos","new arrivals kids"]},{nombre:"Sandalias",alias:["sandals","sandalias"]},{nombre:"Botas",alias:["botas","boots"]},{nombre:"Cuero hombre",alias:["cuero hombre","cuero"]},{nombre:"General",alias:["nuevas llegadas","new arrivals"]}]},
+  {nombre:"Kids",subs:[{nombre:"Kids Concurso",alias:["kids concurso","kids concur","concurso"]},{nombre:"Estrenar para jugar",alias:["estrenar para jugar"]},{nombre:"Guía para papás",alias:["guia para papas"]}]},
+  {nombre:"Halloween Kids",subs:[{nombre:"Halloween Kids",alias:["halloween"]}]},
+  {nombre:"Comfort Plus",subs:[{nombre:"Comfort Plus",alias:["comfort"]}]},
+  {nombre:"Aniversario TT",subs:[{nombre:"25th Anniversary",alias:["25th anniversary","tt aniversario","aniversario"]}]},
+  {nombre:"Promociones",subs:[{nombre:"BOGO 30",alias:["bogo 30"]},{nombre:"BOGO 40",alias:["bogo 40"]},{nombre:"BOGO 50",alias:["bogo 50"]},{nombre:"BOGO 60",alias:["bogo 60"]},{nombre:"Super BOGO 60",alias:["super bogo 60","super bogo"]},{nombre:"CYD",alias:["cyd","black weeks"]},{nombre:"Tú Eliges",alias:["tu eliges"]},{nombre:"Flash Sale",alias:["flash sale"]},{nombre:"Descuento online",alias:["% descuento","de descuento","de decuento","descuento online","% off"]},{nombre:"Hasta 70% off",alias:["70%"]}]}
+]};
+const isMed=x=>!!x&&(/^med-/.test(x.id||"")||(S.medios&&S.medios.has(x.id)));
+const norm=s=>(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ").trim();
+function catalogo(){return (S.red&&S.red.catalogo&&S.red.catalogo.madres)?S.red.catalogo:CAT_BASE}
+function catMadres(){return catalogo().madres.map(m=>m.nombre)}
+function catSubs(madre){const m=catalogo().madres.find(x=>x.nombre===madre);return m?m.subs:[]}
+/* regla por nombre: el alias más largo que aparezca gana */
+function campRule(text){
+  const t=norm(text); if(!t) return null; let best=null;
+  for(const m of catalogo().madres) for(const s of m.subs) for(const a of [s.nombre,...(s.alias||[])]){const na=norm(a);if(na.length>2&&t.includes(na)&&(!best||na.length>best.len)) best={madre:m.nombre,sub:s.nombre,len:na.length}}
+  return best;
+}
+function campOf(x){
+  if(x.campMadre) return {madre:x.campMadre,sub:x.campSub||"",fuente:x.campFuente||"manual",conf:x.campConf};
+  const md=isMed(x); const base=md?x.nombre:(x.campana||"");
+  const r=campRule(base)||(md?null:campRule(x.serie||""));
+  if(r) return {madre:r.madre,sub:r.sub,fuente:"regla"};
+  return null;
+}
+function campDisp(x){const c=campOf(x);return (isMed(x)?"":x.campana)||(c&&c.sub)||""}
+function needsCamp(x){return !campOf(x)}
+async function setCamp(x,madre,sub,fuente,extra={}){
+  const patch={campMadre:madre,campSub:sub||"",campFuente:fuente,campSug:null,...extra};
+  if(!isMed(x)){patch.linea=LINEAS.includes(madre)?madre:"Otra"; if(!(x.campana||"").trim()&&sub) patch.campana=sub}
+  if(isMed(x)) await saveMed(x.id,patch); else await save(x.id,patch);
+}
+function pieceSummary(x){
+  const md=isMed(x);
+  return {id:x.id,canal:md?`medios ${x.matriz}`:`orgánico ${x.tipo}`,fecha:md?(x.inicio||""):(x.fecha||""),paises:x.paises.join(","),nombre:(md?x.nombre:x.campana)||"",headline:(md?x.titular:x.headline)||"",copy:((md?(x.textoPrincipal||x.mencion):x.copy)||"").slice(0,280),serie:x.serie||"",legal:(x.legal||"").slice(0,160)};
+}
+function catText(){return catalogo().madres.map(m=>`- ${m.nombre}: ${m.subs.map(s=>s.nombre).join(" | ")}`).join("\n")}
+function neighbors(x){
+  const d=isMed(x)?x.inicio:x.fecha; if(!d) return "";
+  const near=[...S.posts.values()].filter(p=>p.id!==x.id&&p.fecha&&Math.abs(diffDays(p.fecha,d))<=1&&p.paises.some(c=>x.paises.includes(c))&&campOf(p)).slice(0,6);
+  return near.map(p=>`${p.fecha} ${p.paises.join(",")}: ${campOf(p).madre} › ${campOf(p).sub}`).join("; ");
+}
+async function imageBlob(x){const im=(x.imagenes||[])[0];if(!im) return null;try{const r=await fetch(imgSrc(im));if(!r.ok) return null;const b=await r.blob();return /^image\//.test(b.type)?b:null}catch(e){return null}}
+/* pide a Claude la campaña de un grupo de piezas */
+async function askCamps(items,withImages){
+  const prompt=`Eres el planner de cuentas de la agencia INSIDE para Payless. Asocia cada pieza a su campaña del catálogo (madre › subcampaña).
+CATÁLOGO ACTUAL:
+${catText()}
+REGLAS: usa el nombre, headline, copy, serie, legal, fecha, país y las piezas vecinas. Si la pieza encaja en una madre pero ninguna subcampaña aplica, o no encaja en ninguna, propone una subcampaña NUEVA (nueva:true) con un nombre corto y claro, dentro de la madre que corresponda (las madres posibles son: ${catMadres().join(", ")}). "conf" es tu confianza de 0 a 1: usa ≥0.85 solo si es evidente. Si la pieza está vacía y no hay forma de saberlo, conf ≤0.3.
+PIEZAS:
+${items.map(x=>JSON.stringify({...pieceSummary(x),vecinas:neighbors(x)})).join("\n")}
+${withImages?"La imagen adjunta es el arte de la pieza; úsala para identificar la campaña (textos, marcas, producto, estilo).":""}
+Responde SOLO con un JSON: [{"id":"...","madre":"...","sub":"...","nueva":false,"conf":0.9,"porque":"frase corta"}]`;
+  const opts={cache:false}; if(withImages){const b=await imageBlob(items[0]);if(b) opts.images=b}
+  const r=await S.sampleFn.json(prompt,opts); return Array.isArray(r)?r:[];
+}
+const CAMP_AUTO=0.85;
+async function applyCampResults(res,src){
+  let auto=0,sug=0,nuevas=0; beginGroup();
+  try{for(const r of res){const x=S.posts.get(r.id)||S.medios.get(r.id);if(!x||!r.madre) continue;
+    const exists=catSubs(r.madre).some(s=>s.nombre===r.sub);
+    if(exists&&!r.nueva&&Number(r.conf)>=CAMP_AUTO){await setCamp(x,r.madre,r.sub,"ia",{campConf:Number(r.conf),campPorque:r.porque||""});auto++}
+    else{const sg={madre:r.madre,sub:r.sub||"",nueva:!exists,conf:Number(r.conf)||0,porque:r.porque||""};if(isMed(x)) await saveMed(x.id,{campSug:sg}); else await save(x.id,{campSug:sg});sug++;if(!exists) nuevas++}}}
+  finally{endGroup("la asociación de campañas")}
+  return {auto,sug,nuevas};
+}
+async function runCampMatch(onMsg){
+  if(!S.sampleFn){toast("El Asistente INSIDE necesita Claude disponible en esta vista.");return null}
+  const pend=[...S.posts.values(),...S.medios.values()].filter(x=>needsCamp(x)&&!x.campSug);
+  if(!pend.length){toast("Todas las piezas ya tienen campaña o sugerencia.");return {auto:0,sug:0,nuevas:0}}
+  const txt=pend.filter(x=>{const s=pieceSummary(x);return s.nombre||s.headline||s.copy}), img=pend.filter(x=>!txt.includes(x)&&(x.imagenes||[]).length), vac=pend.filter(x=>!txt.includes(x)&&!img.includes(x));
+  const tot={auto:0,sug:0,nuevas:0}; let done=0; const add=r=>{tot.auto+=r.auto;tot.sug+=r.sug;tot.nuevas+=r.nuevas};
+  try{
+    for(let i=0;i<txt.length;i+=20){onMsg&&onMsg(`Leyendo piezas ${done+1}–${Math.min(done+20,pend.length)} de ${pend.length}…`);add(await applyCampResults(await askCamps(txt.slice(i,i+20),false)));done+=Math.min(20,txt.length-i)}
+    for(const x of img){onMsg&&onMsg(`Mirando el arte de ${done+1} de ${pend.length}…`);add(await applyCampResults(await askCamps([x],true)));done++}
+  }catch(e){toast(e&&e.code==="not_granted"?"No se dio permiso para usar Claude.":e&&e.code==="rate_limited"?"Demasiadas consultas: espera un momento y continúa.":"Se interrumpió la asociación. Lo hecho queda guardado; puedes continuar.")}
+  onMsg&&onMsg(""); tot.vacias=vac.length; return tot;
+}
+/* al crear o editar: re-sugerir para esa pieza (silencioso) */
+const campTimers={};
+function campAutoOnEdit(id){
+  if(!canEdit()||!S.sampleFn) return; clearTimeout(campTimers[id]);
+  campTimers[id]=setTimeout(async()=>{const x=S.posts.get(id)||S.medios.get(id);if(!x||!needsCamp(x)&&x.campFuente!=="ia") return;if(x.campFuente==="manual") return;
+    const s=pieceSummary(x);const withImg=!(s.nombre||s.headline||s.copy)&&(x.imagenes||[]).length;if(!(s.nombre||s.headline||s.copy)&&!withImg) return;
+    try{const r=await applyCampResults(await askCamps([x],withImg));const y=S.posts.get(id)||S.medios.get(id);if(r.auto) toast(`Campaña asociada: ${y.campMadre} › ${y.campSub}`);else if(r.sug) toast("Hay una sugerencia de campaña para revisar en la ficha.")}catch(e){}
+  },2500);
+}
+/* control en la ficha */
+function campCtl(x){
+  const c=campOf(x), sg=x.campSug;
+  if(!canEdit()) return fieldRO("Campaña",c?`${c.madre} › ${c.sub}`:"Sin campaña",true);
+  const madre=c?c.madre:"", subs=madre?catSubs(madre):[];
+  return `<div class="f wide campctl"><span class="lb">Campaña (catálogo)</span>
+    <div class="redcfg"><label>Campaña madre<select data-campm="${esc(x.id)}"><option value="">Sin campaña</option>${catMadres().map(m=>`<option ${m===madre?"selected":""}>${esc(m)}</option>`).join("")}</select></label>
+    <label>Subcampaña<select data-camps="${esc(x.id)}" ${madre?"":"disabled"}><option value="">—</option>${subs.map(s=>`<option ${c&&s.nombre===c.sub?"selected":""}>${esc(s.nombre)}</option>`).join("")}</select></label></div>
+    ${c?`<span class="hint">${c.fuente==="ia"?`✨ Asignada por el Asistente INSIDE${x.campPorque?`: ${esc(x.campPorque)}`:""}`:c.fuente==="regla"?"Detectada por el nombre de la pieza.":"Asignada a mano."}</span>`:""}
+    ${sg?`<div class="campsug"><span>✨ Sugerencia: <b>${esc(sg.madre)} › ${esc(sg.sub)}</b>${sg.nueva?" <em>(campaña nueva)</em>":""}${sg.porque?` · ${esc(sg.porque)}`:""}</span><button class="btn primary sm" data-campok="${esc(x.id)}">Confirmar</button><button class="btn ghost sm" data-campno="${esc(x.id)}">Descartar</button></div>`
+      :!c&&S.sampleFn?`<button class="clink" data-campone="${esc(x.id)}">✨ Sugerir campaña con el Asistente INSIDE</button>`:""}
+  </div>`;
+}
+async function confirmSug(x){
+  const sg=x.campSug; if(!sg) return;
+  if(sg.nueva&&!catSubs(sg.madre).some(s=>s.nombre===sg.sub)) await addSubToCat(sg.madre,sg.sub);
+  await setCamp(x,sg.madre,sg.sub,"ia",{campConf:sg.conf,campPorque:sg.porque});
+}
+async function addSubToCat(madre,sub,alias){
+  const cat=JSON.parse(JSON.stringify(catalogo())); let m=cat.madres.find(x=>x.nombre===madre); if(!m){m={nombre:madre,subs:[]};cat.madres.push(m)}
+  if(!m.subs.some(s=>s.nombre===sub)) m.subs.push({nombre:sub,alias:alias||[]});
+  await saveCat(cat);
+}
+async function saveCat(cat){S.red=S.red||{marca:{},camps:{},docs:{}};S.red.catalogo={...cat,actualizado:new Date().toISOString()};try{await S.db.doc("redaccion/catalogo").set(S.red.catalogo)}catch(e){toast("No se pudo guardar el catálogo.")}rerenderOpen();if(S.redC) renderRedCenter()}
+document.addEventListener("change",async e=>{
+  const m=e.target.closest("[data-campm]"); if(m){const x=S.posts.get(m.dataset.campm)||S.medios.get(m.dataset.campm);if(!x) return;const v=m.value;if(!v){if(isMed(x)) await saveMed(x.id,{campMadre:"",campSub:"",campFuente:"manual",campSug:null}); else await save(x.id,{campMadre:"",campSub:"",campFuente:"manual",campSug:null,linea:"Otra"});return}
+    const subs=catSubs(v);await setCamp(x,v,subs.length===1?subs[0].nombre:"","manual");return}
+  const s=e.target.closest("[data-camps]"); if(s){const x=S.posts.get(s.dataset.camps)||S.medios.get(s.dataset.camps);if(!x) return;const c=campOf(x);await setCamp(x,c?c.madre:"",s.value,"manual");return}
+});
+document.addEventListener("click",async e=>{
+  const ok=e.target.closest("[data-campok]"); if(ok){const x=S.posts.get(ok.dataset.campok)||S.medios.get(ok.dataset.campok);if(x){await confirmSug(x);toast("Campaña confirmada")}return}
+  const no=e.target.closest("[data-campno]"); if(no){const x=S.posts.get(no.dataset.campno)||S.medios.get(no.dataset.campno);if(x){if(isMed(x)) await saveMed(x.id,{campSug:null}); else await save(x.id,{campSug:null})}return}
+  const one=e.target.closest("[data-campone]"); if(one){const x=S.posts.get(one.dataset.campone)||S.medios.get(one.dataset.campone);if(!x) return;one.textContent="Analizando…";one.disabled=true;
+    try{const s=pieceSummary(x);const wi=!(s.nombre||s.headline||s.copy)&&(x.imagenes||[]).length;const r=await applyCampResults(await askCamps([x],wi));toast(r.auto?"Campaña asociada":r.sug?"Revisa la sugerencia":"Sin resultado")}catch(err){toast("No se pudo sugerir la campaña.")}return}
+});
+/* pestaña del catálogo en el Asistente INSIDE */
+function catTab(){
+  const all=[...S.posts.values(),...S.medios.values()];
+  const sin=all.filter(needsCamp), sugs=all.filter(x=>x.campSug), ia=all.filter(x=>x.campFuente==="ia");
+  const cnt=(m,s)=>all.filter(x=>{const c=campOf(x);return c&&c.madre===m&&(s==null||c.sub===s)}).length;
+  const nuevas=[...new Map(sugs.filter(x=>x.campSug.nueva).map(x=>[x.campSug.madre+"›"+x.campSug.sub,x.campSug])).values()];
+  const name=x=>esc((isMed(x)?x.nombre:(x.headline||x.campana))||"Pieza sin nombre");
+  const where=x=>`${isMed(x)?matrizN(x.matriz):"Orgánico"} · ${isMed(x)?medRange(x):(x.fecha?fmtDia(x.fecha):"sin fecha")} · ${esc(x.paises.join(" "))}`;
+  return `<div class="attbox"><div class="crow"><b>🔗 Asociación inteligente</b><button class="btn primary" data-catrun ${S.redC.catBusy?"disabled":""}>${S.redC.catBusy?"Asociando…":"Asociar piezas sin campaña"}</button></div>
+      <span class="hint" id="catMsg">${esc(S.redC.catMsg||`${sin.length} piezas sin campaña · ${sugs.length} sugerencias por confirmar · ${ia.length} asignadas por IA. Si el asistente está muy seguro (≥85%) asigna solo; si duda, te deja la sugerencia aquí abajo.`)}</span></div>
+    ${nuevas.length?`<h4 class="rch">Campañas nuevas propuestas (${nuevas.length})</h4>${nuevas.map(n=>`<div class="campsug"><span><b>${esc(n.madre)} › ${esc(n.sub)}</b> · ${sugs.filter(x=>x.campSug.nueva&&x.campSug.madre===n.madre&&x.campSug.sub===n.sub).length} piezas</span><button class="btn primary sm" data-catnew="${esc(n.madre)}|${esc(n.sub)}">Crear y asignar</button><button class="btn ghost sm" data-catnewno="${esc(n.madre)}|${esc(n.sub)}">Descartar</button></div>`).join("")}`:""}
+    ${sugs.filter(x=>!x.campSug.nueva).length?`<div class="crow"><h4 class="rch">Sugerencias por confirmar (${sugs.filter(x=>!x.campSug.nueva).length})</h4><button class="btn sm" data-catokall>Confirmar todas</button></div>
+      <ul class="rclist">${sugs.filter(x=>!x.campSug.nueva).map(x=>`<li><span><b>${name(x)}</b><small>${where(x)} → ✨ ${esc(x.campSug.madre)} › ${esc(x.campSug.sub)} (${Math.round((x.campSug.conf||0)*100)}%)${x.campSug.porque?` · ${esc(x.campSug.porque)}`:""}</small></span><button class="btn primary sm" data-campok="${esc(x.id)}">Confirmar</button><button class="btn ghost sm" data-catopen="${esc(x.id)}">Abrir</button><button class="iconbtn" data-campno="${esc(x.id)}" aria-label="Descartar">✕</button></li>`).join("")}</ul>`:""}
+    ${sin.length?`<details><summary class="rch" style="cursor:pointer">Sin campaña (${sin.length})</summary><ul class="rclist">${sin.map(x=>`<li><span><b>${name(x)}</b><small>${where(x)}${!(pieceSummary(x).nombre||pieceSummary(x).headline||pieceSummary(x).copy)&&!(x.imagenes||[]).length?" · pieza vacía":""}</small></span><button class="btn ghost sm" data-catopen="${esc(x.id)}">Abrir</button></li>`).join("")}</ul></details>`:""}
+    <h4 class="rch">Catálogo de campañas</h4>
+    <div class="cattree">${catalogo().madres.map(m=>`<div class="catm"><header><b>${esc(m.nombre)}</b><small>${cnt(m.nombre)} piezas</small></header>
+      <ul>${m.subs.map(s=>`<li><span>${esc(s.nombre)}</span><small>${cnt(m.nombre,s.nombre)}</small><button class="iconbtn" data-catdel="${esc(m.nombre)}|${esc(s.nombre)}" aria-label="Quitar subcampaña" title="Quitar subcampaña">✕</button></li>`).join("")}</ul>
+      <div class="catadd"><input data-catnewname="${esc(m.nombre)}" placeholder="Nueva subcampaña…"><button class="btn sm" data-catadd="${esc(m.nombre)}">Agregar</button></div></div>`).join("")}</div>`;
+}
+document.addEventListener("click",async e=>{
+  if(!S.redC) return;
+  if(e.target.closest("[data-catrun]")){S.redC.catBusy=true;renderRedCenter();const r=await runCampMatch(m=>{S.redC.catMsg=m;const el=$("#catMsg");if(el) el.textContent=m});S.redC.catBusy=false;S.redC.catMsg=r?`Listo: ${r.auto} asignadas automáticamente, ${r.sug} sugerencias por confirmar${r.nuevas?`, ${r.nuevas} con campaña nueva propuesta`:""}${r.vacias?`. ${r.vacias} piezas están vacías (sin texto ni arte) y quedan sin campaña.`:"."}`:"";renderRedCenter();return}
+  if(e.target.closest("[data-catokall]")){const xs=[...S.posts.values(),...S.medios.values()].filter(x=>x.campSug&&!x.campSug.nueva);beginGroup();try{for(const x of xs) await confirmSug(x)}finally{endGroup("la confirmación de campañas")}toast(`${xs.length} campañas confirmadas`);renderRedCenter();return}
+  const nw=e.target.closest("[data-catnew]"); if(nw){const [m,s]=nw.dataset.catnew.split("|");await addSubToCat(m,s);const xs=[...S.posts.values(),...S.medios.values()].filter(x=>x.campSug&&x.campSug.nueva&&x.campSug.madre===m&&x.campSug.sub===s);beginGroup();try{for(const x of xs) await confirmSug(x)}finally{endGroup("la nueva campaña")}toast(`Campaña «${s}» creada y asignada a ${xs.length} piezas`);renderRedCenter();return}
+  const nn=e.target.closest("[data-catnewno]"); if(nn){const [m,s]=nn.dataset.catnewno.split("|");for(const x of [...S.posts.values(),...S.medios.values()].filter(x=>x.campSug&&x.campSug.nueva&&x.campSug.madre===m&&x.campSug.sub===s)){if(isMed(x)) await saveMed(x.id,{campSug:null}); else await save(x.id,{campSug:null})}renderRedCenter();return}
+  const op=e.target.closest("[data-catopen]"); if(op){const id=op.dataset.catopen;S.redC=null;renderRedCenter();if(S.medios.has(id)) openPieceFrom("medio",id); else openPieceFrom("post",id);return}
+  const ad=e.target.closest("[data-catadd]"); if(ad){const m=ad.dataset.catadd;const inp=document.querySelector(`[data-catnewname="${CSS.escape(m)}"]`);const v=(inp&&inp.value||"").trim();if(!v) return;await addSubToCat(m,v);return}
+  const dl=e.target.closest("[data-catdel]"); if(dl){const [m,s]=dl.dataset.catdel.split("|");const cat=JSON.parse(JSON.stringify(catalogo()));const mm=cat.madres.find(x=>x.nombre===m);if(mm) mm.subs=mm.subs.filter(x=>x.nombre!==s);await saveCat(cat);toast(`Subcampaña «${s}» quitada del catálogo`);return}
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -2475,7 +2651,7 @@ async function boot(){
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
-  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}}S.red=r;if(S.redC) renderRedCenter()},()=>{});
+  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}; else if(d.id==="catalogo") r.catalogo=v}S.red=r;if(S.redC) renderRedCenter()},()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
