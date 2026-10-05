@@ -886,6 +886,22 @@ body.lbon{overflow:hidden}
 .armprev ul{margin:6px 0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13px;max-height:320px;overflow:auto}
 .armprev li small{display:block;color:var(--ink-3)}
 @media (max-width:760px){.inpopts{grid-template-columns:1fr}}
+.boceto{display:flex;flex-direction:column;gap:12px}
+.bstep{list-style:none;display:flex;gap:6px;margin:0;padding:0;flex-wrap:wrap}
+.bstep li{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-size:12px;color:var(--ink-3);background:var(--surface)}
+.bstep li b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--sunk);font-size:11px}
+.bstep li.on{border-color:#7a4fd0;color:var(--ink);font-weight:700} .bstep li.on b{background:#7a4fd0;color:#fff}
+.bstep li.ok{color:#1f8a4c} .bstep li.ok b{background:#1f8a4c;color:#fff}
+.bgrid figure img,.bgrid figure video{aspect-ratio:4/5;object-fit:contain;background:var(--sunk)}
+.bpdf{display:grid;place-items:center;aspect-ratio:4/5;background:var(--sunk);font-weight:700}
+.bact{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:10px}
+.bact p{margin:0;font-size:13px}
+.bref{border:1px solid color-mix(in srgb,#7a4fd0 35%,var(--line));border-radius:10px;padding:8px 10px;margin-bottom:10px;background:color-mix(in srgb,#7a4fd0 5%,var(--surface))}
+.bref summary{cursor:pointer;font-weight:700;font-size:13px}
+.bthumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.bthumbs button{width:64px;height:80px;border-radius:6px;border:1px solid var(--line);background:var(--sunk) center/cover;cursor:zoom-in;font-size:11px}
+.etb{font-style:normal;font-size:10px}
+.bgrid figcaption{display:flex;justify-content:space-between;align-items:center} .bgrid figcaption span:last-child{display:flex;gap:4px}
 </style>
 
 <div class="top">
@@ -1027,6 +1043,7 @@ function matches(p,opts={}){
   if(f.estado!=="ALL"&&p.estado!==f.estado) return false;
   if(!aprobMatch(p)) return false;
   if(!redMatch(p)) return false;
+  if(role()==="inside"&&!etapaMatch(p)) return false;
   if(p.fecha&&((f.desde&&p.fecha<f.desde)||(f.hasta&&p.fecha>f.hasta))) return false;
   if(f.q){const q=f.q.toLowerCase();const hay=[p.campana,p.headline,p.copy,p.serie,p.idea,p.sku,p.fase,p.grupo,p.paises.join(" ")].join(" ").toLowerCase();if(!hay.includes(q)) return false}
   return true;
@@ -1066,7 +1083,7 @@ function renderFilters(){
     </div></div>
   <div class="fgroup">
     <select class="sel" id="fLinea" aria-label="Campaña"><option value="ALL">Todas las campañas</option>${LINEAS.map(l=>`<option ${f.linea===l?"selected":""}>${l}</option>`).join("")}</select>
-    <select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>${aprobSel()}
+    <select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>${aprobSel()}${etapaSel()}
     <span class="flabel" style="margin-left:6px">Fechas</span><input class="sel" type="date" id="fDesde" value="${esc(f.desde||"")}" aria-label="Desde"><span class="flabel">a</span><input class="sel" type="date" id="fHasta" value="${esc(f.hasta||"")}" aria-label="Hasta">
     <button class="chip" data-range="1-10" aria-pressed="${f.desde==="2026-10-01"&&f.hasta==="2026-10-10"}">1–10 oct</button><button class="chip" data-range="mes" aria-pressed="${!f.desde&&!f.hasta}">Mes completo</button>
     <input class="search" id="fQ" type="search" placeholder="Buscar headline, SKU, campaña…" value="${esc(f.q)}" aria-label="Buscar">
@@ -1122,7 +1139,7 @@ function chip(p,opts={}){
   const where=whereLabel(p); const stripe=regStripe(p);
   return `<button class="pc ${colorC(p.estado)} ${(S.clip||[]).includes(p.id)?"clip":""} ${S.sels&&S.sels.has(p.id)?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" ${p.serieId?`data-sid="${esc(p.serieId)}"`:""} style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
-    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span>${isTT(p)?`<span class="ttb">TikTok</span>`:`<span class="fmt">${fmtAbbr(p)}</span>`}${serieTag(p)}${canEdit()&&repeatsOf(p).length?`<i class="repb" title="Se repite en el feed de un mismo país en menos de 14 días">⚠</i>`:""}<span>${esc(where)}</span></span>
+    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span>${isTT(p)?`<span class="ttb">TikTok</span>`:`<span class="fmt">${fmtAbbr(p)}</span>`}${serieTag(p)}${role()==="inside"&&etapaOf(p)&&etapaOf(p)!=="Arte final listo"?`<i class="etb" title="${etapaOf(p)}">${etapaOf(p)==="Boceto"?"✎":"🎨"}</i>`:""}${canEdit()&&repeatsOf(p).length?`<i class="repb" title="Se repite en el feed de un mismo país en menos de 14 días">⚠</i>`:""}<span>${esc(where)}</span></span>
     <span class="t2">${esc(campDisp(p)||p.headline||"Sin campaña")}${p.campSug&&canEdit()?` <i class="sugdot" title="Sugerencia de campaña por confirmar">✨</i>`:""}</span></span></button>`;
 }
 function monthDays(){
@@ -1425,7 +1442,7 @@ function renderSheet(){
   document.body.style.overflow="hidden";
   const cms=S.comments.filter(c=>c.postId===p.id).sort((a,b)=>a.fecha.localeCompare(b.fecha));
   const r=region(p.region);
-  const tabs=[["info","Ficha"],["copy","Copy"],["arte",`Arte (${(p.imagenes||[]).length})`],["aprob",`Comentarios${openCount(p.id)?` (${openCount(p.id)})`:""}`]];
+  const tabs=[["info","Ficha"],["copy","Copy"],...(role()==="inside"?[["boceto",`Boceto${(p.boceto||[]).length?` (${p.boceto.length})`:""}`]]:[]),["arte",`Arte (${(p.imagenes||[]).length})`],["aprob",`Comentarios${openCount(p.id)?` (${openCount(p.id)})`:""}`]];
   const scrollY=$(".sheet")?.scrollTop||0;
   $("#sheetRoot").innerHTML=`<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="Publicación">
     <div class="left">
@@ -1493,6 +1510,7 @@ function tabBody(p,cms){
       ${inp("legal",p.tipo==="promo"?"Legal (obligatorio en arte o copy)":"Legal",p,"textarea",true)}
       <div class="f wide"><span class="lb">Caracteres del copy</span><div class="ro mono">${(p.copy||"").length} / 2.200 ${cap.prov?"· usando copy provisional":""}</div></div></div>`;
   }
+  if(t==="boceto") return bocetoTab(p);
   if(t==="arte"){
     const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=fmts(p)[0]==="Historia"?"Frame":"Slide";
     const grid=imgs.length?`${ed&&imgs.length>1?`<p class="hint" style="margin:0 0 6px">Arrastra las imágenes para cambiar el orden de los slides.</p>`:""}<div class="arte">${imgs.map((s,k)=>`<figure ${ed?`draggable="true" data-artk="${k}" data-artkind="post"`:""}><button class="lbbtn" data-lb="post|${esc(p.id)}|${k}" title="Ver en grande" aria-label="Ver en grande">⤢</button>${mediaHTML(s,`${lbl} ${k+1}`,true)}<figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
@@ -1503,7 +1521,7 @@ function tabBody(p,cms){
     const xl=role()!=="inside"?"":`<details class="panel" style="margin-top:14px"><summary style="cursor:pointer;font-weight:700">También puedes cargarlas desde el Excel</summary>
         <p class="sub" style="margin:8px 0">${p.slot?`Casilla en el planning: <b>${esc(slotLabel(p))}</b>.`:"Esta pieza no tiene casilla de imagen en el Excel."} ${p.arteManual?"Las fotos de esta pieza se cargaron a mano, así que la actualización desde el Excel no las reemplaza.":""}</p>
         ${canEdit()&&S.assets?`<button class="btn" data-xlsx>Actualizar imágenes desde el Excel</button>`:""}</details>`;
-    return (imgs.length?`<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("arte",imgs.length>1?`Comentar el slide ${(S.pv.slide||0)+1}`:"Comentar el arte",S.pv.slide||0)}</div>`:"")+grid+upl+xl;
+    return bocetoRef(p)+(imgs.length?`<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("arte",imgs.length>1?`Comentar el slide ${(S.pv.slide||0)+1}`:"Comentar el arte",S.pv.slide||0)}</div>`:"")+grid+upl+xl;
   }
   if(t==="aprob") return commentsPanel(p.id,{nImg:(p.imagenes||[]).length,legal:!!p.legal,slide:S.pv.slide||0});
   // ficha
@@ -1620,6 +1638,7 @@ async function upload(files,replace){
   }
   if(added.length){const cur=S.posts.get(p.id);const patch={imagenes:replace?added:[...(cur.imagenes||[]),...added],arteManual:true};const hasV=added.some(isVid);
     if(S._poster){patch.poster=S._poster;S._poster=null}
+    if(cur.etapa==="En diseño"){const me=myPersona();patch.etapa="Arte final listo";patch.arteListoEn=new Date().toISOString();if(me) patch.artePor=me.id;setTimeout(()=>flujo(cur,"subió el arte final"),0)}
     if(hasV&&isFeed(cur)&&!fmts(cur).includes("Reel")){patch.formatos=FORMATOS.filter(f=>f==="Reel"||(fmts(cur).includes(f)&&!["Estático","Carrusel"].includes(f)));patch.formato="Reel"}
     await save(p.id,patch);toast(patch.formato==="Reel"?"Video subido · la pieza quedó como Reel":hasV?"Video subido":replace?"Arte reemplazado":added.length===1?"Foto agregada":`${added.length} fotos agregadas`);if(msg) msg.textContent=""}
   else if(msg) msg.textContent="";
@@ -3501,6 +3520,7 @@ function traceData(kind,x){
     else if(c.tipo==="cambios") ev.push({f:c.fecha,ic:"✏️",org,k:"bad",t:`${who} pidió cambios${reg}`,q:c.texto});
     else if(c.tipo==="respuesta") ev.push({f:c.fecha,ic:"↩",org,t:`${who} respondió un comentario${reg}`,q:c.texto});
     else if(c.tipo==="estado") ev.push({f:c.fecha,ic:"●",org,t:`${who} cambió el estado: ${c.texto}`});
+    else if(c.tipo==="flujo") ev.push({f:c.fecha,ic:"✎",org,k:/arte final/.test(c.texto)?"ok":"",t:`${who} ${c.texto}`});
     else if(c.tipo==="fecha") ev.push({f:c.fecha,ic:"📅",org,k:"warn",t:`${who} cambió la fecha: ${c.texto}`});
     else ev.push({f:c.fecha,ic:"💬",org,t:`${who} comentó${c.parte&&PARTES[c.parte]&&c.parte!=="general"?` sobre ${PARTES[c.parte].toLowerCase()}`:""}${reg}`,q:c.texto});
     if(c.resuelto&&c.resueltoEn) ev.push({f:c.resueltoEn,ic:"✓",t:`${nameOf(c.resueltoPor)} resolvió el comentario de ${who}`});
@@ -4070,7 +4090,7 @@ document.addEventListener("click",async e=>{
 });
 
 /* ============ VISOR DEL ARTE EN GRANDE */
-function lbList(kind,id){const x=kind==="medio"?S.medios.get(id):S.posts.get(id);return (x&&x.imagenes)||[]}
+function lbList(kind,id){const x=kind==="medio"?S.medios.get(id):S.posts.get(id);return (x&&(kind==="boceto"?x.boceto:x.imagenes))||[]}
 function renderLB(){
   let root=$("#lbRoot"); if(!S.lb){root&&root.remove();document.body.classList.remove("lbon");return}
   if(!root){root=document.createElement("div");root.id="lbRoot";document.body.appendChild(root)}
@@ -4159,6 +4179,62 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("[data-armno]")){S.armPrev=false;renderInputs();return}
   const g=e.target.closest("[data-armgo]"); if(g){g.disabled=true;g.textContent="Armando…";const r=await armarPromos(inpOf(S.inpReg));S.armPrev=false;toast(`${r.nS} series de promo: ${r.nL} historias enlazadas y ${r.nC} creadas`);renderInputs();return}
 });
+
+/* ============ BOCETO: content sube boceto o storyboard → pasa a diseño → el diseñador sube el arte final */
+const ETAPAS=["Boceto","En diseño","Arte final listo"];
+function etapaOf(p){return p.etapa||((p.boceto||[]).length?"Boceto":"")}
+function bocetoHint(p){const f=fmts(p);return f.includes("Reel")||isTT(p)?"Sube el storyboard: los cuadros en orden o un video guía.":f.includes("Carrusel")?"Sube un boceto por slide, en el orden del carrusel.":f.includes("Historia")?"Sube el boceto de cada frame de la historia.":"Sube el boceto de la pieza."}
+function bocetoTab(p){
+  const b=p.boceto||[]; const ed=canEdit()&&S.assets; const et=etapaOf(p); const ins=personas().filter(x=>x.org==="inside");
+  const opt=(sel,ph)=>`<option value="">${ph}</option>${ins.map(x=>`<option value="${esc(x.id)}" ${x.id===sel?"selected":""}>${esc(x.nombre)}${x.rol&&x.rol!=="Por definir"?` · ${esc(x.rol)}`:""}</option>`).join("")}`;
+  const dis=personaById(p.disenadorId), con=personaById(p.contentId);
+  const steps=ETAPAS.map((s,i)=>`<li class="${s===et?"on":ETAPAS.indexOf(et)>i?"ok":""}"><b>${i+1}</b>${s}</li>`).join("");
+  return `<div class="boceto">
+    <ol class="bstep">${steps}</ol>
+    <div class="redcfg"><label>Content (boceto)<select data-bresp="contentId" ${canEdit()?"":"disabled"}>${opt(p.contentId,"Elige quién hace el boceto")}</select></label><label>Diseñador (arte final)<select data-bresp="disenadorId" ${canEdit()?"":"disabled"}>${opt(p.disenadorId,"Elige quién diseña")}</select></label></div>
+    ${b.length?`<div class="arte bgrid">${b.map((s,k)=>`<figure><button class="lbbtn" data-lb="boceto|${esc(p.id)}|${k}" title="Ver en grande" aria-label="Ver en grande">⤢</button>${/\.pdf$|#pdf$/i.test(s)?`<a class="bpdf" href="${esc(imgSrc(s.replace(/#pdf$/,"")))}" target="_blank" rel="noopener">📄 PDF ${k+1}</a>`:mediaHTML(s,`Boceto ${k+1}`,true)}<figcaption><span>${b.length>1?`${fmts(p).includes("Reel")||isTT(p)?"Cuadro":"Slide"} ${k+1}`:"Boceto"}</span>${ed?`<span><button class="iconbtn" data-bmv="${k}" ${k===b.length-1?"disabled":""} aria-label="Mover después">›</button><button class="iconbtn" data-brm="${k}" aria-label="Quitar">✕</button></span>`:""}</figcaption></figure>`).join("")}</div>`:`<p class="hint">Todavía no hay boceto. ${bocetoHint(p)}</p>`}
+    ${ed?`<label class="drop-zone" id="bdz" for="bupl"><input type="file" id="bupl" accept="image/*,video/mp4,application/pdf" multiple hidden><b>${b.length?"Agregar más al boceto":"Subir boceto"}</b><br><span style="font-size:12px">${bocetoHint(p)} Imágenes, video o PDF.</span></label><div class="saved" id="bMsg"></div>`:""}
+    ${canEdit()?`<div class="f wide"><label for="bNota">Indicaciones para diseño</label><textarea id="bNota" data-bnota="${esc(p.id)}" rows="3" placeholder="Qué debe tener el arte: producto, texto en pieza, encuadre, referencias…">${esc(p.bocetoNota||"")}</textarea></div>`:p.bocetoNota?fieldRO("Indicaciones para diseño",p.bocetoNota,true):""}
+    <div class="bact">${et==="En diseño"?`<p>🎨 <b>En diseño</b>${dis?` con ${esc(dis.nombre)}`:""}${p.enDisenoEn?` desde ${esc(when(p.enDisenoEn))}`:""}. El arte final se sube en la pestaña <b>Arte</b>; al subirlo, la pieza pasa a «Arte final listo».</p><button class="btn sm" data-tab="arte">Ir a Arte</button>${canEdit()?` <button class="clink" data-bback>Devolver a boceto</button>`:""}`
+      :et==="Arte final listo"?`<p>✅ <b>Arte final listo</b>${p.artePor&&personaById(p.artePor)?` · ${esc(personaById(p.artePor).nombre)}`:""}${p.arteListoEn?` · ${esc(when(p.arteListoEn))}`:""}</p>`
+      :canEdit()&&b.length?`<button class="btn primary" data-bpass>Pasar a diseño ➜</button><span class="hint">${dis?`Le llegará a ${esc(dis.nombre)}.`:"Elige el diseñador arriba."}</span>`:""}</div>
+  </div>`;
+}
+function bocetoRef(p){
+  const b=p.boceto||[]; if(role()!=="inside"||!b.length) return "";
+  return `<details class="bref" ${etapaOf(p)==="En diseño"?"open":""}><summary>✎ Boceto de referencia (${b.length})${etapaOf(p)==="En diseño"?" · en diseño":""}</summary><div class="bthumbs">${b.map((s,k)=>`<button data-lb="boceto|${esc(p.id)}|${k}" style="${isVid(s)||/pdf/i.test(s)?"":`background-image:url('${esc(imgSrc(s))}')`}">${isVid(s)?"▶":/pdf/i.test(s)?"PDF":""}</button>`).join("")}</div>${p.bocetoNota?`<p class="hint">${esc(p.bocetoNota)}</p>`:""}</details>`;
+}
+async function flujo(p,texto){try{await postComment(p.id,{tipo:"flujo",texto,...actorFields(myPersona())})}catch(e){}}
+async function uploadBoceto(files){
+  const p=S.posts.get(S.openId); if(!p||!S.assets||!files.length) return; const msg=$("#bMsg"); const add=[];
+  for(const [k,f] of files.entries()){if(msg) msg.textContent=`Subiendo ${k+1} de ${files.length}…`;
+    try{const r=await S.assets.upload(f);add.push("asset:"+r.id+(/^video\//.test(f.type)?"#video":f.type==="application/pdf"?"#pdf":""))}catch(err){toast(err&&err.code==="too_large"?`${f.name} pesa demasiado`:`No se pudo subir ${f.name}`)}}
+  if(msg) msg.textContent=""; if(!add.length) return;
+  const cur=S.posts.get(p.id); const me=myPersona();
+  await save(p.id,{boceto:[...(cur.boceto||[]),...add],etapa:cur.etapa&&cur.etapa!=="Boceto"?cur.etapa:"Boceto",...(!cur.contentId&&me&&me.org==="inside"?{contentId:me.id}:{})});
+  if(!(cur.boceto||[]).length) flujo(cur,"subió el boceto");
+  toast(add.length===1?"Boceto subido":`${add.length} archivos de boceto subidos`);
+}
+document.addEventListener("change",async e=>{
+  if(e.target.id==="bupl"){const fs=[...e.target.files];e.target.value="";await uploadBoceto(fs);return}
+  const r=e.target.closest("[data-bresp]"); if(r&&S.openId){await save(S.openId,{[r.dataset.bresp]:r.value});return}
+  const n=e.target.closest("[data-bnota]"); if(n){await save(n.dataset.bnota,{bocetoNota:n.value.trim()});return}
+});
+document.addEventListener("click",async e=>{
+  if(!S.openId) return; const p=S.posts.get(S.openId); if(!p) return;
+  const rm=e.target.closest("[data-brm]"); if(rm){const a=[...(p.boceto||[])];a.splice(+rm.dataset.brm,1);await save(p.id,{boceto:a,...(a.length?{}:{etapa:""})});return}
+  const mv=e.target.closest("[data-bmv]"); if(mv){const k=+mv.dataset.bmv;const a=[...p.boceto];[a[k],a[k+1]]=[a[k+1],a[k]];await save(p.id,{boceto:a});return}
+  if(e.target.closest("[data-bpass]")){if(!p.disenadorId){toast("Elige el diseñador antes de pasarla");$('[data-bresp="disenadorId"]')?.focus();return}
+    const d=personaById(p.disenadorId);await save(p.id,{etapa:"En diseño",enDisenoEn:new Date().toISOString()});await flujo(p,`pasó el boceto a diseño${d?` (${d.nombre})`:""}`);toast(`Pasada a diseño${d?`: ${d.nombre}`:""}`);return}
+  if(e.target.closest("[data-bback]")){await save(p.id,{etapa:"Boceto"});await flujo(p,"devolvió la pieza a boceto");toast("Devuelta a boceto");return}
+});
+document.addEventListener("dragover",e=>{const dz=e.target.closest("#bdz");if(dz&&e.dataTransfer.types.includes("Files")){e.preventDefault();dz.classList.add("over")}});
+document.addEventListener("dragleave",e=>{const dz=e.target.closest("#bdz");if(dz) dz.classList.remove("over")});
+document.addEventListener("drop",e=>{const dz=e.target.closest("#bdz");if(dz&&e.dataTransfer.files.length){e.preventDefault();dz.classList.remove("over");uploadBoceto([...e.dataTransfer.files])}});
+/* filtro por etapa de producción (Inside) */
+function etapaSel(){if(role()!=="inside") return "";const v=S.f.etapa||"ALL";return `<select class="sel" id="fEtapa" aria-label="Etapa de producción"><option value="ALL">Todas las etapas</option>${["Sin boceto",...ETAPAS].map(x=>`<option ${v===x?"selected":""}>${x}</option>`).join("")}</select>`}
+function etapaMatch(p){const v=S.f.etapa;if(!v||v==="ALL") return true;const e=etapaOf(p);return v==="Sin boceto"?!e:e===v}
+document.addEventListener("change",e=>{if(e.target.id==="fEtapa"){S.f.etapa=e.target.value;persistF();render()}});
 
 async function boot(){
   S.month=pickMonth(); render();
