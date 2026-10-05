@@ -694,6 +694,25 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 
 .tl-lab.cs-env{background:var(--pend-bg)} .tl-lab.cs-pub{background:var(--pub-bg)} .tl-lab.cs-done{background:var(--done-bg);color:#fff} .tl-lab.cs-done small{color:#dff}
 .tl-bar.cs-env .bt,.tl-bar.cs-pub .bt{color:var(--ink)}
+
+.aprsrc{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.parts{display:flex;flex-direction:column;gap:4px;background:var(--surface);border-radius:8px;padding:6px 8px}
+.partr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;font-size:13px}
+.partr select{border:1px solid var(--line);border-radius:6px;padding:3px 6px;font:inherit;font-size:12px;background:var(--bg);color:var(--ink)}
+.propcard{background:var(--surface);border:1px solid var(--line);border-left:4px solid #3a6ccf;border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.propcard.rel-refuerza{border-left-color:var(--ok)} .propcard.rel-matiza{border-left-color:#d99a1e} .propcard.rel-contradice{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 5%,var(--surface))}
+.propcard header{display:flex;gap:8px;align-items:center} .propcard header small{color:var(--ink-3);font-size:11px}
+.relb{font:800 10px var(--f-mono);text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:4px;background:var(--sunk)}
+.rel-contradice .relb{background:var(--bad);color:#fff} .rel-refuerza .relb{background:var(--ok);color:#fff} .rel-matiza .relb{background:#d99a1e;color:#fff}
+.propcard textarea{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px} .vs>div{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;gap:2px} .vs p{margin:0;font-size:13px} .vs small{color:var(--ink-3);font-size:11px}
+.evl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px} .evl li{font-size:12px;font-style:italic;color:var(--ink-2);border-left:2px solid var(--line-strong);padding-left:6px} .evl small{display:block;font-style:normal;color:var(--ink-3);font-size:11px}
+.aprcat>b{font-size:13px;display:block;margin:6px 0 4px}
+.fz{font-style:normal;font:700 10px var(--f-mono);text-transform:uppercase;padding:1px 5px;border-radius:3px;margin-right:4px}
+.fz-directriz{background:var(--bad);color:#fff} .fz-preferencia{background:#d99a1e;color:#fff} .fz-observacion{background:var(--sunk);color:var(--ink-2)}
+.hst{display:block;color:var(--ink-3);font-size:11px}
+.nb2{color:var(--bad)}
+@media (max-width:640px){.aprsrc,.vs{grid-template-columns:1fr}}
 </style>
 
 <div class="top">
@@ -2215,7 +2234,7 @@ function buildCopyPrompt(piece,kind,o){
   const ids=new Set([piece.id,...others.map(x=>x.p.id)]);
   const cms=[...S.posts.keys(),...S.medios.keys()].filter(id=>ids.has(id)).flatMap(id=>threadsOf(id).map(t=>({id,t}))).filter(x=>x.t.org==="cliente"||x.t.tipo==="cambios")
     .sort((a,b)=>(a.id===piece.id?-1:0)-(b.id===piece.id?-1:0)).slice(0,18);
-  const apr=(marca.aprendizajes||[]).map(a=>`- ${a.texto}`).join("\n");
+  const apr=aprPromptBlock(piece,kind,o.linea);
   const fld=copyFieldsOf(piece,kind);
   const canalTxt=kind==="post"?`Orgánico Instagram/Facebook · ${fmtLabel(piece)} · ${TIPOS[piece.tipo]||""}`:`Medios · matriz ${matrizN(piece.matriz)} · ${piece.plataforma||""} · formato ${piece.formato||""}`;
   const limites=kind==="post"?"Caption de Instagram: la primera línea debe enganchar (se corta en ~125 caracteres); máx. 2.200. Headline en pieza: máx. ~6 palabras."
@@ -2227,8 +2246,8 @@ Tu trabajo: recomendar el copy de UNA pieza para que el redactor del equipo lo a
 == VOZ DE MARCA PAYLESS ==
 ${marca.voz||VOZ_BASE}
 
-== APRENDIZAJES ACUMULADOS (reglas validadas con el cliente; respétalas) ==
-${apr||"(todavía no hay)"}
+== APRENDIZAJES DE MARCA (validados con el cliente) ==
+${apr}
 
 == CAMPAÑA: ${o.linea} ==
 ${[camp.insumos&&`Insumos / brief: ${camp.insumos}`,camp.objetivo&&`Objetivo: ${camp.objetivo}`,camp.publico&&`Público: ${camp.publico}`,camp.tono&&`Tono: ${camp.tono}`,camp.mensajes&&`Mensajes clave: ${camp.mensajes}`,camp.prohibido&&`Palabras o enfoques prohibidos: ${camp.prohibido}`].filter(Boolean).join("\n")||"(sin insumos cargados)"}
@@ -2280,7 +2299,7 @@ function redactorPanel(piece,kind){
     </div>
     <div class="attline"><label class="btn sm" for="redFile">📎 Adjuntar archivo de ${esc(st.linea)}<input type="file" id="redFile" accept="${ATTACH_ACCEPT}" multiple hidden></label><span class="hint" id="redAtt">${esc(st.att||(campFiles(st.linea).length?`${campFiles(st.linea).length} archivos de esta campaña: ${campFiles(st.linea).slice(0,3).map(d=>d.nombre).join(", ")}${campFiles(st.linea).length>3?"…":""}`:"Sube el brief, el KV o lo que tengas de la campaña."))}</span></div>
     <textarea data-redf="indicacion" rows="2" placeholder="Indicaciones opcionales: más corto, más emocional, incluir la hora de la promo, tono para RD…">${esc(st.indicacion)}</textarea>
-    <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${(redMarca().aprendizajes||[]).length} aprendizajes y ${redDocs().filter(d=>!d.linea||d.linea==="General"||d.linea===st.linea).length} documentos de estrategia.</span>
+    <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${aprActive().length} aprendizajes y ${redDocs().filter(d=>!d.linea||d.linea==="General"||d.linea===st.linea).length} documentos de estrategia.</span>
       ${st.busy?`<button class="btn" data-redstop>Detener</button>`:`<button class="btn primary" data-redgo>${out?"Volver a recomendar":"Recomendar copy"}</button>`}</div>
     ${st.busy?`<p class="redwait" id="redRaw">Pensando… (puede tardar unos segundos)</p>`:""}
     ${st.err?`<p class="hint" style="color:var(--bad)">${esc(st.err)}</p>`:""}
@@ -2327,14 +2346,9 @@ function renderRedCenter(){
       <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
     :t==="docs"?docsTab()
     :t==="cat"?catTab()
-    :`<p class="hint">Reglas que el Asistente INSIDE aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
-      <ul class="rclist">${(m.aprendizajes||[]).map((a,i)=>`<li><span>${esc(a.texto)}${a.fuente?`<small>${esc(a.fuente)}</small>`:""}</span><button class="iconbtn" data-rcdel="${i}" aria-label="Quitar">✕</button></li>`).join("")||`<li class="cempty">Todavía no hay aprendizajes.</li>`}</ul>
-      <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
-      <div class="drow wrap"><button class="btn primary" data-rcprop ${S.redC.busy?"disabled":""}>${S.redC.busy?"Analizando comentarios…":"Proponer aprendizajes desde los comentarios del cliente"}</button></div>
-      ${S.redC.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.err)}</p>`:""}
-      ${(S.redC.props||[]).length?`<div class="redout"><b>Propuestas (elige cuáles guardar)</b>${S.redC.props.map((p,i)=>`<label class="pickr"><input type="checkbox" data-rcp="${i}" checked><span><b>${esc(p.regla)}</b><small>${esc(p.evidencia||"")}</small></span></label>`).join("")}<div class="drow"><button class="btn primary" data-rcpsave>Guardar seleccionados</button></div></div>`:""}`;
+    :aprTab();
   root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Asistente INSIDE"><header><h3>✨ Asistente INSIDE</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
-    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Campañas y archivos</button><button data-rctab="cat" aria-pressed="${t==="cat"}">Catálogo de campañas${(()=>{const n=[...S.posts.values(),...S.medios.values()].filter(x=>x.campSug).length;return n?` (${n})`:""})()}</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
+    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Campañas y archivos</button><button data-rctab="cat" aria-pressed="${t==="cat"}">Catálogo de campañas${(()=>{const n=[...S.posts.values(),...S.medios.values()].filter(x=>x.campSug).length;return n?` (${n})`:""})()}</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${aprActive().length})${redProps().length?` · <b class="nb2">${redProps().length} por revisar</b>`:""}</button></div>
     ${body}</div></div>`;
 }
 async function saveRed(id,patch){
@@ -2353,19 +2367,7 @@ document.addEventListener("click",async e=>{
     if(sv.dataset.rcsave==="voz") await saveRed("marca",{voz:$("#rcVoz").value.trim()});
     else{const p={nombre:S.redC.linea};document.querySelectorAll("#redRoot [data-rc]").forEach(x=>p[x.dataset.rc]=x.value.trim());await saveRed(slug(S.redC.linea),p)}
     renderRedCenter();return}
-  const dl=e.target.closest("[data-rcdel]"); if(dl){const a=[...(redMarca().aprendizajes||[])];a.splice(+dl.dataset.rcdel,1);await saveRed("marca",{aprendizajes:a});renderRedCenter();return}
-  if(e.target.closest("[data-rcadd]")){const v=$("#rcNew").value.trim();if(!v) return;await saveRed("marca",{aprendizajes:[...(redMarca().aprendizajes||[]),{texto:v,fuente:"Agregado por el equipo",fecha:new Date().toISOString()}]});renderRedCenter();return}
-  if(e.target.closest("[data-rcprop]")){
-    if(!S.sampleFn){S.redC.err="Necesita Claude disponible en esta vista.";renderRedCenter();return}
-    const all=[...S.posts.keys(),...S.medios.keys()].flatMap(id=>threadsOf(id).map(t=>({id,t}))).filter(x=>x.t.org==="cliente"||x.t.tipo==="cambios").slice(0,80);
-    if(!all.length){S.redC.err="Todavía no hay comentarios del cliente para analizar.";renderRedCenter();return}
-    S.redC.busy=true;S.redC.err="";renderRedCenter();
-    try{const r=await S.sampleFn.json(`Eres director creativo de la agencia INSIDE para Payless. A partir de los comentarios del cliente sobre piezas de contenido, extrae reglas de redacción y de criterio reutilizables (máx. 8), que un redactor deba aplicar siempre. No repitas las que ya existen.\n\nReglas existentes:\n${(redMarca().aprendizajes||[]).map(a=>"- "+a.texto).join("\n")||"(ninguna)"}\n\nComentarios del cliente:\n${all.map(x=>`- [${PARTES[x.t.parte]||"General"}] ${x.t.texto.slice(0,300)}`).join("\n")}\n\nResponde SOLO con un JSON: [{"regla":"frase imperativa corta","evidencia":"qué comentario la respalda"}]`,{cache:false});
-      S.redC.props=Array.isArray(r)?r.filter(x=>x&&x.regla):[]; if(!S.redC.props.length) S.redC.err="No salieron reglas nuevas."}
-    catch(err){S.redC.err=err&&err.code==="not_granted"?"No se dio permiso para usar Claude.":"No se pudo analizar. Intenta de nuevo."}
-    finally{S.redC.busy=false;renderRedCenter()}return}
-  if(e.target.closest("[data-rcpsave]")){const sel=[...document.querySelectorAll("#redRoot [data-rcp]")].filter(x=>x.checked).map(x=>S.redC.props[+x.dataset.rcp]);
-    await saveRed("marca",{aprendizajes:[...(redMarca().aprendizajes||[]),...sel.map(p=>({texto:p.regla,fuente:"De comentarios del cliente: "+(p.evidencia||""),fecha:new Date().toISOString()}))]});S.redC.props=[];renderRedCenter();return}
+  if(e.target.closest("[data-rcadd]")){const v=$("#rcNew").value.trim();if(!v) return;const now=new Date().toISOString();const list=aprList();list.push({id:uid("apr"),texto:v,categoria:"Copy",alcance:{tipo:"marca",valor:""},fuerza:"preferencia",evidencias:[{cita:v,quien:"Equipo Inside",fecha:now.slice(0,10),fuente:"manual"}],estado:"activo",creado:now,historial:[{fecha:now,accion:"agregada a mano"}]});await saveApr(list,{accion:"agregada",detalle:v});renderRedCenter();return}
 });
 document.addEventListener("change",e=>{if(e.target.id==="rcLinea"&&S.redC){S.redC.linea=e.target.value;renderRedCenter()}});
 document.addEventListener("keydown",e=>{if(S.redC&&e.key==="Escape"){S.redC=null;renderRedCenter()}});
@@ -2873,6 +2875,139 @@ document.addEventListener("drop",async e=>{
   toast(`Slide movido a la posición ${to+1}`);
 });
 
+/* ============ APRENDIZAJES DE MARCA: reuniones + comentarios → propuestas con evidencia → aprobación */
+const APR_CATS=["Copy","Tono","Arte / visual","Promos / legal","Formatos","Calendario","Proceso"];
+const APR_FUERZA={directriz:"Directriz",preferencia:"Preferencia",observacion:"Observación"};
+const APR_REL={nuevo:"Nuevo",refuerza:"Refuerza",matiza:"Matiza",contradice:"Contradice"};
+const uid=p=>`${p}-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`;
+function aprList(){return (redMarca().aprendizajes||[]).map((a,i)=>({id:a.id||`old-${i}`,texto:a.texto,categoria:a.categoria||"Copy",alcance:a.alcance||{tipo:"marca",valor:""},fuerza:a.fuerza||"preferencia",evidencias:a.evidencias||(a.fuente?[{cita:a.fuente,quien:"",fecha:a.fecha||"",fuente:"manual"}]:[]),estado:a.estado||"activo",historial:a.historial||[],creado:a.creado||a.fecha||"",...a}))}
+function aprActive(){return aprList().filter(a=>a.estado==="activo")}
+async function saveApr(list,hist){await saveRed("marca",{aprendizajes:list,...(hist?{aprHist:[...(redMarca().aprHist||[]),{...hist,fecha:new Date().toISOString(),por:S.myId||""}].slice(-200)}:{})})}
+function alcanceTxt(al){if(!al||al.tipo==="marca") return "Toda la marca";return ({campana:"Campaña",region:"Región",pais:"País",canal:"Canal"}[al.tipo]||al.tipo)+": "+(al.tipo==="region"?region(al.valor).nombre:al.tipo==="pais"?(PAIS[al.valor]||al.valor):al.valor)}
+function aprApplies(a,piece,kind,linea){
+  const al=a.alcance||{tipo:"marca"}; if(al.tipo==="marca") return true;
+  if(al.tipo==="campana") return norm(al.valor)===norm(linea)||norm((campOf(piece)||{}).sub)===norm(al.valor);
+  if(al.tipo==="region") return regsOf(piece).includes(al.valor);
+  if(al.tipo==="pais") return piece.paises.includes(al.valor);
+  if(al.tipo==="canal") return kind==="medio"?norm(al.valor).includes(norm(piece.matriz||"")):norm(al.valor).includes(isFeed(piece)?"feed":"historia")||norm(al.valor).includes("organico");
+  return true;
+}
+function aprPromptBlock(piece,kind,linea){
+  const as=aprActive().filter(a=>aprApplies(a,piece,kind,linea));
+  const g=f=>as.filter(a=>a.fuerza===f).map(a=>`- [${a.categoria}${a.alcance&&a.alcance.tipo!=="marca"?` · ${alcanceTxt(a.alcance)}`:""}] ${a.texto}`).join("\n");
+  return [g("directriz")&&`OBLIGATORIAS (directrices explícitas del cliente):\n${g("directriz")}`,g("preferencia")&&`PREFERENCIAS (síguelas salvo que la pieza pida otra cosa):\n${g("preferencia")}`,g("observacion")&&`A CONSIDERAR (observaciones aisladas):\n${g("observacion")}`].filter(Boolean).join("\n")||"(todavía no hay)";
+}
+function aprContextForAI(){return aprActive().map(a=>`{"id":"${a.id}","regla":${JSON.stringify(a.texto)},"categoria":"${a.categoria}","alcance":${JSON.stringify(a.alcance)},"fuerza":"${a.fuerza}"}`).join("\n")||"(ninguno)"}
+const APR_JSON=`Responde SOLO con un JSON: [{"texto":"regla accionable en una frase","categoria":"una de: ${APR_CATS.join(", ")}","alcance":{"tipo":"marca|campana|region|pais|canal","valor":"(vacío si es marca; campañas: ${LINEAS.join(", ")}; regiones: CENTRO, SUR, RD, CARIBE; países: códigos GT, SV, HN, NI, CR, PA, CO, EC, PE, RD, TT, JM, BB, ECI, GY, USVI; canales: feed, historias, ATL, ECOMMERCE, DIGITAL)"},"fuerza":"directriz|preferencia|observacion","evidencias":[{"cita":"frase textual corta","quien":"nombre","fecha":"AAAA-MM-DD o vacío"}],"relacion":"nuevo|refuerza|matiza|contradice","relacionCon":"id del aprendizaje existente o vacío","recomendacion":"qué recomiendas hacer y por qué (1 frase)"}]
+Criterios: "directriz" = el cliente lo pide de forma explícita o lo dice quien decide; "preferencia" = lo repite o lo deja claro sin ordenarlo; "observacion" = lo menciona una vez de pasada. No inventes ni generalices de más; si algo solo aplica a una campaña, región o canal, ponlo en el alcance. Compara con los aprendizajes existentes: "refuerza" si dice lo mismo, "matiza" si lo precisa o limita, "contradice" si va en sentido opuesto (explica en la recomendación qué debería ganar). Ignora logística, fechas de entrega y temas administrativos que no sean criterio de contenido.`;
+async function proposeFromMeeting(reu){
+  const parts=(reu.participantes||[]).map(p=>`${p.nombre}: ${p.org==="cliente"?"PAYLESS (cliente)":"INSIDE (agencia)"}${p.decide?" · DECIDE/APRUEBA":""}`).join("\n");
+  const prompt=`Eres el director de cuentas y estrategia de la agencia INSIDE para Payless. Lee la transcripción de la reunión «${reu.nombre}» (${reu.fecha||"sin fecha"}) y extrae APRENDIZAJES DE MARCA: criterios sobre contenido, copy, tono, arte, promos, formatos o calendario que el CLIENTE expresa. Toma SOLO lo que dicen las personas de Payless (lo que dice Inside sirve como contexto). Lo que dice quien decide pesa más.
+PARTICIPANTES:
+${parts||"(no confirmados: deduce por el contexto)"}
+APRENDIZAJES EXISTENTES:
+${aprContextForAI()}
+TRANSCRIPCIÓN:
+${(reu.texto||"").slice(0,150000)}
+${APR_JSON}`;
+  const r=await S.sampleFn.json(prompt,{cache:false,modelTier:"complex"}); return (Array.isArray(r)?r:[]).map(x=>({...x,fuente:"reunion",ref:reu.id,refNombre:reu.nombre}));
+}
+async function proposeFromComments(){
+  const since=redMarca().comentariosAnalizadosHasta||"";
+  const cms=notifList().filter(n=>n.org==="cliente"&&(!since||(n.fecha&&n.fecha>since)));
+  if(!cms.length) return {props:[],n:0};
+  const prompt=`Eres el director de cuentas y estrategia de la agencia INSIDE para Payless. Estos son comentarios que el CLIENTE dejó sobre piezas (copy, arte, legal, fechas). Extrae APRENDIZAJES DE MARCA reutilizables: qué le gusta, qué no, qué pide cambiar de forma recurrente. Un comentario puntual sobre un error concreto (ej. «falta una tilde») no es aprendizaje, salvo que revele un criterio.
+APRENDIZAJES EXISTENTES:
+${aprContextForAI()}
+COMENTARIOS DEL CLIENTE:
+${cms.slice(0,120).map(n=>`- [${n.fecha?n.fecha.slice(0,10):"matriz"} · ${nameOf(n.c.autorId,n.c.autorNombre)} · ${n.pc.kind==="medio"?"Medios "+(n.pc.x.matriz||""):"Orgánico"} · ${(n.pc.kind==="medio"?n.pc.x.nombre:(n.pc.x.headline||n.pc.x.campana))||""}${n.c.tipo==="cambios"?" · PIDIÓ CAMBIOS":""}] ${(n.c.texto||"").slice(0,400)}`).join("\n")}
+${APR_JSON}`;
+  const r=await S.sampleFn.json(prompt,{cache:false,modelTier:"complex"});
+  return {props:(Array.isArray(r)?r:[]).map(x=>({...x,fuente:"comentario",refNombre:"Comentarios del cliente"})),n:cms.length};
+}
+async function saveProposals(props){
+  for(const p of props){if(!p||!p.texto) continue;const id=uid("prop");const doc={tipo:"prop",id,texto:String(p.texto),categoria:APR_CATS.includes(p.categoria)?p.categoria:"Copy",alcance:p.alcance&&p.alcance.tipo?p.alcance:{tipo:"marca",valor:""},fuerza:APR_FUERZA[p.fuerza]?p.fuerza:"preferencia",evidencias:(p.evidencias||[]).slice(0,5).map(e=>({cita:String(e.cita||"").slice(0,400),quien:e.quien||"",fecha:e.fecha||"",fuente:p.fuente,ref:p.ref||"",refNombre:p.refNombre||""})),relacion:APR_REL[p.relacion]?p.relacion:"nuevo",relacionCon:p.relacionCon||"",recomendacion:p.recomendacion||"",creado:new Date().toISOString()};
+    S.red.props=S.red.props||{}; S.red.props[id]=doc; try{await S.db.doc("redaccion/"+id).set(doc)}catch(e){}}
+}
+function redProps(){return Object.values((S.red&&S.red.props)||{}).sort((a,b)=>(a.relacion==="contradice"?-1:0)-(b.relacion==="contradice"?-1:0)||(b.creado||"").localeCompare(a.creado||""))}
+function redReus(){return Object.values((S.red&&S.red.reus)||{}).sort((a,b)=>(b.fecha||b.creado||"").localeCompare(a.fecha||a.creado||""))}
+async function dropProp(id){if(S.red.props) delete S.red.props[id];try{await S.db.doc("redaccion/"+id).delete()}catch(e){}}
+async function resolveProp(id,accion){
+  const p=S.red.props[id]; if(!p) return; const list=aprList(); const card=document.querySelector(`[data-propcard="${CSS.escape(id)}"]`);
+  const ed=card?{texto:card.querySelector("[data-pf=texto]").value.trim()||p.texto,categoria:card.querySelector("[data-pf=categoria]").value,fuerza:card.querySelector("[data-pf=fuerza]").value,alcance:(()=>{const v=card.querySelector("[data-pf=alcance]").value;const [t,...r]=v.split(":");return {tipo:t,valor:r.join(":")}})()}:{};
+  const now=new Date().toISOString(); const rel=list.find(a=>a.id===p.relacionCon);
+  if(accion==="descartar"){await dropProp(id);await saveApr(list,{accion:"descartada",detalle:p.texto});return}
+  if(accion==="sumar"&&rel){rel.evidencias=[...rel.evidencias,...p.evidencias];const up={observacion:"preferencia",preferencia:"directriz"};if(rel.evidencias.length>=3&&up[rel.fuerza]) rel.fuerza=up[rel.fuerza];rel.historial=[...rel.historial,{fecha:now,accion:"reforzada",detalle:p.evidencias.map(e=>e.cita).join(" | ")}];rel.actualizado=now;await saveApr(list,{accion:"reforzada",detalle:rel.texto});await dropProp(id);return}
+  const nuevo={id:uid("apr"),...p,...ed,estado:"activo",creado:now,historial:[{fecha:now,accion:"aprobada",detalle:APR_REL[p.relacion]+(p.recomendacion?` · ${p.recomendacion}`:"")}]}; delete nuevo.tipo; delete nuevo.relacion; delete nuevo.relacionCon; delete nuevo.recomendacion;
+  if(accion==="reemplazar"&&rel){rel.estado="reemplazado";rel.reemplazadoPor=nuevo.id;rel.historial=[...rel.historial,{fecha:now,accion:"reemplazada",detalle:nuevo.texto}];nuevo.reemplazaA=rel.id}
+  list.push(nuevo); await saveApr(list,{accion:accion==="reemplazar"?"reemplazo":"aprobada",detalle:nuevo.texto}); await dropProp(id);
+}
+function aprTab(){
+  const props=redProps(), act=aprActive(), reus=redReus(), since=redMarca().comentariosAnalizadosHasta||"";
+  const newCms=notifList().filter(n=>n.org==="cliente"&&n.fecha&&(!since||n.fecha>since)).length;
+  const alcOpts=sel=>{const v=`${sel.tipo}:${sel.valor||""}`;const o=[["marca:","Toda la marca"],...LINEAS.filter(l=>l!=="Otra").map(l=>[`campana:${l}`,`Campaña: ${l}`]),...REGIONES.map(r=>[`region:${r.id}`,`Región: ${r.nombre}`]),...Object.keys(PAIS).map(c=>[`pais:${c}`,`País: ${PAIS[c]}`]),...["feed","historias","ATL","ECOMMERCE","DIGITAL"].map(c=>[`canal:${c}`,`Canal: ${c}`])];if(!o.some(x=>x[0]===v)) o.push([v,alcanceTxt(sel)]);return o.map(([k,l])=>`<option value="${esc(k)}" ${k===v?"selected":""}>${esc(l)}</option>`).join("")};
+  const evHTML=evs=>evs.length?`<ul class="evl">${evs.map(e=>`<li>«${esc(e.cita)}»<small>${esc([e.quien,e.fecha,e.refNombre||({reunion:"Reunión",comentario:"Comentario",manual:"Equipo"}[e.fuente]||"")].filter(Boolean).join(" · "))}</small></li>`).join("")}</ul>`:"";
+  const S2=S.redC.apr||{};
+  return `<p class="hint">Los aprendizajes salen de lo que el cliente dice en reuniones y de sus comentarios en la plataforma. El Asistente INSIDE los propone con evidencia y compara con lo que ya existe; nada se aplica sin que Inside lo apruebe.</p>
+  <div class="aprsrc">
+    <div class="attbox"><div class="crow"><b>🎙️ Transcripción de reunión</b><label class="btn primary sm" for="reuFile">📎 Subir<input type="file" id="reuFile" accept=".txt,.md,.docx,.pdf,.vtt,.srt" hidden></label></div>
+      <span class="hint">TXT, Word, PDF, VTT o notas de Gemini. También puedes pegarla.</span>
+      ${S2.reu?`<div class="redcfg"><label>Nombre<input id="reuNom" value="${esc(S2.reu.nombre||"")}"></label><label>Fecha<input type="date" id="reuFecha" value="${esc(S2.reu.fecha||todayISO)}"></label></div>
+        ${S2.reu.participantes?`<div class="parts"><b>¿Quién es quién?</b>${S2.reu.participantes.map((p,i)=>`<div class="partr"><span>${esc(p.nombre)}</span><select data-ppo="${i}"><option value="cliente" ${p.org==="cliente"?"selected":""}>Payless (cliente)</option><option value="inside" ${p.org==="inside"?"selected":""}>Inside</option></select><label class="hint"><input type="checkbox" data-ppd="${i}" ${p.decide?"checked":""}> decide / aprueba</label></div>`).join("")}</div>
+          <div class="drow"><button class="btn ghost sm" data-reucancel>Cancelar</button><button class="btn primary sm" data-reugo ${S2.busy?"disabled":""}>${S2.busy?"Leyendo la reunión…":"Extraer aprendizajes"}</button></div>`
+        :`<p class="hint">${S2.busy?"Identificando participantes…":`${(S2.reu.texto||"").length.toLocaleString("es")} caracteres`}</p>`}`
+      :`<textarea id="reuPaste" rows="3" placeholder="…o pega aquí la transcripción"></textarea><div class="drow"><button class="btn sm" data-reupaste>Usar texto pegado</button></div>`}
+    </div>
+    <div class="attbox"><div class="crow"><b>💬 Comentarios del cliente</b><button class="btn primary sm" data-aprcms ${S2.cbusy?"disabled":""}>${S2.cbusy?"Analizando…":`Analizar comentarios nuevos${newCms?` (${newCms})`:""}`}</button></div>
+      <span class="hint">${newCms?`Hay <b>${newCms}</b> comentarios del cliente sin analizar${since?` desde el ${esc(fmtDia(since.slice(0,10)))}`:""}.`:`No hay comentarios nuevos${since?` desde el ${esc(fmtDia(since.slice(0,10)))}`:""}.`}</span></div>
+  </div>
+  ${S2.err?`<p class="hint" style="color:var(--bad)">${esc(S2.err)}</p>`:""}${S2.msg?`<p class="hint" style="color:var(--ok)">${esc(S2.msg)}</p>`:""}
+  <h4 class="rch">Por revisar (${props.length})${props.filter(p=>p.relacion==="nuevo"||p.relacion==="refuerza").length>1?` <button class="btn sm" data-propall>Aprobar nuevos y refuerzos</button>`:""}</h4>
+  ${props.map(p=>{const rel=aprList().find(a=>a.id===p.relacionCon);return `<article class="propcard rel-${p.relacion}" data-propcard="${esc(p.id)}">
+    <header><span class="relb">${APR_REL[p.relacion]}</span><small>${esc(p.evidencias[0]&&p.evidencias[0].refNombre||"")}</small></header>
+    ${rel&&p.relacion!=="nuevo"?`<div class="vs"><div><small>Aprendizaje actual</small><p>${esc(rel.texto)}</p><small>${esc(APR_FUERZA[rel.fuerza])} · ${esc(alcanceTxt(rel.alcance))} · ${rel.evidencias.length} evidencias</small></div><div><small>${p.relacion==="contradice"?"Lo nuevo":"Propuesta"}</small><textarea data-pf="texto" rows="2">${esc(p.texto)}</textarea></div></div>`:`<textarea data-pf="texto" rows="2">${esc(p.texto)}</textarea>`}
+    <div class="redcfg"><label>Categoría<select data-pf="categoria">${APR_CATS.map(c=>`<option ${c===p.categoria?"selected":""}>${c}</option>`).join("")}</select></label><label>Fuerza<select data-pf="fuerza">${Object.entries(APR_FUERZA).map(([k,l])=>`<option value="${k}" ${k===p.fuerza?"selected":""}>${l}</option>`).join("")}</select></label><label>Alcance<select data-pf="alcance">${alcOpts(p.alcance)}</select></label></div>
+    ${evHTML(p.evidencias)}${p.recomendacion?`<p class="hint">✨ ${esc(p.recomendacion)}</p>`:""}
+    <div class="drow wrap">${p.relacion==="refuerza"&&rel?`<button class="btn primary sm" data-propact="sumar|${esc(p.id)}">Sumar evidencia al actual</button>`:""}${p.relacion==="contradice"&&rel?`<button class="btn primary sm" data-propact="reemplazar|${esc(p.id)}">Reemplazar el actual</button><button class="btn sm" data-propact="aprobar|${esc(p.id)}">Mantener ambos (con alcances distintos)</button>`:p.relacion==="matiza"&&rel?`<button class="btn primary sm" data-propact="reemplazar|${esc(p.id)}">Reemplazar por la versión matizada</button><button class="btn sm" data-propact="aprobar|${esc(p.id)}">Agregar como aparte</button>`:p.relacion!=="refuerza"||!rel?`<button class="btn primary sm" data-propact="aprobar|${esc(p.id)}">Aprobar</button>`:""}<button class="btn ghost sm" data-propact="descartar|${esc(p.id)}">Descartar</button></div>
+  </article>`}).join("")||`<p class="cempty">No hay propuestas pendientes.</p>`}
+  <h4 class="rch">Aprendizajes activos (${act.length})</h4>
+  ${APR_CATS.filter(c=>act.some(a=>a.categoria===c)).map(c=>`<div class="aprcat"><b>${c}</b><ul class="rclist">${act.filter(a=>a.categoria===c).sort((a,b)=>["directriz","preferencia","observacion"].indexOf(a.fuerza)-["directriz","preferencia","observacion"].indexOf(b.fuerza)).map(a=>`<li><span><b>${esc(a.texto)}</b><small><i class="fz fz-${a.fuerza}">${APR_FUERZA[a.fuerza]}</i> ${esc(alcanceTxt(a.alcance))} · ${a.evidencias.length} evidencias</small>${a.evidencias.length?`<details><summary>Ver evidencia e historial</summary>${evHTML(a.evidencias)}${(a.historial||[]).map(h=>`<small class="hst">${esc(h.fecha.slice(0,10))} · ${esc(h.accion)}${h.detalle?` · ${esc(h.detalle.slice(0,120))}`:""}</small>`).join("")}</details>`:""}</span><button class="iconbtn" data-aprarch="${esc(a.id)}" aria-label="Archivar" title="Archivar">✕</button></li>`).join("")}</ul></div>`).join("")||`<p class="cempty">Todavía no hay aprendizajes activos.</p>`}
+  <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje a mano: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
+  ${reus.length?`<details><summary class="rch" style="cursor:pointer">Reuniones cargadas (${reus.length})</summary><ul class="rclist">${reus.map(r=>`<li><span><b>${esc(r.nombre)}</b><small>${esc(r.fecha||"")} · ${(r.participantes||[]).filter(p=>p.org==="cliente").map(p=>p.nombre+(p.decide?" (decide)":"")).join(", ")||"sin participantes"} · ${esc(r.estado||"")}</small></span><button class="btn ghost sm" data-reure="${esc(r.id)}">Volver a analizar</button></li>`).join("")}</ul></details>`:""}`;
+}
+async function startReu(texto,nombre){
+  S.redC.apr={...(S.redC.apr||{}),reu:{texto,nombre:nombre||"Reunión",fecha:todayISO},busy:true,err:"",msg:""};renderRedCenter();
+  if(!S.sampleFn){S.redC.apr.err="Necesita Claude disponible en esta vista.";S.redC.apr.busy=false;renderRedCenter();return}
+  try{const r=await S.sampleFn.json(`Lista las personas que hablan en esta transcripción de una reunión entre Payless (cliente, marca de calzado) e INSIDE (agencia creativa). Para cada una indica si parece de Payless o de Inside y si parece tomar decisiones o aprobar. Responde SOLO con un JSON: [{"nombre":"...","org":"cliente|inside","decide":true}]\n\nTRANSCRIPCIÓN (inicio):\n${texto.slice(0,40000)}`,{cache:false,modelTier:"quick"});
+    S.redC.apr.reu.participantes=(Array.isArray(r)?r:[]).filter(x=>x&&x.nombre).map(x=>({nombre:String(x.nombre),org:x.org==="inside"?"inside":"cliente",decide:!!x.decide}));if(!S.redC.apr.reu.participantes.length) S.redC.apr.reu.participantes=[{nombre:"Cliente",org:"cliente",decide:true}]}
+  catch(e){S.redC.apr.reu.participantes=[{nombre:"Cliente",org:"cliente",decide:true}]}
+  S.redC.apr.busy=false;renderRedCenter();
+}
+document.addEventListener("change",async e=>{
+  if(e.target.id==="reuFile"&&S.redC){const f=e.target.files[0];e.target.value="";if(!f) return;try{const t=(await extractText(f)).trim();if(!t){toast("No se encontró texto en el archivo.");return}await startReu(t,f.name.replace(/\.[^.]+$/,""))}catch(err){toast("No se pudo leer el archivo. Pega el texto.")}return}
+  const po=e.target.closest("[data-ppo]"); if(po&&S.redC?.apr?.reu){S.redC.apr.reu.participantes[+po.dataset.ppo].org=po.value;return}
+  const pd=e.target.closest("[data-ppd]"); if(pd&&S.redC?.apr?.reu){S.redC.apr.reu.participantes[+pd.dataset.ppd].decide=pd.checked;return}
+});
+document.addEventListener("click",async e=>{
+  if(!S.redC) return;
+  if(e.target.closest("[data-reupaste]")){const t=($("#reuPaste")?.value||"").trim();if(!t){toast("Pega la transcripción");return}await startReu(t,"Reunión "+fmtDia(todayISO));return}
+  if(e.target.closest("[data-reucancel]")){S.redC.apr={};renderRedCenter();return}
+  if(e.target.closest("[data-reugo]")){const A=S.redC.apr;A.reu.nombre=($("#reuNom")?.value||A.reu.nombre).trim();A.reu.fecha=$("#reuFecha")?.value||A.reu.fecha;A.busy=true;A.err="";renderRedCenter();
+    const id=uid("reu");const reu={tipo:"reunion",id,nombre:A.reu.nombre,fecha:A.reu.fecha,texto:A.reu.texto.slice(0,150000),participantes:A.reu.participantes,estado:"analizando",creado:new Date().toISOString(),porId:S.myId||""};
+    S.red.reus=S.red.reus||{};S.red.reus[id]=reu;try{await S.db.doc("redaccion/"+id).set(reu)}catch(err){}
+    try{const props=await proposeFromMeeting(reu);await saveProposals(props);reu.estado=`analizada · ${props.length} propuestas`;try{await S.db.doc("redaccion/"+id).set(reu)}catch(err){}S.redC.apr={msg:`Reunión analizada: ${props.length} aprendizajes propuestos para revisar.`}}
+    catch(err){A.busy=false;A.err=err&&err.code==="not_granted"?"No se dio permiso para usar Claude.":err&&err.code==="prompt_too_large"?"La transcripción es demasiado larga para analizarla de una vez.":"No se pudo analizar la reunión. Intenta de nuevo."}
+    renderRedCenter();return}
+  const rr=e.target.closest("[data-reure]"); if(rr){const reu=S.red.reus[rr.dataset.reure];if(!reu) return;rr.disabled=true;rr.textContent="Analizando…";try{const props=await proposeFromMeeting(reu);await saveProposals(props);S.redC.apr={msg:`${props.length} aprendizajes propuestos desde «${reu.nombre}».`}}catch(err){S.redC.apr={err:"No se pudo analizar la reunión."}}renderRedCenter();return}
+  if(e.target.closest("[data-aprcms]")){if(!S.sampleFn){toast("Necesita Claude disponible en esta vista.");return}S.redC.apr={...(S.redC.apr||{}),cbusy:true,err:"",msg:""};renderRedCenter();
+    try{const {props,n}=await proposeFromComments();if(!n){S.redC.apr={msg:"No hay comentarios nuevos del cliente para analizar."}}else{await saveProposals(props);await saveRed("marca",{comentariosAnalizadosHasta:new Date().toISOString()});S.redC.apr={msg:`${n} comentarios analizados: ${props.length} aprendizajes propuestos.`}}}
+    catch(err){S.redC.apr={err:err&&err.code==="not_granted"?"No se dio permiso para usar Claude.":"No se pudo analizar. Intenta de nuevo."}}
+    renderRedCenter();return}
+  const pa=e.target.closest("[data-propact]"); if(pa){const [acc,id]=pa.dataset.propact.split("|");await resolveProp(id,acc);toast({descartar:"Propuesta descartada",sumar:"Evidencia sumada al aprendizaje",reemplazar:"Aprendizaje reemplazado",aprobar:"Aprendizaje aprobado"}[acc]);renderRedCenter();return}
+  if(e.target.closest("[data-propall]")){for(const p of redProps().filter(p=>p.relacion==="nuevo"||p.relacion==="refuerza")) await resolveProp(p.id,p.relacion==="refuerza"&&aprList().some(a=>a.id===p.relacionCon)?"sumar":"aprobar");toast("Propuestas aprobadas");renderRedCenter();return}
+  const ar=e.target.closest("[data-aprarch]"); if(ar){const list=aprList();const a=list.find(x=>x.id===ar.dataset.aprarch);if(a){a.estado="archivado";a.historial=[...a.historial,{fecha:new Date().toISOString(),accion:"archivada"}];await saveApr(list,{accion:"archivada",detalle:a.texto})}renderRedCenter();return}
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -2905,7 +3040,7 @@ async function boot(){
   },()=>{});
   db.collection("series").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,{...d.data(),id:d.id});S.series=m;render();if(S.openId) renderSheet()},()=>{});
   db.collection("feedorden").onSnapshot(snap=>{const o={};for(const d of snap.docs){const v=d.data();if(v&&v.pais&&v.mes) o[feedKey(v.pais,v.mes)]=v.orden||[]}S.feedOrd=o;if(S.f.view==="grid") renderView()},()=>{});
-  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}; else if(d.id==="catalogo") r.catalogo=v}S.red=r;if(S.redC) renderRedCenter()},()=>{});
+  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}; else if(d.id==="catalogo") r.catalogo=v; else if(d.id.startsWith("prop-")) (r.props=r.props||{})[d.id]={...v,id:d.id}; else if(d.id.startsWith("reu-")) (r.reus=r.reus||{})[d.id]={...v,id:d.id}}S.red=r;if(S.redC) renderRedCenter()},()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
