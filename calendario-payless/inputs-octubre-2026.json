@@ -1,0 +1,2177 @@
+{
+ "CENTRO": {
+  "region": "CENTRO",
+  "mes": "2026-10",
+  "titulo": "Brief Mensual – CENTRO · Octubre 2026",
+  "fuente": "1026_Brief_Mensual_-_CENTRO.pdf",
+  "campanas": [
+   {
+    "id": "cen-c1",
+    "nombre": "Comfort Plus",
+    "paises": [
+     "GT",
+     "SV",
+     "HN",
+     "NI",
+     "CR"
+    ],
+    "inicio": "2026-09-16",
+    "fin": "2026-10-04",
+    "prioridad": "P1",
+    "frecuencia": 3,
+    "claves": [
+     "comfort"
+    ],
+    "mensaje": "Resaltar siempre la comodidad y atributos del calzado de dama y caballero",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "cen-c2",
+    "nombre": "Atléticos Multimarca",
+    "paises": [
+     "GT",
+     "SV",
+     "HN",
+     "NI",
+     "CR"
+    ],
+    "inicio": "2026-10-05",
+    "fin": "2026-10-26",
+    "prioridad": "P1",
+    "frecuencia": 3,
+    "claves": [
+     "atletic",
+     "sneaker"
+    ],
+    "mensaje": "Atléticos",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "cen-c3",
+    "nombre": "Nuevas llegadas Damas",
+    "paises": [
+     "GT",
+     "SV",
+     "HN",
+     "NI",
+     "CR"
+    ],
+    "inicio": "2026-10-05",
+    "fin": "2026-10-26",
+    "prioridad": "P2",
+    "frecuencia": 2,
+    "claves": [
+     "nuevas llegadas",
+     "dama",
+     "new arrivals"
+    ],
+    "mensaje": "Ballerinas · Chanclas (solo CR) · Sandalias (solo GT) · Tacones",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta"
+   },
+   {
+    "id": "cen-c4",
+    "nombre": "Nuevas llegadas Niños",
+    "paises": [
+     "GT",
+     "SV",
+     "HN",
+     "NI",
+     "CR"
+    ],
+    "inicio": "2026-10-05",
+    "fin": "2026-10-26",
+    "prioridad": "P2",
+    "frecuencia": 1,
+    "claves": [
+     "niño",
+     "kids",
+     "infantil"
+    ],
+    "mensaje": "Colección calzado infantil",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta"
+   }
+  ],
+  "promos": [
+   {
+    "id": "cen-p1",
+    "nombre": "Tú Eliges · Día del Niño",
+    "paises": [
+     "GT"
+    ],
+    "inicio": "2026-09-28",
+    "fin": "2026-10-01",
+    "claves": [
+     "tu eliges"
+    ],
+    "lineaGrafica": "Día del Niño",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-09-27",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 28 sep al 1 oct. Dejar claro que es por tiempo limitado"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-09-29",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Últimos días: animar a aprovecharla"
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-01",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "GT": "Promoción válida del 28 de septiembre al 1 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precios originales claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso. Para consultas o reclamos: servicioalclienteguatemala@payless.com"
+    }
+   },
+   {
+    "id": "cen-p2",
+    "nombre": "Tú Eliges · Genérica",
+    "paises": [
+     "HN"
+    ],
+    "inicio": "2026-09-30",
+    "fin": "2026-10-03",
+    "claves": [
+     "tu eliges"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-09-29",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 29 sep al 3 oct"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-01",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "HN": "Promoción válida del 30 de septiembre al 3 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com"
+    }
+   },
+   {
+    "id": "cen-p3",
+    "nombre": "Tú Eliges · Día del Niño",
+    "paises": [
+     "SV"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-04",
+    "claves": [
+     "tu eliges"
+    ],
+    "lineaGrafica": "Día del Niño",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-09-30",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 1 al 4 oct"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-02",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-04",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "SV": "Promoción válida del 1 al 4 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario."
+    }
+   },
+   {
+    "id": "cen-p4",
+    "nombre": "Tú Eliges · Genérica",
+    "paises": [
+     "GT",
+     "SV",
+     "HN",
+     "NI"
+    ],
+    "inicio": "2026-10-03",
+    "fin": "2026-10-05",
+    "claves": [
+     "tu eliges"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-02",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 3 al 5 oct"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-04",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "GT": "Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precios originales claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso. Para consultas o reclamos: servicioalclienteguatemala@payless.com",
+     "SV": "Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario.",
+     "HN": "Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento sobre el precio marcado o compra dos artículos y lleva un tercer artículo gratis. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com",
+     "NI": "Promoción válida del 3 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica exclusivamente para los productos incluidos en la oferta, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   },
+   {
+    "id": "cen-p5",
+    "nombre": "Super BOGO 60",
+    "paises": [
+     "CR"
+    ],
+    "inicio": "2026-10-02",
+    "fin": "2026-10-05",
+    "claves": [
+     "bogo 60",
+     "bogo (60)"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 2 al 5 oct"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "CR": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. La promoción aplica para todos los productos seleccionados, con precio original claramente indicado según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. Para consultas o reclamos: servicioalcliente@payless.com"
+    }
+   },
+   {
+    "id": "cen-p6",
+    "nombre": "BOGO 50",
+    "paises": [
+     "GT",
+     "HN",
+     "NI"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-29",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "1 imagen o video. Pauta del 6 al 29 oct"
+     }
+    ],
+    "legales": {
+     "GT": "Promoción válida del 6 al 29 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica para todos los productos participantes, con precios originales claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso. Para consultas o reclamos: servicioalclienteguatemala@payless.com",
+     "HN": "Promoción válida del 6 al 29 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com",
+     "NI": "Promoción válida del 6 al 29 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica exclusivamente para los productos incluidos en la oferta, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   },
+   {
+    "id": "cen-p7",
+    "nombre": "BOGO 40",
+    "paises": [
+     "SV"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-30",
+    "claves": [
+     "bogo 40"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "1 imagen o video. Pauta del 6 al 30 oct"
+     }
+    ],
+    "legales": {
+     "SV": "Promoción válida del 6 al 30 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 40% de descuento. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario."
+    }
+   },
+   {
+    "id": "cen-p8",
+    "nombre": "BOGO 50",
+    "paises": [
+     "CR"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-30",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "Genérica",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "El brief lo llama «Mantenimiento», pero es el arranque de la promo"
+     }
+    ],
+    "legales": {
+     "CR": "Promoción válida del 6 de septiembre al 30 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 50% de descuento. La promoción aplica para todos los productos seleccionados, con precio original claramente indicado según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. Para consultas o reclamos: servicioalcliente@payless.com"
+    }
+   },
+   {
+    "id": "cen-p9",
+    "nombre": "Super BOGO 60 · Orange Friday",
+    "paises": [
+     "GT",
+     "HN",
+     "NI"
+    ],
+    "inicio": "2026-10-30",
+    "fin": "2026-10-30",
+    "claves": [
+     "bogo 60",
+     "bogo (60)",
+     "orange"
+    ],
+    "lineaGrafica": "Orange Friday (Black Friday)",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-29",
+      "hora": "20:30",
+      "formato": "Post e historia",
+      "nota": "Pauta solo el 30 oct"
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-30",
+      "hora": "15:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "GT": "Promoción válida solo el 30 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. La promoción aplica para todos los productos participantes, con precios originales claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso. Para consultas o reclamos: servicioalclienteguatemala@payless.com",
+     "HN": "Promoción válida solo el 30 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. La promoción aplica para todos los productos participantes, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar la promoción sin previo aviso. Para consultas o reclamos: servicioalclientehonduras@payless.com",
+     "NI": "Promoción válida solo el 30 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. La promoción aplica exclusivamente para los productos incluidos en la oferta, con precio original y precio con descuento claramente indicados según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   },
+   {
+    "id": "cen-p10",
+    "nombre": "Super BOGO 60 · Orange Saturday",
+    "paises": [
+     "SV",
+     "CR"
+    ],
+    "inicio": "2026-10-31",
+    "fin": "2026-10-31",
+    "claves": [
+     "bogo 60",
+     "bogo (60)",
+     "orange"
+    ],
+    "lineaGrafica": "Orange Saturday (Black Friday)",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-30",
+      "hora": "20:30",
+      "formato": "Post e historia",
+      "nota": "Pauta solo el 31 oct"
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-31",
+      "hora": "15:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "SV": "Promoción válida solo el 31 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. Aplica a todos los productos a precio regular. No aplica en productos con promoción u otro descuento. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción. La promoción no aplica para compras realizadas a través de WhatsApp / tienda online, salvo que se indique lo contrario.",
+     "CR": "Promoción válida solo el 31 de octubre de 2026 en tiendas físicas: compra un artículo y lleva un segundo artículo de igual o menor valor con un 60% de descuento. La promoción aplica para todos los productos seleccionados, con precio original claramente indicado según corresponda. No es acumulable con otras promociones o descuentos. La promoción no aplica para compras realizadas a través de WhatsApp o tienda online, salvo que se indique lo contrario. Para consultas o reclamos: servicioalcliente@payless.com"
+    }
+   }
+  ],
+  "reglas": [
+   "Todos los artes promocionales deben llevar el legal en el arte o en el copy.",
+   "Cada momento de promo es Post + Historia.",
+   "Incluir en el orgánico los videos de Francisco Alvarado y las fotos y videos de Johan Ugalde."
+  ],
+  "entregables": [
+   {
+    "id": "cen-e1",
+    "paises": [
+     "SV"
+    ],
+    "texto": "Artes 1080x1350 y 1080x1920 con logos de los malls Distrito Santa Rosa, Las Ramblas y Plaza Mundo."
+   },
+   {
+    "id": "cen-e2",
+    "paises": [
+     "SV"
+    ],
+    "texto": "«Miércoles Distrito» (Distrito Santa Rosa): adaptar las historias promocionales con el texto DÍA DISTRITO arriba, con la plantilla de Canva. Miércoles 7, 14, 21 y 28 de octubre.",
+    "fechas": [
+     "2026-10-07",
+     "2026-10-14",
+     "2026-10-21",
+     "2026-10-28"
+    ]
+   },
+   {
+    "id": "cen-e3",
+    "paises": [
+     "SV"
+    ],
+    "texto": "Pantallas Grupo Roble: Multiplaza 560x420 y 1680x720 · Metrocentro San Miguel 1296x352 · Metrocentro S.S. 4a y 11a etapa 1296x352 · Unicentro Altavista 1200x240 · Metrocentro Sonsonate 1200x320 · Metrocentro Santa Ana 960x360 · Metrocentro Lourdes 480x480, cada uno con el logo del mall."
+   },
+   {
+    "id": "cen-e4",
+    "paises": [
+     "GT"
+    ],
+    "texto": "Video 320x960 de máximo 7 s con logo para Centra Norte (enviar a lcerda@centranorte.com.gt)."
+   },
+   {
+    "id": "cen-e5",
+    "paises": [
+     "GT"
+    ],
+    "texto": "Artes 1080x1350 y 1080x1920 con el logo del aliado Vana Pay (enviar a cecilia.olguin@vana.gt)."
+   },
+   {
+    "id": "cen-e6",
+    "paises": [
+     "NI"
+    ],
+    "texto": "Video MP4/AVI 1920x1080 de máximo 10 s para Multicentro (enviar a ileana.pineda@multicentro.com.ni)."
+   }
+  ],
+  "pendientes": [
+   "KV del mes: TBD",
+   "Spot, videos y fotos de campaña: pendientes",
+   "Tecnología y atributos de lotes: sin completar",
+   "Alianzas, giveaways, aperturas y activaciones: sin completar"
+  ],
+  "aclaraciones": [
+   "El legal de BOGO 50 CR dice «del 6 de septiembre al 30 de octubre»; debería ser 6 de octubre.",
+   "GT y SV tienen dos Tú Eliges que se pisan (GT 28 sep–1 oct y 3–5 oct; SV 1–4 oct y 3–5 oct; HN 30 sep–3 oct y 3–5 oct). Confirmar qué legal y qué línea gráfica rige el 3 y 4 de octubre.",
+   "En CR, el 6 de octubre aparece como «Mantenimiento» de BOGO 50, sin lanzamiento.",
+   "La cadencia de historias de BOGO 50 GT/HN/NI dice «hasta el 29 de noviembre»; la promo termina el 29 de octubre."
+  ],
+  "version": 1,
+  "actualizado": "2026-10-05T21:00:00.000Z",
+  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)"
+ },
+ "SUR": {
+  "region": "SUR",
+  "mes": "2026-10",
+  "titulo": "Brief Mensual – SUR · Octubre 2026",
+  "fuente": "1026_Brief_Mensual_-_SUR.pdf",
+  "campanas": [
+   {
+    "id": "sur-c1",
+    "nombre": "Atléticos Champion · LA Gear · Airwalk · Reebok (principal)",
+    "paises": [
+     "PA",
+     "EC",
+     "CO"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-11-02",
+    "frecuencia": 3,
+    "claves": [
+     "atletic",
+     "sneaker",
+     "champion",
+     "airwalk",
+     "reebok",
+     "la gear",
+     "cross"
+    ],
+    "mensaje": "Campaña principal",
+    "formato": "",
+    "canales": "Pauta tiendas y orgánico"
+   },
+   {
+    "id": "sur-c2",
+    "nombre": "Atléticos",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-11-02",
+    "frecuencia": 3,
+    "claves": [
+     "atletic",
+     "sneaker",
+     "cross",
+     "airwalk"
+    ],
+    "mensaje": "",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "sur-c3",
+    "nombre": "Sandalias (secundaria)",
+    "paises": [
+     "EC",
+     "CO",
+     "PA"
+    ],
+    "inicio": "2026-10-20",
+    "fin": "2026-11-02",
+    "frecuencia": 1,
+    "claves": [
+     "sandalia"
+    ],
+    "mensaje": "EC: Guayaquil · CO: Cali y Medellín · PA",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "sur-c4",
+    "nombre": "Botas (secundaria)",
+    "paises": [
+     "EC",
+     "CO"
+    ],
+    "inicio": "2026-10-20",
+    "fin": "2026-11-02",
+    "frecuencia": 1,
+    "claves": [
+     "bota"
+    ],
+    "mensaje": "EC: Quito · CO: Bogotá",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "sur-c5",
+    "nombre": "Cuero hombre (secundaria)",
+    "paises": [
+     "PA",
+     "CO"
+    ],
+    "inicio": "2026-10-20",
+    "fin": "2026-11-02",
+    "frecuencia": 1,
+    "claves": [
+     "cuero"
+    ],
+    "mensaje": "",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "sur-c6",
+    "nombre": "Halloween kids casual (secundaria)",
+    "paises": [
+     "EC",
+     "CO",
+     "PA"
+    ],
+    "inicio": "2026-10-20",
+    "fin": "2026-10-31",
+    "frecuencia": 1,
+    "claves": [
+     "halloween"
+    ],
+    "mensaje": "",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "sur-c7",
+    "nombre": "Aniversario",
+    "paises": [
+     "PA",
+     "EC",
+     "CO"
+    ],
+    "inicio": "",
+    "fin": "",
+    "frecuencia": 0,
+    "claves": [
+     "aniversario"
+    ],
+    "mensaje": "Por confirmar",
+    "formato": "",
+    "canales": ""
+   }
+  ],
+  "promos": [
+   {
+    "id": "sur-ec50-1",
+    "nombre": "BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-05",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-ec50-2",
+    "nombre": "BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-12",
+    "fin": "2026-10-15",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-12",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-14",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-15",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-ec50-3",
+    "nombre": "BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-19",
+    "fin": "2026-10-22",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-19",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-21",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-22",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-ec50-4",
+    "nombre": "BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-26",
+    "fin": "2026-10-29",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-26",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-28",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-29",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-ec60-1",
+    "nombre": "BOGO 60",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-11",
+    "claves": [
+     "bogo 60"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-09",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-11",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-ec60-2",
+    "nombre": "BOGO 60",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-23",
+    "fin": "2026-10-25",
+    "claves": [
+     "bogo 60"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-23",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-25",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-eccyd-1",
+    "nombre": "CYD con BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-16",
+    "fin": "2026-10-18",
+    "claves": [
+     "cyd"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-16",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-18",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-eccyd-2",
+    "nombre": "CYD con BOGO 50",
+    "paises": [
+     "EC"
+    ],
+    "inicio": "2026-10-30",
+    "fin": "2026-11-01",
+    "claves": [
+     "cyd"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-30",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-11-01",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe50-1",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-05",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe50-2",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-12",
+    "fin": "2026-10-15",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-12",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-14",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-15",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe50-3",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-19",
+    "fin": "2026-10-22",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-19",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-21",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-22",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe50-4",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-26",
+    "fin": "2026-10-29",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-26",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-28",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-29",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe60-1",
+    "nombre": "BOGO 60",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-11",
+    "claves": [
+     "bogo 60"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-09",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-11",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pe60-2",
+    "nombre": "BOGO 60",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-23",
+    "fin": "2026-10-25",
+    "claves": [
+     "bogo 60"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-23",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-25",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pecyd-1",
+    "nombre": "CYD con BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-16",
+    "fin": "2026-10-18",
+    "claves": [
+     "cyd"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-16",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-18",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pecyd-2",
+    "nombre": "CYD con BOGO 50",
+    "paises": [
+     "PE"
+    ],
+    "inicio": "2026-10-30",
+    "fin": "2026-11-01",
+    "claves": [
+     "cyd"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-30",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-11-01",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pa50-1",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PA"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-01",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pa50-2",
+    "nombre": "BOGO 50",
+    "paises": [
+     "PA"
+    ],
+    "inicio": "2026-10-13",
+    "fin": "2026-11-02",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-13",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-23",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-11-02",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-pabw-1",
+    "nombre": "Black Weeks · CYD con BOGO 60",
+    "paises": [
+     "PA"
+    ],
+    "inicio": "2026-10-02",
+    "fin": "2026-10-12",
+    "claves": [
+     "black weeks",
+     "cyd",
+     "bogo 60"
+    ],
+    "lineaGrafica": "",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-02",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-07",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-12",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-co30-1",
+    "nombre": "BOGO 30",
+    "paises": [
+     "CO"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-05",
+    "claves": [
+     "bogo 30"
+    ],
+    "lineaGrafica": "",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-co30-2",
+    "nombre": "BOGO 30",
+    "paises": [
+     "CO"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-20",
+    "claves": [
+     "bogo 30"
+    ],
+    "lineaGrafica": "",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-13",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-20",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   },
+   {
+    "id": "sur-co50-1",
+    "nombre": "BOGO 50",
+    "paises": [
+     "CO"
+    ],
+    "inicio": "2026-10-21",
+    "fin": "2026-11-02",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-21",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "Sugerido: arranque de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-27",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: recordar a mitad de la ventana",
+      "sugerido": true
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-11-02",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Sugerido: último día de la promo",
+      "sugerido": true
+     }
+    ],
+    "legales": {},
+    "momentosSugeridos": true
+   }
+  ],
+  "productos": [
+   {
+    "lote": "212116",
+    "nombre": "Cross Trekkers",
+    "atributos": [
+     "Ligero",
+     "Malla transpirable",
+     "Comodidad todo el día"
+    ],
+    "copy": "Diseñado para brindar comodidad durante kilómetros, este zapato deportivo Cross Trekkers combina una capellada de malla color marfil suave con un forro azul cielo y detalles en verde salvia, logrando un look fresco y deportivo. Su logotipo en tono oro rosa y su suela acolchada de gran tamaño ofrecen una pisada ligera y con soporte, ya sea para entrenar o para tus actividades diarias. Rendimiento deportivo, comodidad y estilo al mejor precio.",
+    "paises": [
+     "EC",
+     "PA",
+     "CO"
+    ]
+   },
+   {
+    "lote": "212112",
+    "nombre": "Airwalk hombre",
+    "atributos": [
+     "Comodidad",
+     "Durabilidad",
+     "Flexibilidad",
+     "Estilo urbano"
+    ],
+    "copy": "Los sneakers Airwalk para hombre ofrecen un estilo urbano y cómodo, ideales para el día a día. Su diseño con cordones y su suela resistente los convierten en la opción perfecta para caminar, salir de manera casual o disfrutar de una movilidad cómoda con un estilo relajado.",
+    "paises": [
+     "EC",
+     "PA",
+     "CO"
+    ]
+   }
+  ],
+  "reglas": [
+   "Objetivo: tráfico a tiendas y reconocimiento. KPIs: alcance, impresiones y views.",
+   "Paid media: 65% main message · 20% secondary · 15% promo y ecommerce."
+  ],
+  "entregables": [
+   {
+    "id": "sur-e1",
+    "paises": [
+     "CO"
+    ],
+    "texto": "Adaptaciones para malls en 17 medidas (400x400 a 2048x768) y logos por separado en 1080x1350 y 1080x1920: Colsubsidio (con textos de cupo crédito y Vigilado Supersubsidio), Kupi, Gran Plaza Bosa, Gran Plaza El Ensueño, Único y Addi (según toolkit)."
+   },
+   {
+    "id": "sur-e2",
+    "paises": [
+     "CO"
+    ],
+    "texto": "Sistecrédito: copys por promoción para SMS de máximo 140 caracteres con las palabras SISTECREDITO y PAYLESS."
+   },
+   {
+    "id": "sur-e3",
+    "paises": [
+     "PE"
+    ],
+    "texto": "Arte en 516x260 px."
+   }
+  ],
+  "pendientes": [
+   "Legales: están en «LEGAL SUR 2026 INPUT.xlsx», no en el brief",
+   "Spot, videos y fotos de campaña; fotos y reels de Inside: pendientes",
+   "Fecha del Aniversario: por confirmar"
+  ],
+  "aclaraciones": [
+   "El brief no trae los legales: pedir «LEGAL SUR 2026 INPUT.xlsx» para cargarlos y validar las piezas.",
+   "Las promos de SUR solo traen rangos de fechas, sin momentos ni horas. Dejé momentos sugeridos (lanzamiento, mantenimiento y últimas horas): confirmarlos con la coordinadora.",
+   "Panamá aparece como «PB» y «PAN»: confirmar que es lo mismo.",
+   "PE tiene Atléticos y videos de Cross Trekkers y Airwalk con lotes «por definir»."
+  ],
+  "version": 1,
+  "actualizado": "2026-10-05T21:00:00.000Z",
+  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)"
+ },
+ "RD": {
+  "region": "RD",
+  "mes": "2026-10",
+  "titulo": "Brief Mensual – REP. DOM · Octubre 2026",
+  "fuente": "10._2026_OCT_-_Brief_Mensual_-_DOM._REP.pdf",
+  "campanas": [
+   {
+    "id": "rd-c1",
+    "nombre": "Comfort Plus",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-09-08",
+    "fin": "2026-10-05",
+    "frecuencia": 3,
+    "claves": [
+     "comfort"
+    ],
+    "mensaje": "Resaltar siempre la comodidad y atributos del calzado de dama y caballero",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "rd-c2",
+    "nombre": "Atléticos (Champion)",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-10-26",
+    "frecuencia": 3,
+    "claves": [
+     "atletic",
+     "sneaker",
+     "champion"
+    ],
+    "mensaje": "Atléticos",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "rd-c3",
+    "nombre": "Atléticos Multimarca",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-27",
+    "fin": "2026-11-23",
+    "frecuencia": 3,
+    "claves": [
+     "atletic",
+     "sneaker",
+     "multimarca"
+    ],
+    "mensaje": "Atléticos multimarca",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta"
+   },
+   {
+    "id": "rd-c4",
+    "nombre": "Nuevas llegadas Damas",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-05",
+    "fin": "2026-10-26",
+    "frecuencia": 2,
+    "claves": [
+     "nuevas llegadas",
+     "dama",
+     "new arrivals"
+    ],
+    "mensaje": "Ballerinas, sandalias y tacones",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta"
+   },
+   {
+    "id": "rd-c5",
+    "nombre": "Nuevas llegadas Niños",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-05",
+    "fin": "2026-10-26",
+    "frecuencia": 1,
+    "claves": [
+     "niño",
+     "kids",
+     "infantil"
+    ],
+    "mensaje": "Colección calzado infantil",
+    "formato": "Mix de fotos y videos",
+    "canales": "Meta"
+   }
+  ],
+  "promos": [
+   {
+    "id": "rd-p1",
+    "nombre": "BOGO 50 Comfort Plus",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-09-08",
+    "fin": "2026-10-01",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "Comfort Plus",
+    "historia": "",
+    "momentos": [],
+    "legales": {
+     "RD": "Promoción válida del 8 de septiembre al 1 de octubre de 2026 en tiendas físicas y WhatsApp: Al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento. La promoción aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   },
+   {
+    "id": "rd-p2",
+    "nombre": "Tú Eliges · Atléticos",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-02",
+    "fin": "2026-10-05",
+    "claves": [
+     "tu eliges"
+    ],
+    "lineaGrafica": "Atléticos",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-01",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Pauta del 2 al 5 oct. Dejar claro que es por tiempo limitado"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-03",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Últimos días"
+     },
+     {
+      "tipo": "Últimas horas",
+      "fecha": "2026-10-05",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "RD": "Promoción válida del 2 al 5 de octubre de 2026 en tiendas físicas y WhatsApp: Al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento, o el tercero gratis. La promoción aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   },
+   {
+    "id": "rd-p3",
+    "nombre": "BOGO 50 Atléticos",
+    "paises": [
+     "RD"
+    ],
+    "inicio": "2026-10-06",
+    "fin": "2026-11-02",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "Atléticos",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-06",
+      "hora": "08:30",
+      "formato": "Post e historia",
+      "nota": "1 imagen o video. Pauta del 6 oct al 3 nov"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-08",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "RD": "Promoción válida del 6 de octubre al 2 de noviembre de 2026 en tiendas físicas y WhatsApp: Al comprar un artículo, podrás llevarte el segundo de igual o menor valor con un 50% de descuento. La promoción aplica para todos los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Payless se reserva el derecho de modificar o cancelar la promoción sin previo aviso."
+    }
+   }
+  ],
+  "cuotas": {
+   "total": 60,
+   "video": 18,
+   "carrusel": 18,
+   "estatico": 24,
+   "pesoPromo": 40,
+   "pesoProducto": 60,
+   "nota": "Instagram 60 y Facebook 60 contenidos en el mes"
+  },
+  "reglas": [
+   "Todos los artes promocionales deben llevar el legal en el arte o en el copy.",
+   "Cada momento de promo es Post + Historia.",
+   "Subir a YouTube los videos de entrenamiento del mes y adaptarlos a ads de paid u orgánico.",
+   "Incluir en el orgánico los videos de Francisco Alvarado y las fotos y videos de Johan Ugalde."
+  ],
+  "entregables": [
+   {
+    "id": "rd-e1",
+    "paises": [
+     "RD"
+    ],
+    "texto": "Artes 1080x1350 y 1080x1920 con logos de los malls Ágora, Ágora Santiago Center, Galería 360, Cedaky y Sambil; más 1080x1080 para Megacentro."
+   },
+   {
+    "id": "rd-e2",
+    "paises": [
+     "RD"
+    ],
+    "texto": "Videos de entrenamiento del mes subidos a YouTube."
+   }
+  ],
+  "pendientes": [
+   "Lotes y línea gráfica de octubre: sin completar",
+   "Actividades de tráfico, alianzas e influencer management: sin completar"
+  ],
+  "aclaraciones": [
+   "El brief pide 60 contenidos por red (18 videos, 18 carruseles, 24 estáticos). Confirmar si incluye historias y si Facebook replica Instagram.",
+   "Atléticos Multimarca arranca el 27 oct y sigue hasta el 23 nov: confirmar si la línea gráfica de BOGO 50 cambia con la campaña."
+  ],
+  "version": 1,
+  "actualizado": "2026-10-05T21:00:00.000Z",
+  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)"
+ },
+ "CARIBE": {
+  "region": "CARIBE",
+  "mes": "2026-10",
+  "titulo": "Monthly Brief – Caribbean · October 2026",
+  "fuente": "OCT_2026_Monthly_Brief_CARIBBEAN.pdf",
+  "campanas": [
+   {
+    "id": "car-c1",
+    "nombre": "Comfort Plus",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-05",
+    "frecuencia": 3,
+    "claves": [
+     "comfort"
+    ],
+    "mensaje": "Always highlight comfort and attributes of women's and men's footwear",
+    "formato": "Mix of photos and videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "car-c2",
+    "nombre": "Athletics LA Gear",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-05",
+    "frecuencia": 3,
+    "claves": [
+     "athletic",
+     "la gear",
+     "sneaker"
+    ],
+    "mensaje": "Athletics",
+    "formato": "Mix of photos and videos",
+    "canales": "Meta, YouTube, Traffic to store"
+   },
+   {
+    "id": "car-c3",
+    "nombre": "Kids Concurso",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-04",
+    "fin": "2026-10-31",
+    "frecuencia": 0,
+    "claves": [
+     "kids concurso",
+     "concurso"
+    ],
+    "mensaje": "",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "car-c4",
+    "nombre": "Sandals",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-04",
+    "fin": "2026-10-31",
+    "frecuencia": 0,
+    "claves": [
+     "sandal"
+    ],
+    "mensaje": "",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "car-c5",
+    "nombre": "25th Anniversary",
+    "paises": [
+     "TT"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-31",
+    "frecuencia": 0,
+    "claves": [
+     "anniversary",
+     "aniversario"
+    ],
+    "mensaje": "25 years, one step at a time",
+    "formato": "",
+    "canales": ""
+   },
+   {
+    "id": "car-c6",
+    "nombre": "New Arrivals Ladies",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-04",
+    "fin": "2026-10-31",
+    "frecuencia": 2,
+    "claves": [
+     "new arrivals ladies",
+     "ladies",
+     "nuevas llegadas"
+    ],
+    "mensaje": "Ballet flats, sandals and heels",
+    "formato": "Mix of photos and videos",
+    "canales": "Meta"
+   },
+   {
+    "id": "car-c7",
+    "nombre": "New Arrivals Kids",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "ECI",
+     "GY",
+     "USVI"
+    ],
+    "inicio": "2026-10-04",
+    "fin": "2026-10-31",
+    "frecuencia": 1,
+    "claves": [
+     "new arrivals kids",
+     "kids"
+    ],
+    "mensaje": "Children's footwear collection",
+    "formato": "Mix of photos and videos",
+    "canales": "Meta"
+   }
+  ],
+  "promos": [
+   {
+    "id": "car-p1",
+    "nombre": "BOGO 50 · Fashion that saves",
+    "paises": [
+     "TT",
+     "USVI",
+     "JM",
+     "BB"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-30",
+    "claves": [
+     "bogo 50"
+    ],
+    "lineaGrafica": "Fashion that saves",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-09-30",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Story every day until the end; make clear it's for a limited time"
+     },
+     {
+      "tipo": "Mantenimiento",
+      "fecha": "2026-10-08",
+      "hora": "09:00",
+      "formato": "Post e historia",
+      "nota": "Story every 3 days until Oct 30"
+     }
+    ],
+    "legales": {
+     "TT": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
+    }
+   },
+   {
+    "id": "car-p2",
+    "nombre": "BOGO 30 · Fashion that saves",
+    "paises": [
+     "ECI"
+    ],
+    "inicio": "2026-10-01",
+    "fin": "2026-10-30",
+    "claves": [
+     "bogo 30"
+    ],
+    "lineaGrafica": "Fashion that saves",
+    "historia": "cada3",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-09-30",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": ""
+     }
+    ],
+    "legales": {
+     "ECI": "Promotion valid in Antigua and Barbuda, Dominica, Grenada, Saint Kitts and Nevis, Saint Lucia, and Saint Vincent and the Grenadines from October 1 to October 30, 2026, at physical stores and via WhatsApp. When purchasing one item, the customer may receive a second item of equal or lesser value at a 30% discount. Applies to all products in the store. The company reserves the right to modify or cancel the promotion at any time, ensuring consumer rights are respected under applicable local consumer protection regulations."
+    }
+   },
+   {
+    "id": "car-p3",
+    "nombre": "BOGO 60 · One day bonus savings",
+    "paises": [
+     "BB",
+     "USVI"
+    ],
+    "inicio": "2026-10-31",
+    "fin": "2026-10-31",
+    "claves": [
+     "bogo 60"
+    ],
+    "lineaGrafica": "One day bonus savings",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-30",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "Last hours: one day only"
+     }
+    ],
+    "legales": {
+     "BB": "Promotion valid for October 31 2026, one day only in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 60% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
+    }
+   },
+   {
+    "id": "car-p4",
+    "nombre": "25% OFF Storewide · 25th Anniversary",
+    "paises": [
+     "TT"
+    ],
+    "inicio": "2026-10-31",
+    "fin": "2026-10-31",
+    "claves": [
+     "25%",
+     "25 off",
+     "anniversary"
+    ],
+    "lineaGrafica": "It's our Anniversary: 25 stores for 25 years",
+    "historia": "diaria",
+    "momentos": [
+     {
+      "tipo": "Lanzamiento",
+      "fecha": "2026-10-30",
+      "hora": "20:00",
+      "formato": "Post e historia",
+      "nota": "1 image or video. One day only"
+     }
+    ],
+    "legales": {
+     "TT": "Promotion valid for October 31 2026, one day only in physical stores and WhatsApp: When you buy an item, you can get a 25% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
+    }
+   },
+   {
+    "id": "car-p5",
+    "nombre": "Take Style Out (TBA)",
+    "paises": [
+     "JM"
+    ],
+    "inicio": "2026-10-31",
+    "fin": "2026-10-31",
+    "claves": [
+     "take style",
+     "oct 31"
+    ],
+    "lineaGrafica": "Take Style Out",
+    "historia": "",
+    "momentos": [],
+    "legales": {}
+   }
+  ],
+  "reglas": [
+   "All promotional artwork must have the legal in the artwork or in the copy.",
+   "Each promo moment is Post + Story.",
+   "Include in organic and OOH the videos from Francisco Alvarado and photos/videos from Johan Ugalde.",
+   "Upload monthly training videos to YouTube."
+  ],
+  "entregables": [
+   {
+    "id": "car-e1",
+    "paises": [
+     "TT"
+    ],
+    "texto": "OOH digital BOGO 50 y 25th Anniversary (Guardian Media / Croisee): 384x960, 960x384, 1216x512 y 288x576."
+   },
+   {
+    "id": "car-e2",
+    "paises": [
+     "TT",
+     "JM",
+     "BB",
+     "USVI"
+    ],
+    "texto": "Radio BOGO 50 y 25th Anniversary (spots de 30\"): mensaje Sandals, BTW, Comfort Plus y Athletics, tono Gen Z."
+   }
+  ],
+  "pendientes": [
+   "Cantidades de Instagram y Facebook: vacías en el brief",
+   "Lots and graphic line: sin completar"
+  ],
+  "aclaraciones": [
+   "El brief dice Athletics LA Gear del 1 al 5 de octubre, pero el calendario tiene piezas de LA Gear todo el mes. Confirmar si la campaña se extiende.",
+   "Guyana (GY) no tiene promoción en el brief.",
+   "Jamaica: la promo del 31 oct está «TBA» (Take Style Out), sin legal.",
+   "BOGO 50: el lanzamiento pide historia todos los días y el mantenimiento cada 3 días. Confirmar cuál aplica.",
+   "La sección de medidas para malls habla de República Dominicana (Ágora, Sambil…): parece copiada del brief de RD.",
+   "Kids Concurso, Sandals y 25th Anniversary no tienen frecuencia, mensaje ni formato."
+  ],
+  "version": 1,
+  "actualizado": "2026-10-05T21:00:00.000Z",
+  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)"
+ }
+}
