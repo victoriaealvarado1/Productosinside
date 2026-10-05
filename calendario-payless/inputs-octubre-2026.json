@@ -114,21 +114,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-09-27",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 28 sep al 1 oct. Dejar claro que es por tiempo limitado"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-09-29",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Últimos días: animar a aprovecharla"
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-01",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -154,21 +154,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-09-29",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 29 sep al 3 oct"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-01",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -194,21 +194,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-09-30",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 1 al 4 oct"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-02",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-04",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -237,21 +237,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-02",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 3 al 5 oct"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-04",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -281,21 +281,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 2 al 5 oct"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -323,7 +323,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "1 imagen o video. Pauta del 6 al 29 oct"
      }
     ],
@@ -351,7 +351,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "1 imagen o video. Pauta del 6 al 30 oct"
      }
     ],
@@ -377,7 +377,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "El brief lo llama «Mantenimiento», pero es el arranque de la promo"
      }
     ],
@@ -407,14 +407,14 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-29",
       "hora": "20:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta solo el 30 oct"
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-30",
       "hora": "15:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -445,14 +445,14 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-30",
       "hora": "20:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta solo el 31 oct"
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-31",
       "hora": "15:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -463,8 +463,8 @@
    }
   ],
   "reglas": [
+   "Las promociones van solo en historias, no en el feed (acordado con el cliente).",
    "Todos los artes promocionales deben llevar el legal en el arte o en el copy.",
-   "Cada momento de promo es Post + Historia.",
    "Incluir en el orgánico los videos de Francisco Alvarado y las fotos y videos de Johan Ugalde."
   ],
   "entregables": [
@@ -531,7 +531,12 @@
   ],
   "version": 1,
   "actualizado": "2026-10-05T21:00:00.000Z",
-  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)"
+  "actualizadoPor": "Asistente INSIDE (carga inicial de los briefs)",
+  "descartadas": [
+   "m|cen-p2|0|post",
+   "m|cen-p2|1|post",
+   "m|cen-p2|2|post"
+  ]
  },
  "SUR": {
   "region": "SUR",
@@ -690,7 +695,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -698,7 +703,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -706,7 +711,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -732,7 +737,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-12",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -740,7 +745,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-14",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -748,7 +753,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-15",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -774,7 +779,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-19",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -782,7 +787,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-21",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -790,7 +795,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-22",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -816,7 +821,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-26",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -824,7 +829,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-28",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -832,7 +837,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-29",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -858,7 +863,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -866,7 +871,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-09",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -874,7 +879,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-11",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -900,7 +905,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-23",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -908,7 +913,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-25",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -934,7 +939,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-16",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -942,7 +947,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-18",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -968,7 +973,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-30",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -976,7 +981,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-11-01",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1002,7 +1007,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1010,7 +1015,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1018,7 +1023,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1044,7 +1049,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-12",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1052,7 +1057,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-14",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1060,7 +1065,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-15",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1086,7 +1091,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-19",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1094,7 +1099,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-21",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1102,7 +1107,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-22",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1128,7 +1133,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-26",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1136,7 +1141,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-28",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1144,7 +1149,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-29",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1170,7 +1175,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1178,7 +1183,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-09",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1186,7 +1191,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-11",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1212,7 +1217,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-23",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1220,7 +1225,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-25",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1246,7 +1251,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-16",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1254,7 +1259,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-18",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1280,7 +1285,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-30",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1288,7 +1293,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-11-01",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1314,7 +1319,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      }
@@ -1340,7 +1345,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-13",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1348,7 +1353,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-23",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1356,7 +1361,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-11-02",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1384,7 +1389,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-02",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1392,7 +1397,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-07",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1400,7 +1405,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-12",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1426,7 +1431,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1434,7 +1439,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1442,7 +1447,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1468,7 +1473,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1476,7 +1481,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-13",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1484,7 +1489,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-10-20",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1510,7 +1515,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-21",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: arranque de la ventana",
       "sugerido": true
      },
@@ -1518,7 +1523,7 @@
       "tipo": "Mantenimiento",
       "fecha": "2026-10-27",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: recordar a mitad de la ventana",
       "sugerido": true
      },
@@ -1526,7 +1531,7 @@
       "tipo": "Últimas horas",
       "fecha": "2026-11-02",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Sugerido: último día de la promo",
       "sugerido": true
      }
@@ -1569,6 +1574,7 @@
    }
   ],
   "reglas": [
+   "Las promociones van solo en historias, no en el feed (acordado con el cliente).",
    "Objetivo: tráfico a tiendas y reconocimiento. KPIs: alcance, impresiones y views.",
    "Paid media: 65% main message · 20% secondary · 15% promo y ecommerce."
   ],
@@ -1742,21 +1748,21 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-01",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Pauta del 2 al 5 oct. Dejar claro que es por tiempo limitado"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-03",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Últimos días"
      },
      {
       "tipo": "Últimas horas",
       "fecha": "2026-10-05",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -1782,14 +1788,14 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-06",
       "hora": "08:30",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "1 imagen o video. Pauta del 6 oct al 3 nov"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-08",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -1808,8 +1814,8 @@
    "nota": "Instagram 60 y Facebook 60 contenidos en el mes"
   },
   "reglas": [
+   "Las promociones van solo en historias, no en el feed (acordado con el cliente).",
    "Todos los artes promocionales deben llevar el legal en el arte o en el copy.",
-   "Cada momento de promo es Post + Historia.",
    "Subir a YouTube los videos de entrenamiento del mes y adaptarlos a ads de paid u orgánico.",
    "Incluir en el orgánico los videos de Francisco Alvarado y las fotos y videos de Johan Ugalde."
   ],
@@ -2019,19 +2025,22 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-09-30",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Story every day until the end; make clear it's for a limited time"
      },
      {
       "tipo": "Mantenimiento",
       "fecha": "2026-10-08",
       "hora": "09:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Story every 3 days until Oct 30"
      }
     ],
     "legales": {
-     "TT": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
+     "TT": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice.",
+     "USVI": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice.",
+     "JM": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice.",
+     "BB": "Promotion valid from October 1 to October 30, 2026 in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 50% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
     }
    },
    {
@@ -2052,7 +2061,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-09-30",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": ""
      }
     ],
@@ -2079,12 +2088,13 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-30",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "Last hours: one day only"
      }
     ],
     "legales": {
-     "BB": "Promotion valid for October 31 2026, one day only in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 60% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
+     "BB": "Promotion valid for October 31 2026, one day only in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 60% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice.",
+     "USVI": "Promotion valid for October 31 2026, one day only in physical stores and WhatsApp: When you buy an item, you can take the second one of equal or lesser value with a 60% discount. The promotion applies to all products in the store, with original price and discount price clearly indicated as appropriate. Payless reserves the right to modify or cancel the promotion without notice."
     }
    },
    {
@@ -2107,7 +2117,7 @@
       "tipo": "Lanzamiento",
       "fecha": "2026-10-30",
       "hora": "20:00",
-      "formato": "Post e historia",
+      "formato": "Historia",
       "nota": "1 image or video. One day only"
      }
     ],
@@ -2134,8 +2144,8 @@
    }
   ],
   "reglas": [
+   "Promotions go in stories only, not in the feed (agreed with the client).",
    "All promotional artwork must have the legal in the artwork or in the copy.",
-   "Each promo moment is Post + Story.",
    "Include in organic and OOH the videos from Francisco Alvarado and photos/videos from Johan Ugalde.",
    "Upload monthly training videos to YouTube."
   ],

@@ -10,7 +10,7 @@
   --accent:#ea5b0c; --accent-ink:#ffffff; --accent-soft:#fde6d8;
   --r-centro:#0f8b8d; --r-sur:#4a56c9; --r-rd:#c2366b; --r-caribe:#6d8f12;
   --ok:#1d8a4e; --ok-soft:#dcf2e5; --warn:#b7791f; --warn-soft:#fbefd6; --bad:#c43c2f; --bad-soft:#fbe1dd; --info:#3a6ccf; --info-soft:#e1e9fa;
-  --done-bg:#1f7a45; --done:#14592f; --pub-bg:#c9efd6; --pub-line:#5fbf86; --pub-ink:#14593a; --pend-bg:#ffdcc2; --pend-line:#f08a3e; --pend-ink:#8a3a07; --pend:#e8700f; --pro:#7a4fd0;
+  --done-bg:#1f7a45; --done:#14592f; --pub-bg:#c9efd6; --pub-line:#5fbf86; --pub-ink:#14593a; --pend-bg:#ffdcc2; --pend-line:#f08a3e; --pend-ink:#8a3a07; --pend:#e8700f; --pro:#7a4fd0; --cmt-bg:#ffb489; --cmt-line:#e0531f; --cmt-ink:#7a2200; --cmt:#e0531f; --acl-bg:#e8f3b4; --acl-line:#a3be34; --acl-ink:#4a5710; --acl:#8fac22;
   --phone:#000; --phone-ink:#f5f5f5; --ig-bg:#ffffff; --ig-ink:#111; --ig-mute:#737373; --ig-line:#efefef;
   --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
   --f-body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
@@ -24,7 +24,7 @@
   --r-centro:#35b9bb; --r-sur:#8b95ff; --r-rd:#ff6fa3; --r-caribe:#a6c94a;
   --ok:#4cc884; --ok-soft:#173826; --warn:#e5b04f; --warn-soft:#3b2d12; --bad:#ff7b6d; --bad-soft:#40201c; --info:#86a8ff; --info-soft:#1d2a47;
   --ig-bg:#000; --ig-ink:#f5f5f5; --ig-mute:#a8a8a8; --ig-line:#262626;
-  --done-bg:#2b8a55; --done:#5fd394; --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff;
+  --done-bg:#2b8a55; --done:#5fd394; --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff; --cmt-bg:#5e2410; --cmt-line:#e2632c; --cmt-ink:#ffb899; --cmt:#ff7a3d; --acl-bg:#333c10; --acl-line:#9bb52a; --acl-ink:#dbe98f; --acl:#b9d24a;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#161311; --surface:#201c19; --sunk:#2a2522; --line:#352f2b; --line-strong:#4a423c;
@@ -33,7 +33,7 @@
   --r-centro:#35b9bb; --r-sur:#8b95ff; --r-rd:#ff6fa3; --r-caribe:#a6c94a;
   --ok:#4cc884; --ok-soft:#173826; --warn:#e5b04f; --warn-soft:#3b2d12; --bad:#ff7b6d; --bad-soft:#40201c; --info:#86a8ff; --info-soft:#1d2a47;
   --ig-bg:#000; --ig-ink:#f5f5f5; --ig-mute:#a8a8a8; --ig-line:#262626;
-  --done-bg:#2b8a55; --done:#5fd394; --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff;
+  --done-bg:#2b8a55; --done:#5fd394; --pub-bg:#16402a; --pub-line:#2f8a57; --pub-ink:#9be3b9; --pend-bg:#4a2612; --pend-line:#c4621f; --pend-ink:#ffc49a; --pend:#ff8f3d; --pro:#a98bff; --cmt-bg:#5e2410; --cmt-line:#e2632c; --cmt-ink:#ffb899; --cmt:#ff7a3d; --acl-bg:#333c10; --acl-line:#9bb52a; --acl-ink:#dbe98f; --acl:#b9d24a;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45); color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -138,7 +138,7 @@ main{padding-block:16px 40px}
 .pc .t1{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden}
 .pc .t2{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sd{width:7px;height:7px;border-radius:50%;flex:none;background:var(--ink-3)}
-.st-sin{--s:var(--ink-3)} .st-des{--s:var(--ink-2)} .st-env{--s:var(--pend)} .st-apr{--s:var(--info)} .st-cam{--s:var(--bad)} .st-pro{--s:var(--ok)} .st-pub{--s:var(--done)}
+.st-sin{--s:var(--ink-3)} .st-des{--s:var(--ink-2)} .st-env{--s:var(--pend)} .st-apr{--s:var(--info)} .st-cam{--s:var(--bad)} .st-pro{--s:var(--ok)} .st-cmt{--s:var(--cmt)} .st-acl{--s:var(--acl)} .st-pub{--s:var(--done)}
 /* fondo por estado: verde = publicado, naranja = esperando al cliente, blanco = en desarrollo Inside */
 .pc.cs-pub{background:var(--pub-bg);border-color:var(--pub-line)} .pc.cs-pub .t1{color:var(--pub-ink)}
 .pc.cs-done{background:var(--done-bg);border-color:var(--done)} .pc.cs-done .t1,.pc.cs-done .t2{color:#fff} .pc.cs-done .sd{background:#fff}
@@ -828,6 +828,64 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .inpbn{margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .inpcols.solo{grid-template-columns:1fr;max-width:900px}
 @media (max-width:900px){.inpcols{grid-template-columns:1fr}}
+/* fondo por estado: verde = publicado, naranja = esperando al cliente, blanco = en desarrollo Inside */
+.pc.cs-acl{background:var(--acl-bg);border-color:var(--acl-line)}
+.pc.cs-acl .t1{color:var(--acl-ink)}
+.pc.cs-cmt{background:var(--cmt-bg);border-color:var(--cmt-line)}
+.pc.cs-cmt .t1{color:var(--cmt-ink)}
+table.list tr.cs-acl td{background:var(--acl-bg)}
+table.list tr.cs-cmt td{background:var(--cmt-bg)}
+.tl-bar.cs-cmt{background:var(--cmt-bg);border-color:var(--cmt-line)}
+.tl-bar.cs-acl{background:var(--acl-bg);border-color:var(--acl-line)}
+.ta-bar.cs-acl{background:var(--acl-bg)}
+.ta-it.cs-acl{background:var(--acl-bg);border-color:var(--acl-line);border-left-color:var(--rc)}
+.ta-it.cs-acl .ta-l1{color:var(--acl-ink)}
+.ta-it.cs-cmt{background:var(--cmt-bg);border-color:var(--cmt-line);border-left-color:var(--rc)}
+.ta-it.cs-cmt .ta-l1{color:var(--cmt-ink)}
+.ta-bar.cs-cmt{background:var(--cmt-bg)}
+.ta-bar.cs-acl{background:var(--acl-bg)}
+.sline button.cs-cmt{background:var(--cmt-bg)}
+.sline button.cs-acl{background:var(--acl-bg)}
+.tl-lab.cs-cmt{background:var(--cmt-bg)}
+.tl-lab.cs-acl{background:var(--acl-bg)}
+.tl-bar.cs-cmt .bt,.tl-bar.cs-pub .bt{color:var(--ink)}
+.tl-bar.cs-env .bt,.tl-bar.cs-acl .bt{color:var(--ink)}
+.legend .cs.cmt{background:var(--cmt-bg);border-color:var(--cmt-line)} .legend .cs.acl{background:var(--acl-bg);border-color:var(--acl-line)}
+.approve.acl{background:var(--acl-bg);border-color:var(--acl-line)} .approve.cmt{background:var(--cmt-bg);border-color:var(--cmt-line)}
+.approve.acl .q,.approve.cmt .q{color:var(--ink)}
+.plink{margin:-4px 0 12px}
+.plinkbox{margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.plinkbox input{flex:1;min-width:0;font-size:12px}
+.plinkbox textarea{width:100%;font-size:13px}
+.arte figure{position:relative} .arte figure img{cursor:zoom-in}
+.lbbtn{position:absolute;top:6px;right:6px;z-index:3;width:30px;height:30px;border-radius:8px;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;cursor:pointer}
+.mprev{position:relative} .mprev img{cursor:zoom-in}
+body.lbon{overflow:hidden}
+.lbx{position:fixed;inset:0;z-index:9999;background:rgba(10,10,10,.94);display:flex;flex-direction:column}
+.lbbar{display:flex;gap:12px;align-items:center;padding:10px 16px;color:#fff}
+.lbbar .hint{color:#bbb;flex:1}
+.lbbar .iconbtn{color:#fff;background:transparent;border-color:#555}
+.lbstage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px 60px}
+.lbstage img,.lbstage video{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in;transition:transform .15s}
+.lbstage.zoom img{transform:scale(2.6);cursor:zoom-out}
+.lbnav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:64px;border:0;border-radius:10px;background:rgba(255,255,255,.12);color:#fff;font-size:34px;cursor:pointer}
+.lbnav.prev{left:8px} .lbnav.next{right:8px}
+.lbthumbs{display:flex;gap:6px;justify-content:center;padding:10px;overflow-x:auto}
+.lbthumbs button{width:52px;height:52px;flex:none;border-radius:6px;border:2px solid transparent;background:#333 center/cover;color:#fff;cursor:pointer}
+.lbthumbs button.on{border-color:#fff}
+.apstrip{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
+.apcard{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--surface);cursor:pointer;text-align:left}
+.apcard.on{border-color:#0f8b8d;box-shadow:0 0 0 2px color-mix(in srgb,#0f8b8d 30%,transparent)}
+.apcard>span{display:flex;flex-direction:column;line-height:1.15} .apcard small{font-size:11px;color:var(--ink-3)}
+.apn{align-items:center;min-width:60px} .apn b{font-size:18px}
+.inpopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inpopts>div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface);display:flex;flex-direction:column;gap:6px;font-size:13px}
+.inpopts span{color:var(--ink-2)} .inpopts label.btn{align-self:flex-start}
+.armbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.armprev{border:1px solid #7a4fd0;border-radius:12px;padding:10px 12px;margin-bottom:10px;background:color-mix(in srgb,#7a4fd0 6%,var(--surface))}
+.armprev ul{margin:6px 0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13px;max-height:320px;overflow:auto}
+.armprev li small{display:block;color:var(--ink-3)}
+@media (max-width:760px){.inpopts{grid-template-columns:1fr}}
 </style>
 
 <div class="top">
@@ -860,10 +918,10 @@ const REGIONES=[
 const PAIS={GT:"Guatemala",SV:"El Salvador",HN:"Honduras",NI:"Nicaragua",CR:"Costa Rica",PA:"Panamá",CO:"Colombia",EC:"Ecuador",PE:"Perú",RD:"República Dominicana",TT:"Trinidad y Tobago",JM:"Jamaica",BB:"Barbados",ECI:"Eastern Caribbean",GY:"Guyana",USVI:"Islas Vírgenes EE. UU."};
 const EN_PAISES=new Set(["TT","JM","BB","ECI","GY","USVI"]);
 const ESTADOS=[
-  {id:"Sin iniciar",c:"st-sin"},{id:"Enviado a cliente",c:"st-env"},{id:"Programado",c:"st-pro"},{id:"Publicado",c:"st-pub"}];
-const isOk=p=>p.estado==="Programado"||p.estado==="Publicado";
+  {id:"Sin iniciar",c:"st-sin"},{id:"Enviado a cliente",c:"st-env"},{id:"Comentarios del cliente",c:"st-cmt"},{id:"Aprobado por cliente",c:"st-acl"},{id:"Programado",c:"st-pro"},{id:"Publicado",c:"st-pub"}];
+const isOk=p=>p.estado==="Programado"||p.estado==="Publicado"||p.estado==="Aprobado por cliente";
 /* estados anteriores → los 3 vigentes (los datos viejos se leen así, sin reescribir la base) */
-const ESTADO_MAP={"En desarrollo":"Sin iniciar","Cambios solicitados":"Sin iniciar","Aprobado":"Programado"};
+const ESTADO_MAP={"En desarrollo":"Sin iniciar","Cambios solicitados":"Comentarios del cliente","Aprobado":"Programado"};
 const FORMATOS=["Estático","Carrusel","Reel","Historia","Portada"];
 const TIPOS={feed:"Feed",historia:"Historia",promo:"Promo"};
 const LINEAS=["Sneakers","Nuevas Llegadas","Kids","Halloween Kids","Comfort Plus","Aniversario TT","Promociones","Otra"];
@@ -897,7 +955,7 @@ const todayISO=iso(new Date());
 const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const region=id=>REGIONES.find(r=>r.id===id)||REGIONES[0];
 const estadoC=e=>(ESTADOS.find(x=>x.id===e)||ESTADOS[0]).c;
-const colorC=e=>e==="Publicado"?"cs-done":e==="Programado"?"cs-pub":e==="Enviado a cliente"?"cs-env":"";
+const colorC=e=>e==="Publicado"?"cs-done":e==="Programado"?"cs-pub":e==="Aprobado por cliente"?"cs-acl":e==="Comentarios del cliente"?"cs-cmt":e==="Enviado a cliente"?"cs-env":"";
 function horaMin(h){
   if(!h) return 24*60;
   const s=String(h).toLowerCase().replace(/\s+/g,"");
@@ -1099,7 +1157,9 @@ function renderCal(){
       ${REGIONES.map(r=>`<div><span class="sw" style="background:var(${r.var})"></span>${r.nombre}</div>`).join("")}
       <div style="margin-top:4px"></div>
       <div><span class="cs done"></span><span><b>Verde oscuro</b>: publicado</span></div>
-      <div><span class="cs pub"></span><span><b>Verde</b>: programado (aprobado por el cliente)</span></div>
+      <div><span class="cs pub"></span><span><b>Verde</b>: programado por Inside</span></div>
+      <div><span class="cs acl"></span><span><b>Verde lima</b>: aprobado por el cliente, falta programar</span></div>
+      <div><span class="cs cmt"></span><span><b>Naranja intenso</b>: el cliente dejó comentarios, le toca a Inside</span></div>
       <div><span class="cs env"></span><span><b>Naranja</b>: esperando aprobación del cliente</span></div>
       <div><span class="cs"></span><span><b>Blanco</b>: sin iniciar / en desarrollo en Inside</span></div>
       <div style="margin-top:4px"></div>
@@ -1372,6 +1432,7 @@ function renderSheet(){
       <div class="seg pvmode" role="group" aria-label="Vista previa"><button data-pvmode="post" aria-pressed="${S.pv.mode!=="feed"}">${isFeed(p)?"Publicación":"Historia"}</button><button data-pvmode="feed" aria-pressed="${S.pv.mode==="feed"}">${isFeed(p)?"En el feed":"En el perfil"}</button></div>
       ${fmts(p).length>1&&S.pv.mode!=="feed"?`<div class="seg" role="group" aria-label="Formato del preview">${fmts(p).map(f=>`<button data-pvfmt="${f}" aria-pressed="${f===pvFmt(p)}">${f}</button>`).join("")}</div>`:""}
       ${S.pv.mode==="feed"?feedPreview(p):preview(p)}
+      ${(p.imagenes||[]).length&&S.pv.mode!=="feed"?`<button class="btn sm" data-lb="post|${esc(p.id)}|${S.pv.slide||0}">⤢ Ver el arte en grande</button>`:""}
       <div style="font-size:12px;color:var(--ink-3);text-align:center;max-width:340px">Vista previa de ${pvFmt(p)==="Historia"?"historia de Instagram":pvFmt(p)==="Reel"?"reel de Instagram":pvFmt(p)==="Portada"?"portada de Facebook":pvFmt(p)==="Carrusel"?"carrusel en el feed de Instagram":"publicación en el feed de Instagram"}${fmts(p).length>1?` · sale en ${fmts(p).length} formatos`:""}${(p.imagenes||[]).length?"":" · se muestra el headline mientras no haya arte"}.</div>
     </div>
     <div class="right">
@@ -1380,7 +1441,7 @@ function renderSheet(){
         <h2>${esc(p.headline||p.campana||"Publicación")}</h2>
         <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
       </div><button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div>
-      ${approveBox(p)}
+      ${approveBox(p)}${pieceLinkBox("post",p)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${S.openTab===k}">${l}</button>`).join("")}</div>
       <div id="tabBody">${tabBody(p,cms)}</div>
       ${traceBox("post",p)}
@@ -1394,11 +1455,15 @@ function approveBox(p){
   if(!canApprove()) return "";
   const pend=p.estado==="Enviado a cliente";
   if(role()==="cliente"){
-    if(!pend) return `<div class="approve"><span class="q">${p.estado==="Publicado"?"Esta pieza ya está publicada.":p.estado==="Programado"?"Esta pieza ya está aprobada y programada.":p.cambiosPendientes?"Pediste cambios. El equipo de Inside está trabajando en ellos y te la vuelve a enviar.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Aprobación."}</span></div>`;
+    if(!pend) return `<div class="approve"><span class="q">${p.estado==="Publicado"?"Esta pieza ya está publicada.":p.estado==="Programado"?"Esta pieza ya está aprobada y programada.":p.estado==="Aprobado por cliente"?"Aprobaste esta pieza. Inside la va a programar.":p.cambiosPendientes||p.estado==="Comentarios del cliente"?"Pediste cambios. El equipo de Inside está trabajando en ellos y te la vuelve a enviar.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Aprobación."}</span></div>`;
     return `<div class="approve"><span class="q">¿Apruebas esta publicación?</span>${approveAsCtl("post",p)}
       <button class="btn ok" data-act="aprobar">Aprobar</button><button class="btn bad" data-act="cambios">Pedir cambios</button>
       ${S.askChanges?`<textarea id="chgTxt" placeholder="¿Qué hay que ajustar? Sé específico: texto, foto, país, fecha…"></textarea><button class="btn primary" data-act="enviarCambios">Enviar cambios</button>`:""}</div>`;
   }
+  if(p.estado==="Aprobado por cliente")
+    return `<div class="approve acl"><span class="q">✅ El cliente la aprobó. ¿Ya quedó programada en Meta${isTT(p)?" / TikTok":""}?</span><button class="btn ok" data-act="programar">Marcar como Programado</button></div>`;
+  if(p.estado==="Comentarios del cliente")
+    return `<div class="approve cmt"><span class="q">💬 El cliente dejó comentarios. Resuélvelos en la pestaña Comentarios y vuelve a enviarla.</span><button class="btn primary" data-act="enviar">Volver a enviar al cliente</button></div>`;
   if(p.estado==="Sin iniciar")
     return `<div class="approve"><span class="q">${p.cambiosPendientes?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-act="enviar">Enviar al cliente</button></div>`;
   return insideApprovalBox("post",p);
@@ -1430,7 +1495,7 @@ function tabBody(p,cms){
   }
   if(t==="arte"){
     const imgs=p.imagenes||[]; const ed=canEdit()&&S.assets; const lbl=fmts(p)[0]==="Historia"?"Frame":"Slide";
-    const grid=imgs.length?`${ed&&imgs.length>1?`<p class="hint" style="margin:0 0 6px">Arrastra las imágenes para cambiar el orden de los slides.</p>`:""}<div class="arte">${imgs.map((s,k)=>`<figure ${ed?`draggable="true" data-artk="${k}" data-artkind="post"`:""}>${mediaHTML(s,`${lbl} ${k+1}`,true)}<figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
+    const grid=imgs.length?`${ed&&imgs.length>1?`<p class="hint" style="margin:0 0 6px">Arrastra las imágenes para cambiar el orden de los slides.</p>`:""}<div class="arte">${imgs.map((s,k)=>`<figure ${ed?`draggable="true" data-artk="${k}" data-artkind="post"`:""}><button class="lbbtn" data-lb="post|${esc(p.id)}|${k}" title="Ver en grande" aria-label="Ver en grande">⤢</button>${mediaHTML(s,`${lbl} ${k+1}`,true)}<figcaption><span>${k===0&&imgs.length>1?"Portada":lbl+" "+(k+1)}</span>${ed?`<span>${k>0?`<button data-mv="${k}" aria-label="Mover a la izquierda" title="Mover antes">←</button>`:""}${k<imgs.length-1?`<button data-mvr="${k}" aria-label="Mover a la derecha" title="Mover después">→</button>`:""}<button data-rmask="${k}" aria-label="Borrar foto" title="Borrar">✕</button></span>`:""}</figcaption>${S.rmAsk===k?`<div class="rmask"><span>¿Borrar esta foto?</span><button class="btn bad" data-rm="${k}">Borrar</button><button class="btn ghost" data-rmno>Cancelar</button></div>`:""}</figure>`).join("")}</div>`
       :`<p style="color:var(--ink-2)">${role()!=="inside"?"El arte de esta pieza está en producción.":"Esta publicación todavía no tiene fotos finales."}${p.link&&role()==="inside"?` Revisa la carpeta en <a href="${esc(p.link)}" target="_blank" rel="noopener">SharePoint ↗</a>.`:""}</p>`;
     const upl=ed?`<label class="drop-zone" id="dz" for="upl"><input type="file" id="upl" accept="image/*,video/mp4" multiple hidden><b>${fmts(p).includes("Reel")?(imgs.some(isVid)?"Reemplazar o agregar video del reel":"Subir el video del reel (MP4)"):imgs.length?"Agregar fotos finales aprobadas":"Subir fotos finales aprobadas"}</b><br><span style="font-size:12px">Arrastra aquí las imágenes o haz clic para elegirlas. En carruseles e historias, cada archivo es un slide y se agregan en el orden en que los eliges; después puedes reordenarlos con las flechas.</span></label>
       ${imgs.length?`<label class="hint" style="display:flex;gap:6px;align-items:center;margin-top:8px"><input type="checkbox" id="uplReplace"> Reemplazar todas las fotos actuales con las nuevas</label>`:""}<div class="saved" id="uplMsg"></div>`
@@ -1565,8 +1630,9 @@ async function doAct(a){
   if(a==="cambios"){S.askChanges=true;renderSheet();$("#chgTxt")?.focus();return}
   if(a==="aprobar"){await recordApproval("post",p.id,$("#apAs")?.value||"");return}
   if(a==="registrar"){const pid=$("#regAs")?.value;if(!pid) return;await recordApproval("post",p.id,pid,($("#regNota")?.value||"").trim());return}
-  if(a==="enviarCambios"){const t=$("#chgTxt").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.askChanges=false;await save(p.id,{estado:"Sin iniciar",cambiosPendientes:true});await addComment(p.id,"cambios",t);toast("Cambios enviados al equipo");return}
+  if(a==="enviarCambios"){const t=$("#chgTxt").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.askChanges=false;await save(p.id,{estado:"Comentarios del cliente",cambiosPendientes:true});await addComment(p.id,"cambios",t);toast("Cambios enviados al equipo");return}
   if(a==="enviar"){openSend([{kind:"post",id:p.id}]);return}
+  if(a==="programar"){await save(p.id,{estado:"Programado"});toast("Programada");return}
   if(a==="comentar"){const t=$("#cmTxt").value.trim();if(!t) return;await addComment(p.id,"nota",t);toast("Comentario publicado");return}
   if(a==="sinfecha"){await save(p.id,{fecha:"",sinFecha:true,fechaPropuesta:p.fecha});toast("Movida a Por asignar fecha");return}
   if(a==="copiar"){copyPost(p.id);closeSheet();return}
@@ -1802,7 +1868,7 @@ function pickMonth(){
   if(!ds.length||ds.some(d=>d.startsWith(pre))) return [now.getFullYear(),now.getMonth()];
   const d=parseISO(ds.find(x=>x>=pre)||ds[ds.length-1]); return [d.getFullYear(),d.getMonth()];
 }
-function normEstado(d){const e=ESTADO_MAP[d.estado];if(!e) return {};return d.estado==="Cambios solicitados"?{estado:e,cambiosPendientes:true}:{estado:e}}
+function normEstado(d){if(d.estado==="Sin iniciar"&&d.cambiosPendientes) return {estado:"Comentarios del cliente"};const e=ESTADO_MAP[d.estado];if(!e) return {};return d.estado==="Cambios solicitados"?{estado:e,cambiosPendientes:true}:{estado:e}}
 function normalize(d){const n=normEstado(d);return {imagenes:[],paises:[],copy:"",headline:"",campana:"",hora:"",fecha:"",estado:"Sin iniciar",formato:"Estático",tipo:"feed",linea:"Otra",region:"CENTRO",...d,...n}}
 
 /* ============ arranque */
@@ -1919,7 +1985,7 @@ function renderMedioSheet(){
   const scrollY=$(".sheet")?.scrollTop||0;
   $("#sheetRoot").innerHTML=`<div class="scrim" data-mclose><div class="sheet" role="dialog" aria-modal="true" aria-label="Pieza de medios">
     <div class="left">
-      <div class="mprev">${imgs.length?mediaHTML(m.imagenes[i],"",true)+`${imgs.length>1?`<button class="nav prev" data-mpv="-1" aria-label="Anterior">‹</button><button class="nav next" data-mpv="1" aria-label="Siguiente">›</button><span class="cnt">${i+1}/${imgs.length}</span>`:""}`:`<div class="ph emptym"><b>${role()==="inside"?"Sin arte todavía":"Arte en producción"}</b><span>${esc(m.nombre)}</span></div>`}</div>
+      <div class="mprev">${imgs.length?`<button class="lbbtn" data-lb="medio|${esc(m.id)}|${i}" title="Ver en grande" aria-label="Ver en grande">⤢</button>`+mediaHTML(m.imagenes[i],"",true)+`${imgs.length>1?`<button class="nav prev" data-mpv="-1" aria-label="Anterior">‹</button><button class="nav next" data-mpv="1" aria-label="Siguiente">›</button><span class="cnt">${i+1}/${imgs.length}</span>`:""}`:`<div class="ph emptym"><b>${role()==="inside"?"Sin arte todavía":"Arte en producción"}</b><span>${esc(m.nombre)}</span></div>`}</div>
       ${imgs.length>1?`<div class="mthumbs">${imgs.map((s,k)=>`<button data-mthumb="${k}" class="${k===i?"on":""}" style="background-image:url('${esc(isVid(m.imagenes[k])?imgSrc(m.poster||""):s)}')" aria-label="Arte ${k+1}"></button>`).join("")}</div>`:""}
       ${imgs.length?`<div class="cbtns">${cBtn("arte",imgs.length>1?`Comentar este arte (${i+1})`:"Comentar el arte",i)}${m.legal?cBtn("legal","Comentar el legal"):""}${cBtn("fecha","Comentar fechas")}</div>`:`<div class="cbtns">${cBtn("general","Comentar esta pieza")}${cBtn("fecha","Comentar fechas")}</div>`}<div class="mlegal"><b>Envío de Inside</b><span>${m.fechaEnvio?`${esc(fmtCorto(m.fechaEnvio))} · ${m.envioReal?"enviado ✓":"programado"}${m.inicio?` · ${diffDays(m.inicio,m.fechaEnvio)} días antes del legal`:""}`:"Sin fecha de envío"}</span><b style="margin-top:6px">Vigencia del legal</b><span>${esc(medRange(m))}${m.inicio&&m.fin?` · ${diffDays(m.fin,m.inicio)+1} días`:""}</span>${m.legal||canEdit()?`<b style="margin-top:6px">Legal</b><span>${m.legal?esc(m.legal):"Sin legal"}</span>${canEdit()?`<button class="clink" data-medlegal>✏️ Editar legal</button>`:""}`:""}</div>
     </div>
@@ -1929,7 +1995,7 @@ function renderMedioSheet(){
         <h2>${esc(m.nombre||"Pieza de medios")}</h2>
         <div class="meta" style="margin-top:6px">${m.fechaEnvio?`<span class="mono">◆ Envío ${esc(fmtCorto(m.fechaEnvio))}</span>`:""}<span class="mono">Legal: ${esc(medRange(m))}</span><span class="badge ${estadoC(m.estado)}"><span class="sd"></span>${esc(m.estado)}</span>${m.statusMatriz&&role()==="inside"?`<span>Producción: ${esc(m.statusMatriz)}</span>`:""}</div>
       </div><button class="iconbtn x" data-mx aria-label="Cerrar">✕</button></div>
-      ${medApproveBox(m)}
+      ${medApproveBox(m)}${pieceLinkBox("medio",m)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-mtab="${k}" aria-selected="${S.mTab===k}">${l}</button>`).join("")}</div>
       <div>${medTab(m)}</div>
       ${traceBox("medio",m)}
@@ -1941,10 +2007,12 @@ function medApproveBox(m){
   if(!canApprove()) return "";
   const pend=m.estado==="Enviado a cliente";
   if(role()==="cliente"){
-    if(!pend) return `<div class="approve"><span class="q">${m.estado==="Publicado"?"Esta pieza ya está al aire.":m.estado==="Programado"?"Esta pieza ya está aprobada y programada.":m.cambiosPendientes?"Pediste cambios. El equipo de Inside está trabajando en ellos.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Comentarios."}</span></div>`;
+    if(!pend) return `<div class="approve"><span class="q">${m.estado==="Publicado"?"Esta pieza ya está al aire.":m.estado==="Programado"?"Esta pieza ya está aprobada y programada.":m.estado==="Aprobado por cliente"?"Aprobaste esta pieza. Inside la va a programar.":m.cambiosPendientes||m.estado==="Comentarios del cliente"?"Pediste cambios. El equipo de Inside está trabajando en ellos.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Comentarios."}</span></div>`;
     return `<div class="approve"><span class="q">¿Apruebas esta pieza?</span>${approveAsCtl("medio",m)}<button class="btn ok" data-mact="aprobar">Aprobar</button><button class="btn bad" data-mact="cambios">Pedir cambios</button>
       ${S.mAsk?`<textarea id="mChg" placeholder="¿Qué hay que ajustar? Texto, arte, legal, fechas, país…"></textarea><button class="btn primary" data-mact="enviarCambios">Enviar cambios</button>`:""}</div>`;
   }
+  if(m.estado==="Aprobado por cliente") return `<div class="approve acl"><span class="q">✅ El cliente la aprobó. ¿Ya quedó programada?</span><button class="btn ok" data-mact="programar">Marcar como Programado</button></div>`;
+  if(m.estado==="Comentarios del cliente") return `<div class="approve cmt"><span class="q">💬 El cliente dejó comentarios. Resuélvelos y vuelve a enviarla.</span><button class="btn primary" data-mact="enviar">Volver a enviar al cliente</button></div>`;
   if(m.estado==="Sin iniciar") return `<div class="approve"><span class="q">${m.cambiosPendientes?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-mact="enviar">Enviar al cliente</button></div>`;
   return insideApprovalBox("medio",m);
 }
@@ -2013,10 +2081,11 @@ document.addEventListener("click",async e=>{
   const mv=e.target.closest("[data-mmv]"); if(mv){const k=+mv.dataset.mmv;const a=[...m.imagenes];[a[k],a[k+1]]=[a[k+1],a[k]];await saveMed(m.id,{imagenes:a});return}
   const act=e.target.closest("[data-mact]"); if(!act) return; const a=act.dataset.mact;
   if(a==="enviar"){openSend([{kind:"medio",id:m.id}]);return}
+  if(a==="programar"){await saveMed(m.id,{estado:"Programado"});toast("Programada");return}
   if(a==="aprobar"){await recordApproval("medio",m.id,$("#apAs")?.value||"");return}
   if(a==="registrar"){const pid=$("#regAs")?.value;if(!pid) return;await recordApproval("medio",m.id,pid,($("#regNota")?.value||"").trim());return}
   if(a==="cambios"){S.mAsk=true;renderMedioSheet();$("#mChg")?.focus();return}
-  if(a==="enviarCambios"){const t=$("#mChg").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.mAsk=false;await saveMed(m.id,{estado:"Sin iniciar",cambiosPendientes:true});await addComment(m.id,"cambios",t);toast("Cambios enviados al equipo");return}
+  if(a==="enviarCambios"){const t=$("#mChg").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.mAsk=false;await saveMed(m.id,{estado:"Comentarios del cliente",cambiosPendientes:true});await addComment(m.id,"cambios",t);toast("Cambios enviados al equipo");return}
   if(a==="borrar"){S.mConfirmDel=true;renderMedioSheet();return}
   if(a==="borrarNo"){S.mConfirmDel=false;renderMedioSheet();return}
   if(a==="borrarSi"){try{await S.db.doc("medios/"+m.id).delete();S.medios.delete(m.id);pushUndo({type:"mdelete",doc:m,label:"la eliminación"});closeMedio();renderView();toastUndo("Pieza eliminada")}catch(err){toast("No se pudo eliminar.")}return}
@@ -2086,6 +2155,7 @@ function threadCard(t,id){
 async function postComment(postId,data){
   const c={postId,tipo:"comentario",texto:"",fecha:new Date().toISOString(),autorId:S.myId||"",autorNombre:(S.me&&S.me.name)||"",autorOrg:role()==="cliente"?"cliente":"inside",...(data.personaId?{}:autoActor(data.tipo||"comentario")),...data};
   S.comments.push(c); rerenderOpen();
+  if(c.autorOrg==="cliente"&&["comentario","cambios"].includes(c.tipo)){const pc=S.posts.get(postId)||(S.medios&&S.medios.get(postId));if(pc&&pc.estado==="Enviado a cliente"){S.quietTrace=true;try{S.posts.has(postId)?await save(postId,{estado:"Comentarios del cliente"}):await saveMed(postId,{estado:"Comentarios del cliente"})}finally{S.quietTrace=false}}}
   try{const ref=await S.db.collection("comentarios").add(c);if(ref&&ref.id&&!c._id) c._id=ref.id}catch(e){S.comments=S.comments.filter(x=>x!==c);rerenderOpen();toast("No se pudo guardar el comentario.")}
 }
 async function setResolved(postId,key,val){
@@ -3155,9 +3225,10 @@ function renderInboxPanel(){
   if(S.inboxAp===undefined&&role()==="cliente"){const me=myPersona();S.inboxAp=me&&me.aprueba?me.id:"ALL"}
   const items=pendingItems().map(x=>({...x,info:pieceInfo(x.kind,x.id)})).filter(x=>x.info&&inboxApFilter(x));
   const f=S.inboxF||(role()==="inside"?"cliente":"todos"); const ls=S.inboxSeen||lastSeen();
-  let ns=notifList(); if(f==="cliente") ns=ns.filter(n=>n.org==="cliente"); if(f==="abiertos") ns=ns.filter(n=>!n.res);
+  let ns=notifList(); const perF=S.inboxAp&&!["ALL","NONE"].includes(S.inboxAp)?personaById(S.inboxAp):null; if(perF) ns=ns.filter(n=>cmMatchPersona(n,perF)); if(f==="cliente") ns=ns.filter(n=>n.org==="cliente"); if(f==="abiertos") ns=ns.filter(n=>!n.res);
   const pname=pc=>pc.kind==="medio"?(pc.x.nombre||"Pieza de medios"):(pc.x.headline||pc.x.campana||"Publicación");
   root.innerHTML=`<div class="scrim modal" data-inboxclose><div class="dialog inbox2" role="dialog" aria-label="Bandeja"><header><h3>${role()==="cliente"?"Tu bandeja":"Bandeja con el cliente"}</h3><button class="iconbtn" data-inboxclose aria-label="Cerrar">✕</button></header>
+    ${apStrip()}
     <div class="ibcols">
       <section><h4>${role()==="cliente"?"Por revisar":"Enviadas al cliente · por aprobar"} <span>${items.length}</span></h4>
         ${inboxApChips()}
@@ -3323,9 +3394,9 @@ document.addEventListener("click",async e=>{
 const ROLES={cliente:["Aprobador/a de región","Coordinador/a","Gerente de marketing","Ecommerce","Medios","Otro"],inside:["Ejecutiva de cuentas","Content","Diseño","Redacción","Dirección de cuentas","Dirección creativa","Medios","Por definir"]};
 const EQUIPO_BASE=[
   {id:"p-stephanie-khan",nombre:"Stephanie Khan",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["CARIBE"],paises:[]},
-  {id:"p-dainy-alcantara",nombre:"Dainy Alcántara",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["RD"],paises:[]},
+  {id:"p-dainy-alcantara",nombre:"Dainy Alcántara",alias:["Coord. Centro","Coordinadora Centro"],org:"cliente",rol:"Aprobadora · RD y Centroamérica",aprueba:true,regiones:["RD","CENTRO"],paises:[]},
   {id:"p-cristina-quezada",nombre:"Cristina Quezada",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["SUR"],paises:[]},
-  {id:"p-coord-centro",nombre:"Coordinadora Centro",alias:["Coord. Centro"],org:"cliente",rol:"Coordinador/a",aprueba:true,regiones:["CENTRO"],paises:[],porConfirmar:true},
+  {id:"p-coord-centro",nombre:"Coordinadora Centro",org:"cliente",rol:"Coordinador/a",aprueba:false,activo:false,regiones:[],paises:[]},
   {id:"p-roberto",nombre:"Roberto",org:"inside",rol:"Por definir",regiones:[],paises:[]},
   {id:"p-sunny",nombre:"Sunny",org:"inside",rol:"Por definir",regiones:[],paises:[]}
 ];
@@ -3379,7 +3450,7 @@ async function recordApproval(kind,id,pid,nota){
   if(per&&per.org===myOrg()&&!myPersona()) setYo(per.id);
   await postComment(id,{tipo:"aprobado",texto:nota||"",...(per?actorFields(per):autoActor("aprobado"))});
   const x=pieceOf(kind,id); const st=approvalState(x);
-  if(!st.req.length||!st.pend.length){S.quietTrace=true;try{kind==="medio"?await saveMed(id,{estado:"Programado",cambiosPendientes:false}):await save(id,{estado:"Programado",cambiosPendientes:false})}finally{S.quietTrace=false}toast(per?`Aprobada por ${per.nombre}`:"Aprobada")}
+  if(!st.req.length||!st.pend.length){S.quietTrace=true;try{kind==="medio"?await saveMed(id,{estado:"Aprobado por cliente",cambiosPendientes:false}):await save(id,{estado:"Aprobado por cliente",cambiosPendientes:false})}finally{S.quietTrace=false}toast(per?`Aprobada por ${per.nombre}`:"Aprobada")}
   else toast(`Aprobada por ${per?per.nombre:"ti"} · falta ${st.pend.map(p=>p.nombre).join(", ")}`);
 }
 function approveAsCtl(kind,x){
@@ -3419,7 +3490,7 @@ function traceData(kind,x){
   const pub=kind==="medio"?(x.inicio||""):(x.fecha||"");
   const envs=cms.filter(c=>c.tipo==="envio").sort((a,b)=>a.fecha.localeCompare(b.fecha));
   const env=envs.at(-1); const enviada=env?env.fecha:(x.enviadoEn||"");
-  const st=approvalState(x); const aprobada=["Programado","Publicado"].includes(x.estado)&&st.ap.length?st.ap.at(-1).fecha:"";
+  const st=approvalState(x); const aprobada=["Aprobado por cliente","Programado","Publicado"].includes(x.estado)&&st.ap.length?st.ap.at(-1).fecha:"";
   const ev=[];
   if(x.creado) ev.push({f:x.creado,ic:"＋",t:"Creada en la plataforma"});
   if(x.comentariosSlide) ev.push({f:"",ic:"💬",org:"cliente",t:"Comentario del cliente en la matriz",q:x.comentariosSlide});
@@ -3719,23 +3790,23 @@ function auditRegion(inp){
     if(pr.momentosSugeridos&&(pr.momentos||[]).every(m=>m.sugerido)){
       const lines=[],specs=[],addIds=[];
       for(const mo of pr.momentos){const est=pr.paises.map(c=>{const ps=promoPieces(pr,c).filter(p=>p.fecha===mo.fecha);return {c,po:ps.filter(isPost),h:ps.filter(isHist)}});
-        const sinNada=est.filter(x=>!x.po.length&&!x.h.length).map(x=>x.c), soloH=est.filter(x=>!x.po.length&&x.h.length);
-        lines.push(`${mo.tipo} ${cap1(fmtDia(mo.fecha))} ${fmtH(mo.hora)}: ${!sinNada.length&&!soloH.length?"✓ ya está":sinNada.length?"falta":"hay historia, falta el post"}`);
-        if(sinNada.length) specs.push({tipo:"promo",paises:sinNada,fecha:mo.fecha,hora:mo.hora,campana:pr.nombre,formatos:["Estático","Historia"],headline:`${pr.nombre} · ${mo.tipo}`,legal:(pr.legales||{})[sinNada[0]]||""});
-        for(const x of soloH) addIds.push(...x.h.map(p=>p.id))}
+        const sinNada=est.filter(x=>!x.h.length).map(x=>x.c);
+        lines.push(`${mo.tipo} ${cap1(fmtDia(mo.fecha))} ${fmtH(mo.hora)}: ${!sinNada.length?"✓ ya está":mo.fecha<todayISO?"no salió (ya pasó)":"falta"}`);
+        if(sinNada.length&&mo.fecha>=todayISO) specs.push({tipo:"promo",paises:sinNada,fecha:mo.fecha,hora:mo.hora,campana:pr.nombre,formatos:["Historia"],headline:`${pr.nombre} · ${mo.tipo}`,legal:(pr.legales||{})[sinNada[0]]||""})}
       const enCal=[...new Map(pr.paises.flatMap(c=>promoPieces(pr,c)).filter(p=>p.fecha>=pr.inicio&&p.fecha<=pr.fin).map(p=>[p.id,p])).values()];
       const ok=!specs.length&&!addIds.length;
-      add({k:`plan|${pr.id}`,nivel:ok?"ok":"sug",grupo:`Promos ${pr.paises.join(", ")} · plan sugerido`,t:`${pr.nombre} ${pr.paises.join(", ")} · del ${fmtDia(pr.inicio)} al ${fmtDia(pr.fin)}${ok?": cubierta":""}`,d:`${lines.join(" · ")} · Historias ${pr.historia==="cada3"?"cada 3 días":"todos los días"} · Hoy en el calendario: ${enCal.length?enCal.map(p=>fmtDia(p.fecha)+(isPost(p)?" post":" historia")).join(", "):"nada"}`,planCrear:ok?null:{specs,addIds:[...new Set(addIds)]},ids:enCal.map(p=>p.id)});
+      add({k:`plan|${pr.id}`,nivel:ok?"ok":"sug",grupo:`Promos ${pr.paises.join(", ")} · plan sugerido`,t:`${pr.nombre} ${pr.paises.join(", ")} · del ${fmtDia(pr.inicio)} al ${fmtDia(pr.fin)}${ok?": cubierta":""}`,d:`${lines.join(" · ")} · Historias ${pr.historia==="cada3"?"cada 3 días":"todos los días"} · Hoy en el calendario: ${enCal.length?enCal.map(p=>fmtDia(p.fecha)).join(", "):"nada"}`,planCrear:ok?null:{specs,addIds:[...new Set(addIds)]},ids:enCal.map(p=>p.id)});
       continue;
     }
     for(const [mi,mo] of (pr.momentos||[]).entries()){
       const st=pr.paises.map(c=>{const ps=promoPieces(pr,c).filter(p=>p.fecha===mo.fecha);return {c,ps,h:ps.filter(isHist),po:ps.filter(isPost)}});
       const none=st.filter(x=>!x.ps.length).map(x=>x.c);
-      const sinPost=st.filter(x=>x.ps.length&&!x.po.length&&/post/i.test(mo.formato||"")).map(x=>x.c);
+      if(mo.fecha<todayISO){if(st.some(x=>x.ps.length)) add({k:`m|${pr.id}|${mi}|ok`,nivel:"ok",grupo:tag,t:`${mo.tipo} de ${pr.nombre} (ya salió)`,d:cap1(fmtDia(mo.fecha)),ids:st.flatMap(x=>x.ps.map(p=>p.id))});continue}
+      const sinPost=[];
       const malH=st.filter(x=>x.ps.length&&mo.hora&&x.ps.some(p=>Math.abs(hm(p.hora)-hm(mo.hora))>30)).map(x=>x.c);
       const key=`m|${pr.id}|${mi}`;
       const desc=`${mo.tipo} · ${cap1(fmtDia(mo.fecha))} ${fmtH(mo.hora)}${mo.sugerido?" (sugerido)":""}`;
-      if(none.length) add({k:key+"|none",nivel:mo.sugerido?"sug":"falta",grupo:tag,t:`Falta ${mo.tipo.toLowerCase()} de ${pr.nombre} en ${none.join(", ")}`,d:`${desc} · ${mo.formato||"Post e historia"}${mo.nota?` · ${mo.nota}`:""}`,crear:{tipo:"promo",paises:none,fecha:mo.fecha,hora:mo.hora,campana:pr.nombre,formatos:/post/i.test(mo.formato||"post")?["Estático","Historia"]:["Historia"],legal:pr.legales&&pr.legales[none[0]]||"",headline:`${pr.nombre} · ${mo.tipo}`}});
+      if(none.length) add({k:key+"|none",nivel:mo.sugerido?"sug":"falta",grupo:tag,t:`Falta ${mo.tipo.toLowerCase()} de ${pr.nombre} en ${none.join(", ")}`,d:`${desc} · ${mo.formato||"Post e historia"}${mo.nota?` · ${mo.nota}`:""}`,crear:{tipo:"promo",paises:none,fecha:mo.fecha,hora:mo.hora,campana:pr.nombre,formatos:["Historia"],legal:pr.legales&&pr.legales[none[0]]||"",headline:`${pr.nombre} · ${mo.tipo}`}});
       if(sinPost.length){const ids=st.filter(x=>sinPost.includes(x.c)).flatMap(x=>x.h.map(p=>p.id));add({k:key+"|post",nivel:"falta",grupo:tag,t:`${mo.tipo} de ${pr.nombre}: solo hay historia, falta el post de feed (${sinPost.join(", ")})`,d:`El input pide post e historia · ${desc}`,ids:[...new Set(ids)],addFmt:"Estático"})}
       if(malH.length){const ids=st.filter(x=>malH.includes(x.c)).flatMap(x=>x.ps.filter(p=>Math.abs(hm(p.hora)-hm(mo.hora))>30).map(p=>p.id));const hs=[...new Set(ids.map(id=>fmtH(S.posts.get(id).hora)))];add({k:key+"|hora",nivel:mo.sugerido?"sug":"revisar",grupo:tag,t:`${mo.tipo} de ${pr.nombre}: el input pide ${fmtH(mo.hora)}, en el calendario está a ${hs.join(" / ")}`,d:`${cap1(fmtDia(mo.fecha))} · ${malH.join(", ")}`,ids:[...new Set(ids)],hora:mo.hora})}
       const okC=st.filter(x=>x.ps.length&&!sinPost.includes(x.c)&&!malH.includes(x.c)).map(x=>x.c);
@@ -3744,7 +3815,7 @@ function auditRegion(inp){
     /* historias de mantenimiento */
     if(pr.historia){
       const desde=(pr.momentos||[]).map(x=>x.fecha).sort()[0]||pr.inicio; const step=pr.historia==="cada3"?3:1;
-      const esperadas=datesBetween(desde,pr.fin,step).filter(d=>d>=addDays(m0,-7)&&d<=addDays(m1,7));
+      const esperadas=datesBetween(desde,pr.fin,step).filter(d=>d>=todayISO&&d<=addDays(m1,7));
       const falt=new Map();
       for(const c of pr.paises){const hs=promoPieces(pr,c).filter(isHist).map(p=>p.fecha);for(const d of esperadas) if(!hs.some(h=>Math.abs(dayDiff(h,d))<(step===3?2:1))) falt.set(d,[...(falt.get(d)||[]),c])}
       if(falt.size){const ds=[...falt.keys()].sort();add({k:`h|${pr.id}`,nivel:"revisar",grupo:tag,t:`Historias de ${pr.nombre}: faltan ${ds.length} ${step===3?"(cada 3 días)":"(todos los días)"} hasta el ${fmtDia(pr.fin)}`,d:ds.map(d=>`${fmtDia(d)} (${falt.get(d).join(", ")})`).join(" · "),replicas:{promo:pr.id,fechas:ds.map(d=>({fecha:d,paises:falt.get(d)}))}})}
@@ -3762,6 +3833,8 @@ function auditRegion(inp){
     if(sinL.length) add({k:`l|${pr.id}|vacio`,nivel:"falta",grupo:tag,t:`${sinL.length} pieza${sinL.length>1?"s":""} de ${pr.nombre} sin legal`,d:"El input pide el legal en el arte o en el copy",ids:sinL.map(p=>p.id),legal:legs});
     if(dif.length) add({k:`l|${pr.id}|dif`,nivel:"revisar",grupo:tag,t:`${dif.length} pieza${dif.length>1?"s":""} de ${pr.nombre} con un legal distinto al del input`,d:"Compara y actualiza si el input es el vigente",ids:dif.map(p=>p.id),legal:legs});
     if(multi.length) add({k:`l|${pr.id}|multi`,nivel:"revisar",grupo:tag,t:`${multi.length} pieza${multi.length>1?"s":""} de ${pr.nombre} salen en varios países con legales distintos`,d:"Una pieza no puede llevar un solo legal: separa por país o pon todos los legales en el copy",ids:multi.map(p=>p.id)});
+    const enFeed=[...new Map(pr.paises.flatMap(c=>promoPieces(pr,c)).filter(p=>isPost(p)&&p.estado!=="Publicado"&&p.fecha>=todayISO).map(p=>[p.id,p])).values()];
+    if(enFeed.length) add({k:`f|${pr.id}`,nivel:"revisar",grupo:tag,t:`${enFeed.length} pieza${enFeed.length>1?"s":""} de ${pr.nombre} en formato de feed`,d:"Acordado con el cliente: las promos van solo en historias",ids:enFeed.map(p=>p.id),aHist:true});
     if(!sinL.length&&!dif.length&&conLegal.length&&uniq.length) add({k:`l|${pr.id}|ok`,nivel:"ok",grupo:tag,t:`Legales de ${pr.nombre} coinciden con el input`,d:`${uniq.length} piezas`});
   }
   /* piezas de promo sin promo vigente en el input */
@@ -3828,6 +3901,7 @@ async function inpAccion(kind,key){
   if(kind==="crear"){const id=await crearSugerida(it.crear,inp,key);if(it.rq) await saveInput(r,{requerimientos:(inp.requerimientos||[]).map(q=>q.id===it.rq?{...q,hecho:true,postId:id}:q)},null);toast("Pieza creada en el calendario (Sin iniciar)");openPost(id);return}
   if(kind==="plan"){let n=0;beginGroup();try{for(const sp of it.planCrear.specs){await crearSugerida(sp,inp,key);n++}for(const id of it.planCrear.addIds){const p=S.posts.get(id);await save(id,{formatos:FORMATOS.filter(f=>fmts(p).includes(f)||f==="Estático")});n++}}finally{endGroup("el plan sugerido de la promo")}toast(`${n} piezas creadas o completadas (quedan en Sin iniciar)`);renderInputs();return}
   if(kind==="replicas"){const n=await crearReplicas(it.replicas,inp);toast(`${n} historias creadas`);renderInputs();return}
+  if(kind==="ahist"){beginGroup();try{for(const id of it.ids) await save(id,{formatos:["Historia"],formato:"Historia",tipo:"promo"})}finally{endGroup("pasar promos a historias")}toast(`${it.ids.length} piezas pasadas a historia`);renderInputs();return}
   if(kind==="hora"){beginGroup();try{for(const id of it.ids) await save(id,{hora:hhmm(it.hora)})}finally{endGroup("el cambio de hora")}toast(`Hora puesta a ${fmtH(it.hora)} en ${it.ids.length} piezas`);renderInputs();return}
   if(kind==="post"){beginGroup();try{for(const id of it.ids){const p=S.posts.get(id);await save(id,{formatos:FORMATOS.filter(f=>fmts(p).includes(f)||f===it.addFmt)})}}finally{endGroup("agregar el post")}toast("Se agregó el formato post a esas historias");renderInputs();return}
   if(kind==="legal"){beginGroup();let n=0;try{for(const id of it.ids){const p=S.posts.get(id);const c=p.paises.find(x=>it.legal[x]);if(c){await save(id,{legal:it.legal[c]});n++}}}finally{endGroup("la actualización de legales")}toast(`Legal del input puesto en ${n} piezas`);renderInputs();return}
@@ -3918,18 +3992,20 @@ function renderInputs(){
   const list=vis.filter(x=>f==="pend"?x.nivel!=="ok":f==="todo"?true:x.nivel===f).sort((a,b)=>["falta","revisar","sug","aclarar","ok"].indexOf(a.nivel)-["falta","revisar","sug","aclarar","ok"].indexOf(b.nivel));
   const pend=cambiosPend().filter(c=>c.region===r);
   const itemHTML=x=>`<li class="aud aud-${x.nivel}"><span class="audi">${NIV[x.nivel].i}</span><div><b>${esc(x.t)}</b>${x.d?`<small>${esc(x.d)}</small>`:""}
-    ${ins?`<span class="drow wrap">${x.crear?`<button class="btn sm primary" data-inpa="crear|${esc(x.k)}">＋ Crear en el calendario</button>`:""}${x.replicas?`<button class="btn sm primary" data-inpa="replicas|${esc(x.k)}">＋ Crear las historias</button>`:""}${x.planCrear?`<button class="btn sm primary" data-inpa="plan|${esc(x.k)}">＋ Crear lo que falta (${x.planCrear.specs.length+x.planCrear.addIds.length})</button>`:""}${x.hora&&x.ids?`<button class="btn sm" data-inpa="hora|${esc(x.k)}">Poner ${esc(fmtH(x.hora))}</button>`:""}${x.addFmt?`<button class="btn sm" data-inpa="post|${esc(x.k)}">Agregar el post a esas historias</button>`:""}${x.legal&&x.ids?`<button class="btn sm" data-inpa="legal|${esc(x.k)}">Poner el legal del input</button>`:""}${(x.ids||[]).slice(0,4).map((id,i)=>`<button class="btn ghost sm" data-revopen="${esc(id)}">Abrir${x.ids.length>1?" "+(i+1):""}</button>`).join("")}${x.nivel!=="ok"?`<button class="clink" data-inpa="desc|${esc(x.k)}">Descartar</button>`:""}</span>`:""}</div></li>`;
+    ${ins?`<span class="drow wrap">${x.crear?`<button class="btn sm primary" data-inpa="crear|${esc(x.k)}">＋ Crear en el calendario</button>`:""}${x.replicas?`<button class="btn sm primary" data-inpa="replicas|${esc(x.k)}">＋ Crear las historias</button>`:""}${x.planCrear?`<button class="btn sm primary" data-inpa="plan|${esc(x.k)}">＋ Crear lo que falta (${x.planCrear.specs.length+x.planCrear.addIds.length})</button>`:""}${x.hora&&x.ids?`<button class="btn sm" data-inpa="hora|${esc(x.k)}">Poner ${esc(fmtH(x.hora))}</button>`:""}${x.aHist?`<button class="btn sm" data-inpa="ahist|${esc(x.k)}">Pasar a historia</button>`:""}${x.legal&&x.ids?`<button class="btn sm" data-inpa="legal|${esc(x.k)}">Poner el legal del input</button>`:""}${(x.ids||[]).slice(0,4).map((id,i)=>`<button class="btn ghost sm" data-revopen="${esc(id)}">Abrir${x.ids.length>1?" "+(i+1):""}</button>`).join("")}${x.nivel!=="ok"?`<button class="clink" data-inpa="desc|${esc(x.k)}">Descartar</button>`:""}</span>`:""}</div></li>`;
   const groups=groupBy(list,x=>x.grupo);
   $("#view").innerHTML=`<div class="inpv">
     <div class="inphead"><div class="seg" role="group" aria-label="Región">${INP_REGS.map(x=>`<button data-inpreg="${x}" aria-pressed="${x===r}"><span class="dot" style="background:var(${region(x).var})"></span>${region(x).corto}${cambiosPend().some(c=>c.region===x)?` <i class="nbadge">nuevo</i>`:""}</button>`).join("")}</div>
       <div><b>${esc(inp.titulo||"Input "+r)}</b><small>Versión ${inp.version||1} · ${inp.actualizado?esc(when(inp.actualizado)):""}${inp.actualizadoPor?` · ${esc(inp.actualizadoPor)}`:""}</small></div>
-      ${ed?`<label class="btn sm" for="inpFile">📎 Subir nueva versión (Word/PDF)<input type="file" id="inpFile" accept=".docx,.pdf,.txt" hidden></label>`:""}</div>
+      </div>
+    ${ed?`<div class="inpopts"><div><b>Opción 1 · El input vive aquí</b><span>La coordinadora o Inside editan cada promo («Editar») o agregan un requerimiento abajo. Cada cambio queda con nombre, fecha, antes y después.</span></div><div><b>Opción 2 · Subir el Word</b><span>Si la coordinadora siguió trabajando en su documento, súbelo y el Asistente detecta qué cambió para que apruebes cada cambio.</span><label class="btn sm" for="inpFile">📎 Subir nueva versión (Word/PDF)<input type="file" id="inpFile" accept=".docx,.pdf,.txt" hidden></label></div></div>`:""}
     ${pend.length&&ins?`<section class="inpchg"><h4>📝 Cambios nuevos en el input (${pend.length})</h4>${pend.map(cb=>`<article><header><b>${esc(cb.por||"Alguien")}</b> <span class="corg ${cb.porOrg}">${cb.porOrg==="cliente"?"Payless":"Inside"}</span> <small>${esc(when(cb.fecha))} · versión ${cb.version||""}</small><button class="clink" data-cbok="${esc(cb._id)}">Marcar revisado</button></header>
       <ul>${impactoDe(cb).map((im,i)=>`<li><b>${esc(im.ch.texto||im.ch.tipo)}</b>${im.ch.tipo==="legal"?`<details><summary>Ver antes y después</summary><p class="hint"><b>Antes:</b> ${esc(im.ch.antes||"—")}</p><p class="hint"><b>Ahora:</b> ${esc(im.ch.despues||"—")}</p></details>`:""}<small>${esc(im.txt)}</small><span class="drow wrap">${im.acc==="legal"?`<button class="btn sm primary" data-cblegal="${esc(cb._id)}|${i}">Actualizar legal en ${im.ids.length} piezas</button>`:""}${im.ids.slice(0,4).map((id,k)=>`<button class="btn ghost sm" data-revopen="${esc(id)}">Abrir ${k+1}</button>`).join("")}</span></li>`).join("")}</ul></article>`).join("")}</section>`:""}
     ${S.inpAI?`<section class="inpai">${S.inpAI.busy?`<p>Leyendo la nueva versión y comparando con el input actual…</p>`:S.inpAI.err?`<p style="color:var(--bad)">${esc(S.inpAI.err)}</p><button class="btn sm" data-inpaino>Cerrar</button>`:`<h4>Cambios detectados en «${esc(S.inpAI.archivo)}» (${S.inpAI.props.length})</h4>${S.inpAI.props.length?`<ul>${S.inpAI.props.map(x=>`<li><label><input type="checkbox" data-aip="${x.i}" ${x.on?"checked":""}> <b>${esc(x.texto||x.tipo)}</b></label><small>${esc(x.impacto||"")}</small></li>`).join("")}</ul><div class="drow"><button class="btn ghost sm" data-inpaino>Cancelar</button><button class="btn primary sm" data-inpaigo>Aplicar los seleccionados</button></div>`:`<p class="hint">No encontré cambios respecto al input actual.</p><button class="btn sm" data-inpaino>Cerrar</button>`}`}</section>`:""}
     ${ins?"":`<p class="callout">Este es el input de ${esc(region(r).nombre)} para el mes. Actualízalo aquí (legales, fechas, momentos de publicación o requerimientos nuevos): queda registrado quién cambió qué y el equipo de Inside recibe el aviso al instante.</p>`}
     <div class="inpcols ${ins?"":"solo"}">
-      ${ins?`<section class="inpaud"><h3>Validación de planning</h3><p class="hint">Cruza lo que pide el input con lo que hay en el calendario. Se recalcula sola con cada cambio.</p>
+      ${ins?`<section class="inpaud"><h3>Validación de planning</h3><p class="hint">Cruza lo que pide el input con lo que hay en el calendario. Se recalcula sola con cada cambio. Las promos van solo en historias.</p>
+        <div class="armbar"><button class="btn primary sm" data-armprev>⛓ Armar series de promos</button><span class="hint">Enlaza lanzamiento → mantenimientos → últimas horas de cada promo y crea las historias que faltan.</span></div>${S.armPrev?armarPrevHTML(inp):""}
         <div class="seg" role="group">${[["pend","Pendientes",vis.length-cnt("ok")],["falta","Falta",cnt("falta")],["revisar","Revisar",cnt("revisar")],["sug","Sugerencias",cnt("sug")],["aclarar","Aclarar",cnt("aclarar")],["ok","Bien",cnt("ok")]].map(([k,l,n])=>`<button data-inpniv="${k}" aria-pressed="${f===k}">${l} <span class="n">${n}</span></button>`).join("")}</div>
         ${[...groups].map(([g,xs])=>`<h4 class="rch">${esc(g)}</h4><ul class="audl">${xs.map(itemHTML).join("")}</ul>`).join("")||`<p class="cempty">Nada con este filtro.</p>`}
         ${desc.size?`<details><summary class="hint">Descartadas (${desc.size})</summary><ul class="audl">${all.filter(x=>desc.has(x.k)).map(x=>`<li class="aud"><span class="audi">·</span><div><b>${esc(x.t)}</b>${ins?`<button class="clink" data-inpa="undesc|${esc(x.k)}">Restaurar</button>`:""}</div></li>`).join("")}</ul></details>`:""}
@@ -3970,6 +4046,119 @@ document.addEventListener("click",async e=>{
 document.addEventListener("click",e=>{const ed=e.target.closest("[data-inpedit]");if(ed&&S.f.section==="inp"){const inp=inpOf(S.inpReg);const pr=(inp.promos||[]).find(x=>x.id===ed.dataset.inpedit);S.inpOrig={...(S.inpOrig||{}),[pr.id]:JSON.parse(JSON.stringify(pr))}}},true);
 document.addEventListener("change",e=>{if(e.target.id==="inpFile"&&S.f.section==="inp"){const f=e.target.files[0];e.target.value="";if(f) inpUpload(f)}});
 function inpBanner(){if(role()!=="inside") return "";const p=cambiosPend();if(!p.length) return "";const regs=[...new Set(p.map(c=>c.region))];return `<div class="callout inpbn">📝 Hay ${p.length} cambio${p.length>1?"s":""} nuevo${p.length>1?"s":""} en el input de ${esc(regs.map(r=>region(r).nombre).join(", "))}. <button class="btn sm" data-section="inp">Ver el impacto en el calendario</button></div>`}
+
+/* ============ LINK DE CADA PIEZA PARA EL CLIENTE */
+function pieceLink(kind,id){return `${ARTIFACT_URL}#${kind==="medio"?"m":"p"}=${encodeURIComponent(id)}`}
+function pieceMsg(kind,x){
+  const info=pieceInfo(kind,x.id); const ap=approversOf(x); const st=approvalState(x); const quien=(st.pend.length?st.pend:ap).map(p=>p.nombre.split(" ")[0]);
+  return `Hola${quien.length?" "+quien.join(" y "):""}, les compartimos esta pieza para su revisión:\n• ${info.name} (${info.sub})\n\nAquí pueden aprobarla o dejar sus comentarios:\n${pieceLink(kind,x.id)}`;
+}
+function pieceLinkBox(kind,x){
+  if(role()!=="inside"||S.mode!=="live") return "";
+  const open=S.linkOpen===x.id; const env=x.estado==="Enviado a cliente";
+  return `<div class="plink"><button class="btn sm" data-plink="${esc(x.id)}">🔗 Link para el cliente</button>${open?`<div class="plinkbox">
+    <div class="drow"><input class="sel" readonly value="${esc(pieceLink(kind,x.id))}" onclick="this.select()"><button class="btn sm" data-plcopy="${kind}|${esc(x.id)}">Copiar link</button></div>
+    <textarea id="plMsg" rows="5" readonly>${esc(pieceMsg(kind,x))}</textarea>
+    <div class="drow wrap"><button class="btn sm" data-plmsg>Copiar mensaje</button><a class="btn sm" href="https://wa.me/?text=${encodeURIComponent(pieceMsg(kind,x))}" target="_blank" rel="noopener">WhatsApp</a><a class="btn sm" href="mailto:?subject=${encodeURIComponent("Payless · "+pieceInfo(kind,x.id).name+" para aprobación")}&body=${encodeURIComponent(pieceMsg(kind,x))}" target="_blank" rel="noopener">Correo</a></div>
+    <span class="hint">El link abre esta pieza directo, con los botones de Aprobar y Pedir cambios y su pestaña de comentarios.${env?"":" Ojo: la pieza no está «Enviada a cliente»; si la compartes para aprobar, envíala primero para que quede registrada en la trazabilidad."}</span>
+    ${env?"":`<button class="btn primary sm" data-${kind==="medio"?"mact":"act"}="enviar">Enviar al cliente (queda registrado)</button>`}</div>`:""}</div>`;
+}
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-plink]"); if(b){S.linkOpen=S.linkOpen===b.dataset.plink?null:b.dataset.plink;rerenderOpen();return}
+  const c=e.target.closest("[data-plcopy]"); if(c){const [k,id]=c.dataset.plcopy.split("|");const ok=await copyText(pieceLink(k,id));toast(ok?"Link copiado":"Selecciona el link y cópialo");return}
+  if(e.target.closest("[data-plmsg]")){const ok=await copyText($("#plMsg").value);toast(ok?"Mensaje copiado":"Selecciona el texto y cópialo");return}
+});
+
+/* ============ VISOR DEL ARTE EN GRANDE */
+function lbList(kind,id){const x=kind==="medio"?S.medios.get(id):S.posts.get(id);return (x&&x.imagenes)||[]}
+function renderLB(){
+  let root=$("#lbRoot"); if(!S.lb){root&&root.remove();document.body.classList.remove("lbon");return}
+  if(!root){root=document.createElement("div");root.id="lbRoot";document.body.appendChild(root)}
+  const L=lbList(S.lb.kind,S.lb.id); if(!L.length){S.lb=null;renderLB();return} const i=Math.max(0,Math.min(S.lb.i,L.length-1)); S.lb.i=i; const x=L[i];
+  root.innerHTML=`<div class="lbx" data-lbclose><div class="lbbar"><span>${i+1} / ${L.length}</span><span class="hint">${S.lb.zoom?"Mueve el mouse para recorrer · clic para alejar":"Clic en la imagen para hacer zoom"}</span><a class="btn sm" href="${esc(imgSrc(x))}" target="_blank" rel="noopener">Abrir original ↗</a><button class="iconbtn" data-lbclose aria-label="Cerrar">✕</button></div>
+    <div class="lbstage ${S.lb.zoom?"zoom":""}">${isVid(x)?`<video src="${esc(imgSrc(x))}" controls autoplay playsinline></video>`:`<img src="${esc(imgSrc(x))}" alt="Arte ${i+1}" data-lbzoom style="${S.lb.zoom?`transform-origin:${S.lb.ox||50}% ${S.lb.oy||50}%`:""}">`}</div>
+    ${L.length>1?`<button class="lbnav prev" data-lbnav="-1" aria-label="Anterior">‹</button><button class="lbnav next" data-lbnav="1" aria-label="Siguiente">›</button><div class="lbthumbs">${L.map((s,k)=>`<button data-lbgo="${k}" class="${k===i?"on":""}" style="${isVid(s)?"":`background-image:url('${esc(imgSrc(s))}')`}">${isVid(s)?"▶":""}</button>`).join("")}</div>`:""}</div>`;
+  document.body.classList.add("lbon");
+}
+function openLB(kind,id,i){S.lb={kind,id,i:+i||0,zoom:false};renderLB()}
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-lb]"); if(o){e.preventDefault();e.stopPropagation();const [k,id,i]=o.dataset.lb.split("|");openLB(k,id,i);return}
+  const fig=e.target.closest(".arte figure img"); if(fig&&S.openId&&!e.target.closest("button")){const figs=[...document.querySelectorAll(".arte figure")];openLB("post",S.openId,figs.indexOf(fig.closest("figure")));return}
+  const mp=e.target.closest(".mprev img"); if(mp&&S.openMed){openLB("medio",S.openMed,S.mSlide||0);return}
+  if(!S.lb) return;
+  if(e.target.closest("[data-lbzoom]")){S.lb.zoom=!S.lb.zoom;renderLB();return}
+  const n=e.target.closest("[data-lbnav]"); if(n){S.lb.i=(S.lb.i+ +n.dataset.lbnav+lbList(S.lb.kind,S.lb.id).length)%lbList(S.lb.kind,S.lb.id).length;S.lb.zoom=false;renderLB();return}
+  const g=e.target.closest("[data-lbgo]"); if(g){S.lb.i=+g.dataset.lbgo;S.lb.zoom=false;renderLB();return}
+  if(e.target.matches("[data-lbclose]")||e.target.closest("button[data-lbclose]")){S.lb=null;renderLB()}
+},true);
+document.addEventListener("mousemove",e=>{if(!S.lb||!S.lb.zoom) return;const im=e.target.closest("[data-lbzoom]");if(!im) return;const r=im.getBoundingClientRect();S.lb.ox=Math.round((e.clientX-r.left)/r.width*100);S.lb.oy=Math.round((e.clientY-r.top)/r.height*100);im.style.transformOrigin=`${S.lb.ox}% ${S.lb.oy}%`});
+document.addEventListener("keydown",e=>{if(!S.lb) return;if(e.key==="Escape"){S.lb=null;renderLB();e.stopPropagation()}else if(e.key==="ArrowRight"||e.key==="ArrowLeft"){const n=lbList(S.lb.kind,S.lb.id).length;S.lb.i=(S.lb.i+(e.key==="ArrowRight"?1:-1)+n)%n;S.lb.zoom=false;renderLB()}},true);
+
+/* ============ BANDEJA: resumen por aprobadora (pendientes por aprobar + comentarios abiertos) */
+function cmMatchPersona(n,per){if(!per) return true;if(n.c.personaId===per.id) return true;const cs=paisesOf(per);return ((n.pc.x&&n.pc.x.paises)||[]).some(c=>cs.includes(c))}
+function apStrip(){
+  const ps=personas().filter(p=>p.org==="cliente"&&p.aprueba); if(!ps.length) return "";
+  const {m}=pendingByApprover(); const ns=notifList().filter(n=>n.org==="cliente"&&!n.res);
+  const f=S.inboxAp||"ALL";
+  return `<div class="apstrip">${ps.map(p=>{const cm=ns.filter(n=>cmMatchPersona(n,p)).length;return `<button class="apcard ${f===p.id?"on":""}" data-apcard="${esc(p.id)}"><i class="cav cliente">${esc(initials(p.nombre))}</i><span><b>${esc(p.nombre)}</b><small>${esc((p.regiones||[]).map(r=>region(r).nombre).join(" + ")||paisesOf(p).join(", "))}</small></span><span class="apn"><b>${m.get(p.id)||0}</b><small>por aprobar</small></span><span class="apn"><b>${cm}</b><small>comentarios abiertos</small></span></button>`}).join("")}${f!=="ALL"?`<button class="clink" data-apcard="ALL">Ver todas</button>`:""}</div>`;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-apcard]");if(b){S.inboxAp=b.dataset.apcard;renderInboxPanel()}});
+
+/* ============ SERIES DE PROMOS: lanzamiento → mantenimientos → últimas horas (solo historias) */
+function planPromoSeries(inp){
+  const promos=(inp.promos||[]).filter(pr=>(pr.momentos||[]).length||pr.historia); const cand=new Map();
+  for(const pr of promos){const a=addDays((pr.momentos||[]).map(m=>m.fecha).sort()[0]||pr.inicio,-1);
+    for(const c of pr.paises) for(const p of promoPieces(pr,c)){
+      if(!isHist(p)||p.fecha<a||p.fecha>pr.fin) continue; if(p.serieId&&!String(p.serieId).startsWith("srs-promo-")) continue;
+      const inter=p.paises.filter(x=>pr.paises.includes(x)).length, uni=new Set([...p.paises,...pr.paises]).size;
+      const l=cand.get(p.id)||[]; if(!l.some(x=>x.pr===pr)) l.push({pr,sc:inter/uni+(p.fecha>=pr.inicio?.01:0)}); cand.set(p.id,l)}}
+  const asg=new Map(); for(const [id,l] of cand){l.sort((a,b)=>b.sc-a.sc);asg.set(id,l[0].pr.id)}
+  const out=[];
+  for(const pr of promos){
+    const first=(pr.momentos||[]).map(m=>m.fecha).sort()[0]||pr.inicio; const step=pr.historia==="cada3"?3:1; const F=new Map();
+    for(const m of pr.momentos||[]) F.set(m.fecha,{tipo:m.tipo,hora:m.hora||"09:00"});
+    if(pr.historia) for(const d of datesBetween(first,pr.fin,step)) if(!F.has(d)) F.set(d,{tipo:"Mantenimiento",hora:"09:00"});
+    const mine=[...asg].filter(([,pid])=>pid===pr.id).map(([id])=>S.posts.get(id)).filter(Boolean);
+    for(const p of mine) if(!F.has(p.fecha)) F.set(p.fecha,{tipo:p.fecha<first?"Previa":"Mantenimiento",hora:""});
+    if(F.has(pr.fin)&&F.get(pr.fin).tipo==="Mantenimiento"&&!(pr.momentos||[]).some(m=>m.fecha===pr.fin)) F.set(pr.fin,{...F.get(pr.fin),tipo:"Últimas horas"});
+    const dates=[...F.keys()].sort().filter(d=>d>=todayISO||mine.some(p=>p.fecha===d)); const nM=dates.filter(d=>F.get(d).tipo==="Mantenimiento").length; let mi=0;
+    const labels=dates.map(d=>{const f=F.get(d);if(f.tipo==="Mantenimiento"){mi++;return nM>1?`Mantenimiento ${mi}`:"Mantenimiento"}return f.tipo});
+    const crear=[];
+    for(const [i,d] of dates.entries()){if(d<todayISO) continue;const f=F.get(d);const cov=new Set(mine.filter(p=>p.fecha===d).flatMap(p=>p.paises));const falt=pr.paises.filter(c=>!cov.has(c));if(!falt.length) continue;
+      for(const [leg,cs] of groupBy(falt,c=>(pr.legales||{})[c]||"")) crear.push({fecha:d,paises:cs,hora:f.hora||"09:00",tipo:f.tipo,label:labels[i],legal:leg})}
+    const yaEnlazadas=mine.filter(p=>p.serieId===`srs-promo-${pr.id}`&&p.serieFase===labels[dates.indexOf(p.fecha)]).length;
+    out.push({pr,dates,labels,mine,crear,enlazar:mine.length-yaEnlazadas,sid:`srs-promo-${pr.id}`});
+  }
+  return out;
+}
+async function armarPromos(inp){
+  const plan=planPromoSeries(inp); let nC=0,nL=0,nS=0; const now=new Date().toISOString();
+  beginGroup();
+  try{for(const g of plan){
+    if(!g.mine.length&&!g.crear.length) continue; nS++;
+    const s={id:g.sid,nombre:`${g.pr.nombre} · ${g.pr.paises.join(", ")} · ${fmtCorto(g.pr.inicio)}${g.pr.fin!==g.pr.inicio?" – "+fmtCorto(g.pr.fin):""}`,plantilla:"promo",pasos:g.labels,total:g.labels.length,auto:true,promoRef:g.pr.id,region:inp.region,creado:now,porId:S.myId||""};
+    await saveSerieDoc(s);
+    for(const p of g.mine){const i=g.dates.indexOf(p.fecha);if(p.serieId===s.id&&p.seriePaso===i&&p.serieFase===g.labels[i]) continue;await save(p.id,{serieId:s.id,seriePaso:i,serieFase:g.labels[i],serieNo:false});nL++}
+    for(const c of g.crear){const i=g.dates.indexOf(c.fecha);
+      const base=c.tipo==="Mantenimiento"?g.mine.filter(p=>(p.imagenes||[]).length&&p.paises.some(x=>c.paises.includes(x))).sort((a,b)=>Math.abs(dayDiff(a.fecha,c.fecha))-Math.abs(dayDiff(b.fecha,c.fecha)))[0]:null;
+      const id=newId({region:inp.region});
+      await write(id,{id,origen:"manual",region:inp.region,paises:c.paises,tipo:"promo",fecha:c.fecha,sinFecha:false,hora:hhmm(c.hora),campana:g.pr.nombre,linea:"Promociones",formato:"Historia",formatos:["Historia"],estado:"Sin iniciar",cambiosPendientes:false,headline:`${g.pr.nombre} · ${c.label}`,copy:"",legal:c.legal,imagenes:base?[...base.imagenes]:[],arteManual:!!base,creado:now,fuente:`Serie de promo · ${c.label} · input ${inp.region}${base?` · arte replicado de ${base.id}`:""}`,serieId:s.id,seriePaso:i,serieFase:c.label},true);nC++}
+  }}finally{endGroup("armar las series de promos")}
+  return {nC,nL,nS};
+}
+function armarPrevHTML(inp){
+  const plan=planPromoSeries(inp).filter(g=>g.enlazar||g.crear.length); if(!plan.length) return `<p class="hint" style="color:var(--ok)">✓ Todas las promos del input ya están armadas como series (de hoy en adelante).</p>`;
+  const tc=plan.reduce((a,g)=>a+g.crear.length,0), tl=plan.reduce((a,g)=>a+g.enlazar,0);
+  return `<div class="armprev"><p><b>${plan.length} promos</b> · se enlazan <b>${tl}</b> historias que ya existen y se crean <b>${tc}</b> nuevas (Sin iniciar, con su legal y hora).</p>
+    <ul>${plan.map(g=>`<li><b>${esc(g.pr.nombre)} · ${esc(g.pr.paises.join(", "))}</b> <small>${esc(fmtCorto(g.pr.inicio))}–${esc(fmtCorto(g.pr.fin))}</small><small>${g.enlazar?`Enlaza ${g.enlazar} existentes. `:""}${g.crear.length?`Crea: ${esc(g.crear.map(c=>`${c.label} ${fmtDia(c.fecha)}${c.paises.length<g.pr.paises.length?` (${c.paises.join(",")})`:""}`).join(" · "))}`:""}</small></li>`).join("")}</ul>
+    <div class="drow"><button class="btn ghost sm" data-armno>Cancelar</button><button class="btn primary sm" data-armgo>Armar ${plan.length} series</button></div></div>`;
+}
+document.addEventListener("click",async e=>{
+  if(S.f.section!=="inp") return;
+  if(e.target.closest("[data-armprev]")){S.armPrev=!S.armPrev;renderInputs();return}
+  if(e.target.closest("[data-armno]")){S.armPrev=false;renderInputs();return}
+  const g=e.target.closest("[data-armgo]"); if(g){g.disabled=true;g.textContent="Armando…";const r=await armarPromos(inpOf(S.inpReg));S.armPrev=false;toast(`${r.nS} series de promo: ${r.nL} historias enlazadas y ${r.nC} creadas`);renderInputs();return}
+});
 
 async function boot(){
   S.month=pickMonth(); render();
