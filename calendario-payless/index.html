@@ -713,6 +713,54 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .hst{display:block;color:var(--ink-3);font-size:11px}
 .nb2{color:var(--bad)}
 @media (max-width:640px){.aprsrc,.vs{grid-template-columns:1fr}}
+/* equipo, aprobadores y trazabilidad */
+.creg{font-size:10px;color:var(--ink-3)}
+.asl{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink-2)}
+.asl .sel{max-width:260px}
+.ascomp{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+.trace{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);display:flex;flex-direction:column;gap:10px}
+.trace h4{margin:0;display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.trace h4 .clink{margin-left:auto;text-transform:none;letter-spacing:0}
+.trk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.trk>div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.trk small{font-size:11px;color:var(--ink-3)} .trk b{font-size:14px}
+.tral{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.tral li{font-size:13px;padding:6px 10px;border-radius:8px;background:var(--bg);border-left:3px solid var(--line-strong)}
+.tral li.warn{border-left-color:#e8892c;background:color-mix(in srgb,#e8892c 10%,var(--surface))}
+.tral li.bad{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surface));font-weight:700}
+.aprow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.aprow>small{font-weight:700;color:var(--ink-2)}
+.apch{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:2px 10px 2px 2px;font-size:12px;background:var(--bg)}
+.apch .cav{width:22px;height:22px;font-size:9px;font-style:normal}
+.apch.ok{border-color:#1f8a4c;color:#1f8a4c;font-weight:700}
+.apch.pend{border-color:#e8892c;color:#b5651d}
+.trtl summary{cursor:pointer;font-weight:700;font-size:13px}
+.trtl ol{list-style:none;margin:8px 0 0;padding:0 0 0 6px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.trtl li{display:flex;gap:10px;align-items:flex-start;margin-left:-14px}
+.trtl li>i{font-style:normal;width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:12px;background:var(--surface);border:1px solid var(--line)}
+.trtl li div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.trtl li b{font-size:13px;font-weight:600} .trtl li small{font-size:11px;color:var(--ink-3)}
+.trtl li p{margin:0;font-size:13px;color:var(--ink-2);white-space:pre-wrap;word-break:break-word}
+.trtl li.ok>i{background:#1f8a4c;color:#fff;border-color:#1f8a4c}
+.trtl li.bad>i{background:var(--bad);color:#fff;border-color:var(--bad)}
+.trtl li.env>i{background:#e8892c;color:#fff;border-color:#e8892c}
+.trtl li.ms>i{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.trtl li.ms b{font-weight:800}
+.trtl li.fut{opacity:.6}
+.apf{margin:4px 0 8px}
+.apl{display:block;color:#b5651d;font-size:11px}
+.eqd{max-width:1100px;width:min(1100px,calc(100vw - 32px))}
+.eqyo{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px}
+.eqcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+.eqcols section{display:flex;flex-direction:column;gap:10px}
+.eqcols h4{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.eqcols h4 span{color:var(--ink-3)}
+.pcard{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.pcard header{display:flex;gap:8px;align-items:center}
+.pcard footer{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:12px}
+.pcard footer [data-pdel]{margin-left:auto;color:var(--ink-3)}
+.pcard .chip.sm{padding:2px 7px;font-size:11px}
+@media (max-width:760px){.eqcols{grid-template-columns:1fr}}
 </style>
 
 <div class="top">
@@ -724,7 +772,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         <h1 id="monthTitle">Octubre 2026</h1>
         <button class="iconbtn" id="nextM" aria-label="Mes siguiente">›</button>
       </div>
-      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, campañas, archivos y aprendizajes">✨ Asistente INSIDE</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
+      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, campañas, archivos y aprendizajes">✨ Asistente INSIDE</button><button class="pill inbox" id="eqBtn" hidden title="Quién es quién en Payless e Inside y quién aprueba cada región">👥 Equipo</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
     </div>
     <div class="filters" id="filters"></div>
     <div class="summary" id="summary"></div>
@@ -848,6 +896,7 @@ function matches(p,opts={}){
   if(!opts.ignoreTipo&&f.tipo!=="ALL"&&p.tipo!==f.tipo) return false;
   if(f.linea!=="ALL"&&p.linea!==f.linea) return false;
   if(f.estado!=="ALL"&&p.estado!==f.estado) return false;
+  if(!aprobMatch(p)) return false;
   if(p.fecha&&((f.desde&&p.fecha<f.desde)||(f.hasta&&p.fecha>f.hasta))) return false;
   if(f.q){const q=f.q.toLowerCase();const hay=[p.campana,p.headline,p.copy,p.serie,p.idea,p.sku,p.fase,p.grupo,p.paises.join(" ")].join(" ").toLowerCase();if(!hay.includes(q)) return false}
   return true;
@@ -864,7 +913,7 @@ function renderMedFilters(){
   <div class="fgroup mzpick"><span class="flabel">Matrices</span><button class="mzc all" data-matriz="ALL" aria-pressed="${!selMz().length}">Todas</button>${MATRICES.map(x=>`<button class="mzc mz-${x.id.toLowerCase()}" data-matriz="${x.id}" aria-pressed="${selMz().includes(x.id)}" title="${esc(x.desc)}"><i></i>${x.nombre} <b>${[...S.medios.values()].filter(m=>m.matriz===x.id).length}</b></button>`).join("")}</div>
   <div class="fgroup"><span class="flabel">Región</span><div class="seg" role="group" aria-label="Región"><button data-region="ALL" aria-pressed="${f.region==="ALL"}">Todas</button>${REGIONES.map(x=>`<button data-region="${x.id}" aria-pressed="${f.region===x.id}"><span class="dot" style="background:var(${x.var})"></span>${x.corto}</button>`).join("")}</div></div>
   ${r&&r.paises.length>1?`<div class="fgroup"><span class="flabel">País</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-pais="${c}" aria-pressed="${f.paises.includes(c)}" title="${PAIS[c]}">${c}</button>`).join("")}</div></div>`:""}
-  <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
+  <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>${aprobSel()}
     <input class="search" id="fQ" type="search" placeholder="Buscar pieza, plataforma, legal…" value="${esc(f.q)}" aria-label="Buscar"></div>
   <div class="fgroup views"><div class="seg" role="group" aria-label="Vista"><button data-mview="tl" aria-pressed="${f.mview!=="cms"}">Línea de tiempo</button><button data-mview="env" aria-pressed="${f.mview==="env"}">Enviados de Inside</button><button data-mview="cms" aria-pressed="${f.mview==="cms"}">Comentarios</button></div>${canEdit()?`<button class="btn primary" id="newPost">＋ Nueva pieza de medios</button>`:""}</div>`;
 }
@@ -886,7 +935,7 @@ function renderFilters(){
     </div></div>
   <div class="fgroup">
     <select class="sel" id="fLinea" aria-label="Campaña"><option value="ALL">Todas las campañas</option>${LINEAS.map(l=>`<option ${f.linea===l?"selected":""}>${l}</option>`).join("")}</select>
-    <select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
+    <select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>${aprobSel()}
     <span class="flabel" style="margin-left:6px">Fechas</span><input class="sel" type="date" id="fDesde" value="${esc(f.desde||"")}" aria-label="Desde"><span class="flabel">a</span><input class="sel" type="date" id="fHasta" value="${esc(f.hasta||"")}" aria-label="Hasta">
     <button class="chip" data-range="1-10" aria-pressed="${f.desde==="2026-10-01"&&f.hasta==="2026-10-10"}">1–10 oct</button><button class="chip" data-range="mes" aria-pressed="${!f.desde&&!f.hasta}">Mes completo</button>
     <input class="search" id="fQ" type="search" placeholder="Buscar headline, SKU, campaña…" value="${esc(f.q)}" aria-label="Buscar">
@@ -1261,6 +1310,7 @@ function renderSheet(){
       ${approveBox(p)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${S.openTab===k}">${l}</button>`).join("")}</div>
       <div id="tabBody">${tabBody(p,cms)}</div>
+      ${traceBox("post",p)}
       <div class="src" ${role()!=="inside"?"hidden":""}>Fuente: ${esc(p.fuente||"Creada en la plataforma")}${p.actualizado?` · Última edición ${esc(new Date(p.actualizado).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}`:""}</div>
     </div></div></div>`;
   $(".sheet").scrollTop=scrollY;
@@ -1272,13 +1322,13 @@ function approveBox(p){
   const pend=p.estado==="Enviado a cliente";
   if(role()==="cliente"){
     if(!pend) return `<div class="approve"><span class="q">${p.estado==="Publicado"?"Esta pieza ya está publicada.":p.estado==="Programado"?"Esta pieza ya está aprobada y programada.":p.cambiosPendientes?"Pediste cambios. El equipo de Inside está trabajando en ellos y te la vuelve a enviar.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Aprobación."}</span></div>`;
-    return `<div class="approve"><span class="q">¿Apruebas esta publicación?</span>
+    return `<div class="approve"><span class="q">¿Apruebas esta publicación?</span>${approveAsCtl("post",p)}
       <button class="btn ok" data-act="aprobar">Aprobar</button><button class="btn bad" data-act="cambios">Pedir cambios</button>
       ${S.askChanges?`<textarea id="chgTxt" placeholder="¿Qué hay que ajustar? Sé específico: texto, foto, país, fecha…"></textarea><button class="btn primary" data-act="enviarCambios">Enviar cambios</button>`:""}</div>`;
   }
   if(p.estado==="Sin iniciar")
     return `<div class="approve"><span class="q">${p.cambiosPendientes?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-act="enviar">Enviar al cliente</button></div>`;
-  return "";
+  return insideApprovalBox("post",p);
 }
 function fieldRO(label,v,wide){return `<div class="f ${wide?"wide":""}"><span class="lb">${label}</span><div class="ro ${v?"":"empty"}">${v?esc(v):"—"}</div></div>`}
 function fmtCtl(p){
@@ -1436,7 +1486,8 @@ async function upload(files,replace){
 async function doAct(a){
   const p=S.posts.get(S.openId); if(!p) return;
   if(a==="cambios"){S.askChanges=true;renderSheet();$("#chgTxt")?.focus();return}
-  if(a==="aprobar"){await save(p.id,{estado:"Programado",cambiosPendientes:false});await addComment(p.id,"aprobado","");toast("Aprobada");return}
+  if(a==="aprobar"){await recordApproval("post",p.id,$("#apAs")?.value||"");return}
+  if(a==="registrar"){const pid=$("#regAs")?.value;if(!pid) return;await recordApproval("post",p.id,pid,($("#regNota")?.value||"").trim());return}
   if(a==="enviarCambios"){const t=$("#chgTxt").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.askChanges=false;await save(p.id,{estado:"Sin iniciar",cambiosPendientes:true});await addComment(p.id,"cambios",t);toast("Cambios enviados al equipo");return}
   if(a==="enviar"){openSend([{kind:"post",id:p.id}]);return}
   if(a==="comentar"){const t=$("#cmTxt").value.trim();if(!t) return;await addComment(p.id,"nota",t);toast("Comentario publicado");return}
@@ -1604,6 +1655,7 @@ async function save(id,patch){
   if(!Object.keys(changed).length) return;
   if(!S.undoing){const prev={};for(const k in changed) prev[k]=cur[k]===undefined?null:cur[k];pushUndo({type:"edit",id,prev,label:undoLabel(changed)})}
   if(!S.undoing&&!("campMadre" in changed)&&["headline","copy","imagenes","campana","serie"].some(k=>k in changed)&&typeof campAutoOnEdit==="function") setTimeout(()=>campAutoOnEdit(id),0);
+  if(typeof traceLog==="function") traceLog("post",cur,patch,changed);
   changed.actualizado=new Date().toISOString(); if(S.myId) changed.actualizadoPor=S.myId;
   S.posts.set(id,{...cur,...changed}); render(); if(S.openId===id) renderSheet();
   try{await enqueue(id,()=>S.db.doc("posts/"+id).update(changed))}
@@ -1615,7 +1667,7 @@ async function write(id,doc,create){
   try{await enqueue(id,()=>S.db.doc("posts/"+id).set(doc))}catch(e){S.posts.delete(id);render();toast(e&&e.code==="quota_exceeded"?"Se llenó el espacio de la base de datos.":"No se pudo crear la publicación.")}
 }
 async function addComment(postId,tipo,texto){
-  const c={postId,tipo,texto,fecha:new Date().toISOString(),autorId:S.myId||"",autorNombre:(S.me&&S.me.name)||"",autorOrg:role()==="cliente"?"cliente":"inside"};
+  const c={postId,tipo,texto,fecha:new Date().toISOString(),autorId:S.myId||"",autorNombre:(S.me&&S.me.name)||"",autorOrg:role()==="cliente"?"cliente":"inside",...autoActor(tipo)};
   S.comments.push(c); if(S.openId===postId) renderSheet();
   try{const ref=await S.db.collection("comentarios").add(c);if(ref&&ref.id) c._id=ref.id}catch(e){S.comments=S.comments.filter(x=>x!==c);if(S.openId===postId) renderSheet();toast("No se pudo guardar el comentario.")}
 }
@@ -1699,6 +1751,7 @@ function medMatches(m){
   if(f.paises.length&&!m.paises.some(c=>f.paises.includes(c))) return false;
   if(selMz().length&&!selMz().includes(m.matriz)) return false;
   if(f.estado!=="ALL"&&m.estado!==f.estado) return false;
+  if(!aprobMatch(m)) return false;
   if(f.q){const q=f.q.toLowerCase();if(![m.nombre,m.plataforma,m.formato,m.titular,m.textoPrincipal,m.legal,m.paises.join(" ")].join(" ").toLowerCase().includes(q)) return false}
   return true;
 }
@@ -1799,6 +1852,7 @@ function renderMedioSheet(){
       ${medApproveBox(m)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-mtab="${k}" aria-selected="${S.mTab===k}">${l}</button>`).join("")}</div>
       <div>${medTab(m)}</div>
+      ${traceBox("medio",m)}
       <div class="src" ${role()!=="inside"?"hidden":""}>Fuente: matriz ${esc(matrizN(m.matriz))}${m.slide?`, slide ${m.slide}`:""}${m.fechaMatriz?` · fecha en la matriz: «${esc(m.fechaMatriz)}»`:""}</div>
     </div></div></div>`;
   const sh=$(".sheet"); if(sh) sh.scrollTop=scrollY;
@@ -1808,11 +1862,11 @@ function medApproveBox(m){
   const pend=m.estado==="Enviado a cliente";
   if(role()==="cliente"){
     if(!pend) return `<div class="approve"><span class="q">${m.estado==="Publicado"?"Esta pieza ya está al aire.":m.estado==="Programado"?"Esta pieza ya está aprobada y programada.":m.cambiosPendientes?"Pediste cambios. El equipo de Inside está trabajando en ellos.":"Esta pieza aún no se ha enviado a aprobación. Puedes dejar comentarios en la pestaña Comentarios."}</span></div>`;
-    return `<div class="approve"><span class="q">¿Apruebas esta pieza?</span><button class="btn ok" data-mact="aprobar">Aprobar</button><button class="btn bad" data-mact="cambios">Pedir cambios</button>
+    return `<div class="approve"><span class="q">¿Apruebas esta pieza?</span>${approveAsCtl("medio",m)}<button class="btn ok" data-mact="aprobar">Aprobar</button><button class="btn bad" data-mact="cambios">Pedir cambios</button>
       ${S.mAsk?`<textarea id="mChg" placeholder="¿Qué hay que ajustar? Texto, arte, legal, fechas, país…"></textarea><button class="btn primary" data-mact="enviarCambios">Enviar cambios</button>`:""}</div>`;
   }
   if(m.estado==="Sin iniciar") return `<div class="approve"><span class="q">${m.cambiosPendientes?"El cliente pidió cambios. Cuando estén listos, vuelve a enviarla.":"¿Lista para revisión del cliente?"}</span><button class="btn primary" data-mact="enviar">Enviar al cliente</button></div>`;
-  return "";
+  return insideApprovalBox("medio",m);
 }
 function mInp(k,label,m,type="text",wide=false){
   if(!canEdit()) return fieldRO(label,m[k],wide);
@@ -1859,6 +1913,7 @@ async function saveMed(id,patch){
   if(!Object.keys(ch).length) return;
   if(!S.undoing){const prev={};for(const k in ch) prev[k]=cur[k]===undefined?null:cur[k];pushUndo({type:"medit",id,prev,label:ch.inicio||ch.fin?"el cambio de fechas":"la edición"})}
   if(!S.undoing&&!("campMadre" in ch)&&["nombre","titular","textoPrincipal","mencion","imagenes"].some(k=>k in ch)) setTimeout(()=>campAutoOnEdit(id),0);
+  if(typeof traceLog==="function") traceLog("medio",cur,patch,ch);
   ch.actualizado=new Date().toISOString(); if(S.myId) ch.actualizadoPor=S.myId;
   S.medios.set(id,{...cur,...ch}); renderView(); if(S.openMed===id) renderMedioSheet();
   try{await enqueue("m:"+id,()=>S.db.doc("medios/"+id).update(ch))}
@@ -1878,7 +1933,8 @@ document.addEventListener("click",async e=>{
   const mv=e.target.closest("[data-mmv]"); if(mv){const k=+mv.dataset.mmv;const a=[...m.imagenes];[a[k],a[k+1]]=[a[k+1],a[k]];await saveMed(m.id,{imagenes:a});return}
   const act=e.target.closest("[data-mact]"); if(!act) return; const a=act.dataset.mact;
   if(a==="enviar"){openSend([{kind:"medio",id:m.id}]);return}
-  if(a==="aprobar"){await saveMed(m.id,{estado:"Programado",cambiosPendientes:false});await addComment(m.id,"aprobado","");toast("Aprobada");return}
+  if(a==="aprobar"){await recordApproval("medio",m.id,$("#apAs")?.value||"");return}
+  if(a==="registrar"){const pid=$("#regAs")?.value;if(!pid) return;await recordApproval("medio",m.id,pid,($("#regNota")?.value||"").trim());return}
   if(a==="cambios"){S.mAsk=true;renderMedioSheet();$("#mChg")?.focus();return}
   if(a==="enviarCambios"){const t=$("#mChg").value.trim();if(!t){toast("Cuéntanos qué hay que ajustar");return}S.mAsk=false;await saveMed(m.id,{estado:"Sin iniciar",cambiosPendientes:true});await addComment(m.id,"cambios",t);toast("Cambios enviados al equipo");return}
   if(a==="borrar"){S.mConfirmDel=true;renderMedioSheet();return}
@@ -1908,7 +1964,7 @@ const ARTIFACT_URL="https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp";
 function orgOf(c){if(c.autorOrg) return c.autorOrg;const pr=S.profiles[c.autorId];return pr&&pr.guest===true?"cliente":pr&&pr.guest===false?"inside":"inside"}
 function nameOf(id,fallback){const pr=S.profiles[id];return (pr&&pr.name)||fallback||(id===S.myId?"Tú":"Alguien")}
 function initials(n){return (n||"?").replace(/[^\p{L}\s]/gu,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"?"}
-function whoHTML(id,org,fallback){const n=nameOf(id,fallback);return `<span class="cav ${org}">${esc(initials(n))}</span><span class="cwho"><b>${esc(n)}</b><span class="corg ${org}">${org==="cliente"?"Payless · Cliente":"Inside"}</span></span>`}
+function whoHTML(id,org,fallback,c){const per=c&&c.personaId?personaById(c.personaId):null;const n=per?per.nombre:(c&&c.personaNombre)||nameOf(id,fallback);const rol=per&&per.rol&&per.rol!=="Por definir"?per.rol:"";return `<span class="cav ${org}">${esc(initials(n))}</span><span class="cwho"><b>${esc(n)}</b><span class="corg ${org}">${org==="cliente"?"Payless":"Inside"}${rol?" · "+esc(rol):org==="cliente"?" · Cliente":""}</span>${c&&c.registradoPor?`<small class="creg">registrado por ${esc(c.registradoPor)}</small>`:""}</span>`}
 function when(s){if(!s) return "";const d=new Date(s),now=new Date(),m=Math.round((now-d)/6e4);if(m<1) return "ahora";if(m<60) return `hace ${m} min`;if(m<1440&&d.getDate()===now.getDate()) return d.toLocaleTimeString("es",{hour:"numeric",minute:"2-digit"});return d.toLocaleString("es",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
 /* hilos de una pieza: comentarios y pedidos de cambio de primer nivel + el comentario fijo de la matriz */
 function threadsOf(id){
@@ -1927,28 +1983,28 @@ function commentsPanel(id,ctx){
   const parte=S.cParte||"general"; const nImg=ctx.nImg||0;
   const act=activityOf(id);
   return `<div class="cpanel">
-    ${canApprove()?`<div class="ccompose"><div class="cparts" role="group" aria-label="¿Sobre qué parte?"><span>Sobre:</span>${Object.entries(PARTES).filter(([k])=>k!=="legal"||ctx.legal).map(([k,l])=>`<button class="chip" data-cparte="${k}" aria-pressed="${parte===k}">${l}${k==="arte"&&nImg>1?` ${(S.cSlide??ctx.slide??0)+1}`:""}</button>`).join("")}</div>
+    ${canApprove()?`<div class="ccompose">${composerAs()}<div class="cparts" role="group" aria-label="¿Sobre qué parte?"><span>Sobre:</span>${Object.entries(PARTES).filter(([k])=>k!=="legal"||ctx.legal).map(([k,l])=>`<button class="chip" data-cparte="${k}" aria-pressed="${parte===k}">${l}${k==="arte"&&nImg>1?` ${(S.cSlide??ctx.slide??0)+1}`:""}</button>`).join("")}</div>
       <textarea id="cNew" rows="3" placeholder="${role()==="cliente"?"Escribe tu comentario para el equipo de Inside…":"Escribe un comentario…"}"></textarea>
       <div class="crow"><span class="hint">${role()==="cliente"?"Inside lo verá en esta pieza y te responderá aquí.":"El cliente lo verá en esta pieza."}</span><button class="btn primary" data-cnew>Comentar</button></div></div>`:""}
     <div class="seg ctabs" role="group" aria-label="Comentarios"><button data-ctab="open" aria-pressed="${tab==="open"}">Abiertos (${open.length})</button><button data-ctab="done" aria-pressed="${tab==="done"}">Resueltos (${done.length})</button></div>
     <div class="cthreads">${list.length?list.map(t=>threadCard(t,id)).join(""):`<p class="cempty">${tab==="open"?"No hay comentarios abiertos en esta pieza.":"Todavía no hay comentarios resueltos."}</p>`}</div>
-    ${act.length?`<details class="cact"><summary>Historial de envíos y aprobaciones (${act.length})</summary>${act.map(c=>`<div class="cline">${whoHTML(c.autorId,orgOf(c),c.autorNombre)}<span>${c.tipo==="envio"?"envió la pieza a aprobación":"aprobó la pieza"} · ${esc(when(c.fecha))}</span></div>`).join("")}</details>`:""}
+    ${act.length?`<p class="hint">Envíos, aprobaciones y cambios de fecha: mira la <b>Trazabilidad</b> debajo de la pieza.</p>`:""}
   </div>`;
 }
 function threadCard(t,id){
   const can=canApprove(); const rk=esc(t.key);
   return `<article class="cthread ${t.resuelto?"res":""} ${t.tipo==="cambios"?"chg":""}">
-    <header>${whoHTML(t.autorId,t.org,t.autorNombre)}<span class="cwhen">${t.fromMatriz?`en la matriz${t.slide?` · slide ${t.slide}`:""}`:esc(when(t.fecha))}</span>
+    <header>${whoHTML(t.autorId,t.org,t.autorNombre,t.doc)}<span class="cwhen">${t.fromMatriz?`en la matriz${t.slide?` · slide ${t.slide}`:""}`:esc(when(t.fecha))}</span>
       ${can?`<button class="ccheck ${t.resuelto?"on":""}" data-cres="${rk}" title="${t.resuelto?"Volver a abrir":"Marcar como resuelto"}" aria-label="${t.resuelto?"Volver a abrir":"Resolver"}">✓</button>`:""}</header>
     <div class="ctags"><span class="cpart">${PARTES[t.parte]||"General"}${t.parte==="arte"&&t.slide!=null&&!t.fromMatriz?` · ${t.slide+1}`:""}</span>${t.tipo==="cambios"?`<span class="cchg">Cambios solicitados</span>`:""}</div>
     <p>${esc(t.texto)}</p>
-    ${t.replies.map(r=>`<div class="creply">${whoHTML(r.autorId,orgOf(r),r.autorNombre)}<span class="cwhen">${esc(when(r.fecha))}</span><p>${esc(r.texto)}</p></div>`).join("")}
+    ${t.replies.map(r=>`<div class="creply">${whoHTML(r.autorId,orgOf(r),r.autorNombre,r)}<span class="cwhen">${esc(when(r.fecha))}</span><p>${esc(r.texto)}</p></div>`).join("")}
     ${t.resuelto?`<div class="cresby">✓ Resuelto${t.resueltoPor?` por ${esc(nameOf(t.resueltoPor))}`:""}${t.resueltoEn?` · ${esc(when(t.resueltoEn))}`:""}</div>`:""}
     ${can&&!t.resuelto?(S.cReply===t.key?`<div class="cre"><textarea id="cRe" rows="2" placeholder="Responder…"></textarea><div class="crow"><button class="btn ghost" data-crecancel>Cancelar</button><button class="btn primary" data-crepost="${rk}">Responder</button></div></div>`:`<button class="clink" data-creply="${rk}">Responder</button>`):""}
   </article>`;
 }
 async function postComment(postId,data){
-  const c={postId,tipo:"comentario",texto:"",fecha:new Date().toISOString(),autorId:S.myId||"",autorNombre:(S.me&&S.me.name)||"",autorOrg:role()==="cliente"?"cliente":"inside",...data};
+  const c={postId,tipo:"comentario",texto:"",fecha:new Date().toISOString(),autorId:S.myId||"",autorNombre:(S.me&&S.me.name)||"",autorOrg:role()==="cliente"?"cliente":"inside",...(data.personaId?{}:autoActor(data.tipo||"comentario")),...data};
   S.comments.push(c); rerenderOpen();
   try{const ref=await S.db.collection("comentarios").add(c);if(ref&&ref.id&&!c._id) c._id=ref.id}catch(e){S.comments=S.comments.filter(x=>x!==c);rerenderOpen();toast("No se pudo guardar el comentario.")}
 }
@@ -1983,7 +2039,7 @@ function renderCommentsView(kind){
   rows.sort((a,b)=>(b.ths[0].fecha||"9").localeCompare(a.ths[0].fecha||"9"));
   const nOpen=items.reduce((a,it)=>a+openCount(it.id),0), nDone=items.reduce((a,it)=>a+threadsOf(it.id).filter(t=>t.resuelto).length,0);
   $("#view").innerHTML=`<div class="cview"><div class="cvhead"><h2>Comentarios ${kind==="med"?"de medios":"del orgánico"}</h2><div class="seg" role="group"><button data-cvtab="open" aria-pressed="${tab==="open"}">Abiertos (${nOpen})</button><button data-cvtab="done" aria-pressed="${tab==="done"}">Resueltos (${nDone})</button></div></div>
-    ${rows.length?rows.map(({it,ths})=>`<section class="cvpiece" style="--rc:${it.rc}"><button class="cvtitle" data-cvopen="${esc(it.id)}" data-cvkind="${it.kind}"><b>${esc(it.name)}</b><small>${esc(it.sub)}</small><span>Abrir pieza ›</span></button>${ths.map(t=>`<div class="cvth ${t.resuelto?"res":""}">${whoHTML(t.autorId,t.org,t.autorNombre)}<span class="cwhen">${t.fromMatriz?"en la matriz":esc(when(t.fecha))}</span><span class="cpart">${PARTES[t.parte]||"General"}</span>${t.tipo==="cambios"?`<span class="cchg">Cambios</span>`:""}<p>${esc(t.texto)}</p>${t.replies.length?`<small class="crep">${t.replies.length} ${t.replies.length===1?"respuesta":"respuestas"}</small>`:""}</div>`).join("")}</section>`).join("")
+    ${rows.length?rows.map(({it,ths})=>`<section class="cvpiece" style="--rc:${it.rc}"><button class="cvtitle" data-cvopen="${esc(it.id)}" data-cvkind="${it.kind}"><b>${esc(it.name)}</b><small>${esc(it.sub)}</small><span>Abrir pieza ›</span></button>${ths.map(t=>`<div class="cvth ${t.resuelto?"res":""}">${whoHTML(t.autorId,t.org,t.autorNombre,t.doc)}<span class="cwhen">${t.fromMatriz?"en la matriz":esc(when(t.fecha))}</span><span class="cpart">${PARTES[t.parte]||"General"}</span>${t.tipo==="cambios"?`<span class="cchg">Cambios</span>`:""}<p>${esc(t.texto)}</p>${t.replies.length?`<small class="crep">${t.replies.length} ${t.replies.length===1?"respuesta":"respuestas"}</small>`:""}</div>`).join("")}</section>`).join("")
       :`<div class="empty"><h3>${tab==="open"?"No hay comentarios abiertos":"No hay comentarios resueltos"}</h3><p>${tab==="open"?"Cuando el cliente o el equipo comenten una pieza, aparecerá aquí.":"Los comentarios que se marquen con ✓ aparecerán aquí."}</p></div>`}</div>`;
 }
 document.addEventListener("click",e=>{
@@ -2044,6 +2100,7 @@ function pendingItems(){
 }
 function renderInbox(){
   const rb=$("#redBtn"); if(rb) rb.hidden=!(S.mode==="live"&&role()==="inside"&&canEdit());
+  const eb=$("#eqBtn"); if(eb) eb.hidden=S.mode!=="live";
   const b=$("#inboxBtn"); if(!b) return;
   const n=pendingItems().length, cms=role()==="inside"?[...S.posts.keys(),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
   const nw=newClientCount();
@@ -2125,7 +2182,7 @@ function renderTodoFilters(){
   <div class="fgroup mzpick"><span class="flabel">Canales</span><button class="mzc all" data-canal="ALL" aria-pressed="${!(S.f.canales||[]).length}">Todos</button>${CANALES.map(x=>`<button class="mzc can" data-canal="${x.id}" aria-pressed="${(S.f.canales||[]).includes(x.id)}" style="--cc:${x.c}"><i></i>${x.nombre} <b>${cnt(x.id)}</b></button>`).join("")}</div>
   <div class="fgroup"><span class="flabel">Región</span><div class="seg" role="group" aria-label="Región"><button data-region="ALL" aria-pressed="${f.region==="ALL"}">Todas</button>${REGIONES.map(x=>`<button data-region="${x.id}" aria-pressed="${f.region===x.id}"><span class="dot" style="background:var(${x.var})"></span>${x.corto}</button>`).join("")}</div></div>
   ${r&&r.paises.length>1?`<div class="fgroup"><span class="flabel">País</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-pais="${c}" aria-pressed="${f.paises.includes(c)}" title="${PAIS[c]}">${c}</button>`).join("")}</div></div>`:""}
-  <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
+  <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>${aprobSel()}
     <input class="search" id="fQ" type="search" placeholder="Buscar en toda la marca…" value="${esc(f.q)}" aria-label="Buscar"></div>`;
 }
 function renderTodoSummary(){
@@ -2843,17 +2900,19 @@ function newClientCount(){const ls=lastSeen();return notifList().filter(n=>n.org
 function renderInboxPanel(){
   let root=$("#inboxRoot"); if(!S.inboxOpen){root&&root.remove();return}
   if(!root){root=document.createElement("div");root.id="inboxRoot";document.body.appendChild(root)}
-  const items=pendingItems().map(x=>({...x,info:pieceInfo(x.kind,x.id)})).filter(x=>x.info);
+  if(S.inboxAp===undefined&&role()==="cliente"){const me=myPersona();S.inboxAp=me&&me.aprueba?me.id:"ALL"}
+  const items=pendingItems().map(x=>({...x,info:pieceInfo(x.kind,x.id)})).filter(x=>x.info&&inboxApFilter(x));
   const f=S.inboxF||(role()==="inside"?"cliente":"todos"); const ls=S.inboxSeen||lastSeen();
   let ns=notifList(); if(f==="cliente") ns=ns.filter(n=>n.org==="cliente"); if(f==="abiertos") ns=ns.filter(n=>!n.res);
   const pname=pc=>pc.kind==="medio"?(pc.x.nombre||"Pieza de medios"):(pc.x.headline||pc.x.campana||"Publicación");
   root.innerHTML=`<div class="scrim modal" data-inboxclose><div class="dialog inbox2" role="dialog" aria-label="Bandeja"><header><h3>${role()==="cliente"?"Tu bandeja":"Bandeja con el cliente"}</h3><button class="iconbtn" data-inboxclose aria-label="Cerrar">✕</button></header>
     <div class="ibcols">
       <section><h4>${role()==="cliente"?"Por revisar":"Enviadas al cliente · por aprobar"} <span>${items.length}</span></h4>
-        ${items.length?`<ul class="slist clickable">${items.map(x=>`<li><button data-inopen="${esc(x.id)}" data-inkind="${x.kind}"><b>${esc(x.info.name)}</b><small>${x.kind==="medio"?"Medios":"Orgánico"} · ${esc(x.info.sub)}${x.en?` · enviada ${esc(when(x.en))}`:""}</small>${openCount(x.id)?`<span class="cmb">💬 ${openCount(x.id)}</span>`:""}</button></li>`).join("")}</ul>`:`<p class="cempty">${role()==="cliente"?"No tienes piezas pendientes. ¡Todo al día!":"No hay piezas esperando aprobación."}</p>`}</section>
+        ${inboxApChips()}
+        ${items.length?`<ul class="slist clickable">${items.map(x=>`<li><button data-inopen="${esc(x.id)}" data-inkind="${x.kind}"><b>${esc(x.info.name)}</b><small>${x.kind==="medio"?"Medios":"Orgánico"} · ${esc(x.info.sub)}${x.en?` · enviada ${esc(when(x.en))}`:""}</small>${inboxApLine(x)}${openCount(x.id)?`<span class="cmb">💬 ${openCount(x.id)}</span>`:""}</button></li>`).join("")}</ul>`:`<p class="cempty">${role()==="cliente"?"No tienes piezas pendientes. ¡Todo al día!":"No hay piezas esperando aprobación."}</p>`}</section>
       <section><h4>Comentarios <span>${ns.length}</span></h4>
         <div class="seg" role="group"><button data-inf="cliente" aria-pressed="${f==="cliente"}">Del cliente</button><button data-inf="abiertos" aria-pressed="${f==="abiertos"}">Sin resolver</button><button data-inf="todos" aria-pressed="${f==="todos"}">Todos</button></div>
-        ${ns.length?`<ul class="nlist">${ns.slice(0,120).map(n=>`<li class="${n.res?"res":""} ${n.fecha&&n.fecha>ls&&n.c.autorId!==S.myId?"new":""}"><button data-ncopen="${esc(n.pc.x.id)}" data-nckind="${n.pc.kind}">${whoHTML(n.c.autorId,n.org,n.c.autorNombre)}<span class="cwhen">${n.matriz?"en la matriz":esc(when(n.fecha))}</span>${n.c.tipo==="cambios"?`<span class="cchg">Cambios</span>`:n.c.tipo==="respuesta"?`<span class="cpart">Respuesta</span>`:""}${n.res?`<span class="ok">✓ Resuelto</span>`:""}<p>${esc((n.c.texto||"").slice(0,220))}</p><small>${n.pc.kind==="medio"?"Medios":"Orgánico"} · ${esc(pname(n.pc))}</small></button></li>`).join("")}</ul>`:`<p class="cempty">No hay comentarios con este filtro.</p>`}</section>
+        ${ns.length?`<ul class="nlist">${ns.slice(0,120).map(n=>`<li class="${n.res?"res":""} ${n.fecha&&n.fecha>ls&&n.c.autorId!==S.myId?"new":""}"><button data-ncopen="${esc(n.pc.x.id)}" data-nckind="${n.pc.kind}">${whoHTML(n.c.autorId,n.org,n.c.autorNombre,n.c)}<span class="cwhen">${n.matriz?"en la matriz":esc(when(n.fecha))}</span>${n.c.tipo==="cambios"?`<span class="cchg">Cambios</span>`:n.c.tipo==="respuesta"?`<span class="cpart">Respuesta</span>`:""}${n.res?`<span class="ok">✓ Resuelto</span>`:""}<p>${esc((n.c.texto||"").slice(0,220))}</p><small>${n.pc.kind==="medio"?"Medios":"Orgánico"} · ${esc(pname(n.pc))}</small></button></li>`).join("")}</ul>`:`<p class="cempty">No hay comentarios con este filtro.</p>`}</section>
     </div></div></div>`;
 }
 document.addEventListener("click",e=>{
@@ -3008,6 +3067,223 @@ document.addEventListener("click",async e=>{
   const ar=e.target.closest("[data-aprarch]"); if(ar){const list=aprList();const a=list.find(x=>x.id===ar.dataset.aprarch);if(a){a.estado="archivado";a.historial=[...a.historial,{fecha:new Date().toISOString(),accion:"archivada"}];await saveApr(list,{accion:"archivada",detalle:a.texto})}renderRedCenter();return}
 });
 
+/* ============ EQUIPO (personas de Payless e Inside) · APROBADORES · TRAZABILIDAD */
+const ROLES={cliente:["Aprobador/a de región","Coordinador/a","Gerente de marketing","Ecommerce","Medios","Otro"],inside:["Ejecutiva de cuentas","Content","Diseño","Redacción","Dirección de cuentas","Dirección creativa","Medios","Por definir"]};
+const EQUIPO_BASE=[
+  {id:"p-stephanie-khan",nombre:"Stephanie Khan",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["CARIBE"],paises:[]},
+  {id:"p-dainy-alcantara",nombre:"Dainy Alcántara",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["RD"],paises:[]},
+  {id:"p-cristina-quezada",nombre:"Cristina Quezada",org:"cliente",rol:"Aprobador/a de región",aprueba:true,regiones:["SUR"],paises:[]},
+  {id:"p-coord-centro",nombre:"Coordinadora Centro",alias:["Coord. Centro"],org:"cliente",rol:"Coordinador/a",aprueba:true,regiones:["CENTRO"],paises:[],porConfirmar:true},
+  {id:"p-roberto",nombre:"Roberto",org:"inside",rol:"Por definir",regiones:[],paises:[]},
+  {id:"p-sunny",nombre:"Sunny",org:"inside",rol:"Por definir",regiones:[],paises:[]}
+];
+function personas(){const v=S.personas&&S.personas.size?[...S.personas.values()]:EQUIPO_BASE;return v.filter(p=>p.activo!==false).sort((a,b)=>(a.org===b.org?0:a.org==="cliente"?-1:1)||(b.aprueba?1:0)-(a.aprueba?1:0)||a.nombre.localeCompare(b.nombre))}
+function personaById(id){if(!id) return null;return (S.personas&&S.personas.get(id))||EQUIPO_BASE.find(p=>p.id===id)||null}
+function paisesOf(per){return per.paises&&per.paises.length?per.paises:(per.regiones||[]).flatMap(r=>region(r).paises||[])}
+function myOrg(){return role()==="cliente"?"cliente":"inside"}
+function myPersona(){
+  const ps=personas(); const saved=store.get("yo:"+(S.myId||"anon")); let p=saved&&ps.find(x=>x.id===saved); if(p) return p;
+  p=ps.find(x=>(x.userIds||[]).includes(S.myId)); if(p) return p;
+  const n=norm(S.me&&S.me.name); if(!n) return null;
+  return ps.find(x=>x.org===myOrg()&&(norm(x.nombre)===n||(!norm(x.nombre).includes(" ")&&n.split(" ")[0]===norm(x.nombre))))||null;
+}
+function setYo(id){store.set("yo:"+(S.myId||"anon"),id||null);const per=personaById(id);if(per&&role()==="inside"&&S.myId&&S.db&&S.personas&&S.personas.has(id)&&!(per.userIds||[]).includes(S.myId)) savePersona(id,{userIds:[...(per.userIds||[]),S.myId]})}
+function actorFields(per){if(!per) return {};const me=myPersona();const f={personaId:per.id,personaNombre:per.nombre,autorNombre:per.nombre,autorOrg:per.org};if(!me||me.id!==per.id) f.registradoPor=(me&&me.nombre)||(S.me&&S.me.name)||"Alguien";return f}
+function curActor(){return personaById(S.asPersona)||myPersona()}
+function autoActor(tipo){if(["envio","estado","fecha"].includes(tipo)) return actorFields(myPersona());const a=actorFields(curActor());if(S.asPersona&&personaById(S.asPersona)&&personaById(S.asPersona).org!==myOrg()) S.asPersona=null;return a}
+function asSelect(id,list,sel,label){
+  const groups=[["cliente","Payless"],["inside","Inside"]].map(([o,l])=>{const xs=list.filter(p=>p.org===o);return xs.length?`<optgroup label="${l}">${xs.map(p=>`<option value="${esc(p.id)}" ${p.id===sel?"selected":""}>${esc(p.nombre)}${p.rol&&p.rol!=="Por definir"?` · ${esc(p.rol)}`:""}</option>`).join("")}</optgroup>`:""}).join("");
+  return `<label class="asl">${label}<select id="${id}" class="sel"><option value="">${S.me&&S.me.name?`Yo (${esc(S.me.name)})`:"Yo"}</option>${groups}</select></label>`;
+}
+function composerAs(){const list=personas().filter(p=>role()==="inside"||p.org==="cliente");const cur=curActor();
+  const other=cur&&cur.org!==myOrg();
+  return `<div class="ascomp">${asSelect("cAs",list,cur&&cur.id,"Comentar como")}${other?`<span class="hint">Quedará como comentario de <b>${esc(cur.nombre)}</b> (${cur.org==="cliente"?"Payless":"Inside"}), registrado por ti.</span>`:!cur&&list.length?`<span class="hint">Elige quién eres para que todos sepan quién comenta.</span>`:""}</div>`}
+document.addEventListener("change",e=>{
+  if(e.target.id==="cAs"||e.target.id==="eqYo"){const v=e.target.value;const per=personaById(v);
+    if(e.target.id==="eqYo"||!per||per.org===myOrg()){setYo(v);S.asPersona=null}else S.asPersona=v;
+    rerenderOpen(); if(S.eqOpen) renderEquipo(); return}
+});
+
+/* aprobadores de cada pieza */
+function approversOf(x){
+  if(!x) return [];
+  const ps=personas().filter(p=>p.org==="cliente"&&p.aprueba);
+  if(Array.isArray(x.aprobadores)&&x.aprobadores.length) return x.aprobadores.map(personaById).filter(Boolean);
+  const m=/Aprueba:\s*([^·|]+)/i.exec(x.responsable||"");
+  if(m){const n=norm(m[1]);const hit=ps.find(p=>norm(p.nombre)===n||(p.alias||[]).some(a=>norm(a)===n));if(hit) return [hit]}
+  const cs=x.paises||[]; return ps.filter(p=>paisesOf(p).some(c=>cs.includes(c)));
+}
+function lastEnvio(id){return S.comments.filter(c=>c.postId===id&&c.tipo==="envio").map(c=>c.fecha).sort().pop()||""}
+function approvalState(x){
+  const req=approversOf(x), since=lastEnvio(x.id);
+  const ap=S.comments.filter(c=>c.postId===x.id&&c.tipo==="aprobado"&&(!since||c.fecha>=since)).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  const done=new Map(); for(const a of ap) if(a.personaId) done.set(a.personaId,a);
+  const pend=x.estado==="Enviado a cliente"?req.filter(p=>!done.has(p.id)):[];
+  return {req,ap,done,pend,since};
+}
+function pieceOf(kind,id){return kind==="medio"?S.medios.get(id):S.posts.get(id)}
+async function recordApproval(kind,id,pid,nota){
+  const per=personaById(pid);
+  if(per&&per.org===myOrg()&&!myPersona()) setYo(per.id);
+  await postComment(id,{tipo:"aprobado",texto:nota||"",...(per?actorFields(per):autoActor("aprobado"))});
+  const x=pieceOf(kind,id); const st=approvalState(x);
+  if(!st.req.length||!st.pend.length){S.quietTrace=true;try{kind==="medio"?await saveMed(id,{estado:"Programado",cambiosPendientes:false}):await save(id,{estado:"Programado",cambiosPendientes:false})}finally{S.quietTrace=false}toast(per?`Aprobada por ${per.nombre}`:"Aprobada")}
+  else toast(`Aprobada por ${per?per.nombre:"ti"} · falta ${st.pend.map(p=>p.nombre).join(", ")}`);
+}
+function approveAsCtl(kind,x){
+  const st=approvalState(x); const me=myPersona();
+  const opts=[...new Set([...st.pend,...(me&&me.org==="cliente"?[me]:[]),...personas().filter(p=>p.org==="cliente")])];
+  const sel=me&&opts.includes(me)?me.id:(st.pend[0]||{}).id;
+  return `<label class="asl">Apruebo como<select id="apAs" class="sel">${opts.map(p=>`<option value="${esc(p.id)}" ${p.id===sel?"selected":""}>${esc(p.nombre)}${st.pend.includes(p)?" · pendiente":st.done.has(p.id)?" · ya aprobó":""}</option>`).join("")}</select></label>`;
+}
+function insideApprovalBox(kind,x){
+  if(role()!=="inside"||x.estado!=="Enviado a cliente") return "";
+  const st=approvalState(x); const a=kind==="medio"?"data-mact":"data-act";
+  const who=st.pend.length?st.pend:personas().filter(p=>p.org==="cliente");
+  return `<div class="approve"><span class="q">Esperando aprobación${st.pend.length?` de <b>${esc(st.pend.map(p=>p.nombre).join(", "))}</b>`:" del cliente"}. ¿Te aprobaron por otro canal?</span>
+    <select id="regAs" class="sel" aria-label="Quién aprobó">${who.map(p=>`<option value="${esc(p.id)}">${esc(p.nombre)}</option>`).join("")}</select>
+    <input id="regNota" class="sel" placeholder="Dónde: WhatsApp, correo…" aria-label="Dónde aprobó"><button class="btn ok" ${a}="registrar">Registrar aprobación</button></div>`;
+}
+
+/* registro de cambios de estado y fecha (para la trazabilidad) */
+function traceLog(kind,cur,patch,changed){
+  if(S.quietTrace||!S.db) return;
+  const out=[];
+  if("estado" in changed&&!("cambiosPendientes" in patch)) out.push({tipo:"estado",texto:`${cur.estado||"—"} → ${changed.estado}`});
+  if(cur.enviadoEn){
+    if(kind==="post"&&("fecha" in changed||"hora" in changed)) out.push({tipo:"fecha",texto:`${cur.fecha?fmtDia(cur.fecha):"sin fecha"}${cur.hora?" "+cur.hora:""} → ${(changed.fecha??cur.fecha)?fmtDia(changed.fecha??cur.fecha):"sin fecha"}${(changed.hora??cur.hora)?" "+(changed.hora??cur.hora):""}`});
+    if(kind==="medio"&&("inicio" in changed||"fin" in changed)) out.push({tipo:"fecha",texto:`Legal ${medRange(cur)} → ${medRange({...cur,...changed})}`});
+  }
+  for(const o of out) setTimeout(()=>postComment(cur.id,o),0);
+}
+
+/* trazabilidad */
+function toHM(h){const m=/(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.\s*m\.|p\.\s*m\.)?/i.exec(h||"");if(!m) return "09:00";let H=+m[1];const pm=m[3]&&/p/i.test(m[3]);if(pm&&H<12) H+=12;if(m[3]&&!pm&&H===12) H=0;return String(H).padStart(2,"0")+":"+(m[2]||"00")}
+const dayDiff=(a,b)=>Math.round((Date.parse(b.slice(0,10)+"T12:00")-Date.parse(a.slice(0,10)+"T12:00"))/864e5);
+const dTxt=n=>`${Math.abs(n)} día${Math.abs(n)===1?"":"s"}`;
+function fechaLarga(s){if(!s) return "";const d=new Date(s.length<=10?s+"T12:00":s);return d.toLocaleString("es",{weekday:"short",day:"numeric",month:"short",...(s.length>10?{hour:"numeric",minute:"2-digit"}:{})})}
+function traceData(kind,x){
+  const cms=S.comments.filter(c=>c.postId===x.id);
+  const pub=kind==="medio"?(x.inicio||""):(x.fecha||"");
+  const envs=cms.filter(c=>c.tipo==="envio").sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  const env=envs.at(-1); const enviada=env?env.fecha:(x.enviadoEn||"");
+  const st=approvalState(x); const aprobada=["Programado","Publicado"].includes(x.estado)&&st.ap.length?st.ap.at(-1).fecha:"";
+  const ev=[];
+  if(x.creado) ev.push({f:x.creado,ic:"＋",t:"Creada en la plataforma"});
+  if(x.comentariosSlide) ev.push({f:"",ic:"💬",org:"cliente",t:"Comentario del cliente en la matriz",q:x.comentariosSlide});
+  for(const c of cms){
+    const who=c.personaNombre||nameOf(c.autorId,c.autorNombre), org=orgOf(c), reg=c.registradoPor?` · registrado por ${c.registradoPor}`:"";
+    if(c.tipo==="envio") ev.push({f:c.fecha,ic:"📤",org,k:"env",t:`${who} envió a aprobación del cliente${reg}`,q:c.texto,s:x.fechaEnvio&&c===env&&x.fechaEnvio!==c.fecha.slice(0,10)?`Fecha de envío declarada: ${fechaLarga(x.fechaEnvio)}`:""});
+    else if(c.tipo==="aprobado") ev.push({f:c.fecha,ic:"✅",org,k:"ok",t:`${who} aprobó${reg}`,q:c.texto});
+    else if(c.tipo==="cambios") ev.push({f:c.fecha,ic:"✏️",org,k:"bad",t:`${who} pidió cambios${reg}`,q:c.texto});
+    else if(c.tipo==="respuesta") ev.push({f:c.fecha,ic:"↩",org,t:`${who} respondió un comentario${reg}`,q:c.texto});
+    else if(c.tipo==="estado") ev.push({f:c.fecha,ic:"●",org,t:`${who} cambió el estado: ${c.texto}`});
+    else if(c.tipo==="fecha") ev.push({f:c.fecha,ic:"📅",org,k:"warn",t:`${who} cambió la fecha: ${c.texto}`});
+    else ev.push({f:c.fecha,ic:"💬",org,t:`${who} comentó${c.parte&&PARTES[c.parte]&&c.parte!=="general"?` sobre ${PARTES[c.parte].toLowerCase()}`:""}${reg}`,q:c.texto});
+    if(c.resuelto&&c.resueltoEn) ev.push({f:c.resueltoEn,ic:"✓",t:`${nameOf(c.resueltoPor)} resolvió el comentario de ${who}`});
+  }
+  if(pub) ev.push({f:pub+"T"+(kind==="post"&&x.hora?toHM(x.hora):"09:00"),ic:"★",k:"pub",t:kind==="medio"?"Sale al aire (inicio del legal)":"Fecha de publicación",milestone:true});
+  ev.sort((a,b)=>(a.f?0:-1)-(b.f?0:-1)||(a.f||"").localeCompare(b.f||""));
+  const alerts=[]; const today=new Date().toISOString().slice(0,10);
+  const envRef=x.fechaEnvio||enviada;
+  if(envRef&&pub){const n=dayDiff(envRef,pub);alerts.push(n>=0?{k:"",t:`Inside la envió ${dTxt(n)} antes de la ${kind==="medio"?"salida":"publicación"}`}:{k:"bad",t:`Se envió ${dTxt(n)} después de la fecha de ${kind==="medio"?"salida":"publicación"}`})}
+  if(aprobada&&enviada){const n=dayDiff(enviada,aprobada);alerts.push({k:"",t:n?`El cliente aprobó ${dTxt(n)} después del envío`:"El cliente aprobó el mismo día del envío"})}
+  if(aprobada&&pub&&aprobada.slice(0,10)>pub) alerts.push({k:"bad",t:`⚠ Aprobada ${dTxt(dayDiff(pub,aprobada))} después de la fecha de ${kind==="medio"?"salida":"publicación"} prevista`});
+  if(x.estado==="Enviado a cliente"&&enviada){const n=dayDiff(enviada,today);alerts.push({k:n>=3?"warn":"",t:`⏳ Lleva ${dTxt(n)} con el cliente${st.pend.length?` · falta ${st.pend.map(p=>p.nombre).join(", ")}`:""}`});
+    if(pub){const m=dayDiff(today,pub);alerts.push(m<0?{k:"bad",t:`La fecha de ${kind==="medio"?"salida":"publicación"} pasó hace ${dTxt(m)} sin aprobación`}:{k:m<=2?"warn":"",t:m?`Sale en ${dTxt(m)}`:"Sale hoy"})}}
+  return {ev,enviada,aprobada,pub,alerts,st};
+}
+function traceBox(kind,x){
+  const d=traceData(kind,x); const st=d.st;
+  const chip=p=>{const a=st.done.get(p.id);return `<span class="apch ${a?"ok":x.estado==="Enviado a cliente"?"pend":""}" title="${a?`Aprobó ${esc(fechaLarga(a.fecha))}`:""}"><i class="cav cliente">${esc(initials(p.nombre))}</i>${esc(p.nombre)}${a?` ✓ ${esc(fmtCorto(a.fecha.slice(0,10)))}`:x.estado==="Enviado a cliente"?" · pendiente":""}</span>`};
+  const edit=canEdit()&&S.apEdit===x.id;
+  const cl=personas().filter(p=>p.org==="cliente");
+  const open=S.traceOpen===undefined?d.ev.length<=8:S.traceOpen;
+  return `<section class="trace" aria-label="Trazabilidad">
+    <h4>Trazabilidad <button class="clink" data-tracecopy="${kind}|${esc(x.id)}">Copiar</button></h4>
+    <div class="trk">
+      <div><small>Envío de Inside</small><b>${x.fechaEnvio?esc(fechaLarga(x.fechaEnvio)):d.enviada?esc(fechaLarga(d.enviada)):"—"}</b>${x.fechaEnvio&&d.enviada&&x.fechaEnvio!==d.enviada.slice(0,10)?`<small>registrado en la plataforma: ${esc(fechaLarga(d.enviada))}</small>`:""}</div>
+      <div><small>Aprobación del cliente</small><b>${d.aprobada?esc(fechaLarga(d.aprobada)):x.estado==="Enviado a cliente"?"Pendiente":"—"}</b></div>
+      <div><small>${kind==="medio"?"Salida al aire":"Publicación"}</small><b>${d.pub?esc(fechaLarga(d.pub))+(kind==="post"&&x.hora?" · "+esc(x.hora):""):"Sin fecha"}</b></div>
+    </div>
+    ${d.alerts.length?`<ul class="tral">${d.alerts.map(a=>`<li class="${a.k}">${esc(a.t)}</li>`).join("")}</ul>`:""}
+    <div class="aprow"><small>Aprueba${st.req.length>1?"n":""}:</small>${st.req.length?st.req.map(chip).join(""):`<span class="hint">Sin aprobador asignado</span>`}${canEdit()?`<button class="clink" data-apedit="${esc(x.id)}">${edit?"Listo":"Cambiar"}</button>`:""}</div>
+    ${edit?`<div class="chips apedit">${cl.map(p=>`<button class="chip" data-aptog="${kind}|${esc(x.id)}|${esc(p.id)}" aria-pressed="${st.req.includes(p)}">${esc(p.nombre)}</button>`).join("")}${Array.isArray(x.aprobadores)&&x.aprobadores.length?`<button class="clink" data-apauto="${kind}|${esc(x.id)}">Volver al automático (por país)</button>`:""}</div>`:""}
+    <details class="trtl" ${open?"open":""} data-traced><summary>Historial completo (${d.ev.length})</summary>
+      <ol>${d.ev.map(e=>`<li class="${e.k||""} ${e.milestone?"ms":""} ${e.f&&e.f.slice(0,10)>new Date().toISOString().slice(0,10)?"fut":""}"><i>${e.ic}</i><div><b>${esc(e.t)}</b>${e.q?`<p>«${esc(e.q.slice(0,280))}»</p>`:""}${e.s?`<small>${esc(e.s)}</small>`:""}<small>${e.f?esc(fechaLarga(e.milestone?e.f.slice(0,10):e.f)):"sin fecha (de la matriz)"}</small></div></li>`).join("")}</ol>
+    </details>
+  </section>`;
+}
+function traceText(kind,x){
+  const d=traceData(kind,x); const name=kind==="medio"?(x.nombre||"Pieza de medios"):(x.headline||x.campana||"Publicación");
+  return [`Trazabilidad · ${name} (${(x.paises||[]).join(", ")})`,`Envío de Inside: ${x.fechaEnvio?fechaLarga(x.fechaEnvio):d.enviada?fechaLarga(d.enviada):"—"}${x.fechaEnvio&&d.enviada&&x.fechaEnvio!==d.enviada.slice(0,10)?` (registrado ${fechaLarga(d.enviada)})`:""}`,`Aprobación del cliente: ${d.aprobada?fechaLarga(d.aprobada):x.estado==="Enviado a cliente"?"pendiente":"—"}`,`${kind==="medio"?"Salida":"Publicación"}: ${d.pub?fechaLarga(d.pub):"sin fecha"}`,...d.alerts.map(a=>"· "+a.t),"",...d.ev.map(e=>`${e.f?fechaLarga(e.milestone?e.f.slice(0,10):e.f):"(matriz)"} — ${e.t}${e.q?`: «${e.q.slice(0,200)}»`:""}`)].join("\n");
+}
+document.addEventListener("toggle",e=>{if(e.target.matches&&e.target.matches("[data-traced]")) S.traceOpen=e.target.open},true);
+document.addEventListener("click",async e=>{
+  const tc=e.target.closest("[data-tracecopy]"); if(tc){const [k,id]=tc.dataset.tracecopy.split("|");const ok=await copyText(traceText(k,pieceOf(k,id)));toast(ok?"Trazabilidad copiada":"No se pudo copiar");return}
+  const ae=e.target.closest("[data-apedit]"); if(ae){S.apEdit=S.apEdit===ae.dataset.apedit?null:ae.dataset.apedit;rerenderOpen();return}
+  const at=e.target.closest("[data-aptog]"); if(at){const [k,id,pid]=at.dataset.aptog.split("|");const x=pieceOf(k,id);let a=approversOf(x).map(p=>p.id);a=a.includes(pid)?a.filter(v=>v!==pid):[...a,pid];k==="medio"?await saveMed(id,{aprobadores:a}):await save(id,{aprobadores:a});return}
+  const aa=e.target.closest("[data-apauto]"); if(aa){const [k,id]=aa.dataset.apauto.split("|");k==="medio"?await saveMed(id,{aprobadores:[]}):await save(id,{aprobadores:[]});return}
+});
+
+/* filtro por aprobador */
+function aprobSel(){const ps=personas().filter(p=>p.org==="cliente"&&p.aprueba);if(!ps.length) return "";const v=S.f.aprob||"ALL";
+  return `<select class="sel" id="fAprob" aria-label="Aprobador"><option value="ALL">Todos los aprobadores</option>${ps.map(p=>`<option value="${esc(p.id)}" ${v===p.id?"selected":""}>Aprueba: ${esc(p.nombre)}</option>`).join("")}<option value="NONE" ${v==="NONE"?"selected":""}>Sin aprobador asignado</option></select>`}
+function aprobMatch(x){const f=S.f.aprob;if(!f||f==="ALL") return true;const ids=approversOf(x).map(p=>p.id);return f==="NONE"?!ids.length:ids.includes(f)}
+document.addEventListener("change",e=>{if(e.target.id==="fAprob"){S.f.aprob=e.target.value;persistF();render()}});
+
+/* bandeja: pendientes por aprobador */
+function pendingByApprover(){const m=new Map();let none=0;for(const it of pendingItems()){const x=pieceOf(it.kind,it.id);if(!x) continue;const st=approvalState(x);if(!st.req.length) none++;for(const p of st.pend) m.set(p.id,(m.get(p.id)||0)+1)}return {m,none}}
+function inboxApChips(){const {m,none}=pendingByApprover();const ps=personas().filter(p=>p.org==="cliente"&&p.aprueba);const f=S.inboxAp||"ALL";
+  return `<div class="chips apf" role="group" aria-label="Pendiente de"><span class="flabel">Pendiente de</span><button class="chip" data-inap="ALL" aria-pressed="${f==="ALL"}">Todos</button>${ps.map(p=>`<button class="chip" data-inap="${esc(p.id)}" aria-pressed="${f===p.id}">${esc(p.nombre)} <span class="n">${m.get(p.id)||0}</span></button>`).join("")}${none?`<button class="chip" data-inap="NONE" aria-pressed="${f==="NONE"}">Sin aprobador <span class="n">${none}</span></button>`:""}</div>`}
+function inboxApFilter(x){const f=S.inboxAp||"ALL";if(f==="ALL") return true;const st=approvalState(pieceOf(x.kind,x.id));return f==="NONE"?!st.req.length:st.pend.some(p=>p.id===f)}
+function inboxApLine(x){const pc=pieceOf(x.kind,x.id);if(!pc) return "";const st=approvalState(pc);const n=x.en?dayDiff(x.en,new Date().toISOString()):null;return `<small class="apl">${st.pend.length?`Falta: ${esc(st.pend.map(p=>p.nombre).join(", "))}`:st.req.length?"":"Sin aprobador asignado"}${n!=null?` · ${n?`hace ${dTxt(n)}`:"hoy"}`:""}</small>`}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-inap]");if(b){S.inboxAp=b.dataset.inap;renderInboxPanel()}});
+
+/* directorio del equipo */
+async function savePersona(id,patch){const cur=personaById(id)||{};const doc={...cur,...patch,id};S.personas=S.personas||new Map();S.personas.set(id,doc);if(S.eqOpen) renderEquipo();try{await S.db.doc("personas/"+id).set(doc)}catch(e){toast("No se pudo guardar.")}}
+async function seedPersonas(){if(S._seededP||role()!=="inside"||!S.db) return;S._seededP=true;for(const p of EQUIPO_BASE){try{await S.db.doc("personas/"+p.id).set({...p,creado:new Date().toISOString()})}catch(e){}}}
+function renderEquipo(){
+  let root=$("#eqRoot"); if(!S.eqOpen){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="eqRoot";document.body.appendChild(root)}
+  const ed=canEdit(); const me=myPersona(); const {m}=pendingByApprover();
+  const cmsBy=id=>S.comments.filter(c=>c.personaId===id).length;
+  const card=p=>`<article class="pcard" data-pid="${esc(p.id)}">
+    ${ed?`<div class="redcfg"><label>Nombre<input data-pe="nombre" value="${esc(p.nombre)}"></label><label>Rol<select data-pe="rol">${[...new Set([...(ROLES[p.org]||[]),p.rol].filter(Boolean))].map(r=>`<option ${r===p.rol?"selected":""}>${esc(r)}</option>`).join("")}</select></label><label>Correo<input data-pe="email" value="${esc(p.email||"")}" placeholder="opcional"></label></div>`
+      :`<header><i class="cav ${p.org}">${esc(initials(p.nombre))}</i><span class="cwho"><b>${esc(p.nombre)}</b><span class="corg ${p.org}">${esc(p.rol||"")}</span></span></header>`}
+    ${p.org==="cliente"?`<label class="hint"><input type="checkbox" data-pe="aprueba" ${p.aprueba?"checked":""} ${ed?"":"disabled"}> Aprueba piezas</label>`:""}
+    <div class="chips"><span class="flabel">${p.org==="cliente"?"Responsable de":"Regiones"}</span>${REGIONES.map(r=>`<button class="chip" ${ed?`data-preg="${r.id}"`:"disabled"} aria-pressed="${(p.regiones||[]).includes(r.id)}">${r.corto}</button>`).join("")}</div>
+    ${ed||p.paises&&p.paises.length?`<div class="chips"><span class="flabel">Países</span>${ALL_PAISES.map(c=>`<button class="chip sm" ${ed?`data-ppais="${c}"`:"disabled"} aria-pressed="${paisesOf(p).includes(c)}" title="${esc(PAIS[c]||c)}">${c}</button>`).join("")}</div>`:""}
+    <footer>${p.org==="cliente"&&p.aprueba?`<button class="clink" data-eqpend="${esc(p.id)}">⏳ ${m.get(p.id)||0} por aprobar</button>`:""}<span class="hint">💬 ${cmsBy(p.id)} comentarios</span>${p.porConfirmar?`<span class="cchg">Nombre por confirmar</span>`:""}${me&&me.id===p.id?`<span class="ok">Eres tú</span>`:""}${ed?`<button class="clink" data-pdel="${esc(p.id)}">Quitar</button>`:""}</footer>
+  </article>`;
+  const ps=personas();
+  const gaps=REGIONES.filter(r=>!ps.some(p=>p.org==="cliente"&&p.aprueba&&(p.regiones||[]).includes(r.id)||r.paises.every(c=>ps.some(p=>p.org==="cliente"&&p.aprueba&&paisesOf(p).includes(c)))));
+  root.innerHTML=`<div class="scrim modal" data-eqclose><div class="dialog eqd" role="dialog" aria-label="Equipo"><header><h3>👥 Equipo y aprobadores</h3><button class="iconbtn" data-eqclose aria-label="Cerrar">✕</button></header>
+    <div class="eqyo">${asSelect("eqYo",ps.filter(p=>p.org===myOrg()),me&&me.id,"¿Quién eres?")}<span class="hint">Tus comentarios y aprobaciones quedan con tu nombre. Se recuerda en este navegador.</span>${!me&&S.me&&S.me.name&&(ed||role()==="cliente")?`<button class="btn sm" data-padme>＋ Agregarme como ${esc(S.me.name)} (${myOrg()==="cliente"?"Payless":"Inside"})</button>`:""}</div>
+    <div class="trk">${REGIONES.map(r=>{const ap=ps.filter(p=>p.org==="cliente"&&p.aprueba&&paisesOf(p).some(c=>r.paises.includes(c)));return `<div><small><span class="rtag" style="--rc:var(${r.var})"><i></i>${r.nombre}</span></small><b>${ap.length?esc(ap.map(p=>p.nombre).join(", ")):"Sin aprobador"}</b></div>`}).join("")}</div>
+    ${gaps.length?`<p class="hint" style="color:var(--bad)">Falta aprobador en: ${gaps.map(r=>r.nombre).join(", ")}.</p>`:""}
+    <div class="eqcols">${[["cliente","Payless · cliente"],["inside","Inside · agencia"]].map(([o,l])=>`<section><h4>${l} <span>${ps.filter(p=>p.org===o).length}</span></h4>${ps.filter(p=>p.org===o).map(card).join("")}${ed?`<button class="btn sm" data-padd="${o}">＋ Agregar persona</button>`:""}</section>`).join("")}</div>
+  </div></div>`;
+}
+document.addEventListener("click",async e=>{
+  if(e.target.closest("#eqBtn")){S.eqOpen=true;renderEquipo();return}
+  if(!S.eqOpen) return;
+  if(e.target.matches("[data-eqclose]")||e.target.closest("button[data-eqclose]")){S.eqOpen=false;renderEquipo();return}
+  const pid=e.target.closest("[data-pid]")?.dataset.pid; const per=personaById(pid);
+  const rg=e.target.closest("[data-preg]"); if(rg&&per){const r=rg.dataset.preg;const a=(per.regiones||[]).includes(r)?per.regiones.filter(x=>x!==r):[...(per.regiones||[]),r];await savePersona(pid,{regiones:a,paises:[]});return}
+  const pp=e.target.closest("[data-ppais]"); if(pp&&per){const c=pp.dataset.ppais;const cur=paisesOf(per);const a=cur.includes(c)?cur.filter(x=>x!==c):[...cur,c];await savePersona(pid,{paises:ALL_PAISES.filter(x=>a.includes(x)),regiones:REGIONES.filter(r=>r.paises.some(x=>a.includes(x))).map(r=>r.id)});return}
+  if(e.target.closest("[data-padme]")){const id="p-"+Date.now().toString(36);const o=myOrg();await savePersona(id,{nombre:S.me.name,org:o,rol:o==="cliente"?"Coordinador/a":"Ejecutiva de cuentas",aprueba:false,regiones:[],paises:[],userIds:S.myId?[S.myId]:[],creado:new Date().toISOString()});setYo(id);renderEquipo();return}
+  const ad=e.target.closest("[data-padd]"); if(ad){const o=ad.dataset.padd;const id="p-"+Date.now().toString(36);await savePersona(id,{nombre:o==="cliente"?"Nueva persona Payless":"Nueva persona Inside",org:o,rol:o==="cliente"?"Aprobador/a de región":"Ejecutiva de cuentas",aprueba:o==="cliente",regiones:[],paises:[],creado:new Date().toISOString()});return}
+  const dl=e.target.closest("[data-pdel]"); if(dl&&per){if(!confirm(`¿Quitar a ${per.nombre} del equipo? Sus comentarios se conservan.`)) return;await savePersona(pid,{activo:false});return}
+  const pe=e.target.closest("[data-eqpend]"); if(pe){S.eqOpen=false;renderEquipo();S.inboxAp=pe.dataset.eqpend;S.inboxF=null;S.inboxSeen=lastSeen();S.inboxOpen=true;renderInboxPanel();return}
+});
+document.addEventListener("change",async e=>{
+  if(!S.eqOpen) return; const el=e.target.closest("[data-pe]"); if(!el) return; const pid=el.closest("[data-pid]").dataset.pid;
+  const k=el.dataset.pe; const v=el.type==="checkbox"?el.checked:el.value.trim(); if(k==="nombre"&&!v) return;
+  await savePersona(pid,{[k]:v,...(k==="nombre"?{porConfirmar:false}:{})});
+});
+document.addEventListener("keydown",e=>{if(S.eqOpen&&e.key==="Escape"){S.eqOpen=false;renderEquipo()}});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -3038,6 +3314,7 @@ async function boot(){
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
+  db.collection("personas").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,{...d.data(),id:d.id});S.personas=m;if(!m.size&&role()==="inside") seedPersonas();render();rerenderOpen();if(S.eqOpen) renderEquipo();if(S.inboxOpen) renderInboxPanel()},()=>{});
   db.collection("series").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,{...d.data(),id:d.id});S.series=m;render();if(S.openId) renderSheet()},()=>{});
   db.collection("feedorden").onSnapshot(snap=>{const o={};for(const d of snap.docs){const v=d.data();if(v&&v.pais&&v.mes) o[feedKey(v.pais,v.mes)]=v.orden||[]}S.feedOrd=o;if(S.f.view==="grid") renderView()},()=>{});
   db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}; else if(d.id==="catalogo") r.catalogo=v; else if(d.id.startsWith("prop-")) (r.props=r.props||{})[d.id]={...v,id:d.id}; else if(d.id.startsWith("reu-")) (r.reus=r.reus||{})[d.id]={...v,id:d.id}}S.red=r;if(S.redC) renderRedCenter()},()=>{});
