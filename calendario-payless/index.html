@@ -550,6 +550,34 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .pickr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-bottom:4px;cursor:pointer}
 .pickr span{display:flex;flex-direction:column;min-width:0} .pickr small{color:var(--ink-3);font-size:12px}
 @media (max-width:640px){.envrow{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- TODO: gran calendario */
+.mzc.can i{background:var(--cc)} .mzc.can[aria-pressed="true"]{background:var(--cc);border-color:var(--cc);color:#fff} .mzc.can[aria-pressed="true"] i{background:#fff}
+.ta{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.ta-head{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--line);background:var(--surface)}
+.ta-head div{padding:8px 10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.ta-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));row-gap:3px;border-bottom:1px solid var(--line);position:relative;padding-bottom:4px}
+.ta-bg{border-left:1px solid var(--line);z-index:0} .ta-bg:first-of-type{border-left:0}
+.ta-bg.out{background:var(--sunk)} .ta-bg.today{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.ta-dh{z-index:1;padding:6px 8px 2px}
+.ta-dh span{font:700 12px var(--f-mono);color:var(--ink-2);padding:2px 6px;border-radius:6px}
+.ta-dh.out span{color:var(--ink-3)} .ta-dh.today span{background:var(--accent);color:var(--accent-ink)}
+.ta-bar{z-index:2;margin:0 3px;height:22px;border-radius:5px;border:0;background:color-mix(in srgb,var(--cc) 16%,var(--surface));border-left:4px solid var(--cc);box-shadow:inset -3px 0 0 var(--rc);display:flex;align-items:center;gap:5px;padding:0 7px;font:600 11px var(--f-body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;min-width:0;text-align:left}
+.ta-bar b{color:var(--cc);font:800 10px var(--f-mono);text-transform:uppercase}
+.ta-bar .ta-w{color:var(--ink-3);font-weight:500}
+.ta-bar.cs-pub{background:var(--pub-bg)} .ta-bar.cs-done{background:var(--done-bg);color:#fff} .ta-bar.cs-done .ta-w{color:#dff}
+.ta-bar.cl{border-top-left-radius:0;border-bottom-left-radius:0;margin-left:0} .ta-bar.cr{border-top-right-radius:0;border-bottom-right-radius:0;margin-right:0}
+.ta-bar:hover{filter:brightness(.96);outline:1px solid var(--cc)}
+.ta-more{z-index:2;border:0;background:none;color:var(--accent);font:700 11px var(--f-body);text-align:left;padding:0 8px;cursor:pointer}
+.ta-more.sm{padding:2px 4px}
+.ta-day{z-index:1;display:flex;flex-direction:column;gap:3px;padding:4px 4px 2px;min-height:44px;min-width:0}
+.ta-it{display:grid;grid-template-columns:7px auto minmax(0,1fr);gap:2px 5px;align-items:center;border:1px solid var(--line);border-left:3px solid var(--cc);box-shadow:inset 2px 0 0 var(--rc);background:var(--surface);border-radius:5px;padding:2px 5px;font-size:11px;text-align:left;cursor:pointer;min-width:0;color:var(--ink)}
+.ta-it .ta-h{font:600 10px var(--f-mono);color:var(--ink-3)} .ta-it .ta-t{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ta-it .ta-w{grid-column:2 / 4;font-size:10px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ta-it:hover{border-color:var(--cc)}
+.ta-hist{border:1px dashed var(--cc);background:color-mix(in srgb,var(--cc) 10%,var(--surface));color:var(--ink-2);border-radius:5px;font:700 11px var(--f-body);padding:3px 6px;text-align:left;cursor:pointer}
+.ta-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-3);margin-top:10px;align-items:center}
+.ta-leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 </style>
 
 <div class="top">
@@ -694,7 +722,7 @@ function visible(){return [...S.posts.values()].filter(p=>matches(p)&&!(role()!=
 function sortPosts(a,b){return (a.fecha||"9").localeCompare(b.fecha||"9")||horaMin(a.hora)-horaMin(b.hora)||a.region.localeCompare(b.region)}
 function persistF(){store.set("f",{...S.f,q:""})}
 
-function sectionSeg(){return `<div class="fgroup"><div class="seg sect" role="group" aria-label="Sección"><button data-section="org" aria-pressed="${S.f.section!=="med"}">Orgánico</button><button data-section="med" aria-pressed="${S.f.section==="med"}">Medios</button></div></div>`}
+function sectionSeg(){return `<div class="fgroup"><div class="seg sect" role="group" aria-label="Sección"><button data-section="org" aria-pressed="${(S.f.section||"org")==="org"}">Orgánico</button><button data-section="med" aria-pressed="${S.f.section==="med"}">Medios</button><button data-section="all" aria-pressed="${S.f.section==="all"}">Todo</button></div></div>`}
 function renderMedFilters(){
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
   $("#filters").innerHTML=`${sectionSeg()}
@@ -707,6 +735,7 @@ function renderMedFilters(){
 }
 function renderFilters(){
   if(S.f.section==="med"){renderMedFilters();return}
+  if(S.f.section==="all"){renderTodoFilters();return}
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
   const counts={}; for(const p of S.posts.values()) for(const id of regsOf(p)) counts[id]=(counts[id]||0)+1;
   $("#filters").innerHTML=`${sectionSeg()}
@@ -736,7 +765,7 @@ function renderFilters(){
 }
 document.addEventListener("click",e=>{
   const rg=e.target.closest("[data-range]"); if(rg){if(rg.dataset.range==="mes"){S.f.desde="";S.f.hasta=""}else{S.f.desde="2026-10-01";S.f.hasta="2026-10-10";S.month=[2026,9]}persistF();render();return}
-  const sc=e.target.closest("[data-section]"); if(sc){S.f.section=sc.dataset.section;clearSel();S.clip=null;persistF();$(".brand span").textContent=S.f.section==="med"?"Medios · ATL, Ecommerce y Digital · Inside":"Orgánico Meta · Inside";render();return}
+  const sc=e.target.closest("[data-section]"); if(sc){S.f.section=sc.dataset.section;clearSel();S.clip=null;persistF();$(".brand span").textContent=S.f.section==="med"?"Medios · ATL, Ecommerce y Digital · Inside":S.f.section==="all"?"Todo · Orgánico y medios · Inside":"Orgánico Meta · Inside";render();return}
   const mv=e.target.closest("[data-mview]"); if(mv){S.f.mview=mv.dataset.mview;persistF();render();return}
   const mz=e.target.closest("[data-matriz]"); if(mz){const v=mz.dataset.matriz;let a=selMz();if(v==="ALL") a=[]; else {a=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(a.length===MATRICES.length) a=[]}S.f.matrices=a;persistF();render();return}
   const t=e.target.closest("[data-region],[data-pais],[data-tipo],[data-view]"); if(!t||!t.closest("#filters")) return;
@@ -757,6 +786,7 @@ document.addEventListener("input",e=>{if(e.target.id==="fQ"){S.f.q=e.target.valu
 
 /* ============ resumen */
 function renderSummary(){
+  if(S.f.section==="all"){renderTodoSummary();return} if(S.f.section==="med"){renderMedSummary();return}
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
   const vs=visible(); const inM=vs.filter(p=>p.fecha&&p.fecha.startsWith(pre));
   const by=k=>inM.filter(p=>p.tipo===k).length;
@@ -1413,7 +1443,7 @@ document.addEventListener("keydown",e=>{
   if(window.getSelection&&String(window.getSelection()).length) return;
   const k=e.key.toLowerCase();
   if(k==="c"){const ids=S.openId?[S.openId]:selIds().length?selIds():hoverPost?[hoverPost]:[]; if(ids.length){e.preventDefault();copyPosts(ids)}}
-  else if(k==="a"&&!S.openId&&S.f.view==="cal"&&S.f.section!=="med"){const day=S.selDay; const ids=visible().filter(p=>day?p.fecha===day:p.fecha).map(p=>p.id); if(day&&!expanded.has(day)){expanded.add(day);renderView()} if(ids.length){e.preventDefault();S.sels=new Set(ids);S.sel=ids[ids.length-1];markSel()}}
+  else if(k==="a"&&!S.openId&&S.f.view==="cal"&&(S.f.section||"org")==="org"){const day=S.selDay; const ids=visible().filter(p=>day?p.fecha===day:p.fecha).map(p=>p.id); if(day&&!expanded.has(day)){expanded.add(day);renderView()} if(ids.length){e.preventDefault();S.sels=new Set(ids);S.sel=ids[ids.length-1];markSel()}}
   else if(k==="v"&&S.clip&&!S.openId){const d=S.selDay||hoverDay; if(d){e.preventDefault();pastePost(d)}else toast("Haz clic en un día y vuelve a pegar")}
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!S.openId&&(S.clip||selIds().length||S.selDay)){S.clip=null;clearSel();S.selDay=null;renderView()}});
@@ -1466,7 +1496,7 @@ document.addEventListener("drop",async e=>{
 
 /* ============ render */
 function renderTop(){
-  const bs=$(".brand span"); if(bs) bs.textContent=S.f.section==="med"?"Medios · ATL, Ecommerce y Digital · Inside":"Orgánico Meta · Inside";
+  const bs=$(".brand span"); if(bs) bs.textContent=S.f.section==="med"?"Medios · ATL, Ecommerce y Digital · Inside":S.f.section==="all"?"Todo · Orgánico y medios · Inside":"Orgánico Meta · Inside";
   const [y,m]=S.month; $("#monthTitle").textContent=`${MESES[m]} ${y}`;
   const pill=$("#rolePill");
   const labels={inside:"Equipo Inside",cliente:"Cliente Payless",lectura:"Solo lectura",offline:"Vista del Excel"};
@@ -1481,6 +1511,7 @@ function renderTop(){
 document.addEventListener("click",e=>{if(e.target.closest("#toggleView")){S.viewAs=S.viewAs?null:"cliente";render();if(S.openId) renderSheet()}});
 function renderView(){renderViewInner();if(typeof markSel==="function") markSel()}
 function renderViewInner(){
+  if(S.f.section==="all"){renderTodoSummary();if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando…</h3></div>`;return}renderTodo();return}
   if(S.f.section==="med"){renderMedSummary();if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando medios…</h3></div>`;return}if(S.f.mview==="cms") renderCommentsView("med"); else if(S.f.mview==="env") renderEnviados(); else renderMedios();return}
   renderSummary();
   if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando el calendario…</h3><p>Conectando con los datos compartidos.</p></div>`;return}
@@ -1491,7 +1522,7 @@ function renderViewInner(){
 function render(){renderTop();renderFilters();renderView();renderInbox()}
 $("#prevM").onclick=()=>{let [y,m]=S.month;m--;if(m<0){m=11;y--}S.month=[y,m];render()};
 $("#nextM").onclick=()=>{let [y,m]=S.month;m++;if(m>11){m=0;y++}S.month=[y,m];render()};
-let lastNarrow=null; window.addEventListener("resize",()=>{const n=window.matchMedia("(max-width:760px)").matches;if(n!==lastNarrow){lastNarrow=n;if(S.f.view==="cal") renderView()}});
+let lastNarrow=null; window.addEventListener("resize",()=>{const n=window.matchMedia("(max-width:760px)").matches;if(n!==lastNarrow){lastNarrow=n;if(S.f.view==="cal"||S.f.section==="all") renderView()}});
 
 function pickMonth(){
   const now=new Date(); const pre=`${now.getFullYear()}-${pad(now.getMonth()+1)}`;
@@ -1942,6 +1973,73 @@ function renderPick(){
     <div class="drow"><button class="btn ghost" data-pickclose>Cancelar</button><button class="btn primary" data-pickgo>Continuar con ${S.pick.sel.size}</button></div></div></div>`;
 }
 
+/* ============ TODO: gran calendario de marca (orgánico + medios) */
+const CANALES=[{id:"feed",nombre:"Feed",c:"#e4572e"},{id:"hist",nombre:"Historias y promos",c:"#d99a1e"},{id:"ATL",nombre:"ATL",c:"#7a4fd0"},{id:"ECOMMERCE",nombre:"Ecommerce",c:"#0f8b8d"},{id:"DIGITAL",nombre:"Digital",c:"#3a6ccf"}];
+const canal=id=>CANALES.find(x=>x.id===id)||CANALES[0];
+const selCan=()=>Array.isArray(S.f.canales)&&S.f.canales.length?S.f.canales:CANALES.map(x=>x.id);
+function canalOfPost(p){return isFeed(p)?"feed":"hist"}
+function todoPostMatch(p){const f=S.f;if(!p.fecha) return false;if(f.region!=="ALL"&&!regsOf(p).includes(f.region)) return false;if(f.paises.length&&!p.paises.some(c=>f.paises.includes(c))) return false;if(f.estado!=="ALL"&&p.estado!==f.estado) return false;if(role()!=="inside"&&isDraft(p)) return false;if(f.q){const q=f.q.toLowerCase();if(![p.campana,p.headline,p.copy,p.paises.join(" ")].join(" ").toLowerCase().includes(q)) return false}return selCan().includes(canalOfPost(p))}
+function todoMedMatch(m){const f=S.f;if(!m.inicio) return false;if(f.region!=="ALL"&&!regsOf(m).includes(f.region)) return false;if(f.paises.length&&!m.paises.some(c=>f.paises.includes(c))) return false;if(f.estado!=="ALL"&&m.estado!==f.estado) return false;if(f.q){const q=f.q.toLowerCase();if(![m.nombre,m.plataforma,m.paises.join(" ")].join(" ").toLowerCase().includes(q)) return false}return selCan().includes(m.matriz)}
+function renderTodoFilters(){
+  const f=S.f; const r=f.region!=="ALL"?region(f.region):null; const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`; const last=new Date(y,mo+1,0).getDate();
+  const cnt=id=>id==="feed"||id==="hist"?[...S.posts.values()].filter(p=>p.fecha&&p.fecha.startsWith(pre)&&canalOfPost(p)===id).length:[...S.medios.values()].filter(m=>m.matriz===id&&inMonth(m,pre,last)).length;
+  $("#filters").innerHTML=`${sectionSeg()}
+  <div class="fgroup mzpick"><span class="flabel">Canales</span><button class="mzc all" data-canal="ALL" aria-pressed="${!(S.f.canales||[]).length}">Todos</button>${CANALES.map(x=>`<button class="mzc can" data-canal="${x.id}" aria-pressed="${(S.f.canales||[]).includes(x.id)}" style="--cc:${x.c}"><i></i>${x.nombre} <b>${cnt(x.id)}</b></button>`).join("")}</div>
+  <div class="fgroup"><span class="flabel">Región</span><div class="seg" role="group" aria-label="Región"><button data-region="ALL" aria-pressed="${f.region==="ALL"}">Todas</button>${REGIONES.map(x=>`<button data-region="${x.id}" aria-pressed="${f.region===x.id}"><span class="dot" style="background:var(${x.var})"></span>${x.corto}</button>`).join("")}</div></div>
+  ${r&&r.paises.length>1?`<div class="fgroup"><span class="flabel">País</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-pais="${c}" aria-pressed="${f.paises.includes(c)}" title="${PAIS[c]}">${c}</button>`).join("")}</div></div>`:""}
+  <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
+    <input class="search" id="fQ" type="search" placeholder="Buscar en toda la marca…" value="${esc(f.q)}" aria-label="Buscar"></div>`;
+}
+function renderTodoSummary(){
+  const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`; const last=new Date(y,mo+1,0).getDate();
+  const ps=[...S.posts.values()].filter(p=>todoPostMatch(p)&&p.fecha.startsWith(pre)); const ms=[...S.medios.values()].filter(m=>todoMedMatch(m)&&inMonth(m,pre,last));
+  const env=ps.filter(p=>p.estado==="Enviado a cliente").length+ms.filter(m=>m.estado==="Enviado a cliente").length;
+  $("#summary").innerHTML=`<span>Todo ${MESES[mo]}: <b>${ps.length+ms.length}</b> piezas</span><span><b>${ps.filter(p=>isFeed(p)).length}</b> feed · <b>${ps.filter(p=>!isFeed(p)).length}</b> historias y promos</span><span><b>${ms.length}</b> piezas de medios al aire</span>${env?`<span><b>${env}</b> ${role()==="cliente"?"esperan tu aprobación":"esperando aprobación del cliente"}</span>`:""}`;
+}
+function todoItem(p){const c=canal(canalOfPost(p));return `<button class="ta-it" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="sd ${estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora?p.hora.replace(/\s?(am|pm)/,"$1"):"")}</span><span class="ta-t">${esc(p.campana||p.headline||"Publicación")}</span><span class="ta-w">${esc(whereLabel(p))}</span></button>`}
+function renderTodo(){
+  const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`;
+  const first=new Date(y,mo,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
+  const lastD=new Date(y,mo+1,0); const end=new Date(lastD); end.setDate(lastD.getDate()+(6-((lastD.getDay()+6)%7)));
+  const posts=[...S.posts.values()].filter(todoPostMatch); const meds=[...S.medios.values()].filter(todoMedMatch);
+  const byDay={}; for(const p of posts)(byDay[p.fecha]=byDay[p.fecha]||[]).push(p);
+  for(const k in byDay) byDay[k].sort((a,b)=>(isFeed(a)?0:1)-(isFeed(b)?0:1)||horaMin(a.hora)-horaMin(b.hora));
+  const narrow=window.matchMedia("(max-width:760px)").matches;
+  if(narrow){
+    const days=[]; for(let d=new Date(first);d<=lastD;d.setDate(d.getDate()+1)) days.push(iso(d));
+    $("#view").innerHTML=`<div class="agenda">${days.map(k=>{const act=meds.filter(m=>m.inicio<=k&&(m.fin||m.inicio)>=k);const ps=byDay[k]||[];if(!act.length&&!ps.length) return "";
+      return `<section class="aday"><h4>${cap1(fmtDia(k,true))} <span>${ps.length} orgánico · ${act.length} medios al aire</span></h4><div class="items">${act.filter(m=>m.inicio===k).map(m=>`<button class="ta-bar" data-topen="${esc(m.id)}" data-tkind="medio" style="--cc:${canal(m.matriz).c}">${esc(matrizN(m.matriz))} · ${esc(m.nombre)} · ${esc(medRange(m))}</button>`).join("")}${ps.map(todoItem).join("")}</div></section>`}).join("")||emptyMonth()}</div>`;
+    return;
+  }
+  const weeks=[]; for(let d=new Date(start);d<=end;d.setDate(d.getDate()+7)) weeks.push(new Date(d));
+  const LANES=5, LIM=4;
+  const html=weeks.map(ws=>{
+    const wsI=iso(ws); const we=new Date(ws); we.setDate(we.getDate()+6); const weI=iso(we);
+    const bars=meds.filter(m=>m.inicio<=weI&&(m.fin||m.inicio)>=wsI).map(m=>{const a=m.inicio<wsI?wsI:m.inicio;const b=(m.fin||m.inicio)>weI?weI:(m.fin||m.inicio);return {m,s:diffDays(a,wsI),e:diffDays(b,wsI),cl:m.inicio<wsI,cr:(m.fin||m.inicio)>weI}})
+      .sort((a,b)=>a.s-b.s||(b.e-b.s)-(a.e-a.s));
+    const lanes=[]; for(const bar of bars){let i=lanes.findIndex(l=>l<bar.s);if(i<0){i=lanes.length;lanes.push(-1)}lanes[i]=bar.e;bar.lane=i}
+    const open=S.todoOpenW===wsI; const shown=open?bars:bars.filter(b=>b.lane<LANES); const hidden=bars.length-shown.length;
+    const nl=open?lanes.length:Math.min(lanes.length,LANES);
+    const days=Array.from({length:7},(_,i)=>{const d=new Date(ws);d.setDate(d.getDate()+i);return d});
+    return `<div class="ta-week" style="grid-template-rows:auto ${nl?`repeat(${nl},24px)`:""} ${hidden||(open&&lanes.length>LANES)?"20px":""} auto">
+      ${days.map((d,i)=>`<div class="ta-dh ${d.getMonth()!==mo?"out":""} ${iso(d)===todayISO?"today":""}" style="grid-column:${i+1};grid-row:1"><span>${d.getDate()}</span></div>`).join("")}
+      ${days.map((d,i)=>`<div class="ta-bg ${d.getMonth()!==mo?"out":""} ${iso(d)===todayISO?"today":""}" style="grid-column:${i+1};grid-row:1 / -1"></div>`).join("")}
+      ${shown.map(b=>{const c=canal(b.m.matriz);return `<button class="ta-bar ${colorC(b.m.estado)} ${b.cl?"cl":""} ${b.cr?"cr":""}" data-topen="${esc(b.m.id)}" data-tkind="medio" style="grid-column:${b.s+1} / ${b.e+2};grid-row:${b.lane+2};--cc:${c.c};--rc:${rv(b.m)}" title="${esc(matrizN(b.m.matriz))} · ${esc(b.m.nombre)} · ${esc(whereLabel(b.m))} · ${esc(medRange(b.m))} · ${esc(b.m.estado)}"><span class="sd ${estadoC(b.m.estado)}"></span><b>${esc(matrizN(b.m.matriz))}</b> ${esc(b.m.nombre||"Pieza")} <span class="ta-w">${esc(whereLabel(b.m))}</span></button>`}).join("")}
+      ${hidden?`<button class="ta-more" data-tweek="${wsI}" style="grid-column:1 / 8;grid-row:${nl+2}">+${hidden} piezas de medios más esta semana</button>`:open&&lanes.length>LANES?`<button class="ta-more" data-tweek="" style="grid-column:1 / 8;grid-row:${nl+2}">Ver menos medios</button>`:""}
+      ${days.map((d,i)=>{const k=iso(d);const ps=byDay[k]||[];const feed=ps.filter(isFeed),hist=ps.filter(p=>!isFeed(p));const exp=S.todoOpenD===k;const fShow=exp?feed:feed.slice(0,LIM);
+        return `<div class="ta-day ${d.getMonth()!==mo?"out":""}" style="grid-column:${i+1};grid-row:-2">${fShow.map(todoItem).join("")}${!exp&&feed.length>LIM?`<button class="ta-more sm" data-tday="${k}">+${feed.length-LIM} feed</button>`:""}
+          ${hist.length?(exp?hist.map(todoItem).join(""):`<button class="ta-hist" data-tday="${k}" style="--cc:${canal("hist").c}">◎ ${hist.length} ${hist.length===1?"historia/promo":"historias y promos"}</button>`):""}${exp?`<button class="ta-more sm" data-tday="">Ver menos</button>`:""}</div>`}).join("")}
+    </div>`}).join("");
+  $("#view").innerHTML=`<div class="ta"><div class="ta-head">${DOW.map(d=>`<div>${d}</div>`).join("")}</div>${html}</div>
+    <div class="ta-leg">${CANALES.map(c=>`<span><i style="background:${c.c}"></i>${c.nombre}</span>`).join("")}<span>· La franja de color a la izquierda es la región, el punto es el estado. Toca cualquier pieza para abrirla.</span></div>`;
+}
+document.addEventListener("click",e=>{
+  const c=e.target.closest("[data-canal]"); if(c){const v=c.dataset.canal;let a=[...(S.f.canales||[])];if(v==="ALL") a=[]; else {a=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(a.length===CANALES.length) a=[]}S.f.canales=a;persistF();render();return}
+  const o=e.target.closest("[data-topen]"); if(o){if(o.dataset.tkind==="medio") openMedio(o.dataset.topen); else openPost(o.dataset.topen);return}
+  const w=e.target.closest("[data-tweek]"); if(w){S.todoOpenW=w.dataset.tweek||null;renderView();return}
+  const d=e.target.closest("[data-tday]"); if(d){S.todoOpenD=d.dataset.tday||null;renderView();return}
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -1972,7 +2070,7 @@ async function boot(){
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
-  db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med") render();if(S.openMed) renderMedioSheet()},()=>{});
+  db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
 }
 boot();
