@@ -578,6 +578,29 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .ta-hist{border:1px dashed var(--cc);background:color-mix(in srgb,var(--cc) 10%,var(--surface));color:var(--ink-2);border-radius:5px;font:700 11px var(--f-body);padding:3px 6px;text-align:left;cursor:pointer}
 .ta-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-3);margin-top:10px;align-items:center}
 .ta-leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- redactor IA */
+.redbox{background:var(--surface);border:1px solid var(--line);border-left:3px solid #7a4fd0;border-radius:10px;padding:8px 12px;margin-bottom:14px}
+.redbox summary{cursor:pointer;font-weight:800;font-size:14px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.redbox summary span{font-weight:500;font-size:12px;color:var(--ink-3)}
+.redbox[open]{display:flex;flex-direction:column;gap:8px}
+.redbox textarea,.dialog textarea{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--bg);color:var(--ink);font:inherit;width:100%;box-sizing:border-box}
+.redcfg{display:flex;gap:8px;flex-wrap:wrap}
+.redcfg label{display:flex;flex-direction:column;font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;gap:3px;flex:1;min-width:150px}
+.redcfg select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);color:var(--ink);font:500 13px var(--f-body);text-transform:none;letter-spacing:0}
+.redwait{color:#7a4fd0;font-weight:700;font-size:13px;margin:0}
+.redout{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.redout p{margin:0}
+.redprop{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.redprop header{display:flex;flex-direction:column}
+.redprop header span{font-size:12px;color:var(--ink-3)}
+.redf small{font:700 10px var(--f-mono);text-transform:uppercase;color:var(--ink-3)} .redf small em{color:var(--bad);font-style:normal}
+.redf p{white-space:pre-wrap;font-size:14px}
+.dialog.wide{width:min(760px,100%)}
+.rclist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rclist li{display:flex;gap:8px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.rclist li span{flex:1;display:flex;flex-direction:column} .rclist small{color:var(--ink-3);font-size:11px}
+.rcpre{white-space:pre-wrap;font:12px var(--f-body);color:var(--ink-2);margin:6px 0}
 </style>
 
 <div class="top">
@@ -589,7 +612,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         <h1 id="monthTitle">Octubre 2026</h1>
         <button class="iconbtn" id="nextM" aria-label="Mes siguiente">›</button>
       </div>
-      <div class="who"><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
+      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, insumos por campaña y aprendizajes">✍️ Redactor</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
     </div>
     <div class="filters" id="filters"></div>
     <div class="summary" id="summary"></div>
@@ -1162,7 +1185,7 @@ function tabBody(p,cms){
   if(t==="copy"){
     const cap=caption(p); const cb=`<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("copy","Comentar el copy")}${p.legal?cBtn("legal","Comentar el legal"):""}</div>`;
     if(role()!=="inside") return cb+`<div class="fields">${fieldRO("Copy del post",p.copy||"Copy en redacción",true)}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.legal?fieldRO("Legal",p.legal,true):""}</div>`;
-    return cb+`<div class="fields">${inp("copy","Copy del post (caption)",p,"textarea",true,canEdit()?"Se guarda al salir del campo. Mientras esté vacío, el preview muestra headline + CTA.":"")}
+    return cb+redactorPanel(p,"post")+`<div class="fields">${inp("copy","Copy del post (caption)",p,"textarea",true,canEdit()?"Se guarda al salir del campo. Mientras esté vacío, el preview muestra headline + CTA.":"")}
       ${inp("headline","Headline / super (texto en pieza)",p,"text",true)}${inp("cta","CTA",p)}${inp("mandatories","Mandatories / observaciones",p,"textarea",true)}
       ${p.legal?inp("legal","Legal (obligatorio en arte o copy)",p,"textarea",true):""}
       <div class="f wide"><span class="lb">Caracteres del copy</span><div class="ro mono">${(p.copy||"").length} / 2.200 ${cap.prov?"· usando copy provisional":""}</div></div></div>`;
@@ -1686,8 +1709,8 @@ function medTab(m){
   const t=S.mTab;
   if(t==="cms") return commentsPanel(m.id,{nImg:(m.imagenes||[]).length,legal:true,slide:S.mSlide||0});
   if(t==="copy"){
-    if(m.matriz==="ATL") return `<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("copy","Comentar el guion")}${cBtn("legal","Comentar el legal")}</div><div class="fields">${mInp("mencion","Mención, dinámica y locución",m,"textarea",true)}${mInp("legal","Legal",m,"textarea",true)}</div>`;
-    return `<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("copy","Comentar el copy")}${cBtn("legal","Comentar el legal")}</div><div class="fields">${mInp("textoPrincipal","Texto principal (50–150 caracteres)",m,"textarea",true)}${mInp("titular","Titular (máx. 27)",m)}${mInp("descripcion","Descripción (máx. 27)",m)}${mInp("legal","Legal",m,"textarea",true)}</div>
+    if(m.matriz==="ATL") return `<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("copy","Comentar el guion")}${cBtn("legal","Comentar el legal")}</div>${redactorPanel(m,"medio")}<div class="fields">${mInp("mencion","Mención, dinámica y locución",m,"textarea",true)}${mInp("legal","Legal",m,"textarea",true)}</div>`;
+    return `<div class="cbtns" style="justify-content:flex-start;margin-bottom:10px">${cBtn("copy","Comentar el copy")}${cBtn("legal","Comentar el legal")}</div>${redactorPanel(m,"medio")}<div class="fields">${mInp("textoPrincipal","Texto principal (50–150 caracteres)",m,"textarea",true)}${mInp("titular","Titular (máx. 27)",m)}${mInp("descripcion","Descripción (máx. 27)",m)}${mInp("legal","Legal",m,"textarea",true)}</div>
       ${canEdit()&&((m.titular||"").length>27||(m.descripcion||"").length>27)?`<p class="hint" style="color:var(--bad)">El titular o la descripción pasan de 27 caracteres.</p>`:""}`;
   }
   if(t==="arte"){
@@ -1900,6 +1923,7 @@ function pendingItems(){
   return out.sort((a,b)=>(b.en||"").localeCompare(a.en||""));
 }
 function renderInbox(){
+  const rb=$("#redBtn"); if(rb) rb.hidden=!(S.mode==="live"&&role()==="inside"&&canEdit());
   const b=$("#inboxBtn"); if(!b) return;
   const n=pendingItems().length, cms=role()==="inside"?[...S.posts.keys(),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
   b.hidden=S.mode!=="live"; b.innerHTML=role()==="cliente"?`Por revisar <b>${n}</b>`:`Con el cliente <b>${n}</b>${cms?` · <span title="Comentarios del cliente sin resolver">💬 ${cms}</span>`:""}`;
@@ -2040,12 +2064,205 @@ document.addEventListener("click",e=>{
   const d=e.target.closest("[data-tday]"); if(d){S.todoOpenD=d.dataset.tday||null;renderView();return}
 });
 
+/* ============ REDACTOR IA: voz de marca + insumos por campaña + aprendizajes → recomendaciones de copy */
+const NIVELES=[["junior","Redactor junior","claro y correcto, sigue el brief al pie de la letra, sin riesgos"],["semi","Redactor semi senior","claro, con ritmo y algún giro creativo, cuida la mecánica"],["senior","Redactor senior","conceptual, con ideas propias, juegos de palabras con criterio, ritmo y remate memorable"],["dc","Director creativo","concepto potente y estratégico, eleva la marca, propone territorio y explica el porqué"]];
+const PERFILES=[["editorial","Moda editorial","captions cortos y aspiracionales, la imagen hace el trabajo (referentes: Zara, New Balance)"],["social","Social media cercano","conversacional, escrito para mandarse y comentar, emojis con medida, guiños locales"],["retail","Retail promocional","mecánica clara, hora y legal exactos, sin perder el look ni abrir con el descuento"],["performance","Pauta / performance","gancho en los primeros 125 caracteres, beneficio + CTA claro, titulares de máx. 27 caracteres"],["caribe","Bilingüe Caribe inglés","inglés caribeño natural y cálido, referencias culturales (fete, Carnival), sin traducir literal del español"]];
+const VOZ_BASE=`Payless pasa de "zapatería para toda la familia" a "destino de moda accesible". Discurso propio: la libertad de elegir (tú decides), la variedad para cada versión de ti, un precio que te deja elegir sin culpa, más de 400 tiendas cerca, la voz local de cuatro regiones (Caribe inglés en inglés).
+Firma verbal: «Encuentra lo tuyo». Tagline Sneakers: «Todos los estilos en un solo lugar» / «Find your style in one place». Firma: «Solo en Payless» / «Only at Payless».
+El feed es la vitrina de marca, no catálogo ni volante. REGLA: ninguna pieza del feed abre con un descuento; el precio va como sello dentro de la historia, nunca como titular. Las promos viven en historias con look + oferta + hora exacta + legal.
+El copy se escribe para la búsqueda y para mandarse (ej.: «Para ese amigo que siempre dice "quiero unos zapatos cómodos". Ya encontramos el par. Mándale esto»), no como descripción de producto.
+Protagonista: la persona con el look completo. Prueba del headline: 1) ¿refuerza un territorio del KV? 2) ¿suena a la voz de la campaña? 3) ¿solo lo diría Payless? Si otra marca lo puede firmar, no pasa.
+Evitar: «empowerment», «éxito», la durabilidad como promesa, el 50% OFF como titular, frases genéricas de catálogo.`;
+const slug=s=>(s||"general").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"general";
+function redMarca(){return S.red&&S.red.marca||{}}
+function redCamp(linea){return (S.red&&S.red.camps&&S.red.camps[slug(linea)])||{}}
+function infoCampText(linea){
+  if(!INFO||!INFO.lineamientos) return "";
+  const L=INFO.lineamientos; const k=(linea||"").toLowerCase().split(" ")[0];
+  const pick=arr=>(arr||[]).filter(x=>(x.nombre||"").toLowerCase().includes(k)).map(x=>`${x.nombre}: ${x.detalle}`);
+  return [...pick(L.tono),...pick(L.series)].join("\n");
+}
+function lineaOf(piece,kind){
+  if(kind==="post") return piece.linea&&piece.linea!=="Otra"?piece.linea:(piece.campana||"Otra");
+  const n=(piece.nombre||"").toLowerCase();
+  if(/halloween/.test(n)) return "Halloween Kids"; if(/kid|niñ/.test(n)) return "Kids"; if(/comfort/.test(n)) return "Comfort Plus";
+  if(/llegad|sandal|bota|cuero/.test(n)) return "Nuevas Llegadas"; if(/bogo|%|descuento|flash|promo|cyd|off/.test(n)) return "Promociones";
+  if(/atl[eé]tic|sneaker|champion|gear|airwalk|reebok|cross/.test(n)) return "Sneakers"; return "Otra";
+}
+function lineaOfAny(x){return x.nombre!==undefined&&x.matriz?lineaOf(x,"medio"):lineaOf(x,"post")}
+function copyFieldsOf(piece,kind){
+  if(kind==="post") return {copy:piece.copy||"",headline:piece.headline||"",cta:piece.cta||""};
+  if(piece.matriz==="ATL") return {mencion:piece.mencion||""};
+  return {textoPrincipal:piece.textoPrincipal||"",titular:piece.titular||"",descripcion:piece.descripcion||""};
+}
+function buildCopyPrompt(piece,kind,o){
+  const marca=redMarca(), camp=redCamp(o.linea);
+  const niv=NIVELES.find(x=>x[0]===o.nivel)||NIVELES[2], per=PERFILES.find(x=>x[0]===o.perfil)||PERFILES[1];
+  const en=piece.paises.length&&piece.paises.every(c=>EN_PAISES.has(c));
+  const others=[...S.posts.values()].map(p=>({p,kind:"post"})).concat([...S.medios.values()].map(m=>({p:m,kind:"medio"})))
+    .filter(x=>x.p.id!==piece.id&&lineaOfAny(x.p)===o.linea)
+    .map(x=>({...x,txt:x.kind==="post"?[x.p.headline&&`Headline: ${x.p.headline}`,x.p.copy&&`Copy: ${x.p.copy}`].filter(Boolean).join(" | "):[x.p.titular&&`Titular: ${x.p.titular}`,x.p.textoPrincipal&&`Texto: ${x.p.textoPrincipal}`,x.p.mencion&&`Mención: ${x.p.mencion.slice(0,400)}`].filter(Boolean).join(" | ")}))
+    .filter(x=>x.txt).sort((a,b)=>(isOk(b.p)?1:0)-(isOk(a.p)?1:0)).slice(0,14);
+  const ids=new Set([piece.id,...others.map(x=>x.p.id)]);
+  const cms=[...S.posts.keys(),...S.medios.keys()].filter(id=>ids.has(id)).flatMap(id=>threadsOf(id).map(t=>({id,t}))).filter(x=>x.t.org==="cliente"||x.t.tipo==="cambios")
+    .sort((a,b)=>(a.id===piece.id?-1:0)-(b.id===piece.id?-1:0)).slice(0,18);
+  const apr=(marca.aprendizajes||[]).map(a=>`- ${a.texto}`).join("\n");
+  const fld=copyFieldsOf(piece,kind);
+  const canalTxt=kind==="post"?`Orgánico Instagram/Facebook · ${fmtLabel(piece)} · ${TIPOS[piece.tipo]||""}`:`Medios · matriz ${matrizN(piece.matriz)} · ${piece.plataforma||""} · formato ${piece.formato||""}`;
+  const limites=kind==="post"?"Caption de Instagram: la primera línea debe enganchar (se corta en ~125 caracteres); máx. 2.200. Headline en pieza: máx. ~6 palabras."
+    :piece.matriz==="ATL"?"Mención/locución para TV o radio: natural para leer en voz alta; si es mención corta, ~30 palabras."
+    :"Meta Ads: texto principal 50–150 caracteres; titular máx. 27 caracteres; descripción máx. 27 caracteres.";
+  return `Eres un ${niv[1]} de la agencia creativa INSIDE, con perfil «${per[1]}» (${per[2]}). Nivel esperado: ${niv[2]}.
+Tu trabajo: recomendar el copy de UNA pieza de Payless para que el redactor del equipo lo afine, unificando la voz de la marca.
+
+== VOZ DE MARCA PAYLESS ==
+${marca.voz||VOZ_BASE}
+
+== APRENDIZAJES ACUMULADOS (reglas validadas con el cliente; respétalas) ==
+${apr||"(todavía no hay)"}
+
+== CAMPAÑA: ${o.linea} ==
+${[camp.insumos&&`Insumos / brief: ${camp.insumos}`,camp.objetivo&&`Objetivo: ${camp.objetivo}`,camp.publico&&`Público: ${camp.publico}`,camp.tono&&`Tono: ${camp.tono}`,camp.mensajes&&`Mensajes clave: ${camp.mensajes}`,camp.prohibido&&`Palabras o enfoques prohibidos: ${camp.prohibido}`].filter(Boolean).join("\n")||"(sin insumos cargados)"}
+${infoCampText(o.linea)?`Lineamientos del planning:\n${infoCampText(o.linea)}`:""}
+
+== LA PIEZA ==
+Canal: ${canalTxt}
+Países: ${piece.paises.map(c=>PAIS[c]).join(", ")} · Idioma de salida: ${en?"INGLÉS (Caribe inglés)":"español"}
+Fecha: ${kind==="post"?(piece.fecha||"sin fecha"):(medRange(piece))}
+Nombre/campaña: ${kind==="post"?(piece.campana||""):(piece.nombre||"")}${piece.serie?` · Serie: ${piece.serie}`:""}
+${piece.idea?`Idea: ${piece.idea}\n`:""}${piece.legal?`Legal: ${piece.legal}\n`:""}Copy actual: ${JSON.stringify(fld)}
+Límites: ${limites}
+
+== OTRAS PIEZAS DE LA MISMA CAMPAÑA (estilo a mantener; [APROBADA] = el cliente ya la aprobó) ==
+${others.map(x=>`- ${isOk(x.p)?"[APROBADA] ":""}${x.txt.slice(0,420)}`).join("\n")||"(no hay otras con copy)"}
+
+== COMENTARIOS DEL CLIENTE (esta pieza primero) ==
+${cms.map(x=>`- ${x.id===piece.id?"[ESTA PIEZA] ":""}${x.t.resuelto?"[resuelto] ":""}${PARTES[x.t.parte]||""}: ${x.t.texto.slice(0,300)}`).join("\n")||"(sin comentarios)"}
+
+${o.indicacion?`== INDICACIÓN DEL REDACTOR ==\n${o.indicacion}\n`:""}
+Responde SOLO con un objeto JSON con esta forma:
+{"diagnostico":"2-3 frases sobre el copy actual frente a la voz y a las otras piezas","direccion":"por dónde debe ir el copy (1-2 frases)","estilo":"cómo es el estilo de las otras piezas de esta campaña (1-2 frases)","propuestas":[{"titulo":"nombre corto de la ruta","campos":${JSON.stringify(Object.fromEntries(Object.keys(fld).map(k=>[k,"..."])))},"porque":"1 frase"}],"alertas":["riesgos: legal, descuento en apertura, largo, idioma, palabras prohibidas…"]}
+Da 3 propuestas distintas. Escribe en el idioma de salida de la pieza. No inventes precios, fechas ni condiciones que no estén en los datos.`;
+}
+let redCtl=null;
+async function runRedactor(piece,kind){
+  const st=S.redUI[piece.id]; if(!S.sampleFn){st.err="El redactor necesita Claude disponible en esta vista.";rerenderOpen();return}
+  redCtl?.abort(); redCtl=new AbortController(); st.busy=true; st.err=""; st.out=null; st.raw=""; rerenderOpen();
+  try{
+    const r=await S.sampleFn.json(buildCopyPrompt(piece,kind,st),{signal:redCtl.signal,cache:false,onText:({text})=>{st.raw=text;const el=$("#redRaw");if(el) el.textContent="Escribiendo… "+text.length+" caracteres"}});
+    st.out=r&&typeof r==="object"?r:null; if(!st.out) st.err="La respuesta no vino en el formato esperado. Intenta de nuevo.";
+  }catch(e){if(e&&e.code!=="cancelled") st.err=e&&e.code==="not_granted"?"No se dio permiso para usar Claude en esta página.":e&&e.code==="rate_limited"?"Demasiadas consultas seguidas. Espera un momento y vuelve a intentar.":e&&e.code==="invalid_json"?"La respuesta no vino en el formato esperado. Intenta de nuevo.":"No se pudo generar la recomendación. Intenta de nuevo."}
+  finally{st.busy=false; rerenderOpen()}
+}
+function redactorPanel(piece,kind){
+  if(role()!=="inside"||!canEdit()) return "";
+  S.redUI=S.redUI||{};
+  const camp0=lineaOf(piece,kind); const c=redCamp(camp0), m=redMarca();
+  const st=S.redUI[piece.id]=S.redUI[piece.id]||{linea:camp0,nivel:c.nivel||m.nivel||"senior",perfil:c.perfil||m.perfil||(piece.paises.every(x=>EN_PAISES.has(x))?"caribe":kind==="medio"&&piece.matriz!=="ATL"?"performance":"social"),indicacion:""};
+  const lineas=[...new Set([...LINEAS,camp0])];
+  const out=st.out;
+  return `<details class="redbox" ${st.open?"open":""} data-redtoggle><summary>✍️ Redactor IA <span>recomendaciones de copy con la voz de Payless, la campaña y los comentarios del cliente</span></summary>
+    <div class="redcfg">
+      <label>Campaña<select data-redf="linea">${lineas.map(l=>`<option ${l===st.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label>
+      <label>Nivel<select data-redf="nivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===st.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label>Perfil<select data-redf="perfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===st.perfil?"selected":""}>${l}</option>`).join("")}</select></label>
+    </div>
+    <textarea data-redf="indicacion" rows="2" placeholder="Indicaciones opcionales: más corto, más emocional, incluir la hora de la promo, tono para RD…">${esc(st.indicacion)}</textarea>
+    <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${(redMarca().aprendizajes||[]).length} aprendizajes.</span>
+      ${st.busy?`<button class="btn" data-redstop>Detener</button>`:`<button class="btn primary" data-redgo>${out?"Volver a recomendar":"Recomendar copy"}</button>`}</div>
+    ${st.busy?`<p class="redwait" id="redRaw">Pensando… (puede tardar unos segundos)</p>`:""}
+    ${st.err?`<p class="hint" style="color:var(--bad)">${esc(st.err)}</p>`:""}
+    ${out?`<div class="redout">
+      ${out.diagnostico?`<p><b>Diagnóstico.</b> ${esc(out.diagnostico)}</p>`:""}${out.direccion?`<p><b>Por dónde ir.</b> ${esc(out.direccion)}</p>`:""}${out.estilo?`<p><b>Estilo de las otras piezas.</b> ${esc(out.estilo)}</p>`:""}
+      ${(out.propuestas||[]).map((pp,i)=>`<div class="redprop"><header><b>${esc(pp.titulo||`Propuesta ${i+1}`)}</b><span>${esc(pp.porque||"")}</span></header>
+        ${Object.entries(pp.campos||{}).map(([k,v])=>`<div class="redf"><small>${esc({copy:"Copy",headline:"Headline",cta:"CTA",textoPrincipal:"Texto principal",titular:"Titular",descripcion:"Descripción",mencion:"Mención"}[k]||k)}${(k==="titular"||k==="descripcion")&&String(v).length>27?` · <em>${String(v).length} caracteres</em>`:""}</small><p>${esc(String(v))}</p></div>`).join("")}
+        <div class="drow"><button class="btn" data-redcopy="${i}">Copiar</button><button class="btn primary" data-reduse="${i}">Usar este copy</button></div></div>`).join("")}
+      ${(out.alertas||[]).length?`<div class="revisar"><b>Alertas</b><span>${out.alertas.map(esc).join("<br>")}</span></div>`:""}
+    </div>`:""}
+  </details>`;
+}
+function currentPiece(){if(S.openMed){const m=S.medios.get(S.openMed);return m&&{piece:m,kind:"medio"}} if(S.openId){const p=S.posts.get(S.openId);return p&&{piece:p,kind:"post"}} return null}
+document.addEventListener("toggle",e=>{if(e.target.matches&&e.target.matches("[data-redtoggle]")){const c=currentPiece();if(c&&S.redUI&&S.redUI[c.piece.id]) S.redUI[c.piece.id].open=e.target.open}},true);
+document.addEventListener("change",e=>{const f=e.target.closest("[data-redf]");if(!f) return;const c=currentPiece();if(!c) return;S.redUI[c.piece.id][f.dataset.redf]=f.value});
+document.addEventListener("input",e=>{const f=e.target.closest("textarea[data-redf]");if(!f) return;const c=currentPiece();if(c) S.redUI[c.piece.id][f.dataset.redf]=f.value});
+document.addEventListener("click",async e=>{
+  if(e.target.closest("[data-redgo]")){const c=currentPiece();if(c) runRedactor(c.piece,c.kind);return}
+  if(e.target.closest("[data-redstop]")){redCtl?.abort();return}
+  const u=e.target.closest("[data-reduse]"),cp=e.target.closest("[data-redcopy]");
+  if(u||cp){const c=currentPiece();if(!c) return;const pp=(S.redUI[c.piece.id].out.propuestas||[])[+(u||cp).dataset[u?"reduse":"redcopy"]];if(!pp) return;
+    const campos=Object.fromEntries(Object.entries(pp.campos||{}).filter(([k,v])=>v&&String(v).trim()).map(([k,v])=>[k,String(v)]));
+    if(cp){const ok=await copyText(Object.values(campos).join("\n\n"));toast(ok?"Copiado":"No se pudo copiar");return}
+    if(c.kind==="post") await save(c.piece.id,campos); else await saveMed(c.piece.id,campos);
+    S.redUI[c.piece.id].open=true; toast("Copy aplicado. Ctrl+Z para deshacer.");return}
+});
+
+/* centro de redacción: voz de marca, insumos por campaña, aprendizajes */
+function openRedCenter(tab,linea){S.redC={tab:tab||"voz",linea:linea||S.redC?.linea||"Sneakers"};loadInfo().then(renderRedCenter);renderRedCenter()}
+function renderRedCenter(){
+  let root=$("#redRoot"); if(!S.redC){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="redRoot";document.body.appendChild(root)}
+  const t=S.redC.tab, m=redMarca(), c=redCamp(S.redC.linea);
+  const body=t==="voz"?`<p class="hint">La base que el Redactor IA usa en todas las piezas. Escríbela como se la explicarías a un redactor nuevo.</p>
+      <textarea id="rcVoz" rows="14">${esc(m.voz||VOZ_BASE)}</textarea>
+      <div class="redcfg"><label>Nivel por defecto<select id="rcNivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===(m.nivel||"senior")?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label>Perfil por defecto<select id="rcPerfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===(m.perfil||"social")?"selected":""}>${l}</option>`).join("")}</select></label></div>
+      <div class="drow"><button class="btn primary" data-rcsave="voz">Guardar voz de marca</button></div>`
+    :t==="camp"?`<div class="redcfg"><label>Campaña<select id="rcLinea">${LINEAS.map(l=>`<option ${l===S.redC.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label></div>
+      ${infoCampText(S.redC.linea)?`<details class="cact"><summary>Lineamientos del planning para esta campaña</summary><pre class="rcpre">${esc(infoCampText(S.redC.linea))}</pre></details>`:""}
+      ${[["insumos","Insumos / brief de la campaña","Pega aquí el brief, el concepto, el KV, referencias, insights… todo lo que el redactor debe saber.",6],["objetivo","Objetivo","Ej.: posicionar Payless como destino de sneakers multimarca.",2],["publico","Público","Ej.: jóvenes 18–30, urbanos, sneakers como moda.",2],["tono","Tono","Ej.: versátil, joven, energía; nunca «comodidad».",2],["mensajes","Mensajes clave","Ej.: cuatro marcas en un solo lugar; un par, mil estilos.",2],["prohibido","Palabras o enfoques prohibidos","Ej.: «cómodo», «para dama», abrir con el %.",2]].map(([k,l,ph,r])=>`<label class="lb">${l}</label><textarea data-rc="${k}" rows="${r}" placeholder="${esc(ph)}">${esc(c[k]||"")}</textarea>`).join("")}
+      <div class="redcfg"><label>Nivel del redactor para esta campaña<select data-rc="nivel"><option value="">El de la marca</option>${NIVELES.map(([k,l])=>`<option value="${k}" ${k===c.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label>Perfil<select data-rc="perfil"><option value="">El de la marca</option>${PERFILES.map(([k,l])=>`<option value="${k}" ${k===c.perfil?"selected":""}>${l}</option>`).join("")}</select></label></div>
+      <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
+    :`<p class="hint">Reglas que el redactor aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
+      <ul class="rclist">${(m.aprendizajes||[]).map((a,i)=>`<li><span>${esc(a.texto)}${a.fuente?`<small>${esc(a.fuente)}</small>`:""}</span><button class="iconbtn" data-rcdel="${i}" aria-label="Quitar">✕</button></li>`).join("")||`<li class="cempty">Todavía no hay aprendizajes.</li>`}</ul>
+      <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
+      <div class="drow wrap"><button class="btn primary" data-rcprop ${S.redC.busy?"disabled":""}>${S.redC.busy?"Analizando comentarios…":"Proponer aprendizajes desde los comentarios del cliente"}</button></div>
+      ${S.redC.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.err)}</p>`:""}
+      ${(S.redC.props||[]).length?`<div class="redout"><b>Propuestas (elige cuáles guardar)</b>${S.redC.props.map((p,i)=>`<label class="pickr"><input type="checkbox" data-rcp="${i}" checked><span><b>${esc(p.regla)}</b><small>${esc(p.evidencia||"")}</small></span></label>`).join("")}<div class="drow"><button class="btn primary" data-rcpsave>Guardar seleccionados</button></div></div>`:""}`;
+  root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Centro de redacción"><header><h3>✍️ Centro de redacción</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
+    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Insumos por campaña</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
+    ${body}</div></div>`;
+}
+async function saveRed(id,patch){
+  S.red=S.red||{marca:{},camps:{}}; const isM=id==="marca"; const cur=isM?S.red.marca:(S.red.camps[id]||{});
+  const doc={...cur,...patch,actualizado:new Date().toISOString(),actualizadoPor:S.myId||""};
+  if(isM) S.red.marca=doc; else S.red.camps[id]=doc;
+  try{await S.db.doc("redaccion/"+(isM?"marca":"camp-"+id)).set(doc);toast("Guardado")}catch(e){toast("No se pudo guardar.")}
+}
+document.addEventListener("click",async e=>{
+  const rc=e.target.closest("[data-redcenter]"); if(rc){openRedCenter(rc.dataset.redcenter,rc.dataset.redlinea);return}
+  if(e.target.closest("#redBtn")){openRedCenter("voz");return}
+  if(!S.redC) return;
+  if(e.target.matches("[data-rcclose]")||e.target.closest("button[data-rcclose]")){S.redC=null;renderRedCenter();return}
+  const tb=e.target.closest("[data-rctab]"); if(tb){S.redC.tab=tb.dataset.rctab;renderRedCenter();return}
+  const sv=e.target.closest("[data-rcsave]"); if(sv){
+    if(sv.dataset.rcsave==="voz") await saveRed("marca",{voz:$("#rcVoz").value.trim(),nivel:$("#rcNivel").value,perfil:$("#rcPerfil").value});
+    else{const p={nombre:S.redC.linea};document.querySelectorAll("#redRoot [data-rc]").forEach(x=>p[x.dataset.rc]=x.value.trim());await saveRed(slug(S.redC.linea),p)}
+    renderRedCenter();return}
+  const dl=e.target.closest("[data-rcdel]"); if(dl){const a=[...(redMarca().aprendizajes||[])];a.splice(+dl.dataset.rcdel,1);await saveRed("marca",{aprendizajes:a});renderRedCenter();return}
+  if(e.target.closest("[data-rcadd]")){const v=$("#rcNew").value.trim();if(!v) return;await saveRed("marca",{aprendizajes:[...(redMarca().aprendizajes||[]),{texto:v,fuente:"Agregado por el equipo",fecha:new Date().toISOString()}]});renderRedCenter();return}
+  if(e.target.closest("[data-rcprop]")){
+    if(!S.sampleFn){S.redC.err="Necesita Claude disponible en esta vista.";renderRedCenter();return}
+    const all=[...S.posts.keys(),...S.medios.keys()].flatMap(id=>threadsOf(id).map(t=>({id,t}))).filter(x=>x.t.org==="cliente"||x.t.tipo==="cambios").slice(0,80);
+    if(!all.length){S.redC.err="Todavía no hay comentarios del cliente para analizar.";renderRedCenter();return}
+    S.redC.busy=true;S.redC.err="";renderRedCenter();
+    try{const r=await S.sampleFn.json(`Eres director creativo de la agencia INSIDE para Payless. A partir de los comentarios del cliente sobre piezas de contenido, extrae reglas de redacción y de criterio reutilizables (máx. 8), que un redactor deba aplicar siempre. No repitas las que ya existen.\n\nReglas existentes:\n${(redMarca().aprendizajes||[]).map(a=>"- "+a.texto).join("\n")||"(ninguna)"}\n\nComentarios del cliente:\n${all.map(x=>`- [${PARTES[x.t.parte]||"General"}] ${x.t.texto.slice(0,300)}`).join("\n")}\n\nResponde SOLO con un JSON: [{"regla":"frase imperativa corta","evidencia":"qué comentario la respalda"}]`,{cache:false});
+      S.redC.props=Array.isArray(r)?r.filter(x=>x&&x.regla):[]; if(!S.redC.props.length) S.redC.err="No salieron reglas nuevas."}
+    catch(err){S.redC.err=err&&err.code==="not_granted"?"No se dio permiso para usar Claude.":"No se pudo analizar. Intenta de nuevo."}
+    finally{S.redC.busy=false;renderRedCenter()}return}
+  if(e.target.closest("[data-rcpsave]")){const sel=[...document.querySelectorAll("#redRoot [data-rcp]")].filter(x=>x.checked).map(x=>S.redC.props[+x.dataset.rcp]);
+    await saveRed("marca",{aprendizajes:[...(redMarca().aprendizajes||[]),...sel.map(p=>({texto:p.regla,fuente:"De comentarios del cliente: "+(p.evidencia||""),fecha:new Date().toISOString()}))]});S.redC.props=[];renderRedCenter();return}
+});
+document.addEventListener("change",e=>{if(e.target.id==="rcLinea"&&S.redC){S.redC.linea=e.target.value;renderRedCenter()}});
+document.addEventListener("keydown",e=>{if(S.redC&&e.key==="Escape"){S.redC=null;renderRedCenter()}});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
   const [db,user,assets]=await Promise.all([use("db"),use("user"),use("assets")]);
   if(!db){await offline();return}
   S.db=db; S.user=user; S.assets=assets;
+  use("sample").then(f=>{S.sampleFn=f||null;rerenderOpen()});
   if(user){
     try{S.myId=await user.id()}catch(e){}
     try{S.me=await user.me()}catch(e){}
@@ -2069,6 +2286,7 @@ async function boot(){
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
+  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v}S.red=r;if(S.redC) renderRedCenter()},()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
