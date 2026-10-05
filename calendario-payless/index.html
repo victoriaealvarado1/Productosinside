@@ -514,6 +514,42 @@ table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color
 .drow{display:flex;justify-content:flex-end;gap:8px}
 .drow.wrap{flex-wrap:wrap;justify-content:flex-start}
 a.btn{text-decoration:none;display:inline-flex;align-items:center}
+
+/* ---------- matrices y enviados */
+.mzpick{gap:6px}
+.mzc{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font:700 13px var(--f-body);color:var(--ink-2);cursor:pointer}
+.mzc i{width:9px;height:9px;border-radius:50%;background:var(--ink-3)}
+.mzc.mz-atl i{background:#7a4fd0} .mzc.mz-ecommerce i{background:#0f8b8d} .mzc.mz-digital i{background:#3a6ccf}
+.mzc b{font:600 11px var(--f-mono);color:var(--ink-3)}
+.mzc[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)} .mzc[aria-pressed="true"] b{color:var(--bg);opacity:.75}
+.mzc.mz-atl,.mzc.mz-ecommerce,.mzc.mz-digital{background:var(--surface);color:var(--ink-2)}
+.mzc.mz-atl[aria-pressed="true"]{background:#7a4fd0;border-color:#7a4fd0;color:#fff} .mzc.mz-ecommerce[aria-pressed="true"]{background:#0f8b8d;border-color:#0f8b8d;color:#fff} .mzc.mz-digital[aria-pressed="true"]{background:#3a6ccf;border-color:#3a6ccf;color:#fff}
+.mzc[aria-pressed="true"] i{background:#fff}
+.tl-env{z-index:2;justify-self:center;align-self:center;font-size:16px;font-weight:900;line-height:1;color:var(--accent);cursor:help;filter:drop-shadow(0 0 1.5px var(--surface))}
+.tl-env.late{color:var(--bad)}
+.tlleg{display:inline-block;width:18px;height:8px;border-radius:3px;border:1px solid var(--line-strong);border-left:3px solid var(--accent);vertical-align:middle;background:var(--surface)}
+.envview{max-width:960px;display:flex;flex-direction:column;gap:16px}
+.envsec h3{margin:0 0 8px;font:800 16px var(--f-display);display:flex;gap:8px;align-items:baseline}
+.envsec h3 span{font:600 12px var(--f-mono);color:var(--ink-3)}
+.envlist{display:flex;flex-direction:column;gap:6px}
+.envrow{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:8px;align-items:center}
+.envrow.late .envd{color:var(--bad)}
+.envd{font:700 13px var(--f-mono);display:flex;flex-direction:column}
+.envd em{font:700 10px var(--f-body);font-style:normal;text-transform:uppercase;color:var(--bad)} .envd em.hoy{color:var(--accent)}
+.envd.big{font-size:14px;flex-direction:row}
+.envp{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:2px 8px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font:inherit;color:inherit;cursor:pointer;min-width:0}
+.envp b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .envp small{grid-column:2;color:var(--ink-3);font-size:12px} .envp .badge{grid-row:1 / 3;grid-column:3} .envp .cmb{grid-row:1 / 3;grid-column:4;font-size:12px}
+.envp:hover b{color:var(--accent)}
+.envcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.envcard header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.envcard header .btn{margin-left:auto}
+.envcard .envp{background:var(--bg)}
+.envnota{margin:0;color:var(--ink-2);font-size:13px;white-space:pre-wrap}
+.picklist{display:flex;flex-direction:column;gap:10px;max-height:50vh;overflow:auto}
+.pickh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pickr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-bottom:4px;cursor:pointer}
+.pickr span{display:flex;flex-direction:column;min-width:0} .pickr small{color:var(--ink-3);font-size:12px}
+@media (max-width:640px){.envrow{grid-template-columns:minmax(0,1fr)}}
 </style>
 
 <div class="top">
@@ -662,12 +698,12 @@ function sectionSeg(){return `<div class="fgroup"><div class="seg sect" role="gr
 function renderMedFilters(){
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
   $("#filters").innerHTML=`${sectionSeg()}
-  <div class="fgroup"><span class="flabel">Matriz</span><div class="seg" role="group" aria-label="Matriz"><button data-matriz="ALL" aria-pressed="${f.matriz==="ALL"}">Todas</button>${MATRICES.map(x=>`<button data-matriz="${x.id}" aria-pressed="${f.matriz===x.id}">${x.nombre}</button>`).join("")}</div></div>
+  <div class="fgroup mzpick"><span class="flabel">Matrices</span><button class="mzc all" data-matriz="ALL" aria-pressed="${!selMz().length}">Las 3</button>${MATRICES.map(x=>`<button class="mzc mz-${x.id.toLowerCase()}" data-matriz="${x.id}" aria-pressed="${selMz().includes(x.id)}" title="${esc(x.desc)}"><i></i>${x.nombre} <b>${[...S.medios.values()].filter(m=>m.matriz===x.id).length}</b></button>`).join("")}</div>
   <div class="fgroup"><span class="flabel">Región</span><div class="seg" role="group" aria-label="Región"><button data-region="ALL" aria-pressed="${f.region==="ALL"}">Todas</button>${REGIONES.map(x=>`<button data-region="${x.id}" aria-pressed="${f.region===x.id}"><span class="dot" style="background:var(${x.var})"></span>${x.corto}</button>`).join("")}</div></div>
   ${r&&r.paises.length>1?`<div class="fgroup"><span class="flabel">País</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-pais="${c}" aria-pressed="${f.paises.includes(c)}" title="${PAIS[c]}">${c}</button>`).join("")}</div></div>`:""}
   <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
     <input class="search" id="fQ" type="search" placeholder="Buscar pieza, plataforma, legal…" value="${esc(f.q)}" aria-label="Buscar"></div>
-  <div class="fgroup views"><div class="seg" role="group" aria-label="Vista"><button data-mview="tl" aria-pressed="${f.mview!=="cms"}">Línea de tiempo</button><button data-mview="cms" aria-pressed="${f.mview==="cms"}">Comentarios</button></div>${canEdit()?`<button class="btn primary" id="newPost">＋ Nueva pieza de medios</button>`:""}</div>`;
+  <div class="fgroup views"><div class="seg" role="group" aria-label="Vista"><button data-mview="tl" aria-pressed="${f.mview!=="cms"}">Línea de tiempo</button><button data-mview="env" aria-pressed="${f.mview==="env"}">Enviados de Inside</button><button data-mview="cms" aria-pressed="${f.mview==="cms"}">Comentarios</button></div>${canEdit()?`<button class="btn primary" id="newPost">＋ Nueva pieza de medios</button>`:""}</div>`;
 }
 function renderFilters(){
   if(S.f.section==="med"){renderMedFilters();return}
@@ -702,7 +738,7 @@ document.addEventListener("click",e=>{
   const rg=e.target.closest("[data-range]"); if(rg){if(rg.dataset.range==="mes"){S.f.desde="";S.f.hasta=""}else{S.f.desde="2026-10-01";S.f.hasta="2026-10-10";S.month=[2026,9]}persistF();render();return}
   const sc=e.target.closest("[data-section]"); if(sc){S.f.section=sc.dataset.section;clearSel();S.clip=null;persistF();$(".brand span").textContent=S.f.section==="med"?"Medios · ATL, Ecommerce y Digital · Inside":"Orgánico Meta · Inside";render();return}
   const mv=e.target.closest("[data-mview]"); if(mv){S.f.mview=mv.dataset.mview;persistF();render();return}
-  const mz=e.target.closest("[data-matriz]"); if(mz){S.f.matriz=mz.dataset.matriz;persistF();render();return}
+  const mz=e.target.closest("[data-matriz]"); if(mz){const v=mz.dataset.matriz;let a=selMz();if(v==="ALL") a=[]; else {a=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(a.length===MATRICES.length) a=[]}S.f.matrices=a;persistF();render();return}
   const t=e.target.closest("[data-region],[data-pais],[data-tipo],[data-view]"); if(!t||!t.closest("#filters")) return;
   const f=S.f;
   if(t.dataset.region){f.region=t.dataset.region;f.paises=[]; if(f.region!=="ALL"&&!region(f.region).paises.includes(f.gridPais)) f.gridPais=region(f.region).paises[0]}
@@ -1445,7 +1481,7 @@ function renderTop(){
 document.addEventListener("click",e=>{if(e.target.closest("#toggleView")){S.viewAs=S.viewAs?null:"cliente";render();if(S.openId) renderSheet()}});
 function renderView(){renderViewInner();if(typeof markSel==="function") markSel()}
 function renderViewInner(){
-  if(S.f.section==="med"){renderMedSummary();if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando medios…</h3></div>`;return}if(S.f.mview==="cms") renderCommentsView("med"); else renderMedios();return}
+  if(S.f.section==="med"){renderMedSummary();if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando medios…</h3></div>`;return}if(S.f.mview==="cms") renderCommentsView("med"); else if(S.f.mview==="env") renderEnviados(); else renderMedios();return}
   renderSummary();
   if(S.mode==="loading"){$("#view").innerHTML=`<div class="empty"><h3>Cargando el calendario…</h3><p>Conectando con los datos compartidos.</p></div>`;return}
   if(!S.posts.size){
@@ -1481,6 +1517,7 @@ document.addEventListener("click",async e=>{
 });
 /* ============ MEDIOS: matrices ATL, Ecommerce y Digital en línea de tiempo */
 const MATRICES=[{id:"ATL",nombre:"ATL",desc:"TV, radio, OOH, DOOH y publimóvil"},{id:"ECOMMERCE",nombre:"Ecommerce",desc:"Pauta y orgánico de tienda en línea"},{id:"DIGITAL",nombre:"Digital",desc:"Pauta en Meta (FB e IG)"}];
+const selMz=()=>Array.isArray(S.f.matrices)?S.f.matrices:[];
 const matrizN=id=>(MATRICES.find(x=>x.id===id)||{nombre:id}).nombre;
 function medNorm(d){return {imagenes:[],paises:[],nombre:"",inicio:"",fin:"",estado:"Sin iniciar",matriz:"DIGITAL",plataforma:"",formato:"",statusMatriz:"",legal:"",comentariosSlide:"",...d,...normEstado(d)}}
 function medRange(m){return m.inicio?(m.fin&&m.fin!==m.inicio?`${fmtCorto(m.inicio)} – ${fmtCorto(m.fin)}`:fmtCorto(m.inicio)):"Sin fechas"}
@@ -1489,7 +1526,7 @@ function medMatches(m){
   const f=S.f;
   if(f.region!=="ALL"&&!regsOf(m).includes(f.region)) return false;
   if(f.paises.length&&!m.paises.some(c=>f.paises.includes(c))) return false;
-  if(f.matriz&&f.matriz!=="ALL"&&m.matriz!==f.matriz) return false;
+  if(selMz().length&&!selMz().includes(m.matriz)) return false;
   if(f.estado!=="ALL"&&m.estado!==f.estado) return false;
   if(f.q){const q=f.q.toLowerCase();if(![m.nombre,m.plataforma,m.formato,m.titular,m.textoPrincipal,m.legal,m.paises.join(" ")].join(" ").toLowerCase().includes(q)) return false}
   return true;
@@ -1512,7 +1549,7 @@ function renderMedios(){
   const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`; const last=new Date(y,mo+1,0).getDate();
   const days=Array.from({length:last},(_,i)=>i+1);
   const vs=medVisible().sort((a,b)=>(a.inicio||"9").localeCompare(b.inicio||"9")||(a.fin||"").localeCompare(b.fin||"")||a.nombre.localeCompare(b.nombre));
-  const groups=(S.f.matriz&&S.f.matriz!=="ALL"?MATRICES.filter(x=>x.id===S.f.matriz):MATRICES).map(g=>({g,rows:vs.filter(x=>x.matriz===g.id&&(inMonth(x,pre,last)))}));
+  const groups=(selMz().length?MATRICES.filter(x=>selMz().includes(x.id)):MATRICES).map(g=>({g,rows:vs.filter(x=>x.matriz===g.id&&(inMonth(x,pre,last)))}));
   const sf=vs.filter(x=>!x.inicio);
   const fuera=vs.filter(x=>x.inicio&&!inMonth(x,pre,last)).length;
   const cols=`grid-template-columns:var(--tl-label) repeat(${last},minmax(var(--tl-day),1fr))`;
@@ -1527,11 +1564,13 @@ function renderMedios(){
       bar=`<div class="tl-bar ${colorC(m.estado)} ${cutL?"cutl":""} ${cutR?"cutr":""} ${e-s<3?"short":""}" style="grid-column:${s+1} / ${e+2};--rc:${rv(m)};${regStripe(m)}" data-mbar="${esc(m.id)}" title="${esc(m.nombre)} · ${esc(medRange(m))} · ${esc(m.estado)}">
         ${canEdit()&&!cutL?`<span class="hd l" data-mh="l"></span>`:""}<span class="bt"><span class="sd ${m.cambiosPendientes?"st-cam":estadoC(m.estado)}"></span>${esc(medRange(m))}</span>${canEdit()&&!cutR?`<span class="hd r" data-mh="r"></span>`:""}</div>`;
     }else bar=canEdit()?`<div class="tl-hint" style="grid-column:2 / ${last+2}">Haz clic en el día en que empieza para ponerle fechas</div>`:"";
-    return `<div class="tl-row" style="${cols}" data-mrow="${esc(m.id)}">${lab}${bg}${bar}</div>`;
+    let mk="";
+    if(m.fechaEnvio&&m.fechaEnvio.startsWith(pre)){const dd=parseISO(m.fechaEnvio).getDate();const late=m.inicio&&m.fechaEnvio>m.inicio;mk=`<span class="tl-env ${late?"late":""} ${m.envioReal?"real":""}" style="grid-column:${dd+1}" title="${m.envioReal?"Enviado por Inside":"Envío de Inside programado"}: ${esc(fmtCorto(m.fechaEnvio))}${late?" · después del inicio del legal":""}">${m.envioReal?"◆":"◇"}</span>`}
+    return `<div class="tl-row" style="${cols}" data-mrow="${esc(m.id)}">${lab}${bg}${bar}${mk}</div>`;
   };
   const body=groups.filter(x=>x.rows.length).map(x=>`<div class="tl-group"><span class="mz mz-${x.g.id.toLowerCase()}">${x.g.nombre}</span> ${x.g.desc} · ${x.rows.length} piezas</div>${x.rows.map(row).join("")}`).join("")
     +(sf.length?`<div class="tl-group warn">Por asignar fechas · ${sf.length} piezas${role()==="inside"?" · la matriz no trae fecha ni legal con vigencia":""}</div>${sf.map(row).join("")}`:"");
-  $("#view").innerHTML=`${selectMode()?`<p class="selhint"><b>Clic</b> en el nombre abre la pieza · arrastra la barra para mover las fechas · arrastra los extremos para cambiar inicio o fin · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}
+  $("#view").innerHTML=`${selectMode()?`<p class="selhint"><span class="tl-env" style="position:static">◆</span> enviado por Inside · <span class="tl-env" style="position:static">◇</span> envío programado (rojo: después del inicio del legal) · <span class="tlleg"></span> barra: vigencia del legal · <b>Clic</b> en el nombre abre la pieza · arrastra la barra para mover las fechas · arrastra los extremos para cambiar inicio o fin · <kbd>Ctrl</kbd>+<kbd>Z</kbd> deshace</p>`:""}
     <div class="tl-wrap"><div class="tl" id="tl">${head}${body||`<div class="empty" style="grid-column:1/-1"><h3>Sin piezas con estos filtros</h3><p>Cambia de mes, matriz o región.</p></div>`}</div></div>
     ${fuera?`<p class="sub" style="margin-top:8px;color:var(--ink-3)">${fuera} piezas están al aire en otros meses: usa ‹ › para verlas.</p>`:""}`;
 }
@@ -1578,13 +1617,13 @@ function renderMedioSheet(){
     <div class="left">
       <div class="mprev">${imgs.length?`<img src="${esc(imgs[i])}" alt="">${imgs.length>1?`<button class="nav prev" data-mpv="-1" aria-label="Anterior">‹</button><button class="nav next" data-mpv="1" aria-label="Siguiente">›</button><span class="cnt">${i+1}/${imgs.length}</span>`:""}`:`<div class="ph emptym"><b>${role()==="inside"?"Sin arte todavía":"Arte en producción"}</b><span>${esc(m.nombre)}</span></div>`}</div>
       ${imgs.length>1?`<div class="mthumbs">${imgs.map((s,k)=>`<button data-mthumb="${k}" class="${k===i?"on":""}" style="background-image:url('${esc(s)}')" aria-label="Arte ${k+1}"></button>`).join("")}</div>`:""}
-      ${imgs.length?`<div class="cbtns">${cBtn("arte",imgs.length>1?`Comentar este arte (${i+1})`:"Comentar el arte",i)}${m.legal?cBtn("legal","Comentar el legal"):""}${cBtn("fecha","Comentar fechas")}</div>`:`<div class="cbtns">${cBtn("general","Comentar esta pieza")}${cBtn("fecha","Comentar fechas")}</div>`}<div class="mlegal"><b>Al aire</b><span>${esc(medRange(m))}${m.inicio&&m.fin?` · ${diffDays(m.fin,m.inicio)+1} días`:""}</span>${m.legal?`<b style="margin-top:6px">Legal</b><span>${esc(m.legal)}</span>`:""}</div>
+      ${imgs.length?`<div class="cbtns">${cBtn("arte",imgs.length>1?`Comentar este arte (${i+1})`:"Comentar el arte",i)}${m.legal?cBtn("legal","Comentar el legal"):""}${cBtn("fecha","Comentar fechas")}</div>`:`<div class="cbtns">${cBtn("general","Comentar esta pieza")}${cBtn("fecha","Comentar fechas")}</div>`}<div class="mlegal"><b>Envío de Inside</b><span>${m.fechaEnvio?`${esc(fmtCorto(m.fechaEnvio))} · ${m.envioReal?"enviado ✓":"programado"}${m.inicio?` · ${diffDays(m.inicio,m.fechaEnvio)} días antes del legal`:""}`:"Sin fecha de envío"}</span><b style="margin-top:6px">Vigencia del legal</b><span>${esc(medRange(m))}${m.inicio&&m.fin?` · ${diffDays(m.fin,m.inicio)+1} días`:""}</span>${m.legal?`<b style="margin-top:6px">Legal</b><span>${esc(m.legal)}</span>`:""}</div>
     </div>
     <div class="right">
       <div class="sheethead"><div style="min-width:0">
         <div class="meta"><span class="mz mz-${m.matriz.toLowerCase()}">${esc(matrizN(m.matriz))}</span><span class="rtag" style="--rc:${rv(m)}"><i></i>${esc(regNames(m))}</span><span>${esc(m.paises.join(" · "))}</span>${m.plataforma?`<span>· ${esc(m.plataforma)}</span>`:""}${m.formato?`<span>· ${esc(m.formato)}</span>`:""}</div>
         <h2>${esc(m.nombre||"Pieza de medios")}</h2>
-        <div class="meta" style="margin-top:6px"><span class="mono">${esc(medRange(m))}</span><span class="badge ${estadoC(m.estado)}"><span class="sd"></span>${esc(m.estado)}</span>${m.statusMatriz&&role()==="inside"?`<span>Producción: ${esc(m.statusMatriz)}</span>`:""}</div>
+        <div class="meta" style="margin-top:6px">${m.fechaEnvio?`<span class="mono">◆ Envío ${esc(fmtCorto(m.fechaEnvio))}</span>`:""}<span class="mono">Legal: ${esc(medRange(m))}</span><span class="badge ${estadoC(m.estado)}"><span class="sd"></span>${esc(m.estado)}</span>${m.statusMatriz&&role()==="inside"?`<span>Producción: ${esc(m.statusMatriz)}</span>`:""}</div>
       </div><button class="iconbtn x" data-mx aria-label="Cerrar">✕</button></div>
       ${medApproveBox(m)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-mtab="${k}" aria-selected="${S.mTab===k}">${l}</button>`).join("")}</div>
@@ -1625,10 +1664,12 @@ function medTab(m){
     return (imgs.length?`<div class="artgrid">${imgs.map((s,k)=>`<figure><img src="${esc(imgSrc(s))}" alt=""><figcaption>${k+1}${ed?` <button class="iconbtn" data-mmv="${k}" ${k===imgs.length-1?"disabled":""} aria-label="Mover a la derecha">→</button><button class="iconbtn" data-mrm="${k}" aria-label="Quitar">✕</button>`:""}</figcaption></figure>`).join("")}</div>`:`<p style="color:var(--ink-2)">${role()==="inside"?"Esta pieza todavía no tiene arte.":"El arte de esta pieza está en producción."}</p>`)
       +(ed?`<label class="drop-zone" for="mupl" style="display:block;margin-top:12px"><input type="file" id="mupl" accept="image/*,video/mp4" multiple hidden><b>Subir arte</b><br><span style="font-size:12px">Imágenes o video. Se agregan al final.</span></label>`:"");
   }
-  if(role()!=="inside") return `<div class="fields">${fieldRO("Matriz",matrizN(m.matriz))}${fieldRO("Al aire",medRange(m))}${fieldRO("Plataforma",m.plataforma)}${fieldRO("Formato",m.formato)}${fieldRO("Países",m.paises.map(c=>PAIS[c]).join(", "),true)}</div>`;
+  if(role()!=="inside") return `<div class="fields">${fieldRO("Matriz",matrizN(m.matriz))}${fieldRO("Envío de Inside",m.fechaEnvio?fmtCorto(m.fechaEnvio):"")}${fieldRO("Vigencia del legal",medRange(m))}${fieldRO("Plataforma",m.plataforma)}${fieldRO("Formato",m.formato)}${fieldRO("Países",m.paises.map(c=>PAIS[c]).join(", "),true)}</div>`;
   const rsel=regsOf(m);
   return `${m.revisar?`<div class="revisar"><b>Revisar antes de enviar</b><span>${esc(m.revisar)}</span></div>`:""}${m.fechaFuente==="legal"?`<p class="hint" style="margin:0 0 10px">Las fechas salen del legal del arte.</p>`:""}<div class="fields">
-    ${mInp("inicio","Inicio (al aire desde)",m,"date")}${mInp("fin","Fin (al aire hasta)",m,"date")}
+    ${mInp("fechaEnvio","Fecha de envío de Inside",m,"date")}<div class="f"><span class="lb">Envío</span><div class="ro">${m.envioReal?`✓ Enviado${m.enviadoEn?" · "+esc(when(m.enviadoEn)):""}`:m.fechaEnvio?"Programado (aún no se envía)":"Sin fecha de envío"}</div></div>
+    ${mInp("inicio","Vigencia del legal: inicio",m,"date")}${mInp("fin","Vigencia del legal: fin",m,"date")}
+    ${m.fechaEnvio&&m.inicio&&m.fechaEnvio>m.inicio?`<p class="hint wide" style="grid-column:1/-1;color:var(--bad);margin:-4px 0 0">La fecha de envío queda después del inicio del legal.</p>`:""}
     ${m.notaFecha?`<p class="hint wide" style="grid-column:1/-1;color:var(--bad);margin:-4px 0 0">${esc(m.notaFecha)}</p>`:""}
     ${mInp("estado","Estado",m,ESTADOS.map(e=>e.id))}${mInp("matriz","Matriz",m,MATRICES.map(x=>[x.id,x.nombre]))}
     ${mInp("nombre","Nombre de la pieza",m,"text",true)}
@@ -1681,7 +1722,7 @@ document.addEventListener("keydown",e=>{if(S.openMed&&e.key==="Escape") closeMed
 async function createMedio(){
   if(!canEdit()) return; const reg=S.f.region!=="ALL"?S.f.region:"CENTRO";
   const id=`med-n-${Date.now().toString(36)}`; const [y,mo]=S.month;
-  const m={id,matriz:S.f.matriz&&S.f.matriz!=="ALL"?S.f.matriz:"DIGITAL",nombre:"",paises:S.f.paises.length?[...S.f.paises]:[...region(reg).paises],region:reg,inicio:"",fin:"",estado:"Sin iniciar",imagenes:[],creado:new Date().toISOString()};
+  const m={id,matriz:selMz()[0]||"DIGITAL",nombre:"",paises:S.f.paises.length?[...S.f.paises]:[...region(reg).paises],region:reg,inicio:"",fin:"",estado:"Sin iniciar",imagenes:[],creado:new Date().toISOString()};
   S.medios.set(id,m); pushUndo({type:"mcreate",id,label:"la creación"});
   try{await S.db.doc("medios/"+id).set(m)}catch(err){S.medios.delete(id);toast("No se pudo crear la pieza.");return}
   openMedio(id); renderView();
@@ -1791,7 +1832,8 @@ function renderSend(){
   root.innerHTML=`<div class="scrim modal" data-sendclose><div class="dialog" role="dialog" aria-modal="true" aria-label="Enviar al cliente">
     <header><h3>${s.step===1?"Enviar al cliente":"Listo: ya está en la bandeja del cliente"}</h3><button class="iconbtn" data-sendclose aria-label="Cerrar">✕</button></header>
     <ul class="slist">${infos.map(i=>`<li><b>${esc(i.name)}</b><small>${esc(i.sub)}</small></li>`).join("")}</ul>
-    ${s.step===1?`<label class="lb" for="sNota">Mensaje para el cliente (opcional)</label><textarea id="sNota" rows="3" placeholder="Ej.: Esta semana sale el lanzamiento de Atléticos; necesitamos su aprobación antes del jueves.">${esc(s.nota)}</textarea>
+    ${s.step===1?`<label class="lb" for="sFecha">Fecha de envío</label><input type="date" id="sFecha" class="sel" value="${esc(s.fecha||todayISO)}" style="max-width:200px">
+      <label class="lb" for="sNota">Mensaje para el cliente (opcional)</label><textarea id="sNota" rows="3" placeholder="Ej.: Esta semana sale el lanzamiento de Atléticos; necesitamos su aprobación antes del jueves.">${esc(s.nota)}</textarea>
       <p class="hint">Al enviar, ${infos.length===1?"la pieza pasa":"las piezas pasan"} a <b>Enviado a cliente</b> (naranja), queda${infos.length===1?"":"n"} en la bandeja <b>Por revisar</b> del cliente dentro de la plataforma y te damos el link y el mensaje listos para mandar por WhatsApp o correo.</p>
       <div class="drow"><button class="btn ghost" data-sendclose>Cancelar</button><button class="btn primary" data-sendgo>Enviar ${infos.length>1?`${infos.length} piezas`:"pieza"}</button></div>`
     :`<p class="hint">El cliente ya la ve en <b>Por revisar</b> al abrir la plataforma. Avísale con este mensaje:</p>
@@ -1808,11 +1850,11 @@ document.addEventListener("click",async e=>{
   if(!S.send) return;
   if(e.target.closest("[data-sendclose]")&&(e.target.matches("[data-sendclose]")||e.target.closest("button[data-sendclose]"))){S.send=null;renderSend();return}
   if(e.target.closest("[data-sendgo]")){
-    const s=S.send; s.nota=($("#sNota")?.value||"").trim(); const b=e.target.closest("[data-sendgo]"); b.disabled=true; b.textContent="Enviando…";
+    const s=S.send; s.nota=($("#sNota")?.value||"").trim(); s.fecha=$("#sFecha")?.value||todayISO; const b=e.target.closest("[data-sendgo]"); b.disabled=true; b.textContent="Enviando…";
     beginGroup();
-    try{for(const x of s.items){if(x.kind==="medio") await saveMed(x.id,{estado:"Enviado a cliente",cambiosPendientes:false,enviadoEn:new Date().toISOString()}); else await save(x.id,{estado:"Enviado a cliente",cambiosPendientes:false,enviadoEn:new Date().toISOString()});await postComment(x.id,{tipo:"envio",texto:s.nota})}}
+    try{for(const x of s.items){if(x.kind==="medio") await saveMed(x.id,{estado:"Enviado a cliente",cambiosPendientes:false,enviadoEn:new Date().toISOString(),fechaEnvio:s.fecha,envioReal:true}); else await save(x.id,{estado:"Enviado a cliente",cambiosPendientes:false,enviadoEn:new Date().toISOString(),fechaEnvio:s.fecha});await postComment(x.id,{tipo:"envio",texto:s.nota})}}
     finally{endGroup(s.items.length>1?`el envío de ${s.items.length} piezas`:"el envío")}
-    const env={items:s.items,nota:s.nota,creado:new Date().toISOString(),porId:S.myId||""};
+    const env={items:s.items,nota:s.nota,fecha:s.fecha,creado:new Date().toISOString(),porId:S.myId||"",porOrg:role()==="cliente"?"cliente":"inside"};
     try{const ref=await S.db.collection("envios").add(env);s.envioId=ref&&ref.id||""}catch(err){s.envioId=""}
     s.step=2; renderSend(); renderInbox(); return}
   if(e.target.closest("[data-sendcopy]")){const ok=await copyText($("#sMsg").value);if(!ok) $("#sMsg").select();toast(ok?"Mensaje copiado":"Selecciona el texto y cópialo");return}
@@ -1858,6 +1900,48 @@ async function handleDeepLink(){
   if(k==="envio"){for(let tries=0;tries<3;tries++){if(tries) await new Promise(r=>setTimeout(r,1500));try{const d=await S.db.doc("envios/"+v).get();const env=d&&d.exists&&(typeof d.data==="function"?d.data():d.data);if(env&&env.items&&env.items.length){if(env.items.length===1) openPieceFrom(env.items[0].kind,env.items[0].id); else {S.inboxOpen=true;renderInboxPanel()}return}}catch(e){}}S.inboxOpen=true;renderInboxPanel()}
 }
 
+/* ============ ENVIADOS DE INSIDE: bitácora de envíos y envíos programados */
+function renderEnviados(){
+  const vis=new Set(medVisible().map(m=>m.id));
+  const log=(S.envios||[]).map(e=>({...e,meds:(e.items||[]).filter(x=>x.kind==="medio"&&vis.has(x.id))})).filter(e=>e.meds.length).sort((a,b)=>(b.fecha||b.creado||"").localeCompare(a.fecha||a.creado||"")||(b.creado||"").localeCompare(a.creado||""));
+  const prog=medVisible().filter(m=>m.fechaEnvio&&!m.envioReal).sort((a,b)=>a.fechaEnvio.localeCompare(b.fechaEnvio));
+  const sinFecha=medVisible().filter(m=>!m.fechaEnvio&&m.estado==="Sin iniciar").length;
+  const chip=m=>`<button class="envp" data-mopen="${esc(m.id)}"><span class="mz mz-${m.matriz.toLowerCase()}">${esc(matrizN(m.matriz))}</span><b>${esc(m.nombre||"Pieza")}</b><small>${esc(whereLabel(m))} · legal ${esc(medRange(m))}</small><span class="badge ${estadoC(m.estado)}"><span class="sd"></span>${esc(m.estado)}</span>${openCount(m.id)?`<span class="cmb">💬 ${openCount(m.id)}</span>`:""}</button>`;
+  $("#view").innerHTML=`<div class="envview">
+    <div class="cvhead"><h2>Enviados de Inside</h2>${canEdit()?`<button class="btn primary" data-envreg>＋ Registrar envío</button>`:""}</div>
+    <section class="envsec"><h3>Programados para enviar <span>${prog.length}</span></h3>
+      ${prog.length?`<div class="envlist">${prog.map(m=>`<div class="envrow ${m.fechaEnvio<todayISO?"late":""}"><span class="envd">${esc(fmtCorto(m.fechaEnvio))}${m.fechaEnvio<todayISO?"<em>atrasado</em>":m.fechaEnvio===todayISO?"<em class='hoy'>hoy</em>":""}</span>${chip(m)}${canEdit()?`<button class="btn sm" data-envone="${esc(m.id)}">Enviar</button>`:""}</div>`).join("")}</div>`:`<p class="cempty">No hay envíos programados. Pon la «Fecha de envío de Inside» en la ficha de cada pieza para planearlos aquí.</p>`}
+      ${sinFecha?`<p class="hint">${sinFecha} piezas sin iniciar todavía no tienen fecha de envío.</p>`:""}</section>
+    <section class="envsec"><h3>Enviados <span>${log.length}</span></h3>
+      ${log.length?log.map(e=>`<article class="envcard"><header><span class="envd big">${esc(e.fecha?fmtDia(e.fecha,true):when(e.creado))}</span>${e.porId?whoHTML(e.porId,e.porOrg||"inside",""):""}<span class="cwhen">${e.meds.length} ${e.meds.length===1?"pieza":"piezas"}</span><button class="btn ghost sm" data-envlink="${esc(e._id)}">Copiar link</button></header>
+        ${e.nota?`<p class="envnota">${esc(e.nota)}</p>`:""}<div class="envlist">${e.meds.map(x=>S.medios.get(x.id)).filter(Boolean).map(chip).join("")}</div></article>`).join("")
+      :`<p class="cempty">Todavía no hay envíos registrados. Usa «Enviar al cliente» en una pieza o «Registrar envío» para varias a la vez.</p>`}</section></div>`;
+}
+document.addEventListener("click",async e=>{
+  const one=e.target.closest("[data-envone]"); if(one){const m=S.medios.get(one.dataset.envone);openSend([{kind:"medio",id:one.dataset.envone}]);if(S.send&&m) {S.send.fecha=todayISO;renderSend()}return}
+  const ln=e.target.closest("[data-envlink]"); if(ln){const ok=await copyText(`${ARTIFACT_URL}#envio=${ln.dataset.envlink}`);toast(ok?"Link copiado":"No se pudo copiar");return}
+  if(e.target.closest("[data-envreg]")){S.pick={sel:new Set(),q:""};renderPick();return}
+  if(!S.pick) return;
+  if(e.target.matches("[data-pickclose]")||e.target.closest("button[data-pickclose]")){S.pick=null;renderPick();return}
+  const g=e.target.closest("[data-pickall]"); if(g){const ids=[...document.querySelectorAll(`#pickRoot input[data-pmz="${g.dataset.pickall}"]`)].map(x=>x.value);const all=ids.every(id=>S.pick.sel.has(id));ids.forEach(id=>all?S.pick.sel.delete(id):S.pick.sel.add(id));renderPick();return}
+  if(e.target.closest("[data-pickgo]")){const items=[...S.pick.sel].map(id=>({kind:"medio",id}));if(!items.length){toast("Elige al menos una pieza");return}S.pick=null;renderPick();openSend(items);return}
+});
+document.addEventListener("change",e=>{const c=e.target.closest("#pickRoot input[type=checkbox][value]");if(c&&S.pick){c.checked?S.pick.sel.add(c.value):S.pick.sel.delete(c.value);const b=$("[data-pickgo]");if(b) b.textContent=`Continuar con ${S.pick.sel.size}`}});
+document.addEventListener("input",e=>{if(e.target.id==="pickQ"&&S.pick){S.pick.q=e.target.value;clearTimeout(renderPick.t);renderPick.t=setTimeout(()=>{renderPick();const q=$("#pickQ");if(q){q.focus();q.setSelectionRange(q.value.length,q.value.length)}},150)}});
+document.addEventListener("keydown",e=>{if(S.pick&&e.key==="Escape"){S.pick=null;renderPick()}});
+function renderPick(){
+  let root=$("#pickRoot"); if(!S.pick){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="pickRoot";document.body.appendChild(root)}
+  const q=(S.pick.q||"").toLowerCase();
+  const vs=medVisible().filter(m=>!q||[m.nombre,m.plataforma,m.paises.join(" ")].join(" ").toLowerCase().includes(q));
+  const groups=MATRICES.map(g=>({g,rows:vs.filter(m=>m.matriz===g.id).sort((a,b)=>(a.inicio||"9").localeCompare(b.inicio||"9"))})).filter(x=>x.rows.length);
+  root.innerHTML=`<div class="scrim modal" data-pickclose><div class="dialog" role="dialog" aria-label="Registrar envío"><header><h3>Registrar envío de Inside</h3><button class="iconbtn" data-pickclose aria-label="Cerrar">✕</button></header>
+    <p class="hint">Elige las piezas que Inside envía (o ya envió). En el siguiente paso pones la fecha de envío y el mensaje.</p>
+    <input class="search" id="pickQ" type="search" placeholder="Buscar pieza o país…" value="${esc(S.pick.q||"")}" style="width:100%">
+    <div class="picklist">${groups.map(({g,rows})=>`<div class="pickg"><div class="pickh"><span class="mz mz-${g.id.toLowerCase()}">${g.nombre}</span><button class="clink" data-pickall="${g.id}">Seleccionar todas</button></div>${rows.map(m=>`<label class="pickr"><input type="checkbox" value="${esc(m.id)}" data-pmz="${g.id}" ${S.pick.sel.has(m.id)?"checked":""}><span><b>${esc(m.nombre||"Pieza")}</b><small>${esc(whereLabel(m))} · legal ${esc(medRange(m))}${m.envioReal?" · ya enviada":""}</small></span><span class="badge ${estadoC(m.estado)}"><span class="sd"></span>${esc(m.estado)}</span></label>`).join("")}</div>`).join("")||`<p class="cempty">No hay piezas con estos filtros.</p>`}</div>
+    <div class="drow"><button class="btn ghost" data-pickclose>Cancelar</button><button class="btn primary" data-pickgo>Continuar con ${S.pick.sel.size}</button></div></div></div>`;
+}
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -1883,10 +1967,11 @@ async function boot(){
   },err=>{if(!S.posts.size) offline(); else toast("Se perdió la conexión en vivo. Recarga la página.")});
   db.collection("comentarios").onSnapshot(async snap=>{
     S.comments=snap.docs.map(d=>({...d.data(),_id:d.id}));
-    const ids=[...new Set([...S.comments.flatMap(c=>[c.autorId,c.resueltoPor]),...[...(S.medios||new Map()).values()].map(m=>m.slideResueltoPor)].filter(Boolean))].slice(0,64);
+    const ids=[...new Set([...(S.envios||[]).map(e=>e.porId),...S.comments.flatMap(c=>[c.autorId,c.resueltoPor]),...[...(S.medios||new Map()).values()].map(m=>m.slideResueltoPor)].filter(Boolean))].slice(0,64);
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
+  db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
 }
