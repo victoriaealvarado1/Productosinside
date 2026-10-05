@@ -1,0 +1,2118 @@
+[
+{
+"id": "med-dig-03",
+"matriz": "DIGITAL",
+"slide": 3,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"HN",
+"NI",
+"CR"
+],
+"inicio": "2026-10-05",
+"fin": "2026-10-26",
+"fechaMatriz": "05 – 26 oct",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-dig-03_0.jpg"
+],
+"descripcionArte": "Video: par de sneakers colgando de rama de árbol, vista contrapicada",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-04",
+"matriz": "DIGITAL",
+"slide": 4,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"GT",
+"SV"
+],
+"inicio": "2026-10-05",
+"fin": "2026-10-26",
+"fechaMatriz": "05 – 26 oct",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-dig-04_0.jpg"
+],
+"descripcionArte": "Video: frame desenfocado de fachada de edificio de concreto",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-05",
+"matriz": "DIGITAL",
+"slide": 5,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Nuevas llegadas damas",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"GT",
+"SV",
+"HN",
+"NI",
+"CR",
+"RD"
+],
+"inicio": "2026-10-05",
+"fin": "2026-10-26",
+"fechaMatriz": "05 – 26 oct",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-06",
+"matriz": "DIGITAL",
+"slide": 6,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Nuevas llegadas niños",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"GT",
+"SV",
+"HN",
+"NI",
+"CR",
+"RD"
+],
+"inicio": "2026-10-05",
+"fin": "2026-10-26",
+"fechaMatriz": "05 – 26 oct",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-07",
+"matriz": "DIGITAL",
+"slide": 7,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Atléticos - Champion mujer",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-19",
+"fechaMatriz": "06 – 19 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-dig-07_0.jpg"
+],
+"descripcionArte": "Video: frame desenfocado de fachada de edificio de concreto",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-08",
+"matriz": "DIGITAL",
+"slide": 8,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Atléticos - LA Gear",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-26",
+"fechaMatriz": "20 – 26 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-dig-08_0.jpg"
+],
+"descripcionArte": "Video: par de sneakers colgando de rama de árbol",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-09",
+"matriz": "DIGITAL",
+"slide": 9,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Atléticos - Champion Hombre",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-19",
+"fechaMatriz": "06 – 19 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-10",
+"matriz": "DIGITAL",
+"slide": 10,
+"formato": "4:5 y 9:16 CARRUSEL",
+"nombre": "Atléticos - Airwalk",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-19",
+"fechaMatriz": "06 – 19 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-11",
+"matriz": "DIGITAL",
+"slide": 11,
+"formato": "4:5 y 9:16 ESTATICO",
+"nombre": "Atléticos - Reebok",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-02",
+"fechaMatriz": "27 oct – 2 no",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-12",
+"matriz": "DIGITAL",
+"slide": 12,
+"formato": "4:5 y 9:16 ESTÁTICO",
+"nombre": "Atléticos - Atléticos LGear",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-02",
+"fechaMatriz": "27 oct – 2 no",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-13",
+"matriz": "DIGITAL",
+"slide": 13,
+"formato": "4:5 y 9:16 CARRUSEL",
+"nombre": "Atléticos - Atléticos Cross trekker",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-02",
+"fechaMatriz": "27 oct – 2 no",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-14",
+"matriz": "DIGITAL",
+"slide": 14,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Atléticos - Atléticos Airwalk men",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-02",
+"fechaMatriz": "27 oct – 2 no",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-15",
+"matriz": "DIGITAL",
+"slide": 15,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "SANDALIAS",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-26",
+"fechaMatriz": "20 – 26 OCT",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-16",
+"matriz": "DIGITAL",
+"slide": 16,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "BOTAS",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"CO",
+"EC"
+],
+"inicio": "2026-10-29",
+"fin": "2026-10-29",
+"fechaMatriz": "29 – 26 OCT",
+"notaFecha": "La matriz dice «29 - 26 oct»: el inicio queda después del fin. Revisar.",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-17",
+"matriz": "DIGITAL",
+"slide": 17,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Halloween - kids casual",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO",
+"EC"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-31",
+"fechaMatriz": "20 – 31 OCT",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-18",
+"matriz": "DIGITAL",
+"slide": 18,
+"formato": "4:5 y 9:16 VIDEO",
+"nombre": "Cuero - Cuero hombre",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"PA",
+"CO"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-02",
+"fechaMatriz": "27 oct – 2 no",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-19",
+"matriz": "DIGITAL",
+"slide": 19,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-01",
+"fin": "2026-10-05",
+"fechaMatriz": "1- 5 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-20",
+"matriz": "DIGITAL",
+"slide": 20,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-12",
+"fin": "2026-10-15",
+"fechaMatriz": "12- 15 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-21",
+"matriz": "DIGITAL",
+"slide": 21,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-19",
+"fin": "2026-10-22",
+"fechaMatriz": "19- 22 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-22",
+"matriz": "DIGITAL",
+"slide": 22,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-26",
+"fin": "2026-10-29",
+"fechaMatriz": "26- 29 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-23",
+"matriz": "DIGITAL",
+"slide": 23,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 60",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-11",
+"fechaMatriz": "6- 11 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-24",
+"matriz": "DIGITAL",
+"slide": 24,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 60",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-23",
+"fin": "2026-10-25",
+"fechaMatriz": "23- 25 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-25",
+"matriz": "DIGITAL",
+"slide": 25,
+"formato": "4:5 y 9:16",
+"nombre": "Promoción - CYD con Bogo 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-16",
+"fin": "2026-10-18",
+"fechaMatriz": "16- 18 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-26",
+"matriz": "DIGITAL",
+"slide": 26,
+"formato": "4:5 y 9:16",
+"nombre": "Promoción - CYD con Bogo 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"fechaMatriz": "30 oct- 1 nov",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-27",
+"matriz": "DIGITAL",
+"slide": 27,
+"formato": "4:5 y 9:16",
+"nombre": "BOGO 30",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-01",
+"fin": "2026-10-05",
+"fechaMatriz": "1- 5 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-28",
+"matriz": "DIGITAL",
+"slide": 28,
+"formato": "4:5 y 9:16",
+"nombre": "Promoción - Hasta el 70% off en art seleccionados",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-20",
+"fechaMatriz": "6- 20 oct",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-29",
+"matriz": "DIGITAL",
+"slide": 29,
+"formato": "4:5 y 9:16",
+"nombre": "Promoción - Bogo 50",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-21",
+"fin": "2026-11-02",
+"fechaMatriz": "21 oct- 2 nov",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-30",
+"matriz": "DIGITAL",
+"slide": 30,
+"formato": "4:5 y 9:16",
+"nombre": "ATLÉTICOS CHAMPION",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"RD"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-26",
+"fechaMatriz": "6 – 26 oct",
+"estado": "Sin iniciar",
+"region": "RD",
+"imagenes": [
+"img/med/med-dig-30_0.jpg"
+],
+"descripcionArte": "Video: frame desenfocado de fachada de edificio de concreto",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-31",
+"matriz": "DIGITAL",
+"slide": 31,
+"formato": "4:5 y 9:16",
+"nombre": "ATLÉTICOS MULTIMARCA",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"RD"
+],
+"inicio": "2026-10-27",
+"fin": "2026-11-27",
+"fechaMatriz": "27 oct – 27 nov",
+"estado": "Sin iniciar",
+"region": "RD",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-32",
+"matriz": "DIGITAL",
+"slide": 32,
+"formato": "4:5 y 9:16",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"RD"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-26",
+"fechaMatriz": "06 – 26 OCT",
+"estado": "Sin iniciar",
+"region": "RD",
+"imagenes": [
+"img/med/med-dig-32_0.jpg"
+],
+"descripcionArte": "Video: par de sneakers colgando de rama de árbol",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-33",
+"matriz": "DIGITAL",
+"slide": 33,
+"formato": "4:5 y 9:16",
+"nombre": "COMFORT PLUS",
+"statusMatriz": "PASAR A INGL",
+"plataforma": "FB E IG",
+"paises": [
+"TT",
+"JM",
+"BB",
+"ECI",
+"GY",
+"USVI"
+],
+"inicio": "2026-10-01",
+"fin": "2026-10-05",
+"fechaMatriz": "01 – 5 OCT",
+"estado": "Sin iniciar",
+"region": "CARIBE",
+"imagenes": [
+"img/med/med-dig-33_0.jpg"
+],
+"descripcionArte": "Pies de mujer con pantalón crema y sneakers blancos con detalle dorado; logo Payless",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-34",
+"matriz": "DIGITAL",
+"slide": 34,
+"formato": "4:5 y 9:16",
+"nombre": "ATLÉTICOS LA",
+"statusMatriz": "PASAR A INGLÉS",
+"plataforma": "FB E IG",
+"paises": [
+"TT",
+"JM",
+"BB",
+"ECI",
+"GY",
+"USVI"
+],
+"inicio": "2026-10-01",
+"fin": "2026-10-05",
+"fechaMatriz": "01 – 05 OCT",
+"estado": "Sin iniciar",
+"region": "CARIBE",
+"imagenes": [
+"img/med/med-dig-34_0.jpg"
+],
+"descripcionArte": "Video: par de sneakers colgando de rama de árbol",
+"fechaFuente": "matriz"
+},
+{
+"id": "med-dig-35",
+"matriz": "DIGITAL",
+"slide": 35,
+"formato": "4:5 y 9:16",
+"nombre": "KIDS CONCUR",
+"statusMatriz": "PENDIENTE",
+"plataforma": "FB E IG",
+"paises": [
+"TT",
+"JM",
+"BB",
+"ECI",
+"GY",
+"USVI"
+],
+"inicio": "2026-10-04",
+"fin": "2026-10-31",
+"fechaMatriz": "04 – 31 OCT",
+"estado": "Sin iniciar",
+"region": "CARIBE",
+"imagenes": [],
+"fechaFuente": "matriz"
+},
+{
+"id": "med-atl-03",
+"matriz": "ATL",
+"slide": 3,
+"formato": "1920 X1080",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "TV AZTECA",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-03_0.jpg"
+],
+"descripcionArte": "Key visual 16:9 TV: cuatro jóvenes sentados en muro de concreto con sneakers"
+},
+{
+"id": "med-atl-04",
+"matriz": "ATL",
+"slide": 4,
+"formato": "1920 X1080",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "TV AZTECA",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"mencion": "Mención:\n¿Eres de los que no paran y buscan mantenerse en movimiento? ¿O de los que quieren destacar sin dejar de lado \nla comodidad y el estilo?\nSea cual sea tu estilo, en Payless encuentras sneakers para cada forma de vivir y expresarte.\nDescubre los nuevos modelos de Champion, Airwalk, L.A. Gear y Cross Trekkers, con opciones para moverte, \ndestacar y llevar tu estilo a donde quieras.\nTodos los estilos de sneakers en un solo lugar. Encuentra el tuyo en Payless.\nVisita tu tienda Payless más cercana o compra también en payless.com.",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-04_0.jpg"
+],
+"descripcionArte": "Texto de mención para TV + recuadro negro placeholder de cintillo 1920x170"
+},
+{
+"id": "med-atl-05",
+"matriz": "ATL",
+"slide": 5,
+"formato": "1080 X 1920",
+"nombre": "ATLÉTICOS",
+"statusMatriz": "APROBADO",
+"plataforma": "TV AZTECA",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"mencion": "Dinámica (aprox. 30 segundos):\nLos dos conductores están en set y ambos llevan puestos sneakers de la campaña. Uno de ellos nota los sneakers del \notro y lo interrumpe con curiosidad. La conversación fluye natural: se muestran los pares que llevan puestos (plano \ncerrado a los pies para que se vean los logos) y luego caminan juntos hacia el tótem, donde muestran rápidamente las \ndemás marcas. Cierran mirando a cámara con el mensaje de campaña.\nLocución:\nConductor(a) 1: Oye, espera… ¿y esos sneakers? ¡Te quedan increíbles!\nConductor(a) 2: ¡Gracias! Son Champion, los conseguí en Payless. Pero mira los tuyos, también están buenísimos.\nConductor(a) 1: ¡Estos son LA Gear! También de Payless. Súper cómodos y van con todo.\nConductor(a) 2: Es que ahí encuentras de todo: Airwalk, Cross Trekkers, Champion y LA Gear… hay un estilo para todos.\nConductor(a) 1: Entonces ya saben…\nAmbos: ¡Todos los estilos de sneakers en un solo lugar y los encuentras en Payless!",
+"estado": "Programado",
+"region": "CENTRO",
+"imagenes": []
+},
+{
+"id": "med-atl-06",
+"matriz": "ATL",
+"slide": 6,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "APROBADO",
+"plataforma": "RADIO MIA",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"mencion": "Mención:\n¿Ya se enteraron? En Payless acaban de llegar los nuevos sneakers de Champion, \nAirwalk, L.A. Gear y Cross Trekkers. \nHay modelos para él, para ella y para todos los días, cómodos y con ese estilo que \nva contigo.\nTodos los estilos de sneakers en un solo lugar… ¡así es, y los encuentras en Payless!\nDate una vuelta por tu Payless más cercano y consigue tu par favorito, o pídelo \ndesde payless.com sin salir de casa.",
+"estado": "Programado",
+"region": "CENTRO",
+"imagenes": []
+},
+{
+"id": "med-atl-07",
+"matriz": "ATL",
+"slide": 7,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "APROBADO",
+"plataforma": "RADIO MIA",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"mencion": "Mención 30 palabras:\n¡Llegaron nuevos sneakers a Payless!\nChampion, Airwalk, L.A. Gear y Cross Trekkers: todos los estilos de \nsneakers en un solo lugar.\nVe a Payless y elige tu par favorito",
+"estado": "Programado",
+"region": "CENTRO",
+"imagenes": []
+},
+{
+"id": "med-atl-08",
+"matriz": "ATL",
+"slide": 8,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "DOOH",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-08_0.jpg"
+],
+"descripcionArte": "Banner DOOH 1536x336: pies con sneakers sobre muro de concreto"
+},
+{
+"id": "med-atl-09",
+"matriz": "ATL",
+"slide": 9,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "OOH",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-09_0.jpg",
+"img/med/med-atl-09_1.jpg",
+"img/med/med-atl-09_2.jpg"
+],
+"descripcionArte": "Columna digital 4 caras (2560x1840) con grupo de jóvenes; versión vertical con copy"
+},
+{
+"id": "med-atl-10",
+"matriz": "ATL",
+"slide": 10,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "OOH",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-10_0.jpg",
+"img/med/med-atl-10_1.jpg",
+"img/med/med-atl-10_2.jpg"
+],
+"descripcionArte": "Columna digital 4 caras (2048x1344) con grupo de jóvenes; versión vertical con copy"
+},
+{
+"id": "med-atl-11",
+"matriz": "ATL",
+"slide": 11,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "PUBLIMOVIL",
+"paises": [
+"SV"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-11_0.jpg",
+"img/med/med-atl-11_1.jpg",
+"img/med/med-atl-11_2.jpg"
+],
+"descripcionArte": "Publimóvil El Salvador: lateral con jóvenes y franja de pies con sneakers"
+},
+{
+"id": "med-atl-12",
+"matriz": "ATL",
+"slide": 12,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "PUBLIMOVIL",
+"paises": [
+"HN"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-12_0.jpg",
+"img/med/med-atl-12_1.jpg"
+],
+"descripcionArte": "Publimóvil Honduras: lateral con jóvenes y franja de pies con sneakers"
+},
+{
+"id": "med-atl-13",
+"matriz": "ATL",
+"slide": 13,
+"nombre": "ATLÉTICOS",
+"statusMatriz": "EDITADO",
+"plataforma": "PUBLIMOVIL",
+"paises": [
+"NI"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-atl-13_0.jpg",
+"img/med/med-atl-13_1.jpg",
+"img/med/med-atl-13_2.jpg"
+],
+"descripcionArte": "Publimóvil Nicaragua: lateral, trasera y franja de pies con sneakers"
+},
+{
+"id": "med-eco-03",
+"matriz": "ECOMMERCE",
+"slide": 3,
+"formato": "1:1 y 9:16",
+"nombre": "20% de descuento",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CR"
+],
+"inicio": "2026-10-05",
+"fin": "2026-10-18",
+"textoPrincipal": "Si ya los viste, ya sabes lo que sigue. Entra a Payless.cr, elige tus sneakers favoritos y aprovecha el descuento antes que nadie.",
+"titular": "Llévatelos con 20% OFF",
+"descripcion": "Tu próximo par te espera",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-03_0.jpg"
+],
+"legal": "Promoción válida exclusivamente del 5 de octubre al 18 de octubre del 2026, únicamente en comercio electrónico y WhatsApp: 20% de descuento. La promoción aplica para los productos de la tienda online, con precio original. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. Para consultas o reclamos, comuníquese a servicioalcliente@payless.com / WhatsApp 50670964289.",
+"fechaFuente": "legal",
+"descripcionArte": "CR 20%: tres jóvenes sentados en escalones con sneakers, cielo y ciudad."
+},
+{
+"id": "med-eco-04",
+"matriz": "ECOMMERCE",
+"slide": 4,
+"formato": "1:1 y 9:16",
+"nombre": "Flash sale 50%",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CR"
+],
+"inicio": "2026-10-19",
+"fin": "2026-10-19",
+"textoPrincipal": "Tu colección siempre puede crecer. Descubre sneakers que combinan con tu estilo y encuentra ese par que faltaba.",
+"titular": "50% OFF en sneakers",
+"descripcion": "Ese par te está esperando",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-04_0.jpg"
+],
+"legal": "Promoción válida exclusivamente el 19 de octubre del 2026, únicamente en comercio electrónico y WhatsApp: 50% de descuento. La promoción aplica para los productos de la tienda online, con precio original. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. Para consultas o reclamos, comuníquese a servicioalcliente@payless.com / WhatsApp 50670964289.",
+"fechaFuente": "legal",
+"descripcionArte": "CR Flash Sale 50% Airwalk: joven agachado con sneaker blanco, rayos."
+},
+{
+"id": "med-eco-05",
+"matriz": "ECOMMERCE",
+"slide": 5,
+"formato": "1:1 y 9:16",
+"nombre": "20% de descuento 2",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CR"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-29",
+"textoPrincipal": "Cuando uno no es suficiente, el carrito lo sabe. Elige tus favoritos y date el gusto de estrenar más de un par.",
+"titular": "Tu look pide más sneakers",
+"descripcion": "20% OFF",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-05_0.jpg",
+"img/med/med-eco-05_1.jpg"
+],
+"legal": "Promoción válida exclusivamente del 20 de octubre al 29 de octubre del 2026, únicamente en comercio electrónico y WhatsApp: 20% de descuento. La promoción aplica para los productos de la tienda online, con precio original. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. Para consultas o reclamos, comuníquese a servicioalcliente@payless.com / WhatsApp 50670964289.",
+"fechaFuente": "legal",
+"descripcionArte": "CR 20% 'Sneakers vas a querer más de uno': piernas en escalones, dos formatos."
+},
+{
+"id": "med-eco-06",
+"matriz": "ECOMMERCE",
+"slide": 6,
+"formato": "1:1 y 9:16",
+"nombre": "30% de descuento",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CR"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-29",
+"textoPrincipal": "Un cambio de sneakers puede cambiarlo todo. Descubre estilos para cada mood, plan y momento.",
+"titular": "Tu sneaker ideal, 30% OFF",
+"descripcion": "Más estilo, más actitud",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-06_0.jpg"
+],
+"legal": "Promoción válida exclusivamente del 20 de octubre al 29 de octubre del 2026, únicamente en comercio electrónico y WhatsApp: 20% de descuento. La promoción aplica para los productos de la tienda online, con precio original. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. Para consultas o reclamos, comuníquese a servicioalcliente@payless.com / WhatsApp 50670964289.",
+"fechaFuente": "legal",
+"descripcionArte": "CR: arte visible 20% 'vas a querer más de uno' (piezas nombrada 30%).",
+"revisar": "El arte del slide es el de 20% (igual al de la pieza 05, 20–29 oct), pero la pieza y el copy son de 30%. El arte de 30% (30 oct–2 nov) quedó fuera del slide: posible arte equivocado."
+},
+{
+"id": "med-eco-07",
+"matriz": "ECOMMERCE",
+"slide": 7,
+"formato": "1:1 y 9:16",
+"nombre": "30% de descuento",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-02",
+"fin": "2026-10-05",
+"textoPrincipal": "Siempre hay un sneaker que va contigo. Descubre tu favorito y hazlo parte de tu día a día.",
+"titular": "Elige tu estilo",
+"descripcion": "Aprovecha 30% OFF",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-07_0.jpg"
+],
+"legal": "Promoción válida del 2 de octubre al 5 de octubre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 30% 'Hay un sneaker para cada versión de ti': dos chicas en escalones."
+},
+{
+"id": "med-eco-08",
+"matriz": "ECOMMERCE",
+"slide": 8,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE 50% GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-07",
+"textoPrincipal": "El par que estabas esperando puede ser tuyo. Aprovecha esta oportunidad y encuentra tus sneakers favoritos antes que se agoten.",
+"titular": "Sneakers con 50% OFF",
+"descripcion": "Encuentra tu favorito",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-08_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 7 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT Flash Sale 50% La Gear: piernas cruzadas con sneakers rojos, rayos."
+},
+{
+"id": "med-eco-09",
+"matriz": "ECOMMERCE",
+"slide": 9,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-08",
+"fin": "2026-10-29",
+"textoPrincipal": "Hay sneakers que cambian todo un look. Descubre ese par que combina contigo y dale una nueva actitud a tus pasos.",
+"titular": "20% OFF para elegirlo hoy",
+"descripcion": "Hazlo parte de tu look",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-09_0.jpg"
+],
+"legal": "Promoción válida del 8 de octubre al 29 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 20% 'Tu estilo cambia, tu sneaker también': jeans y sneakers blancos."
+},
+{
+"id": "med-eco-10",
+"matriz": "ECOMMERCE",
+"slide": 10,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "Porque siempre hay espacio para un par más. Renueva tu colección con sneakers que hablan de tu estilo.",
+"titular": "Encuéntralo y llévatelo",
+"descripcion": "30% OFF online",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-10_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 30% 'Los sneakers no se buscan, se encuentran': chica sentada."
+},
+{
+"id": "med-eco-11",
+"matriz": "ECOMMERCE",
+"slide": 11,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento WSP GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-02",
+"fin": "2026-10-05",
+"textoPrincipal": "Hay pares que llaman la atención desde el primer vistazo. Encuentra ese sneaker que completa tu estilo.",
+"titular": "30% OFF en tienda online",
+"descripcion": "Descubre nuevos pares",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-11_0.jpg"
+],
+"legal": "Promoción válida del 2 de octubre al 5 de octubre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 30% WhatsApp 'El sneaker perfecto existe y está aquí': chica agachada."
+},
+{
+"id": "med-eco-12",
+"matriz": "ECOMMERCE",
+"slide": 12,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE WSP GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-07",
+"textoPrincipal": "Un buen sneaker no solo combina: resuelve el look. Elige el que va contigo y aprovecha para estrenarlo ahora.",
+"titular": "50% de descuento online",
+"descripcion": "Actitud que se nota",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-12_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 7 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT Flash Sale 50% vía WhatsApp: piernas con sneakers rojos, rayos."
+},
+{
+"id": "med-eco-13",
+"matriz": "ECOMMERCE",
+"slide": 13,
+"formato": "1:1 y 9:16",
+"nombre": "20% de decuento GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-08",
+"fin": "2026-10-29",
+"textoPrincipal": "Hay pares que entran por los ojos y terminan en tu clóset. Encuentra ese sneaker que va contigo y hazlo tuyo.",
+"titular": "20% OFF en tienda online",
+"descripcion": "El par que vas a querer",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-13_0.jpg"
+],
+"legal": "Promoción válida del 8 de octubre al 29 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 20% WhatsApp 'Tu estilo tiene el sneaker perfecto': chica en carrito."
+},
+{
+"id": "med-eco-14",
+"matriz": "ECOMMERCE",
+"slide": 14,
+"formato": "1:1 y 9:16",
+"nombre": "30% de decuento GT",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "Si encontraste el sneaker perfecto, no lo pienses tanto. Aprovecha 30% OFF online y hazlo tuyo antes de que se agote.",
+"titular": "Hazlo parte de tu look",
+"descripcion": "Ahora sí, llévalo contigo",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-14_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "GT 30% WhatsApp 'El sneaker perfecto existe': piernas saliendo de auto."
+},
+{
+"id": "med-eco-15",
+"matriz": "ECOMMERCE",
+"slide": 15,
+"formato": "1:1 y 9:16",
+"nombre": "50% FLASH SALE SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-01",
+"fin": "2026-10-01",
+"textoPrincipal": "Elige un par que siga su ritmo y acompáñalos en cada aventura. Encuentra sus nuevos favoritos hoy.",
+"titular": "50% OFF en sneakers",
+"descripcion": "Aventuras con estilo",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-15_0.jpg"
+],
+"legal": "Promoción válida el 1 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento en productos para niños. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV Flash Sale 50% niños: niño con sneakers Super Mario, rayos."
+},
+{
+"id": "med-eco-16",
+"matriz": "ECOMMERCE",
+"slide": 16,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-02",
+"fin": "2026-10-05",
+"textoPrincipal": "Descubre sneakers que combinan con tu estilo y encuentra tu próximo favorito.",
+"titular": "Encuentra tu par con 30% OFF",
+"descripcion": "Encuentra tu par ideal",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-16_0.jpg"
+],
+"legal": "Promoción válida del 2 de octubre al 5 de octubre del 2026 en comercio electrónico y WhatsApp: 30% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV Flash Sale 30% La Gear: chica en jeans con zapato negro, rayos."
+},
+{
+"id": "med-eco-17",
+"matriz": "ECOMMERCE",
+"slide": 17,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-22",
+"textoPrincipal": "Hay pares que cambian la vibra completa. Elige el que va contigo y súmale actitud a cada paso.",
+"titular": "Sneakers con 20% OFF",
+"descripcion": "Tu vibra, en tus sneakers",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-17_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 22 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV 20% 'Tu estilo cambia, tu sneakers también': chica apoyada en baranda.",
+"revisar": "El titular del arte dice «TU SNEAKERS TAMBIÉN»: posible error de gramática."
+},
+{
+"id": "med-eco-18",
+"matriz": "ECOMMERCE",
+"slide": 18,
+"formato": "1:1 y 9:16",
+"nombre": "50% FLASH SALE SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-23",
+"fin": "2026-10-23",
+"textoPrincipal": "Descubre sneakers que combinan contigo y encuentra ese par que convierte cualquier look en uno diferente.",
+"titular": "Flash Sale: 50% OFF",
+"descripcion": "Elige tu nuevo favorito",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-18_0.jpg"
+],
+"legal": "Promoción válida el 23 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV Flash Sale 50% La Gear/Cross Trekkers: piernas bajando escaleras, rayos."
+},
+{
+"id": "med-eco-19",
+"matriz": "ECOMMERCE",
+"slide": 19,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-24",
+"fin": "2026-10-30",
+"textoPrincipal": "Tu forma de vestir cambia, tu esencia no. Descubre opciones que combinan con cada versión de ti.",
+"titular": "Aprovecha 20% de descuento",
+"descripcion": "Encuentra tu favorito",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-19_0.jpg"
+],
+"legal": "Promoción válida del 24 de octubre al 30 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV Flash Sale 20%: tres chicas sentadas con sneakers variados, rayos."
+},
+{
+"id": "med-eco-20",
+"matriz": "ECOMMERCE",
+"slide": 20,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "2026-10-31",
+"fin": "2026-11-01",
+"textoPrincipal": "Ese sneaker que buscabas para completar tu outfit está aquí. Explora nuevos diseños y encuentra tu próximo par.",
+"titular": "Sneakers con 50% OFF",
+"descripcion": "Más estilo, más tú",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-20_0.jpg"
+],
+"legal": "Promoción válida del 31 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al periodo indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"descripcionArte": "SV Flash Sale 30%: dos chicas sentadas con sneakers beige, rayos.",
+"revisar": "El titular dice «Sneakers con 50% OFF», pero el arte y el legal dicen 30%."
+},
+{
+"id": "med-eco-21",
+"matriz": "ECOMMERCE",
+"slide": 21,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-04",
+"fin": "2026-10-07",
+"textoPrincipal": "No hace falta pensarlo tanto: si transforma tu outfit, ya encontraste el indicado.",
+"titular": "El par que impone estilo",
+"descripcion": "20% OFF en tienda online",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-21_0.jpg"
+],
+"legal": "Promoción válida del 4 al 7 de octubre del 2026 en comercio electrónico y WhatsApp: 30% de descuento en la tienda online. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Una sola imagen. INCONSISTENCIA: Description del copy dice '20% OFF en tienda online' pero arte/legal/nombre dicen 30%.",
+"descripcionArte": "HN 30% 'Hay sneakers que no combinan: dominan': tres jóvenes posando."
+},
+{
+"id": "med-eco-22",
+"matriz": "ECOMMERCE",
+"slide": 22,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE 50% HN 1",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-08",
+"fin": "2026-10-08",
+"textoPrincipal": "Tus próximos sneakers te están esperando.",
+"titular": "Flash Sale 50% OFF",
+"descripcion": "Solo por tiempo limitado",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-22_0.jpg"
+],
+"legal": "Promoción válida el 8 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento. La promoción aplica para los productos Atléticos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Una sola imagen. Legal limita a productos Atléticos, aunque el arte dice 'en nuestra tienda online'.",
+"descripcionArte": "HN Flash Sale 50% Airwalk/Cross Trekkers: pareja en banca naranja, rayos."
+},
+{
+"id": "med-eco-23",
+"matriz": "ECOMMERCE",
+"slide": 23,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-09",
+"fin": "2026-10-20",
+"textoPrincipal": "Si hace que todo lo demás se vea mejor, ya sabes qué hacer.",
+"titular": "Tu próximo sneaker, 20% OFF",
+"descripcion": "Flow que se lleva puesto",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-23_0.jpg"
+],
+"legal": "Promoción válida del 9 de octubre al 20 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento en la tienda online. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "HN 20% Airwalk 'Tu estilo pide sneakers con actitud': chico en calle."
+},
+{
+"id": "med-eco-24",
+"matriz": "ECOMMERCE",
+"slide": 24,
+"formato": "1:1 y 9:16",
+"nombre": "50% flash sale HN 2",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-21",
+"fin": "2026-10-21",
+"textoPrincipal": "Hay días para cambiar el flow. Descubre estilos que combinan con tu energía y llévalos donde quieras.",
+"titular": "50% OFF en sneakers",
+"descripcion": "Tu estilo, tu momento",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-24_0.jpg"
+],
+"legal": "Promoción válida el 21 de octubre del 2026 en comercio electrónico y WhatsApp: 50% de descuento. La promoción aplica para los productos Atléticos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "HN Flash Sale 50% productos atléticos: tres jóvenes sentados, patineta, rayos."
+},
+{
+"id": "med-eco-25",
+"matriz": "ECOMMERCE",
+"slide": 25,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-09",
+"fin": "2026-10-20",
+"textoPrincipal": "Ese carrito no se va a llenar solo. Elige tus favoritos y aprovecha el 20% OFF en tienda online antes de que vuelen.",
+"titular": "Compra antes que se agoten",
+"descripcion": "Hoy conviene llevar más",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-25_0.jpg"
+],
+"legal": "Promoción válida del 9 de octubre al 20 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento en la tienda online. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Una sola imagen. Mismo rango que p23. Nombre de pieza dice 'SV' pero país es Honduras y el arte usa honduras.payless.com.",
+"descripcionArte": "HN 20% 'Difícil elegir uno cuando quieres todos': carrito con sneakers."
+},
+{
+"id": "med-eco-26",
+"matriz": "ECOMMERCE",
+"slide": 26,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento SV",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "Tu próximo match puede estar a un clic.",
+"titular": "30% OFF.",
+"descripcion": "Ese par no va a esperar",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-26_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento en la tienda online. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Una sola imagen. Nombre de pieza dice 'SV' pero país es Honduras y el arte usa honduras.payless.com.",
+"descripcionArte": "HN 30% 'Hay sneakers que conectan a primera vista': dos pares de sneakers."
+},
+{
+"id": "med-eco-27",
+"matriz": "ECOMMERCE",
+"slide": 27,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-22",
+"textoPrincipal": "Renueva tus pasos con ese par que le da otra actitud a cada look.",
+"titular": "20% OFF para estrenar",
+"descripcion": "Elige tu próximo favorito",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-27_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 22 de octubre del 2026 en comercio electrónico y WhatsApp: 20% de descuento en la tienda online. Aplica a productos con precio regular. No aplica en producto con promoción u otro descuento. No aplica a productos marca Champion. Todo artículo relacionado que sea adquirido posterior al período indicado, será al valor normal sin promoción.",
+"fechaFuente": "legal",
+"revisar": "Status EN BOCETO. El arte dice 'COMPRA HOY EN ELSALVADOR.PAYLESS.COM' aunque la pieza es Ecuador (posible error de URL). Legal sin cláusula 'hasta agotar existencias'.",
+"descripcionArte": "Ecuador 20%: mujer con sneakers beige, ciudad; 'Tu estilo cambia, tu sneakers también'"
+},
+{
+"id": "med-eco-28",
+"matriz": "ECOMMERCE",
+"slide": 28,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-11",
+"textoPrincipal": "Ese par que viste y no pudiste sacar de tu cabeza puede ser tuyo. Date el gusto de estrenarlo.",
+"titular": "30% OFF para elegir",
+"descripcion": "Difícil dejarlos pasar",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-28_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 11 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Ecuador 30%: piernas con sneakers fuera de ventana de auto; 'Es momento de nuevos sneakers'"
+},
+{
+"id": "med-eco-29",
+"matriz": "ECOMMERCE",
+"slide": 29,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-11",
+"textoPrincipal": "Ese par que combina con todo y vas a querer usar una y otra vez.",
+"titular": "Llévatelos con 20% OFF",
+"descripcion": "Tu próximo favorito",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-29_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 11 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status EN BOCETO. Inconsistencia: Nombre pieza y titular dicen 20%, pero el badge y el legal del arte dicen 30%.",
+"descripcionArte": "Ecuador: sneakers negros sobre maletero de auto; 'Tus próximos sneakers están aquí'"
+},
+{
+"id": "med-eco-30",
+"matriz": "ECOMMERCE",
+"slide": 30,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-16",
+"fin": "2026-10-19",
+"textoPrincipal": "Hay pares que cambian por completo lo que llevas puesto. Encuentra ese que va contigo y hazlo parte de tu día.",
+"titular": "Aprovecha 30% OFF",
+"descripcion": "Se va directo al carrito",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-30_0.jpg"
+],
+"legal": "Promoción válida del 16 de octubre al 19 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Ecuador 30%: mujer con gafas sentada, zapato negro; 'Tus próximos sneakers están aquí'"
+},
+{
+"id": "med-eco-31",
+"matriz": "ECOMMERCE",
+"slide": 31,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE 50% EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-20",
+"textoPrincipal": "Hoy es el día para ir por esos sneakers que tienes en la mira. Aprovecha 50% de descuento online antes de que se acaben.",
+"titular": "Hoy estrenas sí o sí",
+"descripcion": "Aprovecha antes que vuelen",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-31_0.jpg"
+],
+"legal": "Promoción válida el 20 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 50% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Flash Sale Ecuador 50%: sneakers blanco/menta, café; rayos y bloque blanco"
+},
+{
+"id": "med-eco-32",
+"matriz": "ECOMMERCE",
+"slide": 32,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-21",
+"fin": "2026-10-22",
+"textoPrincipal": "Ese par que quieres puede estar a un clic. Elige tu favorito, agrégalo al carrito y aprovecha para estrenar.",
+"titular": "Compra con 20% OFF",
+"descripcion": "Un clic y son tuyos",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-32_0.jpg"
+],
+"legal": "Promoción válida del 21 de octubre al 22 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 20% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status EN BOCETO. Inconsistencia: el badge del arte dice 30% pero el legal y el nombre de pieza dicen 20%.",
+"descripcionArte": "Ecuador: mujer atando sneakers menta en escalones; 'Tu look sabe qué sneakers quieres'"
+},
+{
+"id": "med-eco-33",
+"matriz": "ECOMMERCE",
+"slide": 33,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-23",
+"fin": "2026-10-25",
+"textoPrincipal": "Si uno te gusta, espera a ver todos los que vas a querer. Encuentra tus favoritos y llévalos directo al carrito.",
+"titular": "Compra con 30% OFF",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-33_0.jpg"
+],
+"legal": "Promoción válida del 23 de octubre al 25 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Ecuador 30%: dos personas sentadas con sneakers; 'Todo empieza con unos buenos sneakers'"
+},
+{
+"id": "med-eco-34",
+"matriz": "ECOMMERCE",
+"slide": 34,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-26",
+"fin": "2026-10-29",
+"textoPrincipal": "Ahora encuentra ese par que completa su personaje y aprovecha 30% de descuento en la tienda online.",
+"titular": "Activa su personaje",
+"descripcion": "Agrégalo al carrito",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-34_0.jpg"
+],
+"legal": "Promoción válida del 26 de octubre al 29 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 20% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status EN BOCETO. Inconsistencia: nombre de pieza 20% y legal 20%, pero el badge y el texto principal dicen 30%.",
+"descripcionArte": "Halloween Ecuador: niño vampiro con zapatos negros; 'La aventura empieza en sus pasos'"
+},
+{
+"id": "med-eco-35",
+"matriz": "ECOMMERCE",
+"slide": 35,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "La magia está en cada detalle. Completa su look de Halloween con ese par que le encantará y aprovecha 30% de descuento online.",
+"titular": "El par que faltaba",
+"descripcion": "Encuéntralo en Payless",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-35_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Halloween Ecuador 30%: niña bruja con varita, zapatos rosados; 'La aventura empieza en sus pasos'"
+},
+{
+"id": "med-eco-36",
+"matriz": "ECOMMERCE",
+"slide": 36,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "Ese par que tienes en mente está a un mensaje de ser tuyo. Elige tu favorito y cómpralo.",
+"titular": "Aprovecha 20% OFF",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-36_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status REPLIQUEMOS (resaltado amarillo). Inconsistencia: badge y nombre de pieza 20%, pero el legal dice 30%. CTA 'Compra hoy vía WhatsApp'.",
+"descripcionArte": "Ecuador WhatsApp: piernas fuera de auto, sneakers; 'Dale a tu look nuevos sneakers'"
+},
+{
+"id": "med-eco-37",
+"matriz": "ECOMMERCE",
+"slide": 37,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-11",
+"textoPrincipal": "Ese par que hace match con tu estilo está más cerca. Elige el tuyo y prepárate para estrenarlo.",
+"titular": "Aprovecha 30% OFF",
+"descripcion": "Pídelo directo por WhatsApp",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-37_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 11 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status REPLIQUEMOS. Inconsistencia: badge del arte 20%, pero nombre de pieza, titular y legal dicen 30%.",
+"descripcionArte": "Ecuador WhatsApp: mujer en café con sneakers negros LA Gear; 'Dale a tu look nuevos sneakers'"
+},
+{
+"id": "med-eco-38",
+"matriz": "ECOMMERCE",
+"slide": 38,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-16",
+"fin": "2026-10-19",
+"textoPrincipal": "Ese par que va con tu onda está más cerca. Escríbenos por WhatsApp, elige tu favorito y aprovecha para estrenarlo.",
+"titular": "Aprovecha 30% OFF",
+"descripcion": "Tu próximo par te espera",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-38_0.jpg"
+],
+"legal": "Promoción válida del 16 de octubre al 19 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Ecuador WhatsApp 30%: mujer sentada, zapatos negros tipo merceditas; 'Tu estilo tiene el sneaker perfecto'"
+},
+{
+"id": "med-eco-39",
+"matriz": "ECOMMERCE",
+"slide": 39,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE 50% EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-20",
+"fin": "2026-10-20",
+"textoPrincipal": "Si tus sneakers hacen el look, este es el momento de sumar otro par.",
+"titular": "Encontraste tu próximo par",
+"descripcion": "No lo dejes escapar",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-39_0.jpg"
+],
+"legal": "Promoción válida el 20 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 50% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Flash Sale Ecuador 50%: sneakers negros/blancos LA Gear en café; rayos"
+},
+{
+"id": "med-eco-40",
+"matriz": "ECOMMERCE",
+"slide": 40,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-21",
+"fin": "2026-10-22",
+"textoPrincipal": "Hay sneakers que simplemente hacen match contigo. Encuentra los tuyos con 20% de descuento en la tienda online.",
+"titular": "Dale actitud a tu look",
+"descripcion": "Ese favorito te espera",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-40_0.jpg"
+],
+"legal": "Promoción válida del 21 de octubre al 22 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 20% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status REPLIQUEMOS. Arte con formato Flash Sale pero 20%.",
+"descripcionArte": "Flash Sale Ecuador 20%: zapatos negros merceditas sobre muro; rayos"
+},
+{
+"id": "med-eco-41",
+"matriz": "ECOMMERCE",
+"slide": 41,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-11",
+"textoPrincipal": "Hay pares que hacen todo el outfit. Encuentra el que va contigo, escríbenos por WhatsApp y aprovecha para estrenarlo.",
+"titular": "Llévatelos con 30% OFF",
+"descripcion": "Haz tu pedido por WhatsApp",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-41_0.jpg"
+],
+"legal": "Promoción válida del 6 de octubre al 11 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 30% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"descripcionArte": "Ecuador WhatsApp 30%: sneakers negros sobre auto; 'Sneakers que van con tu onda'"
+},
+{
+"id": "med-eco-42",
+"matriz": "ECOMMERCE",
+"slide": 42,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-26",
+"fin": "2026-10-29",
+"textoPrincipal": "Después de cada aventura, queda una historia que contar. Encuentra en Payless el par que acompañe cada una de ellas.",
+"titular": "Un par para sus aventuras",
+"descripcion": "Cómpralo vía WhatsApp",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-42_0.jpg"
+],
+"legal": "Promoción válida del 26 de octubre al 29 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 20% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status REPLIQUEMOS. Inconsistencia: badge 30%, pero nombre de pieza y legal dicen 20%.",
+"descripcionArte": "Halloween Ecuador WhatsApp: niño vampiro con calabaza; 'Sus aventuras también empiezan en cada paso'"
+},
+{
+"id": "med-eco-43",
+"matriz": "ECOMMERCE",
+"slide": 43,
+"formato": "1:1 y 9:16",
+"nombre": "30% descuento EC",
+"statusMatriz": "REPLIQUEMOS",
+"plataforma": "FB E IG",
+"paises": [
+"EC"
+],
+"inicio": "2026-10-26",
+"fin": "2026-10-29",
+"textoPrincipal": "El par correcto completa la magia. Encuéntralo en Payless y haz de Halloween toda una aventura.",
+"titular": "Su look entra en personaje",
+"descripcion": "Compra vía WhatsApp",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-43_0.jpg"
+],
+"legal": "Promoción válida del 26 de octubre al 29 de octubre del 2026 o hasta agotar existencias. Aplica en ecommerce y WhatsApp oficiales. Disfruta de 20% de descuento en la tienda online. No acumulable con otras promociones. No aplica a productos de la marca Champion. Sujeto a disponibilidad. Oferta conforme a la Ley Orgánica de Defensa del Consumidor y demás disposiciones aplicables. La empresa se reserva el derecho de modificar, suspender o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status REPLIQUEMOS. Inconsistencia: badge y nombre de pieza dicen 30%, pero el legal dice 20%.",
+"descripcionArte": "Halloween Ecuador WhatsApp: niña bruja con mamá en sala; badge 30%"
+},
+{
+"id": "med-eco-44",
+"matriz": "ECOMMERCE",
+"slide": 44,
+"formato": "1:1 y 9:16",
+"nombre": "25% descuento CM",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-06",
+"fin": "2026-10-18",
+"textoPrincipal": "Tu estilo no se queda quieto. Encuentra sneakers que sigan tu ritmo y aprovecha 25% de descuento en la tienda online.",
+"descripcion": "Compra online en Payless",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-44_0.jpg"
+],
+"legal": "Descuento del 25% de descuento en la tienda online. Promoción válida desde las 00:01 horas del 6 de octubre y hasta las 23:59 horas del 18 de octubre (Hora Colombia). Aplica para compras realizadas en paylesscolombia.co y WhatsApp o hasta agotar un total 100.000 unidades disponibles a nivel nacional, lo que ocurra primero. El cliente podrá adquirir un máximo de hasta 20 productos por número de identificación. No aplica para remidir en productos de marca Champion. No aplica para compras en tiendas físicas Payless Colombia. No es acumulable con otras promociones ni con productos marcados como \"¡En oferta!\", \"Zona de descuentos\" (web y WhatsApp). Todo cambio está sujeto a disponibilidad de inventario. Si el cambio se realiza después de finalizada la promoción, se aplicará sobre el precio efectivamente pagado sin conservar el descuento promocional. Consulta disponibilidad de inventario en la página web. Payless se reserva el derecho de modificar o cancelar esta promoción en cualquier momento si lo considera necesario.",
+"fechaFuente": "legal",
+"descripcionArte": "Colombia 25%: mujer en carrito de compras, sneakers beige; 'Tu estilo siempre en movimiento'"
+},
+{
+"id": "med-eco-45",
+"matriz": "ECOMMERCE",
+"slide": 45,
+"formato": "1:1 y 9:16",
+"nombre": "FLASH SALE 40% CM",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-19",
+"fin": "2026-10-23",
+"textoPrincipal": "El momento de estrenar es ahora. Aprovecha el Flash Sale y encuentra ese nuevo par con 40% de descuento en la tienda online.",
+"titular": "Haz espacio para lo nuevo",
+"descripcion": "Solo por tiempo limitado",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-45_0.jpg"
+],
+"legal": "Descuento del 40% de descuento en la tienda online. Promoción válida desde las 00:01 horas del 19 de octubre y hasta las 23:59 horas del 23 de octubre (Hora Colombia). Aplica para compras realizadas en paylesscolombia.co y WhatsApp o hasta agotar un total 100.000 unidades disponibles a nivel nacional, lo que ocurra primero. El cliente podrá adquirir un máximo de hasta 20 productos por número de identificación. No aplica para remidir en productos de marca Champion. No aplica para compras en tiendas físicas Payless Colombia. No es acumulable con otras promociones ni con productos marcados como \"¡En oferta!\", \"Zona de descuentos\" (web y WhatsApp). Todo cambio está sujeto a disponibilidad de inventario. Si el cambio se realiza después de finalizada la promoción, se aplicará sobre el precio efectivamente pagado sin conservar el descuento promocional. Consulta disponibilidad de inventario en la página web. Payless se reserva el derecho de modificar o cancelar esta promoción en cualquier momento si lo considera necesario.",
+"fechaFuente": "legal",
+"descripcionArte": "Flash Sale Colombia 40%: sneakers rojos LA Gear contra pared; rayos"
+},
+{
+"id": "med-eco-46",
+"matriz": "ECOMMERCE",
+"slide": 46,
+"formato": "1:1 y 9:16",
+"nombre": "20% descuento CM",
+"statusMatriz": "EN BOCETO",
+"plataforma": "FB E IG",
+"paises": [
+"CO"
+],
+"inicio": "2026-10-30",
+"fin": "2026-11-01",
+"textoPrincipal": "Haz que tus sneakers hablen por ti. Encuentra ese diseño que va con tu estilo y aprovecha 20% de descuento online.",
+"titular": "Que tu look hable por ti",
+"estado": "Sin iniciar",
+"region": "SUR",
+"imagenes": [
+"img/med/med-eco-46_0.jpg"
+],
+"legal": "Promoción válida del 30 de octubre al 1 de noviembre del 2026 en comercio electrónico y WhatsApp: 30% de descuento. La promoción aplica para los productos de la tienda, con precio original y precio con descuento claramente indicados según corresponda. Es válida únicamente mientras haya unidades disponibles de cada artículo y no es acumulable con otras promociones o descuentos. No aplica a productos de la marca Champion. La empresa se reserva el derecho de modificar o cancelar la promoción sin previo aviso.",
+"fechaFuente": "legal",
+"revisar": "Status EN BOCETO. País COLOMBIA. Inconsistencia: badge, nombre de pieza y texto dicen 20%, pero el legal dice 30% y es el legal genérico de comercio electrónico (igual al de la p36), no el legal de Colombia; las fechas podrían no ser las definitivas.",
+"descripcionArte": "Colombia 20%: sneakers rojos LA Gear sobre muro; 'Sneakers para tu día a día'"
+},
+{
+"id": "med-eco-47",
+"matriz": "ECOMMERCE",
+"slide": 47,
+"formato": "9:16",
+"nombre": "Flash sale HN",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"HN"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-47_0.jpg"
+],
+"comentariosSlide": "AJUSTES VIDEO DE RECORDACIÓN: PARA EL VIDEO DE RECORDACIÓN DEBEMOS COLOCAR EL LOGO DE LA GEAR ARRIBA DE LOS TEXTOS Y HACERLO UN POCO MÁS GRANDE. RECUERDA QUE LA IDEA ES VENDER ESTAS MARCAS Y NO TANTO EL LOGO DE PAYLESS.",
+"descripcionArte": "Flash Sale Honduras: EXPECTATIVA celular, audífonos y patineta con logo Payless"
+},
+{
+"id": "med-eco-48",
+"matriz": "ECOMMERCE",
+"slide": 48,
+"formato": "1:1 y 9:16",
+"nombre": "Flash sale CR",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"CR"
+],
+"inicio": "2026-10-19",
+"fin": "2026-10-19",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-48_0.jpg",
+"img/med/med-eco-48_1.jpg"
+],
+"legal": "Promoción válida el 19 de Octubre de 2026, únicamente en comercio electrónico y WhatsApp de Payless Costa Rica. Recibe un 50% de descuento en todos los productos de la tienda en línea con precio",
+"fechaFuente": "legal",
+"comentariosSlide": "AJUSTES PARA VIDEO DE RECORDACIÓN: subir el logo de La Gear en la imagen, el logo no se ve y está sobre la media bajemos un poco los zapatos de manera que queden centrado, además falta el cintillo de No aplica a productos Champion [imagen del cintillo: '*No aplica a productos champion.'] CAMBIAR EL LEGAL: Promoción válida el 19 de Octubre de 2026, únicamente en comercio electrónico y WhatsApp de Payless Costa Rica. Recibe un 50% de descuento en todos los productos de la tienda en línea con precio",
+"descripcionArte": "Flash Sale Costa Rica: EXPECTATIVA celular/audífonos; RECORDACIÓN sneakers rojos LA Gear con rayos",
+"revisar": "El legal nuevo del comentario está cortado en la matriz (termina en «…con precio»). Pedir el texto completo."
+},
+{
+"id": "med-eco-49",
+"matriz": "ECOMMERCE",
+"slide": 49,
+"formato": "1:1 y 9:16",
+"nombre": "Flash sale GT",
+"statusMatriz": "EDITADO",
+"plataforma": "FB E IG",
+"paises": [
+"GT"
+],
+"inicio": "",
+"fin": "",
+"estado": "Sin iniciar",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-49_0.jpg",
+"img/med/med-eco-49_1.jpg"
+],
+"comentariosSlide": "AJUSTES VIDEO DE RECORDACIÓN: Para recordación usar imagen oficial de este lote rojo, el logo no es visible, y La Gear en la imagen. Esta es la foto oficial: https://drive.google.com/file/d/1bfCfxJBpni9oU-bRYgffJAsHA5LmyZ-o/view?usp=sharing",
+"descripcionArte": "Flash Sale Guatemala: EXPECTATIVA celular/audífonos; RECORDACIÓN sneakers rojos LA Gear en escalones"
+},
+{
+"id": "med-eco-50",
+"matriz": "ECOMMERCE",
+"slide": 50,
+"formato": "1:1 y 9:16",
+"nombre": "Flash sale SV",
+"statusMatriz": "APROBADO",
+"plataforma": "FB E IG",
+"paises": [
+"SV"
+],
+"inicio": "",
+"fin": "",
+"estado": "Programado",
+"region": "CENTRO",
+"imagenes": [
+"img/med/med-eco-50_0.jpg"
+],
+"descripcionArte": "Flash Sale El Salvador RECORDACIÓN: niño con tenis Paw Patrol pateando balón; rayos"
+}
+]
