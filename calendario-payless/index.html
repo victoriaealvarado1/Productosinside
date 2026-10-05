@@ -597,6 +597,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .redf small{font:700 10px var(--f-mono);text-transform:uppercase;color:var(--ink-3)} .redf small em{color:var(--bad);font-style:normal}
 .redf p{white-space:pre-wrap;font-size:14px}
 .dialog.wide{width:min(760px,100%)}
+.dialog>*{flex-shrink:0}
+.dialog textarea{min-height:3.2em}
 .rclist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .rclist li{display:flex;gap:8px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 .rclist li span{flex:1;display:flex;flex-direction:column} .rclist small{color:var(--ink-3);font-size:11px}
@@ -609,6 +611,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .doccard header{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .doccard header small{color:var(--ink-3);font-size:11px;margin-left:auto}
 .doccard summary{cursor:pointer;font-size:12px;color:var(--ink-3)}
+
+.attbox{background:var(--accent-soft);border:1px dashed var(--accent);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.attbox label.btn,.attline label.btn{cursor:pointer}
+.attline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rclist .btn.sm{margin-top:0}
 </style>
 
 <div class="top">
@@ -620,7 +627,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         <h1 id="monthTitle">Octubre 2026</h1>
         <button class="iconbtn" id="nextM" aria-label="Mes siguiente">›</button>
       </div>
-      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, insumos por campaña y aprendizajes">✍️ Redactor</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
+      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, campañas, archivos y aprendizajes">✨ Asistente INSIDE</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
     </div>
     <div class="filters" id="filters"></div>
     <div class="summary" id="summary"></div>
@@ -2158,7 +2165,7 @@ Da 3 propuestas distintas. Escribe en el idioma de salida de la pieza. No invent
 }
 let redCtl=null;
 async function runRedactor(piece,kind){
-  const st=S.redUI[piece.id]; if(!S.sampleFn){st.err="El redactor necesita Claude disponible en esta vista.";rerenderOpen();return}
+  const st=S.redUI[piece.id]; if(!S.sampleFn){st.err="El Asistente INSIDE necesita Claude disponible en esta vista.";rerenderOpen();return}
   redCtl?.abort(); redCtl=new AbortController(); st.busy=true; st.err=""; st.out=null; st.raw=""; rerenderOpen();
   try{
     const r=await S.sampleFn.json(buildCopyPrompt(piece,kind,st),{signal:redCtl.signal,cache:false,onText:({text})=>{st.raw=text;const el=$("#redRaw");if(el) el.textContent="Escribiendo… "+text.length+" caracteres"}});
@@ -2173,12 +2180,13 @@ function redactorPanel(piece,kind){
   const st=S.redUI[piece.id]=S.redUI[piece.id]||{linea:camp0,nivel:c.nivel||m.nivel||"senior",perfil:c.perfil||m.perfil||(piece.paises.every(x=>EN_PAISES.has(x))?"caribe":kind==="medio"&&piece.matriz!=="ATL"?"performance":"social"),indicacion:""};
   const lineas=[...new Set([...LINEAS,camp0])];
   const out=st.out;
-  return `<details class="redbox" ${st.open?"open":""} data-redtoggle><summary>✍️ Redactor IA <span>recomendaciones de copy con la voz de Payless, la campaña y los comentarios del cliente</span></summary>
+  return `<details class="redbox" ${st.open?"open":""} data-redtoggle><summary>✨ Asistente INSIDE <span>recomendaciones de copy con la voz de Payless, la campaña, sus archivos y los comentarios del cliente</span></summary>
     <div class="redcfg">
       <label>Campaña<select data-redf="linea">${lineas.map(l=>`<option ${l===st.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label>
       <label>Nivel<select data-redf="nivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===st.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
       <label>Perfil<select data-redf="perfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===st.perfil?"selected":""}>${l}</option>`).join("")}</select></label>
     </div>
+    <div class="attline"><label class="btn sm" for="redFile">📎 Adjuntar archivo de ${esc(st.linea)}<input type="file" id="redFile" accept="${ATTACH_ACCEPT}" multiple hidden></label><span class="hint" id="redAtt">${esc(st.att||(campFiles(st.linea).length?`${campFiles(st.linea).length} archivos de esta campaña: ${campFiles(st.linea).slice(0,3).map(d=>d.nombre).join(", ")}${campFiles(st.linea).length>3?"…":""}`:"Sube el brief, el KV o lo que tengas de la campaña."))}</span></div>
     <textarea data-redf="indicacion" rows="2" placeholder="Indicaciones opcionales: más corto, más emocional, incluir la hora de la promo, tono para RD…">${esc(st.indicacion)}</textarea>
     <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${(redMarca().aprendizajes||[]).length} aprendizajes y ${redDocs().filter(d=>!d.linea||d.linea==="General"||d.linea===st.linea).length} documentos de estrategia.</span>
       ${st.busy?`<button class="btn" data-redstop>Detener</button>`:`<button class="btn primary" data-redgo>${out?"Volver a recomendar":"Recomendar copy"}</button>`}</div>
@@ -2214,26 +2222,29 @@ function renderRedCenter(){
   let root=$("#redRoot"); if(!S.redC){root&&root.remove();return}
   if(!root){root=document.createElement("div");root.id="redRoot";document.body.appendChild(root)}
   const t=S.redC.tab, m=redMarca(), c=redCamp(S.redC.linea);
-  const body=t==="voz"?`<p class="hint">La base que el Redactor IA usa en todas las piezas. Escríbela como se la explicarías a un redactor nuevo.</p>
+  const body=t==="voz"?`<p class="hint">La base que el Asistente INSIDE usa en todas las piezas. Escríbela como se la explicarías a un redactor nuevo.</p>
       <textarea id="rcVoz" rows="14">${esc(m.voz||VOZ_BASE)}</textarea>
       <div class="redcfg"><label>Nivel por defecto<select id="rcNivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===(m.nivel||"senior")?"selected":""}>${l}</option>`).join("")}</select></label>
       <label>Perfil por defecto<select id="rcPerfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===(m.perfil||"social")?"selected":""}>${l}</option>`).join("")}</select></label></div>
       <div class="drow"><button class="btn primary" data-rcsave="voz">Guardar voz de marca</button></div>`
     :t==="camp"?`<div class="redcfg"><label>Campaña<select id="rcLinea">${LINEAS.map(l=>`<option ${l===S.redC.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label></div>
+      <div class="attbox"><div class="crow"><b>📎 Archivos de ${esc(S.redC.linea)} (${campFiles(S.redC.linea).length})</b><label class="btn primary" for="campFile">📎 Adjuntar archivo<input type="file" id="campFile" accept="${ATTACH_ACCEPT}" multiple hidden></label></div>
+        <span class="hint" id="attMsg">${esc(S.redC.attMsg||"Brief, estrategia, KV, referencias, planning… PDF, Word, PowerPoint, Excel, texto o imágenes. El Asistente INSIDE los lee al recomendar copys de esta campaña.")}</span>
+        ${campFiles(S.redC.linea).length?`<ul class="rclist">${campFiles(S.redC.linea).map(fileChip).join("")}</ul>`:""}</div>
       ${infoCampText(S.redC.linea)?`<details class="cact"><summary>Lineamientos del planning para esta campaña</summary><pre class="rcpre">${esc(infoCampText(S.redC.linea))}</pre></details>`:""}
-      ${[["insumos","Insumos / brief de la campaña","Pega aquí el brief, el concepto, el KV, referencias, insights… todo lo que el redactor debe saber.",6],["objetivo","Objetivo","Ej.: posicionar Payless como destino de sneakers multimarca.",2],["publico","Público","Ej.: jóvenes 18–30, urbanos, sneakers como moda.",2],["tono","Tono","Ej.: versátil, joven, energía; nunca «comodidad».",2],["mensajes","Mensajes clave","Ej.: cuatro marcas en un solo lugar; un par, mil estilos.",2],["prohibido","Palabras o enfoques prohibidos","Ej.: «cómodo», «para dama», abrir con el %.",2]].map(([k,l,ph,r])=>`<label class="lb">${l}</label><textarea data-rc="${k}" rows="${r}" placeholder="${esc(ph)}">${esc(c[k]||"")}</textarea>`).join("")}
+      ${[["insumos","Insumos / brief de la campaña","Pega aquí el brief, el concepto, el KV, referencias, insights… todo lo que el asistente debe saber.",6],["objetivo","Objetivo","Ej.: posicionar Payless como destino de sneakers multimarca.",2],["publico","Público","Ej.: jóvenes 18–30, urbanos, sneakers como moda.",2],["tono","Tono","Ej.: versátil, joven, energía; nunca «comodidad».",2],["mensajes","Mensajes clave","Ej.: cuatro marcas en un solo lugar; un par, mil estilos.",2],["prohibido","Palabras o enfoques prohibidos","Ej.: «cómodo», «para dama», abrir con el %.",2]].map(([k,l,ph,r])=>`<label class="lb">${l}</label><textarea data-rc="${k}" rows="${r}" placeholder="${esc(ph)}">${esc(c[k]||"")}</textarea>`).join("")}
       <div class="redcfg"><label>Nivel del redactor para esta campaña<select data-rc="nivel"><option value="">El de la marca</option>${NIVELES.map(([k,l])=>`<option value="${k}" ${k===c.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
       <label>Perfil<select data-rc="perfil"><option value="">El de la marca</option>${PERFILES.map(([k,l])=>`<option value="${k}" ${k===c.perfil?"selected":""}>${l}</option>`).join("")}</select></label></div>
       <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
     :t==="docs"?docsTab()
-    :`<p class="hint">Reglas que el redactor aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
+    :`<p class="hint">Reglas que el Asistente INSIDE aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
       <ul class="rclist">${(m.aprendizajes||[]).map((a,i)=>`<li><span>${esc(a.texto)}${a.fuente?`<small>${esc(a.fuente)}</small>`:""}</span><button class="iconbtn" data-rcdel="${i}" aria-label="Quitar">✕</button></li>`).join("")||`<li class="cempty">Todavía no hay aprendizajes.</li>`}</ul>
       <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
       <div class="drow wrap"><button class="btn primary" data-rcprop ${S.redC.busy?"disabled":""}>${S.redC.busy?"Analizando comentarios…":"Proponer aprendizajes desde los comentarios del cliente"}</button></div>
       ${S.redC.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.err)}</p>`:""}
       ${(S.redC.props||[]).length?`<div class="redout"><b>Propuestas (elige cuáles guardar)</b>${S.redC.props.map((p,i)=>`<label class="pickr"><input type="checkbox" data-rcp="${i}" checked><span><b>${esc(p.regla)}</b><small>${esc(p.evidencia||"")}</small></span></label>`).join("")}<div class="drow"><button class="btn primary" data-rcpsave>Guardar seleccionados</button></div></div>`:""}`;
-  root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Centro de redacción"><header><h3>✍️ Centro de redacción</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
-    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Insumos por campaña</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
+  root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Asistente INSIDE"><header><h3>✨ Asistente INSIDE</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
+    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Campañas y archivos</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
     ${body}</div></div>`;
 }
 async function saveRed(id,patch){
@@ -2324,7 +2335,7 @@ async function saveDoc(d){
 }
 function docsTab(){
   const ds=redDocs(); const up=S.redC.up||{};
-  return `<p class="hint">Sube la estrategia de campaña, el planning del mes o un brief. El redactor lee las partes que tienen que ver con la campaña de cada pieza, y puede convertir el documento en insumos de campaña.</p>
+  return `<p class="hint">Sube la estrategia de campaña, el planning del mes o un brief. El Asistente INSIDE lee las partes que tienen que ver con la campaña de cada pieza, y puede convertir el documento en insumos de campaña.</p>
     <div class="docup">
       <label class="drop-zone" for="docFile" style="display:block"><input type="file" id="docFile" accept=".pdf,.docx,.pptx,.xlsx,.txt,.md,.csv" hidden><b>${up.busy?"Leyendo el archivo…":"Subir documento"}</b><br><span style="font-size:12px">PDF, Word, PowerPoint, Excel o texto. También puedes pegar el texto abajo.</span></label>
       <div class="redcfg"><label>Nombre<input id="docName" value="${esc(up.nombre||"")}" placeholder="Ej.: Estrategia Sneakers octubre"></label>
@@ -2334,7 +2345,7 @@ function docsTab(){
       <div class="crow"><span class="hint">${up.texto?`${up.texto.length.toLocaleString("es")} caracteres${up.texto.length>150000?" · se guardarán los primeros 150.000":""}`:""}</span><button class="btn primary" data-docsave ${up.busy?"disabled":""}>Guardar documento</button></div>
     </div>
     <h4 class="rch">Documentos cargados (${ds.length})</h4>
-    ${ds.length?ds.map(d=>`<article class="doccard"><header><b>${esc(d.nombre)}</b><span class="cpart">${esc(d.categoria||"Documento")}</span><span class="cpart">${esc(d.linea&&d.linea!=="General"?d.linea:"Toda la marca")}</span><small>${(d.texto||"").length.toLocaleString("es")} caracteres · ${esc(when(d.subido))}</small><button class="iconbtn" data-docdel="${esc(d.id)}" aria-label="Eliminar documento">✕</button></header>
+    ${ds.length?ds.map(d=>`<article class="doccard"><header><b>${esc(d.nombre)}</b><span class="cpart">${esc(d.categoria||"Documento")}</span><span class="cpart">${esc(d.linea&&d.linea!=="General"?d.linea:"Toda la marca")}</span><small>${(d.texto||"").length.toLocaleString("es")} caracteres · ${esc(when(d.subido))}</small>${d.archivo?`<a class="btn ghost sm" href="/_blob/${esc(d.archivo)}" target="_blank" rel="noopener">Abrir original</a>`:""}<button class="iconbtn" data-docdel="${esc(d.id)}" aria-label="Eliminar documento">✕</button></header>
       <details><summary>Ver texto</summary><pre class="rcpre">${esc((d.texto||"").slice(0,3000))}${(d.texto||"").length>3000?"\n…":""}</pre></details>
       <div class="drow wrap"><button class="btn" data-docins="${esc(d.id)}" ${S.redC.insBusy===d.id?"disabled":""}>${S.redC.insBusy===d.id?"Leyendo el documento…":"Generar insumos de campaña con IA"}</button></div>
       ${S.redC.ins&&S.redC.ins.doc===d.id?(S.redC.ins.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.ins.err)}</p>`:S.redC.ins.list.map((c,i)=>`<div class="redprop"><header><b>${esc(c.linea)}</b><span>Propuesta de insumos desde este documento</span></header>${["insumos","objetivo","publico","tono","mensajes","prohibido"].filter(k=>c[k]).map(k=>`<div class="redf"><small>${{insumos:"Insumos",objetivo:"Objetivo",publico:"Público",tono:"Tono",mensajes:"Mensajes clave",prohibido:"Prohibido"}[k]}</small><p>${esc(c[k])}</p></div>`).join("")}<div class="drow"><button class="btn primary" data-docinsave="${i}">Guardar en insumos de ${esc(c.linea)}</button></div></div>`).join("")):""}
@@ -2354,7 +2365,7 @@ document.addEventListener("click",async e=>{
   if(e.target.closest("[data-docsave]")){const u=S.redC.up||{};const texto=($("#docText")?.value||u.texto||"").trim();if(!texto){toast("Sube un archivo o pega el texto");return}
     const ok=await saveDoc({tipo:"doc",nombre:($("#docName")?.value||u.nombre||"Documento").trim(),categoria:$("#docCat")?.value||"Otro",linea:$("#docLinea")?.value||"General",texto:texto.slice(0,150000),subido:new Date().toISOString(),porId:S.myId||""});
     if(ok){S.redC.up={};toast("Documento guardado");renderRedCenter()}return}
-  const dd=e.target.closest("[data-docdel]"); if(dd){const id=dd.dataset.docdel;const prev=S.red.docs[id];delete S.red.docs[id];renderRedCenter();try{await S.db.doc("redaccion/"+id).delete();toast("Documento eliminado")}catch(err){S.red.docs[id]=prev;renderRedCenter();toast("No se pudo eliminar.")}return}
+  const dd=e.target.closest("[data-docdel]"); if(dd&&S.redC){const id=dd.dataset.docdel;const prev=S.red.docs[id];delete S.red.docs[id];renderRedCenter();try{await S.db.doc("redaccion/"+id).delete();toast("Documento eliminado")}catch(err){S.red.docs[id]=prev;renderRedCenter();toast("No se pudo eliminar.")}return}
   const di=e.target.closest("[data-docins]"); if(di){
     if(!S.sampleFn){toast("Necesita Claude disponible en esta vista.");return}
     const d=S.red.docs[di.dataset.docins]; S.redC.insBusy=d.id; S.redC.ins=null; renderRedCenter();
@@ -2366,6 +2377,38 @@ document.addEventListener("click",async e=>{
     const p={nombre:c.linea};for(const k of ["objetivo","publico","tono","mensajes","prohibido"]) if(c[k]) p[k]=cur[k]?`${cur[k]}\n${c[k]}`:c[k];
     if(c.insumos) p.insumos=cur.insumos?`${cur.insumos}\n\nDe «${d?d.nombre:"documento"}»: ${c.insumos}`:c.insumos;
     await saveRed(slug(c.linea),p);S.redC.ins.list.splice(+dis.dataset.docinsave,1);renderRedCenter();return}
+});
+
+/* ============ ADJUNTAR ARCHIVOS DE CAMPAÑA (Asistente INSIDE) */
+const IMG_EXT=["jpg","jpeg","png","webp","gif"];
+async function attachFiles(files,linea,categoria,onMsg){
+  let ok=0;
+  for(const [i,f] of [...files].entries()){
+    const ext=f.name.toLowerCase().split(".").pop(); onMsg&&onMsg(`Adjuntando ${i+1} de ${files.length}: ${f.name}…`);
+    let texto="", archivo="";
+    try{
+      if(S.assets&&(IMG_EXT.includes(ext)||ext==="pdf")){try{const r=await S.assets.upload(f);archivo=r.id}catch(e){}}
+      if(IMG_EXT.includes(ext)){
+        if(S.sampleFn){try{const r=await S.sampleFn(`Eres director creativo de la agencia INSIDE. Esta imagen es material de la campaña «${linea}» de Payless (key visual, referencia, pieza o moodboard). Descríbela para que un redactor la use al escribir copys: qué se ve, mensaje y textos que aparecen (transcríbelos), tono, personas y styling, marcas visibles, y qué territorio de comunicación sugiere. Máximo 180 palabras, en español.`,{images:f,cache:false});texto=`[Imagen: ${f.name}] ${r.text}`}catch(e){texto=`[Imagen: ${f.name}] (sin descripción: no se pudo analizar la imagen)`}}
+        else texto=`[Imagen: ${f.name}]`;
+      } else texto=(await extractText(f)).trim();
+    }catch(e){toast(`No se pudo leer ${f.name}`);continue}
+    if(!texto&&!archivo){toast(`${f.name} no tiene texto legible`);continue}
+    const saved=await saveDoc({tipo:"doc",nombre:f.name,categoria:categoria||"Archivo de campaña",linea:linea||"General",texto:(texto||"").slice(0,150000),archivo,tipoArchivo:ext,subido:new Date().toISOString(),porId:S.myId||""});
+    if(saved) ok++;
+  }
+  onMsg&&onMsg("");
+  if(ok) toast(ok===1?"Archivo adjuntado":`${ok} archivos adjuntados`);
+  return ok;
+}
+function campFiles(linea){return redDocs().filter(d=>d.linea===linea)}
+function fileChip(d){return `<li><span><b>${esc(d.nombre)}</b><small>${esc(d.categoria||"Archivo")} · ${(d.texto||"").length.toLocaleString("es")} caracteres${d.subido?" · "+esc(when(d.subido)):""}</small></span>${d.archivo?`<a class="btn ghost sm" href="/_blob/${esc(d.archivo)}" target="_blank" rel="noopener">Abrir</a>`:""}<button class="iconbtn" data-docdel="${esc(d.id)}" aria-label="Quitar archivo">✕</button></li>`}
+const ATTACH_ACCEPT=".pdf,.docx,.pptx,.xlsx,.txt,.md,.csv,.jpg,.jpeg,.png,.webp";
+document.addEventListener("change",async e=>{
+  if(e.target.id==="campFile"&&S.redC){const fs=[...e.target.files];e.target.value="";if(!fs.length) return;S.redC.attMsg="Adjuntando…";renderRedCenter();
+    await attachFiles(fs,S.redC.linea,"Archivo de campaña",m=>{S.redC.attMsg=m;const el=$("#attMsg");if(el) el.textContent=m});S.redC.attMsg="";renderRedCenter();return}
+  if(e.target.id==="redFile"){const c=currentPiece();if(!c) return;const st=S.redUI[c.piece.id];const fs=[...e.target.files];e.target.value="";if(!fs.length) return;
+    st.att="Adjuntando…";rerenderOpen();await attachFiles(fs,st.linea,"Archivo de campaña",m=>{st.att=m;const el=$("#redAtt");if(el) el.textContent=m});st.att="";rerenderOpen();return}
 });
 
 async function boot(){
