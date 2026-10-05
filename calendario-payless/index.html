@@ -2863,7 +2863,7 @@ function detectSeries(){
 }
 async function linkDetected(g){
   let sid=g.sid;
-  if(!sid){sid=`srs-${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`;await saveSerieDoc({id:sid,nombre:`${g.orig} · serie de ${g.t}`,plantilla:"num",pasos:Array.from({length:g.t},(_,i)=>`${i+1}/${g.t}`),total:g.t,auto:true,base:g.base,creado:new Date().toISOString(),porId:S.myId||""})}
+  if(!sid){const key=`${g.base}|${g.t}|${g.items.map(c=>c.p.id).sort()[0]}`;let h=0;for(const ch of key) h=(h*31+ch.charCodeAt(0))>>>0;sid=`srs-auto-${h.toString(36)}`;/* id fijo: si dos personas de Inside abren a la vez, escriben la misma serie */await saveSerieDoc({id:sid,nombre:`${g.orig} · serie de ${g.t}`,plantilla:"num",pasos:Array.from({length:g.t},(_,i)=>`${i+1}/${g.t}`),total:g.t,auto:true,base:g.base,creado:new Date().toISOString(),porId:S.myId||""})}
   for(const c of g.nuevos) await save(c.p.id,{serieId:sid,seriePaso:c.m.n-1,serieFase:`${c.m.n}/${g.t}`});
   return sid;
 }
