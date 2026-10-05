@@ -616,6 +616,11 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .attbox label.btn,.attline label.btn{cursor:pointer}
 .attline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .rclist .btn.sm{margin-top:0}
+
+.persona{display:flex;flex-direction:column;justify-content:center;flex:2;min-width:220px;background:color-mix(in srgb,#7a4fd0 8%,var(--surface));border:1px solid color-mix(in srgb,#7a4fd0 35%,var(--line));border-radius:8px;padding:5px 10px}
+.persona small{font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em} .persona b{font-size:13px}
+.personabox{background:color-mix(in srgb,#7a4fd0 6%,var(--surface));border:1px solid color-mix(in srgb,#7a4fd0 30%,var(--line));border-radius:10px;padding:8px 12px}
+.personabox summary{cursor:pointer;font-weight:800}
 </style>
 
 <div class="top">
@@ -2081,6 +2086,20 @@ document.addEventListener("click",e=>{
 });
 
 /* ============ REDACTOR IA: voz de marca + insumos por campaña + aprendizajes → recomendaciones de copy */
+const PERSONA_TIT="Redactor de moda senior · estándar Payless";
+const PERSONA=`Eres el redactor de moda senior de la agencia creativa INSIDE para Payless: más de 10 años escribiendo para moda y retail de moda accesible, con escuela editorial (la economía de palabras de Zara, el ritual de New Balance, la precisión de una revista de moda) y voz latinoamericana cercana. Escribes para la VITRINA, no para el volante. Tu nivel es muy alto y tu criterio está al servicio de esta marca, no de tu lucimiento.
+CÓMO ESCRIBES
+1. El look y el momento primero; el zapato es parte del look, no un producto aislado. Contexto, plan, actitud.
+2. Segunda persona y la libertad de elegir: «tú decides», la variedad para cada versión de ti, un precio que te deja elegir sin culpa.
+3. Primera línea que engancha por sí sola (se corta en ~125 caracteres). Frases cortas, con ritmo y remate. Cero relleno.
+4. Vocabulario de moda real pero entendible: look, styling, silueta, básico, statement, drop, tendencia. Sin tecnicismos ni anglicismos innecesarios (salvo «sneakers», que es de la campaña).
+5. Escrito para la búsqueda y para mandarse: invita a guardar, etiquetar o compartir de forma natural, nunca como orden genérica.
+6. El precio y la promo son el remate que confirma la buena compra, nunca el titular. Ninguna pieza del feed abre con un descuento. En promos: look + oferta + hora exacta + legal, sin errores.
+7. Acento local sin caricatura: Centro, Sur y RD en español neutro cercano; Caribe inglés en inglés caribeño natural, nunca traducido literal.
+8. Emojis: máximo uno o dos, con función. Nada de cadenas de emojis ni mayúsculas gritadas.
+9. Firma «Encuentra lo tuyo» (o «Only at Payless» en Caribe) cuando cierre bien; el tagline de Sneakers es «Todos los estilos en un solo lugar».
+NUNCA: «comodidad y estilo», «perfecto para cualquier ocasión», «no te lo pierdas», «el par ideal», «empowerment», «éxito», la durabilidad como promesa, descripciones de catálogo, signos de exclamación en serie, el 50% OFF como titular.
+PRUEBA FINAL de cada línea: ¿refuerza un territorio de la campaña? ¿suena a moda, no a volante? ¿solo lo diría Payless? Si otra marca la puede firmar, reescríbela.`;
 const NIVELES=[["junior","Redactor junior","claro y correcto, sigue el brief al pie de la letra, sin riesgos"],["semi","Redactor semi senior","claro, con ritmo y algún giro creativo, cuida la mecánica"],["senior","Redactor senior","conceptual, con ideas propias, juegos de palabras con criterio, ritmo y remate memorable"],["dc","Director creativo","concepto potente y estratégico, eleva la marca, propone territorio y explica el porqué"]];
 const PERFILES=[["editorial","Moda editorial","captions cortos y aspiracionales, la imagen hace el trabajo (referentes: Zara, New Balance)"],["social","Social media cercano","conversacional, escrito para mandarse y comentar, emojis con medida, guiños locales"],["retail","Retail promocional","mecánica clara, hora y legal exactos, sin perder el look ni abrir con el descuento"],["performance","Pauta / performance","gancho en los primeros 125 caracteres, beneficio + CTA claro, titulares de máx. 27 caracteres"],["caribe","Bilingüe Caribe inglés","inglés caribeño natural y cálido, referencias culturales (fete, Carnival), sin traducir literal del español"]];
 const VOZ_BASE=`Payless pasa de "zapatería para toda la familia" a "destino de moda accesible". Discurso propio: la libertad de elegir (tú decides), la variedad para cada versión de ti, un precio que te deja elegir sin culpa, más de 400 tiendas cerca, la voz local de cuatro regiones (Caribe inglés en inglés).
@@ -2113,7 +2132,6 @@ function copyFieldsOf(piece,kind){
 }
 function buildCopyPrompt(piece,kind,o){
   const marca=redMarca(), camp=redCamp(o.linea);
-  const niv=NIVELES.find(x=>x[0]===o.nivel)||NIVELES[2], per=PERFILES.find(x=>x[0]===o.perfil)||PERFILES[1];
   const en=piece.paises.length&&piece.paises.every(c=>EN_PAISES.has(c));
   const others=[...S.posts.values()].map(p=>({p,kind:"post"})).concat([...S.medios.values()].map(m=>({p:m,kind:"medio"})))
     .filter(x=>x.p.id!==piece.id&&lineaOfAny(x.p)===o.linea)
@@ -2128,8 +2146,8 @@ function buildCopyPrompt(piece,kind,o){
   const limites=kind==="post"?"Caption de Instagram: la primera línea debe enganchar (se corta en ~125 caracteres); máx. 2.200. Headline en pieza: máx. ~6 palabras."
     :piece.matriz==="ATL"?"Mención/locución para TV o radio: natural para leer en voz alta; si es mención corta, ~30 palabras."
     :"Meta Ads: texto principal 50–150 caracteres; titular máx. 27 caracteres; descripción máx. 27 caracteres.";
-  return `Eres un ${niv[1]} de la agencia creativa INSIDE, con perfil «${per[1]}» (${per[2]}). Nivel esperado: ${niv[2]}.
-Tu trabajo: recomendar el copy de UNA pieza de Payless para que el redactor del equipo lo afine, unificando la voz de la marca.
+  return `${PERSONA}
+Tu trabajo: recomendar el copy de UNA pieza para que el redactor del equipo lo afine, con un estándar único para toda la marca.
 
 == VOZ DE MARCA PAYLESS ==
 ${marca.voz||VOZ_BASE}
@@ -2176,15 +2194,14 @@ async function runRedactor(piece,kind){
 function redactorPanel(piece,kind){
   if(role()!=="inside"||!canEdit()) return "";
   S.redUI=S.redUI||{};
-  const camp0=lineaOf(piece,kind); const c=redCamp(camp0), m=redMarca();
-  const st=S.redUI[piece.id]=S.redUI[piece.id]||{linea:camp0,nivel:c.nivel||m.nivel||"senior",perfil:c.perfil||m.perfil||(piece.paises.every(x=>EN_PAISES.has(x))?"caribe":kind==="medio"&&piece.matriz!=="ATL"?"performance":"social"),indicacion:""};
+  const camp0=lineaOf(piece,kind);
+  const st=S.redUI[piece.id]=S.redUI[piece.id]||{linea:camp0,indicacion:""};
   const lineas=[...new Set([...LINEAS,camp0])];
   const out=st.out;
   return `<details class="redbox" ${st.open?"open":""} data-redtoggle><summary>✨ Asistente INSIDE <span>recomendaciones de copy con la voz de Payless, la campaña, sus archivos y los comentarios del cliente</span></summary>
     <div class="redcfg">
       <label>Campaña<select data-redf="linea">${lineas.map(l=>`<option ${l===st.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label>
-      <label>Nivel<select data-redf="nivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===st.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
-      <label>Perfil<select data-redf="perfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===st.perfil?"selected":""}>${l}</option>`).join("")}</select></label>
+      <div class="persona"><small>Redactor</small><b>✒️ ${PERSONA_TIT}</b></div>
     </div>
     <div class="attline"><label class="btn sm" for="redFile">📎 Adjuntar archivo de ${esc(st.linea)}<input type="file" id="redFile" accept="${ATTACH_ACCEPT}" multiple hidden></label><span class="hint" id="redAtt">${esc(st.att||(campFiles(st.linea).length?`${campFiles(st.linea).length} archivos de esta campaña: ${campFiles(st.linea).slice(0,3).map(d=>d.nombre).join(", ")}${campFiles(st.linea).length>3?"…":""}`:"Sube el brief, el KV o lo que tengas de la campaña."))}</span></div>
     <textarea data-redf="indicacion" rows="2" placeholder="Indicaciones opcionales: más corto, más emocional, incluir la hora de la promo, tono para RD…">${esc(st.indicacion)}</textarea>
@@ -2224,8 +2241,7 @@ function renderRedCenter(){
   const t=S.redC.tab, m=redMarca(), c=redCamp(S.redC.linea);
   const body=t==="voz"?`<p class="hint">La base que el Asistente INSIDE usa en todas las piezas. Escríbela como se la explicarías a un redactor nuevo.</p>
       <textarea id="rcVoz" rows="14">${esc(m.voz||VOZ_BASE)}</textarea>
-      <div class="redcfg"><label>Nivel por defecto<select id="rcNivel">${NIVELES.map(([k,l])=>`<option value="${k}" ${k===(m.nivel||"senior")?"selected":""}>${l}</option>`).join("")}</select></label>
-      <label>Perfil por defecto<select id="rcPerfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===(m.perfil||"social")?"selected":""}>${l}</option>`).join("")}</select></label></div>
+      <details class="personabox" open><summary>✒️ Perfil estándar del redactor: ${PERSONA_TIT}</summary><pre class="rcpre">${esc(PERSONA)}</pre><p class="hint">Es el mismo para todas las piezas y campañas, para que la marca suene siempre igual. El tono de cada campaña y los aprendizajes se suman encima.</p></details>
       <div class="drow"><button class="btn primary" data-rcsave="voz">Guardar voz de marca</button></div>`
     :t==="camp"?`<div class="redcfg"><label>Campaña<select id="rcLinea">${LINEAS.map(l=>`<option ${l===S.redC.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label></div>
       <div class="attbox"><div class="crow"><b>📎 Archivos de ${esc(S.redC.linea)} (${campFiles(S.redC.linea).length})</b><label class="btn primary" for="campFile">📎 Adjuntar archivo<input type="file" id="campFile" accept="${ATTACH_ACCEPT}" multiple hidden></label></div>
@@ -2233,8 +2249,6 @@ function renderRedCenter(){
         ${campFiles(S.redC.linea).length?`<ul class="rclist">${campFiles(S.redC.linea).map(fileChip).join("")}</ul>`:""}</div>
       ${infoCampText(S.redC.linea)?`<details class="cact"><summary>Lineamientos del planning para esta campaña</summary><pre class="rcpre">${esc(infoCampText(S.redC.linea))}</pre></details>`:""}
       ${[["insumos","Insumos / brief de la campaña","Pega aquí el brief, el concepto, el KV, referencias, insights… todo lo que el asistente debe saber.",6],["objetivo","Objetivo","Ej.: posicionar Payless como destino de sneakers multimarca.",2],["publico","Público","Ej.: jóvenes 18–30, urbanos, sneakers como moda.",2],["tono","Tono","Ej.: versátil, joven, energía; nunca «comodidad».",2],["mensajes","Mensajes clave","Ej.: cuatro marcas en un solo lugar; un par, mil estilos.",2],["prohibido","Palabras o enfoques prohibidos","Ej.: «cómodo», «para dama», abrir con el %.",2]].map(([k,l,ph,r])=>`<label class="lb">${l}</label><textarea data-rc="${k}" rows="${r}" placeholder="${esc(ph)}">${esc(c[k]||"")}</textarea>`).join("")}
-      <div class="redcfg"><label>Nivel del redactor para esta campaña<select data-rc="nivel"><option value="">El de la marca</option>${NIVELES.map(([k,l])=>`<option value="${k}" ${k===c.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
-      <label>Perfil<select data-rc="perfil"><option value="">El de la marca</option>${PERFILES.map(([k,l])=>`<option value="${k}" ${k===c.perfil?"selected":""}>${l}</option>`).join("")}</select></label></div>
       <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
     :t==="docs"?docsTab()
     :`<p class="hint">Reglas que el Asistente INSIDE aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
@@ -2260,7 +2274,7 @@ document.addEventListener("click",async e=>{
   if(e.target.matches("[data-rcclose]")||e.target.closest("button[data-rcclose]")){S.redC=null;renderRedCenter();return}
   const tb=e.target.closest("[data-rctab]"); if(tb){S.redC.tab=tb.dataset.rctab;renderRedCenter();return}
   const sv=e.target.closest("[data-rcsave]"); if(sv){
-    if(sv.dataset.rcsave==="voz") await saveRed("marca",{voz:$("#rcVoz").value.trim(),nivel:$("#rcNivel").value,perfil:$("#rcPerfil").value});
+    if(sv.dataset.rcsave==="voz") await saveRed("marca",{voz:$("#rcVoz").value.trim()});
     else{const p={nombre:S.redC.linea};document.querySelectorAll("#redRoot [data-rc]").forEach(x=>p[x.dataset.rc]=x.value.trim());await saveRed(slug(S.redC.linea),p)}
     renderRedCenter();return}
   const dl=e.target.closest("[data-rcdel]"); if(dl){const a=[...(redMarca().aprendizajes||[])];a.splice(+dl.dataset.rcdel,1);await saveRed("marca",{aprendizajes:a});renderRedCenter();return}
