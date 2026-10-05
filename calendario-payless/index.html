@@ -1651,13 +1651,49 @@ document.addEventListener("dragover",e=>{const dz=e.target.closest("#dz");if(dz&
 document.addEventListener("dragleave",e=>{const dz=e.target.closest("#dz");if(dz) dz.classList.remove("over")});
 document.addEventListener("drop",e=>{const dz=e.target.closest("#dz");if(dz&&e.dataTransfer.files.length){e.preventDefault();dz.classList.remove("over");upload([...e.dataTransfer.files].filter(f=>/^(image|video)\//.test(f.type)),$("#uplReplace")?.checked)}});
 
+/* ============ VIDEOS PESADOS: se comprimen en el navegador antes de subir (límite de 20 MB) */
+const VID_MAX=19*1024*1024;
+function recMime(){const c=["video/mp4;codecs=avc1.640028,mp4a.40.2","video/mp4;codecs=avc1,mp4a","video/mp4","video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"];return c.find(t=>window.MediaRecorder&&MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||""}
+async function compressVideo(file,onProg){
+  const mime=recMime(); if(!mime) throw new Error("sin MediaRecorder");
+  const url=URL.createObjectURL(file); const v=document.createElement("video"); v.src=url; v.playsInline=true; v.preload="auto";
+  await new Promise((ok,ko)=>{v.onloadedmetadata=ok;v.onerror=()=>ko(new Error("video ilegible"))});
+  const dur=Math.max(1,v.duration||1); const W0=v.videoWidth||1080, H0=v.videoHeight||1920;
+  const sc=Math.min(1,1920/Math.max(W0,H0)); const W=Math.round(W0*sc/2)*2, H=Math.round(H0*sc/2)*2;
+  const vbps=Math.max(1.2e6,Math.min(8e6,Math.floor((VID_MAX*0.9*8)/dur)-160e3));
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=H; const cx=cv.getContext("2d");
+  const stream=cv.captureStream(30);
+  let ac=null; try{ac=new (window.AudioContext||window.webkitAudioContext)();const src=ac.createMediaElementSource(v);const dst=ac.createMediaStreamDestination();src.connect(dst);dst.stream.getAudioTracks().forEach(t=>stream.addTrack(t))}catch(e){v.muted=true}
+  const rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:vbps,audioBitsPerSecond:128000}); const parts=[];
+  rec.ondataavailable=e=>{if(e.data&&e.data.size) parts.push(e.data)};
+  const done=new Promise(ok=>rec.onstop=ok);
+  let raf=0; const draw=()=>{cx.drawImage(v,0,0,W,H);if(onProg) onProg(Math.min(99,Math.round(v.currentTime/dur*100)));raf=v.requestVideoFrameCallback?v.requestVideoFrameCallback(draw):requestAnimationFrame(draw)};
+  rec.start(1000); if(ac&&ac.state==="suspended") await ac.resume();
+  await v.play(); draw();
+  await new Promise(ok=>v.onended=ok);
+  rec.stop(); await done; if(v.cancelVideoFrameCallback) v.cancelVideoFrameCallback(raf); else cancelAnimationFrame(raf);
+  URL.revokeObjectURL(url); try{ac&&ac.close()}catch(e){}
+  const type=mime.split(";")[0]; const ext=type==="video/mp4"?"mp4":"webm";
+  return new File([new Blob(parts,{type})],file.name.replace(/\.[^.]+$/,"")+"-comprimido."+ext,{type});
+}
+/* devuelve el archivo listo para subir: si es un video de más de 19 MB, lo comprime */
+async function fitForUpload(f,msgEl,label){
+  if(!/^video\//.test(f.type)||f.size<=VID_MAX) return f;
+  const mb=x=>(x/1048576).toFixed(1);
+  const say=t=>{if(msgEl) msgEl.textContent=t};
+  say(`${label?label+" · ":""}Comprimiendo ${f.name} (${mb(f.size)} MB)… 0%`);
+  try{const out=await compressVideo(f,p=>say(`${label?label+" · ":""}Comprimiendo ${f.name} (${mb(f.size)} MB)… ${p}%`));
+    if(out.size>VID_MAX) throw Object.assign(new Error("sigue pesado"),{code:"still_large"});
+    toast(`Video comprimido: ${mb(f.size)} MB → ${mb(out.size)} MB`); return out}
+  catch(e){toast(e&&e.code==="still_large"?`${f.name} sigue pesando más de 20 MB después de comprimirlo: recórtalo o expórtalo más liviano.`:`No se pudo comprimir ${f.name} en este navegador. Prueba en Chrome o exporta el video más liviano.`);return null}
+}
 async function upload(files,replace){
   const p=S.posts.get(S.openId); if(!p||!S.assets||!files.length) return;
   const msg=$("#uplMsg"); const added=[];
   for(const [k,f] of files.entries()){
     if(msg) msg.textContent=`Subiendo ${k+1} de ${files.length}…`;
-    try{const vid=/^video\//.test(f.type);const r=await S.assets.upload(f);added.push("asset:"+r.id+(vid?"#video":""));
-      if(vid&&!S._poster){const pb=await videoPoster(f);if(pb){try{const pr=await S.assets.upload(pb,{type:"image/jpeg"});S._poster="asset:"+pr.id}catch(e){}}}}
+    try{const vid=/^video\//.test(f.type);const ff=await fitForUpload(f,msg,`${k+1} de ${files.length}`);if(!ff) continue;if(msg) msg.textContent=`Subiendo ${k+1} de ${files.length}…`;const r=await S.assets.upload(ff);added.push("asset:"+r.id+(vid?"#video":""));
+      if(vid&&!S._poster){const pb=await videoPoster(ff);if(pb){try{const pr=await S.assets.upload(pb,{type:"image/jpeg"});S._poster="asset:"+pr.id}catch(e){}}}}
     catch(err){toast(err&&err.code==="too_large"?`${f.name} pesa más de 20 MB`:err&&err.code==="unsupported_type"?`${f.name}: formato no admitido`:`No se pudo subir ${f.name}. Intenta de nuevo.`)}
   }
   if(added.length){const cur=S.posts.get(p.id);const patch={imagenes:replace?added:[...(cur.imagenes||[]),...added],arteManual:true};const hasV=added.some(isVid);
@@ -2138,7 +2174,7 @@ document.addEventListener("change",async e=>{
   const el=e.target.closest("[data-mfield]"); if(el&&S.openMed){const k=el.dataset.mfield;let v=el.value;const m=S.medios.get(S.openMed);const p={[k]:v};
     if(k==="inicio"&&v&&(!m.fin||m.fin<v)) p.fin=v; if(k==="fin"&&v&&m.inicio&&v<m.inicio){toast("El fin no puede ser antes del inicio");renderMedioSheet();return} if(k==="inicio"&&!v) p.fin="";
     if(k==="inicio"||k==="fin") p.notaFecha=""; await saveMed(S.openMed,p);return}
-  if(e.target.id==="mupl"&&S.openMed&&S.assets){const files=[...e.target.files];e.target.value="";const add=[];for(const f of files){try{const r=await S.assets.upload(f);add.push("asset:"+r.id+(/^video\//.test(f.type)?"#video":""))}catch(err){toast(`No se pudo subir ${f.name}`)}}if(add.length){const m=S.medios.get(S.openMed);await saveMed(m.id,{imagenes:[...(m.imagenes||[]),...add]});toast(add.length>1?`${add.length} archivos agregados`:"Arte agregado")}}
+  if(e.target.id==="mupl"&&S.openMed&&S.assets){const files=[...e.target.files];e.target.value="";const add=[];for(const f of files){try{const ff=await fitForUpload(f,null,"");if(!ff) continue;const r=await S.assets.upload(ff);add.push("asset:"+r.id+(/^video\//.test(f.type)?"#video":""))}catch(err){toast(`No se pudo subir ${f.name}`)}}if(add.length){const m=S.medios.get(S.openMed);await saveMed(m.id,{imagenes:[...(m.imagenes||[]),...add]});toast(add.length>1?`${add.length} archivos agregados`:"Arte agregado")}}
 });
 document.addEventListener("keydown",e=>{if(S.openMed&&e.key==="Escape") closeMedio()});
 async function createMedio(){
@@ -4232,7 +4268,7 @@ async function flujo(p,texto){try{await postComment(p.id,{tipo:"flujo",texto,...
 async function uploadBoceto(files){
   const p=S.posts.get(S.openId); if(!p||!S.assets||!files.length) return; const msg=$("#bMsg"); const add=[];
   for(const [k,f] of files.entries()){if(msg) msg.textContent=`Subiendo ${k+1} de ${files.length}…`;
-    try{const r=await S.assets.upload(f);add.push("asset:"+r.id+(/^video\//.test(f.type)?"#video":f.type==="application/pdf"?"#pdf":""))}catch(err){toast(err&&err.code==="too_large"?`${f.name} pesa demasiado`:`No se pudo subir ${f.name}`)}}
+    try{const ff=await fitForUpload(f,msg,`${k+1} de ${files.length}`);if(!ff) continue;if(msg) msg.textContent=`Subiendo ${k+1} de ${files.length}…`;const r=await S.assets.upload(ff);add.push("asset:"+r.id+(/^video\//.test(f.type)?"#video":f.type==="application/pdf"?"#pdf":""))}catch(err){toast(err&&err.code==="too_large"?`${f.name} pesa demasiado`:`No se pudo subir ${f.name}`)}}
   if(msg) msg.textContent=""; if(!add.length) return;
   const cur=S.posts.get(p.id); const me=myPersona();
   await save(p.id,{boceto:[...(cur.boceto||[]),...add],etapa:cur.etapa&&cur.etapa!=="Boceto"?cur.etapa:"Boceto",...(!cur.contentId&&me&&me.org==="inside"?{contentId:me.id}:{})});
