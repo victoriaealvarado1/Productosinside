@@ -334,6 +334,8 @@ table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color
 .sheet .left{background:var(--sunk);padding:20px 16px 30px;display:flex;flex-direction:column;gap:12px;align-items:center;border-right:1px solid var(--line)}
 .sheet .right{padding:18px 22px 40px;min-width:0}
 .sheethead{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.shact{display:flex;align-items:center;gap:8px;margin-left:auto;flex:none}
+.newhint{background:var(--accent-soft,#fff4e5);border:1px solid var(--line,#e5e5e5);border-radius:10px;padding:10px 12px;font-size:13px;margin:0 0 12px}
 .sheethead h2{margin:4px 0 0;font:800 24px/1.1 var(--f-display);letter-spacing:-.02em;text-wrap:balance}
 .sheethead .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--ink-2);font-size:13px}
 .sheethead .x{margin-left:auto}
@@ -1434,10 +1436,30 @@ function capHTML(cap){
 }
 
 /* ============ hoja de detalle */
-function openPost(id,tab){S.rmAsk=null;S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null,fmt:null};S.confirmDel=false;renderSheet();}
-function closeSheet(){S.openId=null;stopPlay();$("#sheetRoot").innerHTML="";document.body.style.overflow=""}
+function openPost(id,tab){if(S.openId&&S.openId!==id) flushSheet();S.rmAsk=null;S.openId=id;S.openTab=tab||"info";S.pv={slide:0,mode:S.pv&&S.pv.mode||"post",gtab:null,fmt:null};S.confirmDel=false;renderSheet();}
+function closeSheet(){flushSheet();S.openId=null;S.newId=null;stopPlay();$("#sheetRoot").innerHTML="";document.body.style.overflow=""}
+/* lo que se escribió en la ficha y aún no se guardó (el cambio se guarda al salir del campo; si la ficha se cierra o se redibuja antes, no se pierde) */
+function pendingFields(){const out={};const id=S.openId;if(!id) return out;document.querySelectorAll("#sheetRoot [data-field]").forEach(el=>{const dirty=el.tagName==="SELECT"?[...el.options].some(o=>o.selected!==o.defaultSelected):el.value!==el.defaultValue;if(dirty) out[el.dataset.field]=el.value});return out}
+function flushSheet(){const id=S.openId;if(!id||!S.posts.has(id)||!canEdit()) return [];const f=pendingFields();const jobs=[];for(const [k,v0] of Object.entries(f)){let v=v0;if(k==="tipo") v=Object.keys(TIPOS).find(x=>TIPOS[x]===v)||"feed";const patch={[k]:v};if(k==="fecha"){if(!v){patch.sinFecha=true}else patch.sinFecha=false}jobs.push(save(id,patch))}return jobs}
+function sheetKeep(){const root=$("#sheetRoot");if(!root) return null;const vals={};root.querySelectorAll("input[id],textarea[id],select[id]").forEach(el=>{if(el.readOnly||el.type==="file") return;const dirty=el.tagName==="SELECT"?[...el.options].some(o=>o.selected!==o.defaultSelected):el.value!==el.defaultValue;if(dirty) vals[el.id]=el.value});const a=document.activeElement;const foc=a&&root.contains(a)&&a.id?{id:a.id,s:a.selectionStart,e:a.selectionEnd}:null;return {vals,foc}}
+function sheetRestore(k){if(!k) return;for(const [id,v] of Object.entries(k.vals)){const el=document.getElementById(id);if(el&&el.value!==v) el.value=v}if(k.foc){const el=document.getElementById(k.foc.id);if(el){el.focus({preventScroll:true});try{if(k.foc.s!=null) el.setSelectionRange(k.foc.s,k.foc.e)}catch(_){}}}}
+async function savePostNow(){
+  const id=S.openId; const p0=S.posts.get(id); if(!p0) return;
+  await Promise.all(flushSheet()); const p=S.posts.get(id)||p0;
+  const nuevo=S.newId===id; closeSheet();
+  let amplio=false;
+  if(p.fecha){const d=parseISO(p.fecha);S.month=[d.getFullYear(),d.getMonth()];S.selDay=p.fecha;
+    if(S.f.desde&&p.fecha<S.f.desde){S.f.desde=p.fecha;amplio=true} if(S.f.hasta&&p.fecha>S.f.hasta){S.f.hasta=p.fecha;amplio=true} if(amplio) persistF()}
+  render(); if(amplio) renderFilters();
+  const oculto=typeof matches==="function"&&!matches(p);
+  toast(`${nuevo?"Publicación creada":"Cambios guardados"} · ${p.fecha?`sale en el calendario el ${fmtDia(p.fecha,true)}`:"queda en «Sin fecha» hasta que le pongas una"}${amplio?" · amplié el rango de fechas para que la veas":""}${oculto?" (no la ves por los filtros activos: región, país, estado o búsqueda)":""}`);
+  if(p.fecha) setTimeout(()=>{const el=document.querySelector(`[data-day="${p.fecha}"]`);if(el) el.scrollIntoView({block:"center",behavior:"smooth"})},80);
+}
 function stopPlay(){clearInterval(S.pv.timer);S.pv.playing=false}
 function renderSheet(){
+  if(S.sheetBusy) return;
+  const keep=sheetKeep(); const ae=document.activeElement;
+  if(ae&&$("#sheetRoot")?.contains(ae)&&ae.blur){S.sheetBusy=true;try{ae.blur()}finally{S.sheetBusy=false}}
   const p=S.posts.get(S.openId); if(!p){closeSheet();return}
   document.body.style.overflow="hidden";
   const cms=S.comments.filter(c=>c.postId===p.id).sort((a,b)=>a.fecha.localeCompare(b.fecha));
@@ -1457,14 +1479,15 @@ function renderSheet(){
         <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${esc(regNames(p))}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(fmtLabel(p))}</span></div>
         <h2>${esc(p.headline||p.campana||"Publicación")}</h2>
         <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
-      </div><button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div>
+      </div><div class="shact">${canEdit()?`<button class="btn ${S.newId===p.id?"primary":""} sm" data-savepost title="Guarda todo lo escrito y vuelve al calendario">💾 Guardar</button>`:""}<button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div></div>
+      ${S.newId===p.id&&canEdit()?`<div class="newhint">✏️ <b>Publicación nueva.</b> Ponle fecha, países, formato y headline, y presiona <b>Guardar</b> para verla en el calendario.</div>`:""}
       ${approveBox(p)}${pieceLinkBox("post",p)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${S.openTab===k}">${l}</button>`).join("")}</div>
       <div id="tabBody">${tabBody(p,cms)}</div>
       ${traceBox("post",p)}
       <div class="src" ${role()!=="inside"?"hidden":""}>Fuente: ${esc(p.fuente||"Creada en la plataforma")}${p.actualizado?` · Última edición ${esc(new Date(p.actualizado).toLocaleString("es",{dateStyle:"medium",timeStyle:"short"}))}`:""}</div>
     </div></div></div>`;
-  $(".sheet").scrollTop=scrollY;
+  sheetRestore(keep); $(".sheet").scrollTop=scrollY;
   if(S.pv.playing) startPlay(true);
   const hl=$(".sheet .tile.hl-on"); if(hl&&S.pv.mode==="feed"&&!S.pv.scrolled){S.pv.scrolled=true;const sc=hl.closest(".screen");if(sc) sc.scrollTop=hl.offsetTop-sc.clientHeight/2+hl.clientHeight/2}
 }
@@ -1554,7 +1577,7 @@ function tabBody(p,cms){
     ${inp("link","Link al contenido",p,"url",true)}${inp("slide","Slide en la presentación",p)}
     ${p.matriz?fieldRO("Arte y copy tomados de",p.matriz,true):""}
   </div>
-  ${canEdit()?`<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="copiar" title="Copia la publicación para pegarla en otros días (Ctrl/Cmd + C)">Copiar para pegar en otros días</button><button class="btn" data-act="duplicar">Duplicar</button>${p.fecha?`<button class="btn" data-act="sinfecha">Quitar fecha</button>`:""}<button class="btn bad" data-act="borrar">Eliminar</button></div>
+  ${canEdit()?`<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-savepost>💾 Guardar${S.newId===p.id?" publicación":""}</button><button class="btn" data-act="copiar" title="Copia la publicación para pegarla en otros días (Ctrl/Cmd + C)">Copiar para pegar en otros días</button><button class="btn" data-act="duplicar">Duplicar</button>${p.fecha?`<button class="btn" data-act="sinfecha">Quitar fecha</button>`:""}<button class="btn bad" data-act="borrar">Eliminar</button></div>
   ${S.confirmDel?`<div class="confirm"><span>¿Eliminar esta publicación? No se puede deshacer.</span><button class="btn bad" data-act="borrarSi">Sí, eliminar</button><button class="btn ghost" data-act="borrarNo">Cancelar</button></div>`:""}`:""}`;
 }
 
@@ -1569,6 +1592,7 @@ document.addEventListener("click",async e=>{
   const rmA=e.target.closest("[data-rmask]"); if(rmA){S.rmAsk=+rmA.dataset.rmask;renderSheet();return}
   if(e.target.closest("[data-rmno]")){S.rmAsk=null;renderSheet();return}
   const mvR=e.target.closest("[data-mvr]"); if(mvR){const p=S.posts.get(S.openId);const k=+mvR.dataset.mvr;const a=[...p.imagenes];[a[k+1],a[k]]=[a[k],a[k+1]];await save(p.id,{imagenes:a,arteManual:true});return}
+  if(e.target.closest("[data-savepost]")){savePostNow();return}
   if(e.target.closest("[data-x]")||e.target.matches("[data-close]")){closeSheet();return}
   const ex=e.target.closest("[data-expand]"); if(ex){const k=ex.dataset.expand;expanded.has(k)?expanded.delete(k):expanded.add(k);renderView();return}
   const nw=e.target.closest("[data-new]"); if(nw){createPost(nw.dataset.new);return}
@@ -1804,7 +1828,7 @@ async function createPost(fecha){
   const reg=S.f.region!=="ALL"?S.f.region:"CENTRO"; const r=region(reg);
   const id=newId({region:reg});
   const p={id,origen:"manual",region:reg,paises:S.f.paises.length?S.f.paises:[...r.paises],tipo:S.f.tipo==="ALL"||S.f.red==="tiktok"?"feed":S.f.tipo,fecha:fecha||"",sinFecha:!fecha,hora:"",campana:"",linea:"Otra",...(S.f.red==="tiktok"?{red:"tiktok",formato:"Reel",formatos:["Reel"]}:{formato:"Estático"}),estado:"Sin iniciar",headline:"",copy:"",imagenes:[],creado:new Date().toISOString(),fuente:"Creada en la plataforma"};
-  await write(id,p,true); openPost(id); setTimeout(()=>$("#fld_headline")?.focus(),50);
+  await write(id,p,true); openPost(id); S.newId=id; renderSheet(); setTimeout(()=>$("#fld_headline")?.focus({preventScroll:true}),50);
 }
 
 /* ============ escritura (una a la vez por documento) */
