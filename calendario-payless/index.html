@@ -562,7 +562,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .ta-dh{z-index:1;padding:6px 8px 2px}
 .ta-dh span{font:700 12px var(--f-mono);color:var(--ink-2);padding:2px 6px;border-radius:6px}
 .ta-dh.out span{color:var(--ink-3)} .ta-dh.today span{background:var(--accent);color:var(--accent-ink)}
-.ta-bar{z-index:2;margin:0 3px;height:22px;border-radius:5px;border:0;background:color-mix(in srgb,var(--cc) 16%,var(--surface));border-left:4px solid var(--cc);box-shadow:inset -3px 0 0 var(--rc);display:flex;align-items:center;gap:5px;padding:0 7px;font:600 11px var(--f-body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;min-width:0;text-align:left}
+.ta-bar{z-index:2;margin:0 3px;height:22px;border-radius:5px;border:0;background:var(--surface);border:1px solid var(--line-strong);border-left:4px solid var(--cc);box-shadow:inset -3px 0 0 var(--rc);display:flex;align-items:center;gap:5px;padding:0 7px;font:600 11px var(--f-body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;min-width:0;text-align:left}
 .ta-bar b{color:var(--cc);font:800 10px var(--f-mono);text-transform:uppercase}
 .ta-bar .ta-w{color:var(--ink-3);font-weight:500}
 .ta-bar.cs-pub{background:var(--pub-bg)} .ta-bar.cs-done{background:var(--done-bg);color:#fff} .ta-bar.cs-done .ta-w{color:#dff}
@@ -621,6 +621,26 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .persona small{font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em} .persona b{font-size:13px}
 .personabox{background:color-mix(in srgb,#7a4fd0 6%,var(--surface));border:1px solid color-mix(in srgb,#7a4fd0 30%,var(--line));border-radius:10px;padding:8px 12px}
 .personabox summary{cursor:pointer;font-weight:800}
+
+/* TODO: mismos colores de estado que Orgánico y Medios */
+.ta-it{display:grid;grid-template-columns:24px minmax(0,1fr);gap:5px;align-items:center;border:1px solid var(--line);border-left:3px solid var(--rc);box-shadow:none;background:var(--surface);padding:2px 4px 2px 3px}
+.ta-it .ta-th{width:24px;height:24px;border-radius:4px;background:var(--sunk) center/cover no-repeat;display:grid;place-items:center;font-size:11px;color:var(--ink-3);overflow:hidden}
+.ta-it .ta-th.story{border-radius:50%;box-shadow:0 0 0 1.5px var(--surface),0 0 0 3px var(--accent)}
+.ta-it .ta-tx{display:flex;flex-direction:column;min-width:0}
+.ta-it .ta-l1{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-3);white-space:nowrap;overflow:hidden}
+.ta-it .ta-l1 .sd{width:6px;height:6px}
+.ta-it .ta-f{font:600 9px var(--f-mono)} .ta-it .ta-w{grid-column:auto;font-size:10px}
+.ta-it .ta-t{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ta-it.cs-pub{background:var(--pub-bg);border-color:var(--pub-line);border-left-color:var(--rc)} .ta-it.cs-pub .ta-l1{color:var(--pub-ink)}
+.ta-it.cs-env{background:var(--pend-bg);border-color:var(--pend-line);border-left-color:var(--rc)} .ta-it.cs-env .ta-l1{color:var(--pend-ink)}
+.ta-it.cs-done{background:var(--done-bg);border-color:var(--done);border-left-color:var(--rc);color:#fff} .ta-it.cs-done .ta-l1,.ta-it.cs-done .ta-t{color:#fff}
+.ta-it[style*="--rg"]{position:relative;border-left-color:transparent} .ta-it[style*="--rg"]::before{content:"";position:absolute;left:-3px;top:-1px;bottom:-1px;width:3px;border-radius:5px 0 0 5px;background:var(--rg)}
+.ta-bar.cs-env{background:var(--pend-bg)} .ta-bar.cs-pub{background:var(--pub-bg)}
+.ta-hist{display:flex;align-items:center;gap:6px}
+.ta-hist .dots{display:inline-flex;gap:2px}
+.ta-hist .dots i{width:7px;height:7px;border-radius:50%;background:var(--s,var(--ink-3));border:1px solid rgba(0,0,0,.15)}
+.ta-leg .stl{display:inline-flex;align-items:center;gap:5px}
+.ta-leg .stl i{width:14px;height:10px;border-radius:3px;border:1px solid var(--line-strong);margin:0}
 </style>
 
 <div class="top">
@@ -769,7 +789,7 @@ function sectionSeg(){return `<div class="fgroup"><div class="seg sect" role="gr
 function renderMedFilters(){
   const f=S.f; const r=f.region!=="ALL"?region(f.region):null;
   $("#filters").innerHTML=`${sectionSeg()}
-  <div class="fgroup mzpick"><span class="flabel">Matrices</span><button class="mzc all" data-matriz="ALL" aria-pressed="${!selMz().length}">Las 3</button>${MATRICES.map(x=>`<button class="mzc mz-${x.id.toLowerCase()}" data-matriz="${x.id}" aria-pressed="${selMz().includes(x.id)}" title="${esc(x.desc)}"><i></i>${x.nombre} <b>${[...S.medios.values()].filter(m=>m.matriz===x.id).length}</b></button>`).join("")}</div>
+  <div class="fgroup mzpick"><span class="flabel">Matrices</span><button class="mzc all" data-matriz="ALL" aria-pressed="${!selMz().length}">Todas</button>${MATRICES.map(x=>`<button class="mzc mz-${x.id.toLowerCase()}" data-matriz="${x.id}" aria-pressed="${selMz().includes(x.id)}" title="${esc(x.desc)}"><i></i>${x.nombre} <b>${[...S.medios.values()].filter(m=>m.matriz===x.id).length}</b></button>`).join("")}</div>
   <div class="fgroup"><span class="flabel">Región</span><div class="seg" role="group" aria-label="Región"><button data-region="ALL" aria-pressed="${f.region==="ALL"}">Todas</button>${REGIONES.map(x=>`<button data-region="${x.id}" aria-pressed="${f.region===x.id}"><span class="dot" style="background:var(${x.var})"></span>${x.corto}</button>`).join("")}</div></div>
   ${r&&r.paises.length>1?`<div class="fgroup"><span class="flabel">País</span><div class="chips">${r.paises.map(c=>`<button class="chip" data-pais="${c}" aria-pressed="${f.paises.includes(c)}" title="${PAIS[c]}">${c}</button>`).join("")}</div></div>`:""}
   <div class="fgroup"><select class="sel" id="fEstado" aria-label="Estado"><option value="ALL">Todos los estados</option>${ESTADOS.map(e=>`<option ${f.estado===e.id?"selected":""}>${e.id}</option>`).join("")}</select>
@@ -2041,7 +2061,7 @@ function renderTodoSummary(){
   const env=ps.filter(p=>p.estado==="Enviado a cliente").length+ms.filter(m=>m.estado==="Enviado a cliente").length;
   $("#summary").innerHTML=`<span>Todo ${MESES[mo]}: <b>${ps.length+ms.length}</b> piezas</span><span><b>${ps.filter(p=>isFeed(p)).length}</b> feed · <b>${ps.filter(p=>!isFeed(p)).length}</b> historias y promos</span><span><b>${ms.length}</b> piezas de medios al aire</span>${env?`<span><b>${env}</b> ${role()==="cliente"?"esperan tu aprobación":"esperando aprobación del cliente"}</span>`:""}`;
 }
-function todoItem(p){const c=canal(canalOfPost(p));return `<button class="ta-it" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="sd ${estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora?p.hora.replace(/\s?(am|pm)/,"$1"):"")}</span><span class="ta-t">${esc(p.campana||p.headline||"Publicación")}</span><span class="ta-w">${esc(whereLabel(p))}</span></button>`}
+function todoItem(p){const c=canal(canalOfPost(p));const im=p.imagenes&&p.imagenes[0];const story=!isFeed(p);return `<button class="ta-it ${colorC(p.estado)}" data-topen="${esc(p.id)}" data-tkind="post" style="--cc:${c.c};--rc:${rv(p)};${regStripe(p)}" title="${esc((p.headline||p.campana)+" · "+p.estado)}"><span class="ta-th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span><span class="ta-tx"><span class="ta-l1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}"></span><span class="ta-h">${esc(p.hora||"—")}</span><span class="ta-f">${fmtAbbr(p)}</span><span class="ta-w">${esc(whereLabel(p))}</span></span><span class="ta-t">${esc(p.campana||p.headline||"Publicación")}</span></span></button>`}
 function renderTodo(){
   const [y,mo]=S.month; const pre=`${y}-${pad(mo+1)}`;
   const first=new Date(y,mo,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
@@ -2073,10 +2093,10 @@ function renderTodo(){
       ${hidden?`<button class="ta-more" data-tweek="${wsI}" style="grid-column:1 / 8;grid-row:${nl+2}">+${hidden} piezas de medios más esta semana</button>`:open&&lanes.length>LANES?`<button class="ta-more" data-tweek="" style="grid-column:1 / 8;grid-row:${nl+2}">Ver menos medios</button>`:""}
       ${days.map((d,i)=>{const k=iso(d);const ps=byDay[k]||[];const feed=ps.filter(isFeed),hist=ps.filter(p=>!isFeed(p));const exp=S.todoOpenD===k;const fShow=exp?feed:feed.slice(0,LIM);
         return `<div class="ta-day ${d.getMonth()!==mo?"out":""}" style="grid-column:${i+1};grid-row:-2">${fShow.map(todoItem).join("")}${!exp&&feed.length>LIM?`<button class="ta-more sm" data-tday="${k}">+${feed.length-LIM} feed</button>`:""}
-          ${hist.length?(exp?hist.map(todoItem).join(""):`<button class="ta-hist" data-tday="${k}" style="--cc:${canal("hist").c}">◎ ${hist.length} ${hist.length===1?"historia/promo":"historias y promos"}</button>`):""}${exp?`<button class="ta-more sm" data-tday="">Ver menos</button>`:""}</div>`}).join("")}
+          ${hist.length?(exp?hist.map(todoItem).join(""):`<button class="ta-hist" data-tday="${k}" style="--cc:${canal("hist").c}" title="${esc(ESTADOS.map(e=>`${hist.filter(p=>p.estado===e.id).length} ${e.id}`).filter(x=>!x.startsWith("0 ")).join(" · "))}">◎ ${hist.length} ${hist.length===1?"historia/promo":"historias y promos"}<span class="dots">${ESTADOS.filter(e=>hist.some(p=>p.estado===e.id)).map(e=>`<i class="${e.c}" style="background:var(--s)"></i>`).join("")}</span></button>`):""}${exp?`<button class="ta-more sm" data-tday="">Ver menos</button>`:""}</div>`}).join("")}
     </div>`}).join("");
   $("#view").innerHTML=`<div class="ta"><div class="ta-head">${DOW.map(d=>`<div>${d}</div>`).join("")}</div>${html}</div>
-    <div class="ta-leg">${CANALES.map(c=>`<span><i style="background:${c.c}"></i>${c.nombre}</span>`).join("")}<span>· La franja de color a la izquierda es la región, el punto es el estado. Toca cualquier pieza para abrirla.</span></div>`;
+    <div class="ta-leg"><span class="stl"><i style="background:var(--surface)"></i>Sin iniciar</span><span class="stl"><i style="background:var(--pend-bg);border-color:var(--pend-line)"></i>Enviado a cliente</span><span class="stl"><i style="background:var(--pub-bg);border-color:var(--pub-line)"></i>Programado</span><span class="stl"><i style="background:var(--done-bg);border-color:var(--done)"></i>Publicado</span><span>·</span>${CANALES.filter(c=>c.id.length>4).map(c=>`<span><i style="background:${c.c}"></i>${c.nombre}</span>`).join("")}<span>· Igual que en Orgánico: el fondo es el estado y la franja izquierda es la región. En medios, el borde izquierdo es la matriz. Toca cualquier pieza para abrirla.</span></div>`;
 }
 document.addEventListener("click",e=>{
   const c=e.target.closest("[data-canal]"); if(c){const v=c.dataset.canal;let a=[...(S.f.canales||[])];if(v==="ALL") a=[]; else {a=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(a.length===CANALES.length) a=[]}S.f.canales=a;persistF();render();return}
