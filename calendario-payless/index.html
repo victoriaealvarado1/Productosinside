@@ -601,6 +601,14 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .rclist li{display:flex;gap:8px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 .rclist li span{flex:1;display:flex;flex-direction:column} .rclist small{color:var(--ink-3);font-size:11px}
 .rcpre{white-space:pre-wrap;font:12px var(--f-body);color:var(--ink-2);margin:6px 0}
+
+.docup{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px}
+.redcfg input{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);color:var(--ink);font:500 13px var(--f-body);text-transform:none;letter-spacing:0}
+.rch{margin:6px 0 0;font:800 15px var(--f-display)}
+.doccard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.doccard header{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.doccard header small{color:var(--ink-3);font-size:11px;margin-left:auto}
+.doccard summary{cursor:pointer;font-size:12px;color:var(--ink-3)}
 </style>
 
 <div class="top">
@@ -1187,7 +1195,7 @@ function tabBody(p,cms){
     if(role()!=="inside") return cb+`<div class="fields">${fieldRO("Copy del post",p.copy||"Copy en redacción",true)}${p.headline?fieldRO("Texto en la pieza",p.headline,true):""}${p.legal?fieldRO("Legal",p.legal,true):""}</div>`;
     return cb+redactorPanel(p,"post")+`<div class="fields">${inp("copy","Copy del post (caption)",p,"textarea",true,canEdit()?"Se guarda al salir del campo. Mientras esté vacío, el preview muestra headline + CTA.":"")}
       ${inp("headline","Headline / super (texto en pieza)",p,"text",true)}${inp("cta","CTA",p)}${inp("mandatories","Mandatories / observaciones",p,"textarea",true)}
-      ${p.legal?inp("legal","Legal (obligatorio en arte o copy)",p,"textarea",true):""}
+      ${inp("legal",p.tipo==="promo"?"Legal (obligatorio en arte o copy)":"Legal",p,"textarea",true)}
       <div class="f wide"><span class="lb">Caracteres del copy</span><div class="ro mono">${(p.copy||"").length} / 2.200 ${cap.prov?"· usando copy provisional":""}</div></div></div>`;
   }
   if(t==="arte"){
@@ -1671,7 +1679,7 @@ function renderMedioSheet(){
     <div class="left">
       <div class="mprev">${imgs.length?`<img src="${esc(imgs[i])}" alt="">${imgs.length>1?`<button class="nav prev" data-mpv="-1" aria-label="Anterior">‹</button><button class="nav next" data-mpv="1" aria-label="Siguiente">›</button><span class="cnt">${i+1}/${imgs.length}</span>`:""}`:`<div class="ph emptym"><b>${role()==="inside"?"Sin arte todavía":"Arte en producción"}</b><span>${esc(m.nombre)}</span></div>`}</div>
       ${imgs.length>1?`<div class="mthumbs">${imgs.map((s,k)=>`<button data-mthumb="${k}" class="${k===i?"on":""}" style="background-image:url('${esc(s)}')" aria-label="Arte ${k+1}"></button>`).join("")}</div>`:""}
-      ${imgs.length?`<div class="cbtns">${cBtn("arte",imgs.length>1?`Comentar este arte (${i+1})`:"Comentar el arte",i)}${m.legal?cBtn("legal","Comentar el legal"):""}${cBtn("fecha","Comentar fechas")}</div>`:`<div class="cbtns">${cBtn("general","Comentar esta pieza")}${cBtn("fecha","Comentar fechas")}</div>`}<div class="mlegal"><b>Envío de Inside</b><span>${m.fechaEnvio?`${esc(fmtCorto(m.fechaEnvio))} · ${m.envioReal?"enviado ✓":"programado"}${m.inicio?` · ${diffDays(m.inicio,m.fechaEnvio)} días antes del legal`:""}`:"Sin fecha de envío"}</span><b style="margin-top:6px">Vigencia del legal</b><span>${esc(medRange(m))}${m.inicio&&m.fin?` · ${diffDays(m.fin,m.inicio)+1} días`:""}</span>${m.legal?`<b style="margin-top:6px">Legal</b><span>${esc(m.legal)}</span>`:""}</div>
+      ${imgs.length?`<div class="cbtns">${cBtn("arte",imgs.length>1?`Comentar este arte (${i+1})`:"Comentar el arte",i)}${m.legal?cBtn("legal","Comentar el legal"):""}${cBtn("fecha","Comentar fechas")}</div>`:`<div class="cbtns">${cBtn("general","Comentar esta pieza")}${cBtn("fecha","Comentar fechas")}</div>`}<div class="mlegal"><b>Envío de Inside</b><span>${m.fechaEnvio?`${esc(fmtCorto(m.fechaEnvio))} · ${m.envioReal?"enviado ✓":"programado"}${m.inicio?` · ${diffDays(m.inicio,m.fechaEnvio)} días antes del legal`:""}`:"Sin fecha de envío"}</span><b style="margin-top:6px">Vigencia del legal</b><span>${esc(medRange(m))}${m.inicio&&m.fin?` · ${diffDays(m.fin,m.inicio)+1} días`:""}</span>${m.legal||canEdit()?`<b style="margin-top:6px">Legal</b><span>${m.legal?esc(m.legal):"Sin legal"}</span>${canEdit()?`<button class="clink" data-medlegal>✏️ Editar legal</button>`:""}`:""}</div>
     </div>
     <div class="right">
       <div class="sheethead"><div style="min-width:0">
@@ -1750,6 +1758,7 @@ document.addEventListener("click",async e=>{
   const m=S.medios.get(S.openMed); if(!m) return;
   if(e.target.closest("[data-mx]")||e.target.matches("[data-mclose]")){closeMedio();return}
   const tb=e.target.closest("[data-mtab]"); if(tb){S.mTab=tb.dataset.mtab;renderMedioSheet();return}
+  if(e.target.closest("[data-medlegal]")){S.mTab="copy";renderMedioSheet();setTimeout(()=>{const t=$('[data-mfield="legal"]');if(t){t.focus();t.scrollIntoView({block:"center"})}},30);return}
   const pv=e.target.closest("[data-mpv]"); if(pv){const n=(m.imagenes||[]).length;S.mSlide=((S.mSlide||0)+ +pv.dataset.mpv+n)%n;renderMedioSheet();return}
   const th=e.target.closest("[data-mthumb]"); if(th){S.mSlide=+th.dataset.mthumb;renderMedioSheet();return}
   const rg=e.target.closest("[data-mreg]"); if(rg){const r=region(rg.dataset.mreg);const on=regsOf(m).includes(r.id);let ps=on?m.paises.filter(c=>!r.paises.includes(c)):[...m.paises,...r.paises];if(!ps.length){toast("Debe ir al menos a una región");return}ps=ALL_PAISES.filter(c=>ps.includes(c));await saveMed(m.id,{paises:ps,region:regsOf({paises:ps})[0]});return}
@@ -2125,7 +2134,10 @@ ${apr||"(todavía no hay)"}
 ${[camp.insumos&&`Insumos / brief: ${camp.insumos}`,camp.objetivo&&`Objetivo: ${camp.objetivo}`,camp.publico&&`Público: ${camp.publico}`,camp.tono&&`Tono: ${camp.tono}`,camp.mensajes&&`Mensajes clave: ${camp.mensajes}`,camp.prohibido&&`Palabras o enfoques prohibidos: ${camp.prohibido}`].filter(Boolean).join("\n")||"(sin insumos cargados)"}
 ${infoCampText(o.linea)?`Lineamientos del planning:\n${infoCampText(o.linea)}`:""}
 
-== LA PIEZA ==
+${(()=>{const d=docsForPrompt(o.linea,piece);return d.n?`== DOCUMENTOS DE ESTRATEGIA Y PLANNING (extractos relevantes) ==
+${d.txt}
+
+`:""})()}== LA PIEZA ==
 Canal: ${canalTxt}
 Países: ${piece.paises.map(c=>PAIS[c]).join(", ")} · Idioma de salida: ${en?"INGLÉS (Caribe inglés)":"español"}
 Fecha: ${kind==="post"?(piece.fecha||"sin fecha"):(medRange(piece))}
@@ -2168,7 +2180,7 @@ function redactorPanel(piece,kind){
       <label>Perfil<select data-redf="perfil">${PERFILES.map(([k,l])=>`<option value="${k}" ${k===st.perfil?"selected":""}>${l}</option>`).join("")}</select></label>
     </div>
     <textarea data-redf="indicacion" rows="2" placeholder="Indicaciones opcionales: más corto, más emocional, incluir la hora de la promo, tono para RD…">${esc(st.indicacion)}</textarea>
-    <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${(redMarca().aprendizajes||[]).length} aprendizajes.</span>
+    <div class="crow"><span class="hint">${redCamp(st.linea).insumos?"Usa los insumos de la campaña.":`Esta campaña aún no tiene insumos: <button class="clink" data-redcenter="camp" data-redlinea="${esc(st.linea)}">cargarlos</button>.`} Usa ${(redMarca().aprendizajes||[]).length} aprendizajes y ${redDocs().filter(d=>!d.linea||d.linea==="General"||d.linea===st.linea).length} documentos de estrategia.</span>
       ${st.busy?`<button class="btn" data-redstop>Detener</button>`:`<button class="btn primary" data-redgo>${out?"Volver a recomendar":"Recomendar copy"}</button>`}</div>
     ${st.busy?`<p class="redwait" id="redRaw">Pensando… (puede tardar unos segundos)</p>`:""}
     ${st.err?`<p class="hint" style="color:var(--bad)">${esc(st.err)}</p>`:""}
@@ -2213,6 +2225,7 @@ function renderRedCenter(){
       <div class="redcfg"><label>Nivel del redactor para esta campaña<select data-rc="nivel"><option value="">El de la marca</option>${NIVELES.map(([k,l])=>`<option value="${k}" ${k===c.nivel?"selected":""}>${l}</option>`).join("")}</select></label>
       <label>Perfil<select data-rc="perfil"><option value="">El de la marca</option>${PERFILES.map(([k,l])=>`<option value="${k}" ${k===c.perfil?"selected":""}>${l}</option>`).join("")}</select></label></div>
       <div class="drow"><button class="btn primary" data-rcsave="camp">Guardar insumos de ${esc(S.redC.linea)}</button></div>`
+    :t==="docs"?docsTab()
     :`<p class="hint">Reglas que el redactor aplica siempre. Salen de los comentarios del cliente y de lo que el equipo decida. Así la inteligencia mejora con cada ronda.</p>
       <ul class="rclist">${(m.aprendizajes||[]).map((a,i)=>`<li><span>${esc(a.texto)}${a.fuente?`<small>${esc(a.fuente)}</small>`:""}</span><button class="iconbtn" data-rcdel="${i}" aria-label="Quitar">✕</button></li>`).join("")||`<li class="cempty">Todavía no hay aprendizajes.</li>`}</ul>
       <div class="newcm"><textarea id="rcNew" rows="2" placeholder="Agregar un aprendizaje: ej. «En Caribe no usar ‘sneakers’, usar ‘trainers’»"></textarea><button class="btn" data-rcadd>Agregar</button></div>
@@ -2220,11 +2233,11 @@ function renderRedCenter(){
       ${S.redC.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.err)}</p>`:""}
       ${(S.redC.props||[]).length?`<div class="redout"><b>Propuestas (elige cuáles guardar)</b>${S.redC.props.map((p,i)=>`<label class="pickr"><input type="checkbox" data-rcp="${i}" checked><span><b>${esc(p.regla)}</b><small>${esc(p.evidencia||"")}</small></span></label>`).join("")}<div class="drow"><button class="btn primary" data-rcpsave>Guardar seleccionados</button></div></div>`:""}`;
   root.innerHTML=`<div class="scrim modal" data-rcclose><div class="dialog wide" role="dialog" aria-label="Centro de redacción"><header><h3>✍️ Centro de redacción</h3><button class="iconbtn" data-rcclose aria-label="Cerrar">✕</button></header>
-    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Insumos por campaña</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
+    <div class="seg" role="group"><button data-rctab="voz" aria-pressed="${t==="voz"}">Voz de marca</button><button data-rctab="camp" aria-pressed="${t==="camp"}">Insumos por campaña</button><button data-rctab="docs" aria-pressed="${t==="docs"}">Estrategia y planning (${redDocs().length})</button><button data-rctab="apr" aria-pressed="${t==="apr"}">Aprendizajes (${(m.aprendizajes||[]).length})</button></div>
     ${body}</div></div>`;
 }
 async function saveRed(id,patch){
-  S.red=S.red||{marca:{},camps:{}}; const isM=id==="marca"; const cur=isM?S.red.marca:(S.red.camps[id]||{});
+  S.red=S.red||{marca:{},camps:{},docs:{}}; const isM=id==="marca"; const cur=isM?S.red.marca:(S.red.camps[id]||{});
   const doc={...cur,...patch,actualizado:new Date().toISOString(),actualizadoPor:S.myId||""};
   if(isM) S.red.marca=doc; else S.red.camps[id]=doc;
   try{await S.db.doc("redaccion/"+(isM?"marca":"camp-"+id)).set(doc);toast("Guardado")}catch(e){toast("No se pudo guardar.")}
@@ -2256,6 +2269,105 @@ document.addEventListener("click",async e=>{
 document.addEventListener("change",e=>{if(e.target.id==="rcLinea"&&S.redC){S.redC.linea=e.target.value;renderRedCenter()}});
 document.addEventListener("keydown",e=>{if(S.redC&&e.key==="Escape"){S.redC=null;renderRedCenter()}});
 
+/* ============ DOCUMENTOS DE ESTRATEGIA Y PLANNING para el redactor */
+const DOC_CATS=["Estrategia de marca","Planning del mes","Brief de campaña","Otro"];
+function redDocs(){return Object.values((S.red&&S.red.docs)||{}).sort((a,b)=>(b.subido||"").localeCompare(a.subido||""))}
+async function extractText(file){
+  const name=file.name.toLowerCase(); const ext=name.split(".").pop();
+  if(["txt","md","csv","json"].includes(ext)) return await file.text();
+  if(ext==="pdf"){
+    if(!window.pdfjsLib) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");
+    try{pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"}catch(e){}
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise; const out=[];
+    for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i);const tc=await pg.getTextContent();out.push(`[Página ${i}] `+tc.items.map(x=>x.str).join(" ").replace(/\s+/g," "))}
+    return out.join("\n");
+  }
+  if(["docx","pptx","xlsx"].includes(ext)){
+    if(!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+    const zip=await JSZip.loadAsync(file); const P=new DOMParser(); const txt=x=>[...P.parseFromString(x,"application/xml").getElementsByTagName("*")].filter(n=>/:t$|^t$/.test(n.tagName)&&n.childNodes.length===1&&n.firstChild.nodeType===3).map(n=>n.textContent);
+    if(ext==="docx"){const x=await zip.file("word/document.xml").async("string");return x.replace(/<\/w:p>/g,"\n").replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/\n{3,}/g,"\n\n")}
+    if(ext==="pptx"){const fs=Object.keys(zip.files).filter(f=>/^ppt\/slides\/slide\d+\.xml$/.test(f)).sort((a,b)=>+a.match(/\d+/)[0]-+b.match(/\d+/)[0]);const out=[];for(const f of fs){const x=await zip.file(f).async("string");out.push(`[Slide ${f.match(/\d+/)[0]}] `+x.replace(/<\/a:p>/g," / ").replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/\s+/g," "))}return out.join("\n")}
+    if(ext==="xlsx"){
+      const ssF=zip.file("xl/sharedStrings.xml"); const ss=ssF?[...P.parseFromString(await ssF.async("string"),"application/xml").getElementsByTagName("si")].map(n=>n.textContent):[];
+      const wb=zip.file("xl/workbook.xml")?P.parseFromString(await zip.file("xl/workbook.xml").async("string"),"application/xml"):null;
+      const names=wb?[...wb.getElementsByTagName("sheet")].map(n=>n.getAttribute("name")):[];
+      const fs=Object.keys(zip.files).filter(f=>/^xl\/worksheets\/sheet\d+\.xml$/.test(f)).sort((a,b)=>+a.match(/\d+/)[0]-+b.match(/\d+/)[0]); const out=[];
+      for(const [i,f] of fs.entries()){const doc=P.parseFromString(await zip.file(f).async("string"),"application/xml");const rows=[];
+        for(const r of doc.getElementsByTagName("row")){const cells=[...r.getElementsByTagName("c")].map(c=>{const t=c.getAttribute("t");const v=c.getElementsByTagName("v")[0];if(t==="s"&&v) return ss[+v.textContent]||"";if(t==="inlineStr") return c.textContent;return v?v.textContent:""}).map(x=>x.trim()).filter(Boolean);if(cells.length) rows.push(cells.join(" | "))}
+        if(rows.length) out.push(`[Hoja ${names[i]||i+1}]\n`+rows.join("\n"))}
+      return out.join("\n\n");
+    }
+  }
+  throw new Error("formato");
+}
+function docExcerpt(text,keys,cap){
+  if(text.length<=cap) return text;
+  const chunks=text.split(/\n+/).flatMap(l=>l.length>700?l.match(/[\s\S]{1,700}/g):[l]).filter(c=>c.trim());
+  const ks=keys.map(k=>k.toLowerCase()).filter(k=>k.length>2);
+  const scored=chunks.map((c,i)=>{const lc=c.toLowerCase();return {i,c,s:ks.reduce((a,k)=>a+(lc.includes(k)?1:0),0)}});
+  const head=text.slice(0,Math.min(2500,cap/4)); let out=[head], len=head.length;
+  for(const x of scored.filter(x=>x.s>0).sort((a,b)=>b.s-a.s||a.i-b.i)){if(len+x.c.length>cap) continue;out.push(x);len+=x.c.length}
+  return [head,...out.slice(1).sort((a,b)=>a.i-b.i).map(x=>x.c)].join("\n…\n");
+}
+function docsForPrompt(linea,piece){
+  const keys=[...linea.split(/\s+/),...String(piece.campana||piece.nombre||"").split(/[\s—\-/]+/),...(piece.paises||[]).map(c=>PAIS[c]),piece.serie||""].filter(Boolean);
+  const ds=redDocs().filter(d=>!d.linea||d.linea==="General"||d.linea===linea);
+  let total=0; const out=[];
+  for(const d of ds){const cap=Math.max(4000,Math.min(18000,42000-total));if(cap<=0) break;const ex=docExcerpt(d.texto||"",keys,cap);total+=ex.length;out.push(`--- ${d.nombre} (${d.categoria||"Documento"}${d.linea&&d.linea!=="General"?` · ${d.linea}`:""}) ---\n${ex}`);if(total>42000) break}
+  return {txt:out.join("\n\n"),n:out.length};
+}
+async function saveDoc(d){
+  S.red=S.red||{marca:{},camps:{},docs:{}}; S.red.docs=S.red.docs||{};
+  const id=d.id||`doc-${Date.now().toString(36)}`; const doc={...d,id,actualizado:new Date().toISOString()};
+  S.red.docs[id]=doc; renderRedCenter();
+  try{await S.db.doc("redaccion/"+id).set(doc);return true}catch(e){delete S.red.docs[id];renderRedCenter();toast(e&&e.code==="too_large"?"El documento es demasiado grande para guardarlo.":"No se pudo guardar el documento.");return false}
+}
+function docsTab(){
+  const ds=redDocs(); const up=S.redC.up||{};
+  return `<p class="hint">Sube la estrategia de campaña, el planning del mes o un brief. El redactor lee las partes que tienen que ver con la campaña de cada pieza, y puede convertir el documento en insumos de campaña.</p>
+    <div class="docup">
+      <label class="drop-zone" for="docFile" style="display:block"><input type="file" id="docFile" accept=".pdf,.docx,.pptx,.xlsx,.txt,.md,.csv" hidden><b>${up.busy?"Leyendo el archivo…":"Subir documento"}</b><br><span style="font-size:12px">PDF, Word, PowerPoint, Excel o texto. También puedes pegar el texto abajo.</span></label>
+      <div class="redcfg"><label>Nombre<input id="docName" value="${esc(up.nombre||"")}" placeholder="Ej.: Estrategia Sneakers octubre"></label>
+        <label>Tipo<select id="docCat">${DOC_CATS.map(c=>`<option ${c===(up.categoria||"Planning del mes")?"selected":""}>${c}</option>`).join("")}</select></label>
+        <label>Aplica a<select id="docLinea"><option value="General">Toda la marca / todo el mes</option>${LINEAS.map(l=>`<option ${l===up.linea?"selected":""}>${esc(l)}</option>`).join("")}</select></label></div>
+      <textarea id="docText" rows="5" placeholder="Texto del documento (se llena solo al subir un archivo; puedes pegar o corregir aquí)">${esc(up.texto||"")}</textarea>
+      <div class="crow"><span class="hint">${up.texto?`${up.texto.length.toLocaleString("es")} caracteres${up.texto.length>150000?" · se guardarán los primeros 150.000":""}`:""}</span><button class="btn primary" data-docsave ${up.busy?"disabled":""}>Guardar documento</button></div>
+    </div>
+    <h4 class="rch">Documentos cargados (${ds.length})</h4>
+    ${ds.length?ds.map(d=>`<article class="doccard"><header><b>${esc(d.nombre)}</b><span class="cpart">${esc(d.categoria||"Documento")}</span><span class="cpart">${esc(d.linea&&d.linea!=="General"?d.linea:"Toda la marca")}</span><small>${(d.texto||"").length.toLocaleString("es")} caracteres · ${esc(when(d.subido))}</small><button class="iconbtn" data-docdel="${esc(d.id)}" aria-label="Eliminar documento">✕</button></header>
+      <details><summary>Ver texto</summary><pre class="rcpre">${esc((d.texto||"").slice(0,3000))}${(d.texto||"").length>3000?"\n…":""}</pre></details>
+      <div class="drow wrap"><button class="btn" data-docins="${esc(d.id)}" ${S.redC.insBusy===d.id?"disabled":""}>${S.redC.insBusy===d.id?"Leyendo el documento…":"Generar insumos de campaña con IA"}</button></div>
+      ${S.redC.ins&&S.redC.ins.doc===d.id?(S.redC.ins.err?`<p class="hint" style="color:var(--bad)">${esc(S.redC.ins.err)}</p>`:S.redC.ins.list.map((c,i)=>`<div class="redprop"><header><b>${esc(c.linea)}</b><span>Propuesta de insumos desde este documento</span></header>${["insumos","objetivo","publico","tono","mensajes","prohibido"].filter(k=>c[k]).map(k=>`<div class="redf"><small>${{insumos:"Insumos",objetivo:"Objetivo",publico:"Público",tono:"Tono",mensajes:"Mensajes clave",prohibido:"Prohibido"}[k]}</small><p>${esc(c[k])}</p></div>`).join("")}<div class="drow"><button class="btn primary" data-docinsave="${i}">Guardar en insumos de ${esc(c.linea)}</button></div></div>`).join("")):""}
+    </article>`).join(""):`<p class="cempty">Todavía no hay documentos.</p>`}`;
+}
+document.addEventListener("change",async e=>{
+  if(e.target.id!=="docFile"||!S.redC) return; const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  S.redC.up={...(S.redC.up||{}),busy:true,nombre:f.name.replace(/\.[^.]+$/,""),categoria:$("#docCat")?.value,linea:$("#docLinea")?.value}; renderRedCenter();
+  try{const t=(await extractText(f)).trim();S.redC.up.texto=t;if(!t) toast("No se encontró texto en el archivo. Pégalo abajo.")}
+  catch(err){toast(String(err&&err.message)==="formato"?"Formato no admitido. Usa PDF, Word, PowerPoint, Excel o texto.":"No se pudo leer el archivo. Pega el texto abajo.")}
+  finally{S.redC.up.busy=false;renderRedCenter()}
+});
+document.addEventListener("input",e=>{if(!S.redC) return;const m={docName:"nombre",docText:"texto"}[e.target.id];if(m){S.redC.up=S.redC.up||{};S.redC.up[m]=e.target.value}});
+document.addEventListener("change",e=>{if(!S.redC) return;const m={docCat:"categoria",docLinea:"linea"}[e.target.id];if(m){S.redC.up=S.redC.up||{};S.redC.up[m]=e.target.value}});
+document.addEventListener("click",async e=>{
+  if(!S.redC) return;
+  if(e.target.closest("[data-docsave]")){const u=S.redC.up||{};const texto=($("#docText")?.value||u.texto||"").trim();if(!texto){toast("Sube un archivo o pega el texto");return}
+    const ok=await saveDoc({tipo:"doc",nombre:($("#docName")?.value||u.nombre||"Documento").trim(),categoria:$("#docCat")?.value||"Otro",linea:$("#docLinea")?.value||"General",texto:texto.slice(0,150000),subido:new Date().toISOString(),porId:S.myId||""});
+    if(ok){S.redC.up={};toast("Documento guardado");renderRedCenter()}return}
+  const dd=e.target.closest("[data-docdel]"); if(dd){const id=dd.dataset.docdel;const prev=S.red.docs[id];delete S.red.docs[id];renderRedCenter();try{await S.db.doc("redaccion/"+id).delete();toast("Documento eliminado")}catch(err){S.red.docs[id]=prev;renderRedCenter();toast("No se pudo eliminar.")}return}
+  const di=e.target.closest("[data-docins]"); if(di){
+    if(!S.sampleFn){toast("Necesita Claude disponible en esta vista.");return}
+    const d=S.red.docs[di.dataset.docins]; S.redC.insBusy=d.id; S.redC.ins=null; renderRedCenter();
+    try{const r=await S.sampleFn.json(`Eres director creativo y estratega de la agencia INSIDE para Payless. Lee este documento (${d.categoria}: «${d.nombre}») y extrae, para cada campaña que el documento trate, los insumos que un redactor necesita para escribir copys. Usa solo estas campañas: ${LINEAS.join(", ")}.${d.linea&&d.linea!=="General"?` El documento es sobre «${d.linea}».`:""}\n\nDOCUMENTO:\n${(d.texto||"").slice(0,120000)}\n\nResponde SOLO con un JSON: {"campanas":[{"linea":"una de la lista","insumos":"concepto, KV, insights, series y lo esencial (máx. 900 caracteres)","objetivo":"...","publico":"...","tono":"...","mensajes":"...","prohibido":"..."}]}. Deja vacío lo que el documento no diga; no inventes.`,{cache:false,modelTier:"complex"});
+      const list=(r&&Array.isArray(r.campanas)?r.campanas:[]).filter(c=>c&&LINEAS.includes(c.linea));S.redC.ins={doc:d.id,list,err:list.length?"":"El documento no trae información de campañas reconocibles."}}
+    catch(err){S.redC.ins={doc:d.id,list:[],err:err&&err.code==="not_granted"?"No se dio permiso para usar Claude.":err&&err.code==="prompt_too_large"?"El documento es demasiado largo para analizarlo de una vez.":"No se pudo analizar el documento. Intenta de nuevo."}}
+    finally{S.redC.insBusy=null;renderRedCenter()}return}
+  const dis=e.target.closest("[data-docinsave]"); if(dis){const c=S.redC.ins.list[+dis.dataset.docinsave];const cur=redCamp(c.linea);const d=S.red.docs[S.redC.ins.doc];
+    const p={nombre:c.linea};for(const k of ["objetivo","publico","tono","mensajes","prohibido"]) if(c[k]) p[k]=cur[k]?`${cur[k]}\n${c[k]}`:c[k];
+    if(c.insumos) p.insumos=cur.insumos?`${cur.insumos}\n\nDe «${d?d.nombre:"documento"}»: ${c.insumos}`:c.insumos;
+    await saveRed(slug(c.linea),p);S.redC.ins.list.splice(+dis.dataset.docinsave,1);renderRedCenter();return}
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -2286,7 +2398,7 @@ async function boot(){
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
   },()=>{});
-  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v}S.red=r;if(S.redC) renderRedCenter()},()=>{});
+  db.collection("redaccion").onSnapshot(snap=>{const r={marca:{},camps:{},docs:{}};for(const d of snap.docs){const v=d.data();if(d.id==="marca") r.marca=v; else if(d.id.startsWith("camp-")) r.camps[d.id.slice(5)]=v; else if(d.id.startsWith("doc-")) r.docs[d.id]={...v,id:d.id}}S.red=r;if(S.redC) renderRedCenter()},()=>{});
   db.collection("envios").onSnapshot(snap=>{S.envios=snap.docs.map(d=>({...d.data(),_id:d.id}));if(S.f.section==="med"&&S.f.mview==="env") renderView()},()=>{});
   db.collection("medios").onSnapshot(snap=>{const m=new Map();for(const d of snap.docs) m.set(d.id,medNorm({...d.data(),id:d.id}));S.medios=m;if(S.f.section==="med"||S.f.section==="all") render();if(S.openMed) renderMedioSheet()},()=>{});
   setTimeout(()=>{if(S.mode==="loading") offline()},12000);
