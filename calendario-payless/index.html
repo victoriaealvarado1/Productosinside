@@ -904,6 +904,50 @@ body.lbon{overflow:hidden}
 .bthumbs button{width:64px;height:80px;border-radius:6px;border:1px solid var(--line);background:var(--sunk) center/cover;cursor:zoom-in;font-size:11px}
 .etb{font-style:normal;font-size:10px}
 .bgrid figcaption{display:flex;justify-content:space-between;align-items:center} .bgrid figcaption span:last-child{display:flex;gap:4px}
+
+/* ---------- salud de la cuenta (solo Inside) */
+.hsBtn{width:28px;height:28px;font-size:13px;opacity:.55}
+.hsBtn:hover{opacity:1}
+.hsdlg{width:min(1180px,100%);max-height:92vh;gap:14px;
+  --hs-cli:#2a78d6; --hs-ins:#eb6834; --hs-pro:#1baf7a; --hs-bar:#5a5148}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hsdlg{--hs-cli:#3987e5; --hs-ins:#d95926; --hs-pro:#199e70; --hs-bar:#c3b8ad}}
+:root[data-theme="dark"] .hsdlg{--hs-cli:#3987e5; --hs-ins:#d95926; --hs-pro:#199e70; --hs-bar:#c3b8ad}
+.hsdlg header{display:flex;align-items:center;gap:10px}
+.hsdlg header h3{margin:0;flex:1;font:800 20px var(--f-display)}
+.hsprivate{font-size:11px;font-weight:700;color:var(--ink-3);border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+.hsdlg section{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.hsdlg h4{margin:0 0 6px;font:800 15px var(--f-display)}
+.hsfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hsfilters select,.hslist select{border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:var(--surface);color:var(--ink);font:500 12px var(--f-body);max-width:100%}
+.hsdiag ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.hstiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.hstile{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.hstile b{font-size:24px;line-height:1.1;color:var(--ink)}
+.hstile span{font-size:12px;font-weight:700;color:var(--ink-2)}
+.hstile small{font-size:11px;color:var(--ink-3)}
+.hstbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.hstbl th{text-align:left;font-size:11px;color:var(--ink-3);font-weight:700;border-bottom:1px solid var(--line);padding:4px 6px}
+.hstbl td{border-bottom:1px solid var(--line);padding:5px 6px;vertical-align:top;color:var(--ink)}
+.hsbar{display:block;width:120px;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.hsbar i{display:block;height:100%;background:var(--hs-bar);border-radius:0 4px 4px 0}
+.hsstack{display:flex;gap:2px;height:16px;border-radius:4px;overflow:hidden;margin:6px 0}
+.hsstack.empty{background:var(--sunk)}
+.hsmini{display:flex;gap:2px;height:10px;min-width:4px}
+.hsmini i:last-child{border-radius:0 4px 4px 0}
+.r-cliente{background:var(--hs-cli)} .r-inside{background:var(--hs-ins)} .r-proceso{background:var(--hs-pro)}
+.hslegend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.hslegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.hstag{font-size:11px;font-weight:700;color:var(--ink);padding:1px 6px;border-radius:4px;background:var(--sunk);border-left:3px solid transparent}
+.hstag.r-inside{background:var(--sunk);border-left-color:var(--hs-ins)} .hstag.r-cliente{background:var(--sunk);border-left-color:var(--hs-cli)} .hstag.r-proceso{background:var(--sunk);border-left-color:var(--hs-pro)}
+.hs2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hschk{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.hschk small{display:block;color:var(--ink-3);font-size:11px}
+.hsscroll{overflow-x:auto}
+.hslist{min-width:980px}
+.hstxt{max-width:320px}
+.hsheur td{color:var(--ink-3)}
+.hstbl .clink{text-align:left;font-weight:600;font-size:12px}
+@media (max-width:760px){.hs2{grid-template-columns:1fr}.hsdlg{padding:12px}}
 </style>
 
 <div class="top">
@@ -915,7 +959,7 @@ body.lbon{overflow:hidden}
         <h1 id="monthTitle">Octubre 2026</h1>
         <button class="iconbtn" id="nextM" aria-label="Mes siguiente">›</button>
       </div>
-      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, campañas, archivos y aprendizajes">✨ Asistente INSIDE</button><button class="pill inbox" id="eqBtn" hidden title="Quién es quién en Payless e Inside y quién aprueba cada región">👥 Equipo</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span></div>
+      <div class="who"><button class="pill inbox" id="redBtn" hidden title="Voz de marca, campañas, archivos y aprendizajes">✨ Asistente INSIDE</button><button class="pill inbox" id="eqBtn" hidden title="Quién es quién en Payless e Inside y quién aprueba cada región">👥 Equipo</button><button class="pill inbox" id="inboxBtn" hidden></button><span class="sync" id="sync" title="Conexión"></span><span id="rolePill" class="pill role-offline">Cargando…</span><button class="iconbtn hsBtn" id="hsBtn" hidden title="Salud de la cuenta" aria-label="Salud de la cuenta">📈</button></div>
     </div>
     <div class="filters" id="filters"></div>
     <div class="summary" id="summary"></div>
@@ -957,7 +1001,7 @@ const S={
   db:null, assets:null, user:null,
   month:null,
   f:{region:"ALL",paises:[],tipo:"ALL",linea:"ALL",estado:"ALL",q:"",view:"cal",gridPais:"GT",gridSize:"phone",onlyArt:false,desde:"2026-10-01",hasta:"2026-10-10",section:"org",matriz:"ALL"},
-  openId:null, openTab:"info", pv:{slide:0}, dragId:null, medios:new Map(), series:new Map(), feedOrd:{}, openMed:null, clip:null, sel:null, sels:new Set(), selDay:null, group:null,
+  openId:null, openTab:"info", pv:{slide:0}, dragId:null, medios:new Map(), series:new Map(), salud:new Map(), feedOrd:{}, openMed:null, clip:null, sel:null, sels:new Set(), selDay:null, group:null,
 };
 const store={get(k){try{return JSON.parse(localStorage.getItem("cpay:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("cpay:"+k,JSON.stringify(v))}catch(e){}}};
 const saved=store.get("f"); if(saved) Object.assign(S.f,saved,{q:""});
@@ -2330,6 +2374,7 @@ function pendingItems(){
 function renderInbox(){
   const rb=$("#redBtn"); if(rb) rb.hidden=!(S.mode==="live"&&role()==="inside"&&canEdit());
   const eb=$("#eqBtn"); if(eb) eb.hidden=S.mode!=="live";
+  const hb=$("#hsBtn"); if(hb) hb.hidden=!(S.mode==="live"&&S.role==="inside"&&!S.viewAs); if(S.hs&&!hsAll()){S.hs=null;renderHS()}
   const b=$("#inboxBtn"); if(!b) return;
   const n=pendingItems().length, cms=role()==="inside"?[...S.posts.keys(),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
   const nw=newClientCount();
@@ -4296,6 +4341,190 @@ function etapaSel(){if(role()!=="inside") return "";const v=S.f.etapa||"ALL";ret
 function etapaMatch(p){const v=S.f.etapa;if(!v||v==="ALL") return true;const e=etapaOf(p);return v==="Sin boceto"?!e:e===v}
 document.addEventListener("change",e=>{if(e.target.id==="fEtapa"){S.f.etapa=e.target.value;persistF();render()}});
 
+
+/* ============ SALUD DE LA CUENTA: solo Inside. Mide aprobaciones, rondas, tiempos y causas de los ajustes del cliente */
+const HS_ORIG={error_inside:["Error de Inside","inside"],llego_tarde:["La pieza llegó tarde","inside"],propuesta_no_convence:["La propuesta no convenció","inside"],brief_incompleto:["Brief o insumo incompleto","proceso"],sugerencia_futura:["Sugerencia para próximas piezas","proceso"],preferencia_cliente:["Preferencia o cambio de criterio del cliente","cliente"],decision_cliente:["Decisión de negocio del cliente","cliente"]};
+const HS_RESP={inside:"Inside",proceso:"Proceso / brief",cliente:"Cliente"};
+const HS_RESP_ORD=["cliente","inside","proceso"];
+const HS_TEMA={copy:"Copy",diseno:"Diseño / arte",marca:"Logos y marca",producto:"Producto / foto",legal:"Legal",cta:"CTA / URL / canal",promo:"Promo / descuento",fechas:"Fechas / vigencia",estrategia:"Estrategia / concepto",publicacion:"Publicación / pauta",formato:"Formato",otro:"Otro"};
+const HS_TIPO={aprobacion:"Aprueba",aprobacion_condicionada:"Aprueba con cambios",cambio:"Pide cambios",pregunta:"Pregunta",informativo:"Informa",cancelacion:"Cancela / ya no aplica"};
+const HS_AJ=["cambio","aprobacion_condicionada","cancelacion"];
+const HS_CHECK=[["Sin el claim «Todos los estilos» en piezas promocionales",/claim/i],["Logo de Payless visible y grande (mínimo del tamaño de «sneakers»; blanco sobre fondo oscuro)",/logo/i],["Logos de las marcas según el producto de cada imagen (Champion, LA Gear, Airwalk, Cross Trekkers)",/(la ?gear|champion|airwalk|cross ?trek|marcas)/i],["Legal exacto, una sola vez y con la vigencia correcta",/(legal|vigencia)/i],["CTA, URL y canal correctos por país (payless.cr, ecuador.payless.com, WhatsApp vs en línea)",/(cta|url|whats|\.com|online|en l[ií]nea|tienda)/i],["Producto, lote y foto oficial correctos",/(lote|foto|oficial|imagen|zapato)/i],["Porcentaje y mecánica de la promo correctos",/(\d+ ?%|promo es|promo correcta|promo debe)/i],["Ortografía y nombres propios",/(spelt|mal escrit|ortograf|incorrect)/i],["Campaña y producto del mes alineados al brief",/(campaña|producto|atl[eé]ticos|d[ií]a del niño)/i]];
+const hsAll=()=>role()==="inside"&&!S.viewAs;
+function hsOpen(){if(!hsAll()) return;S.hs=S.hs||{per:"mes",mz:"ALL",reg:"ALL",apr:"ALL",lo:"",lt:"",lr:""};renderHS()}
+function hsPiece(id){const p=S.posts.get(id);if(p) return {kind:"post",x:p,mz:"ORGÁNICO",regs:regsOf(p),name:pName(p)};const m=S.medios&&S.medios.get(id);if(m) return {kind:"medio",x:m,mz:m.matriz||"MEDIOS",regs:[m.region||"CENTRO"],name:`${m.matriz||"Medios"} · ${m.nombre||id}`};return null}
+const hsOk=t=>/^\s*(aprobad[oa]s?|approved|ok\b)/i.test(t||"");
+function hsCls(c){const d=S.salud&&S.salud.get("cl-"+c._id);if(d) return d;return {tipo:hsOk(c.texto)?"aprobacion":"cambio",tema:"",objetividad:"",origen:"",tono:hsOk(c.texto)?"positivo":"neutro",heur:true}}
+const hsH=(a,b)=>(new Date(b)-new Date(a))/36e5;
+const hsMed=a=>{if(!a.length) return null;const s=[...a].sort((x,y)=>x-y),k=s.length>>1;return s.length%2?s[k]:(s[k-1]+s[k])/2};
+const hsPct=(a,b)=>b?Math.round(a/b*100):0;
+const hsFmtH=h=>h==null?"—":h<1?`${Math.round(h*60)} min`:h<48?`${h<10?h.toFixed(1):Math.round(h)} h`:`${(h/24).toFixed(1)} días`;
+function hsWeek(f){const d=new Date(f);const k=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-k);return d.toISOString().slice(0,10)}
+function hsFrom(per){const n=new Date();if(per==="7d") return new Date(n-7*864e5).toISOString();if(per==="30d") return new Date(n-30*864e5).toISOString();if(per==="mes") return new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),1)).toISOString();return ""}
+function hsData(){
+  const f=S.hs, from=hsFrom(f.per), all=S.comments||[];
+  const byP=new Map(); for(const c of all){if(!c.postId) continue;(byP.get(c.postId)||byP.set(c.postId,[]).get(c.postId)).push(c)}
+  for(const l of byP.values()) l.sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||""));
+  const inSc=pc=>pc&&(f.mz==="ALL"||(f.mz==="MEDIOS"?pc.kind==="medio":f.mz===pc.mz))&&(f.reg==="ALL"||pc.regs.includes(f.reg));
+  const isCl=c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim();
+  const isIn=c=>(["comentario","respuesta","envio"].includes(c.tipo)&&orgOf(c)!=="cliente")||(c.tipo==="estado"&&/→\s*Enviado a cliente/.test(c.texto||""));
+  const who=c=>c.personaNombre||c.autorNombre||"Cliente";
+  const cc=[], pieces=[], resp=[], pend=[], cyc=[], clResp=[];
+  for(const [pid,l] of byP){const pc=hsPiece(pid);if(!inSc(pc)) continue;
+    const cl=l.filter(c=>isCl(c)&&(!from||(c.fecha||"")>=from)&&(f.apr==="ALL"||who(c)===f.apr)).map(c=>({c,k:hsCls(c),pc,who:who(c)}));
+    if(!cl.length) continue; cc.push(...cl);
+    const allCl=l.filter(isCl).map(c=>({c,k:hsCls(c)}));
+    const apDocs=l.filter(c=>c.tipo==="aprobado"&&orgOf(c)==="cliente");
+    const firstAp=[...allCl.filter(x=>x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada").map(x=>x.c.fecha),...apDocs.map(c=>c.fecha)].filter(Boolean).sort()[0]||null;
+    const signals=allCl.filter(x=>x.k.tipo!=="informativo");
+    const first=signals[0];
+    const days=new Set(allCl.filter(x=>(x.k.tipo==="cambio"||x.k.tipo==="aprobacion_condicionada")&&(!firstAp||x.c.fecha<=firstAp)).map(x=>(x.c.fecha||"").slice(0,10)));
+    const cancel=allCl.some(x=>x.k.tipo==="cancelacion");
+    const ok=!!firstAp||["Aprobado por cliente","Programado","Publicado"].includes(pc.x.estado);
+    const start=(l.find(c=>isIn(c)&&(c.tipo==="envio"||c.tipo==="estado"))||{}).fecha||(first&&first.c.fecha);
+    if(firstAp&&start&&firstAp>start) cyc.push(hsH(start,firstAp)/24);
+    pieces.push({pid,pc,ok,cancel,fpy:!!first&&first.k.tipo==="aprobacion",rondas:days.size,first});
+    for(const x of cl){if(!["cambio","aprobacion_condicionada","pregunta"].includes(x.k.tipo)) continue;
+      const r=l.find(c=>isIn(c)&&(c.fecha||"")>(x.c.fecha||""));
+      if(r) resp.push({h:hsH(x.c.fecha,r.fecha),by:r.personaNombre||r.autorNombre||(r.tipo==="envio"?"Envío":"Inside"),x});
+      else if(!ok&&!cancel) pend.push({x,h:hsH(x.c.fecha,new Date().toISOString())});}
+    for(let i=0;i<l.length;i++){const c=l[i];if(!isIn(c)||(from&&(c.fecha||"")<from)) continue;const n=l.slice(i+1).find(isCl);if(n) clResp.push(hsH(c.fecha,n.fecha));}
+  }
+  const seen=new Set(), uq=cc.filter(x=>{const k=(x.c.texto||"").trim()+"|"+(x.c.fecha||"").slice(0,16);if(seen.has(k)) return false;seen.add(k);return true});
+  return {cc,uq,pieces,resp,pend,cyc,clResp};
+}
+function hsBar(v,max,cls){return `<span class="hsbar"><i class="${cls||""}" style="width:${max?Math.max(2,v/max*100):0}%"></i></span>`}
+function hsStack(parts,tot){if(!tot) return `<div class="hsstack empty"></div>`;return `<div class="hsstack">${parts.filter(p=>p.v).map(p=>`<i class="${p.cls}" style="flex:${p.v}" title="${esc(p.l)}: ${p.v} (${hsPct(p.v,tot)}%)"></i>`).join("")}</div><div class="hslegend">${parts.map(p=>`<span><i class="${p.cls}"></i>${esc(p.l)} <b class="mono">${hsPct(p.v,tot)}%</b> <small>(${p.v})</small></span>`).join("")}</div>`}
+function hsDiag(d){
+  const aj=d.uq.filter(x=>HS_AJ.includes(x.k.tipo)&&x.k.origen), out=[];
+  const r={inside:0,cliente:0,proceso:0}; aj.forEach(x=>r[(HS_ORIG[x.k.origen]||[])[1]||"proceso"]++);
+  if(aj.length){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0];out.push(`<b>${hsPct(top[1],aj.length)}% de los ajustes ${top[0]==="inside"?"son responsabilidad de Inside":top[0]==="cliente"?"vienen de cambios o decisiones del cliente":"vienen del proceso o del brief"}</b> (Inside ${hsPct(r.inside,aj.length)}% · cliente ${hsPct(r.cliente,aj.length)}% · proceso ${hsPct(r.proceso,aj.length)}%).`)}
+  const ins=aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside"), bt={};ins.forEach(x=>bt[x.k.tema||"otro"]=(bt[x.k.tema||"otro"]||0)+1);
+  const tt=Object.entries(bt).sort((a,b)=>b[1]-a[1]);
+  if(tt.length) out.push(`Donde más fallamos: <b>${esc(HS_TEMA[tt[0][0]]||tt[0][0])}</b> (${hsPct(tt[0][1],ins.length)}% de los ajustes atribuibles a Inside)${tt[1]?`, seguido de ${esc(HS_TEMA[tt[1][0]]||tt[1][0])} (${hsPct(tt[1][1],ins.length)}%)`:""}.`);
+  const nc=ins.filter(x=>x.k.origen==="propuesta_no_convence").length, er=ins.filter(x=>x.k.origen==="error_inside").length, lt=ins.filter(x=>x.k.origen==="llego_tarde").length;
+  if(ins.length) out.push(`De lo atribuible a Inside: ${hsPct(er,ins.length)}% son errores verificables (se evitan con revisión antes de enviar), ${hsPct(nc,ins.length)}% son propuestas que no convencieron (calidad creativa) y ${hsPct(lt,ins.length)}% piezas que llegaron tarde.`);
+  const m=hsMed(d.resp.map(x=>x.h));
+  if(m!=null) out.push(`Respondemos a un pedido de cambios en <b>${hsFmtH(m)}</b> (mediana); ${hsPct(d.resp.filter(x=>x.h<=24).length,d.resp.length)}% en menos de 24 h.${d.pend.length?` Hay <b>${d.pend.length} pedidos sin respuesta</b>.`:""}`);
+  const p=d.pieces.filter(x=>x.first);
+  if(p.length) out.push(`Aprobación a la primera: <b>${hsPct(p.filter(x=>x.fpy).length,p.length)}%</b> de ${p.length} piezas; las demás necesitan en promedio ${(p.filter(x=>!x.fpy).reduce((a,x)=>a+x.rondas,0)/Math.max(1,p.filter(x=>!x.fpy).length)).toFixed(1)} rondas.`);
+  const neg=d.uq.filter(x=>x.k.tono==="negativo").length, pos=d.uq.filter(x=>x.k.tono==="positivo").length;
+  if(d.uq.length) out.push(`Tono del cliente: ${hsPct(pos,d.uq.length)}% positivo, ${hsPct(neg,d.uq.length)}% negativo.`);
+  return out;
+}
+function hsSel(id,cur,opts){return `<select data-hsf="${id}">${opts.map(([v,l])=>`<option value="${esc(v)}" ${v===cur?"selected":""}>${esc(l)}</option>`).join("")}</select>`}
+function renderHS(){
+  let root=$("#hsRoot"); if(!S.hs||!hsAll()){root&&root.remove();return}
+  if(!root){root=document.createElement("div");root.id="hsRoot";document.body.appendChild(root)}
+  const f=S.hs, d=hsData();
+  const aprs=[...new Set((S.comments||[]).filter(c=>orgOf(c)==="cliente"&&c.texto).map(c=>c.personaNombre||c.autorNombre).filter(Boolean))].sort();
+  const p=d.pieces.filter(x=>x.first), fpy=p.filter(x=>x.fpy).length, notF=p.filter(x=>!x.fpy);
+  const aj=d.uq.filter(x=>HS_AJ.includes(x.k.tipo)), ajc=aj.filter(x=>x.k.origen);
+  const resp={inside:0,cliente:0,proceso:0}; ajc.forEach(x=>resp[(HS_ORIG[x.k.origen]||[])[1]||"proceso"]++);
+  const obj=d.uq.filter(x=>x.k.objetividad), objO=obj.filter(x=>x.k.objetividad==="objetivo").length;
+  const pos=d.uq.filter(x=>x.k.tono==="positivo").length, neg=d.uq.filter(x=>x.k.tono==="negativo").length;
+  const sinC=(S.comments||[]).filter(c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim()&&!(S.salud&&S.salud.has("cl-"+c._id))).length;
+  const tile=(v,l,s)=>`<div class="hstile"><b class="mono">${v}</b><span>${l}</span>${s?`<small>${s}</small>`:""}</div>`;
+  const kpis=[tile(p.length,"Piezas revisadas por el cliente",`${d.uq.length} comentarios del cliente`),tile(`${hsPct(fpy,p.length)}%`,"Aprobadas a la primera",`${fpy} de ${p.length}`),tile(notF.length?(notF.reduce((a,x)=>a+x.rondas,0)/notF.length).toFixed(1):"—","Rondas de ajustes","promedio en las que no salieron a la primera"),tile(d.cyc.length?`${hsMed(d.cyc).toFixed(1)} d`:"—","De envío a aprobación","mediana"),tile(hsFmtH(hsMed(d.resp.map(x=>x.h))),"Respuesta de Inside","mediana a un pedido de cambios"),tile(d.pend.length,"Pedidos sin responder",d.pend.length?`el más antiguo hace ${hsFmtH(Math.max(...d.pend.map(x=>x.h)))}`:"al día"),tile(`${hsPct(resp.inside,ajc.length)}%`,"Ajustes atribuibles a Inside",`${resp.inside} de ${ajc.length} ajustes`),tile(`${hsPct(objO,obj.length)}%`,"Comentarios objetivos","el resto son de gusto o criterio"),tile(`${hsPct(pos,d.uq.length)}% / ${hsPct(neg,d.uq.length)}%`,"Tono positivo / negativo",""),tile(hsFmtH(hsMed(d.clResp)),"Respuesta del cliente","mediana desde que Inside envía o responde")].join("");
+  // causas
+  const oc={};ajc.forEach(x=>oc[x.k.origen]=(oc[x.k.origen]||0)+1); const omax=Math.max(1,...Object.values(oc));
+  const origRows=Object.keys(HS_ORIG).filter(k=>oc[k]).sort((a,b)=>oc[b]-oc[a]).map(k=>`<tr><td>${esc(HS_ORIG[k][0])}</td><td><span class="hstag r-${HS_ORIG[k][1]}">${HS_RESP[HS_ORIG[k][1]]}</span></td><td class="mono">${oc[k]}</td><td class="mono">${hsPct(oc[k],ajc.length)}%</td><td>${hsBar(oc[k],omax)}</td></tr>`).join("");
+  // temas
+  const tm={};ajc.forEach(x=>{const t=x.k.tema||"otro";const o=tm[t]||(tm[t]={tot:0,inside:0,cliente:0,proceso:0,err:0,nc:0});o.tot++;o[HS_ORIG[x.k.origen][1]]++;if(x.k.origen==="error_inside") o.err++;if(x.k.origen==="propuesta_no_convence") o.nc++});
+  const tmax=Math.max(1,...Object.values(tm).map(o=>o.tot));
+  const temaRows=Object.entries(tm).sort((a,b)=>b[1].inside-a[1].inside||b[1].tot-a[1].tot).map(([t,o])=>`<tr><td>${esc(HS_TEMA[t]||t)}</td><td class="mono">${o.tot}</td><td><div class="hsmini" style="width:${o.tot/tmax*100}%">${HS_RESP_ORD.filter(r=>o[r]).map(r=>`<i class="r-${r}" style="flex:${o[r]}" title="${HS_RESP[r]}: ${o[r]}"></i>`).join("")}</div></td><td class="mono">${o.inside}</td><td class="mono">${o.err}</td><td class="mono">${o.nc}</td><td class="mono">${o.cliente}</td><td class="mono">${hsPct(o.inside,o.tot)}%</td></tr>`).join("");
+  // velocidad
+  const bk=[["< 4 h",0,4],["4–24 h",4,24],["1–2 días",24,48],["> 2 días",48,1e9]].map(([l,a,b])=>[l,d.resp.filter(x=>x.h>=a&&x.h<b).length]); const bmax=Math.max(1,...bk.map(b=>b[1]));
+  const byR={};d.resp.forEach(x=>(byR[x.by]=byR[x.by]||[]).push(x.h));
+  const respRows=Object.entries(byR).sort((a,b)=>b[1].length-a[1].length).map(([n,a])=>`<tr><td>${esc(n)}</td><td class="mono">${a.length}</td><td class="mono">${hsFmtH(hsMed(a))}</td><td class="mono">${hsPct(a.filter(h=>h<=24).length,a.length)}%</td></tr>`).join("");
+  const pendRows=d.pend.sort((a,b)=>b.h-a.h).slice(0,12).map(x=>`<tr><td><button class="clink" data-hsopen="${esc(x.x.pc.kind)}|${esc(x.x.c.postId)}">${esc(x.x.pc.name)}</button></td><td>${esc(x.x.who)}</td><td>${esc((x.x.c.texto||"").slice(0,110))}</td><td class="mono">${hsFmtH(x.h)}</td></tr>`).join("");
+  // aprobadores
+  const byA={};d.cc.forEach(x=>{const o=byA[x.who]||(byA[x.who]={n:0,ap:0,aj:0,obj:0,objN:0,pos:0,neg:0,tem:{},ori:{},pz:new Set()});o.n++;o.pz.add(x.c.postId);if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada") o.ap++;if(HS_AJ.includes(x.k.tipo)){o.aj++;if(x.k.tema) o.tem[x.k.tema]=(o.tem[x.k.tema]||0)+1;if(x.k.origen) o.ori[x.k.origen]=(o.ori[x.k.origen]||0)+1}if(x.k.objetividad){o.objN++;if(x.k.objetividad==="objetivo") o.obj++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++});
+  const fpyBy={};d.pieces.filter(x=>x.first).forEach(x=>{const w=x.first.c.personaNombre||x.first.c.autorNombre||"Cliente";const o=fpyBy[w]||(fpyBy[w]={n:0,f:0});o.n++;if(x.fpy) o.f++});
+  const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,2);
+  const aprRows=Object.entries(byA).sort((a,b)=>b[1].n-a[1].n).map(([n,o])=>`<tr><td><b>${esc(n)}</b></td><td class="mono">${o.pz.size}</td><td class="mono">${o.n}</td><td class="mono">${fpyBy[n]?hsPct(fpyBy[n].f,fpyBy[n].n)+"%":"—"}</td><td class="mono">${(o.n/o.pz.size).toFixed(1)}</td><td class="mono">${o.objN?hsPct(o.obj,o.objN)+"%":"—"}</td><td class="mono">${hsPct(o.pos,o.n)}% / ${hsPct(o.neg,o.n)}%</td><td>${top(o.tem).map(([t,v])=>`${esc(HS_TEMA[t]||t)} (${v})`).join(", ")||"—"}</td><td>${top(o.ori).map(([t,v])=>`${esc(HS_ORIG[t][0])} (${v})`).join(", ")||"—"}</td></tr>`).join("");
+  // segmentos
+  const seg={};d.pieces.forEach(x=>{for(const r of (f.reg==="ALL"?x.pc.regs:[f.reg])){const k=`${x.pc.mz} · ${region(r).nombre}`;const o=seg[k]||(seg[k]={n:0,f:0,r:0,nf:0});if(x.first){o.n++;if(x.fpy) o.f++;else{o.nf++;o.r+=x.rondas}}}});
+  const segA={};ajc.forEach(x=>{for(const r of (f.reg==="ALL"?x.pc.regs:[f.reg])){const k=`${x.pc.mz} · ${region(r).nombre}`;const o=segA[k]||(segA[k]={t:0,i:0});o.t++;if(HS_ORIG[x.k.origen][1]==="inside") o.i++}});
+  const segRows=Object.entries(seg).filter(([,o])=>o.n).sort((a,b)=>b[1].n-a[1].n).map(([k,o])=>`<tr><td>${esc(k)}</td><td class="mono">${o.n}</td><td class="mono">${hsPct(o.f,o.n)}%</td><td class="mono">${o.nf?(o.r/o.nf).toFixed(1):"—"}</td><td class="mono">${segA[k]?hsPct(segA[k].i,segA[k].t)+"%":"—"}</td></tr>`).join("");
+  // checklist
+  const ins=ajc.filter(x=>x.k.origen==="error_inside");
+  const used=new Set(), chk=HS_CHECK.map(([l,re])=>{const m=ins.filter(x=>re.test(x.c.texto||""));return {l,re,n:m.length,m}}).filter(x=>x.n).sort((a,b)=>b.n-a.n).map(x=>{const ej=[...x.m].sort((a,b)=>(a.c.texto||"").length-(b.c.texto||"").length).find(y=>!used.has(y.c._id));if(ej) used.add(ej.c._id);return {...x,ej}});
+  const chkHtml=chk.length?`<ol class="hschk">${chk.map(x=>`<li><b>${esc(x.l)}</b> <span class="mono">${x.n}</span>${x.ej?`<small>«${esc((x.ej.c.texto||"").slice(0,140))}» — ${esc(x.ej.who)}</small>`:""}</li>`).join("")}</ol>`:`<p class="hint">Sin errores repetidos en este periodo.</p>`;
+  // tendencia
+  const wk={};d.uq.forEach(x=>{const w=hsWeek(x.c.fecha);const o=wk[w]||(wk[w]={n:0,aj:0,i:0,c:0,pos:0,neg:0,ap:0});o.n++;if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada") o.ap++;if(HS_AJ.includes(x.k.tipo)&&x.k.origen){o.aj++;const r=HS_ORIG[x.k.origen][1];if(r==="inside") o.i++;if(r==="cliente") o.c++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++});
+  const wkRows=Object.entries(wk).sort().map(([w,o])=>`<tr><td>Semana del ${esc(fmtCorto(w))}</td><td class="mono">${o.n}</td><td class="mono">${o.ap}</td><td class="mono">${o.aj}</td><td class="mono">${hsPct(o.i,o.aj)}%</td><td class="mono">${hsPct(o.c,o.aj)}%</td><td class="mono">${hsPct(o.pos,o.n)}% / ${hsPct(o.neg,o.n)}%</td></tr>`).join("");
+  // lista
+  const lst=d.uq.filter(x=>(!f.lo||x.k.origen===f.lo)&&(!f.lt||x.k.tema===f.lt)&&(!f.lr||(HS_ORIG[x.k.origen]||[])[1]===f.lr)).sort((a,b)=>(b.c.fecha||"").localeCompare(a.c.fecha||"")).slice(0,f.all?1000:60);
+  const opt=(o,cur,blank)=>`${blank?`<option value="">${blank}</option>`:""}${Object.entries(o).map(([k,v])=>`<option value="${k}" ${k===cur?"selected":""}>${esc(Array.isArray(v)?v[0]:v)}</option>`).join("")}`;
+  const listRows=lst.map(x=>`<tr${x.k.heur?` class="hsheur"`:""}><td class="mono">${esc(fmtCorto((x.c.fecha||"").slice(0,10)))}</td><td>${esc(x.who)}</td><td><button class="clink" data-hsopen="${esc(x.pc.kind)}|${esc(x.c.postId)}">${esc(x.pc.name.slice(0,40))}</button></td><td class="hstxt">${esc((x.c.texto||"").slice(0,240))}</td>
+    <td><select data-hsk="${esc(x.c._id)}" data-k="tipo">${opt(HS_TIPO,x.k.tipo)}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tema">${opt(HS_TEMA,x.k.tema,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="objetividad">${opt({objetivo:"Objetivo",subjetivo:"Subjetivo"},x.k.objetividad,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="origen">${opt(HS_ORIG,x.k.origen,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tono">${opt({positivo:"Positivo",neutro:"Neutro",negativo:"Negativo"},x.k.tono)}</select></td></tr>`).join("");
+  const diag=hsDiag(d);
+  root.innerHTML=`<div class="scrim modal hsscrim" data-hsclose><div class="dialog hsdlg" role="dialog" aria-label="Salud de la cuenta">
+    <header><h3>Salud de la cuenta · Payless</h3><span class="hsprivate">🔒 Solo Inside</span><button class="iconbtn" data-hsclose aria-label="Cerrar">✕</button></header>
+    <div class="hsfilters">${hsSel("per",f.per,[["7d","Últimos 7 días"],["30d","Últimos 30 días"],["mes","Este mes"],["todo","Todo"]])}${hsSel("mz",f.mz,[["ALL","Todas las matrices"],["ORGÁNICO","Orgánico"],["MEDIOS","Medios (todas)"],["ATL","ATL"],["ECOMMERCE","Ecommerce"],["DIGITAL","Digital"]])}${hsSel("reg",f.reg,[["ALL","Todas las regiones"],...REGIONES.map(r=>[r.id,r.nombre])])}${hsSel("apr",f.apr,[["ALL","Todos los aprobadores"],...aprs.map(a=>[a,a])])}
+      ${sinC?`<button class="btn sm" data-hsclass ${S.hsBusy?"disabled":""}>${S.hsBusy?esc(S.hsBusy):`Clasificar ${sinC} comentario${sinC>1?"s":""} nuevo${sinC>1?"s":""}`}</button>`:`<span class="hint">✓ Todos los comentarios están clasificados</span>`}</div>
+    ${!S.saludErr&&!(S.salud&&S.salud.size)&&(S.comments||[]).some(c=>orgOf(c)==="cliente")?`<div class="callout">No ves clasificaciones guardadas. Si los comentarios ya se clasificaron, tu acceso a la plataforma necesita ser de Editor para leerlas (el cliente nunca puede verlas).</div>`:""}${S.saludErr?`<div class="callout">No se pudieron leer las clasificaciones guardadas: tu acceso a la plataforma necesita ser de Editor. Los indicadores de tiempo y aprobación sí están completos.</div>`:""}
+    <section class="hsdiag"><h4>Diagnóstico</h4>${diag.length?`<ul>${diag.map(x=>`<li>${x}</li>`).join("")}</ul>`:`<p class="hint">Todavía no hay comentarios del cliente en este periodo.</p>`}</section>
+    <section><div class="hstiles">${kpis}</div></section>
+    <section><h4>¿De quién es el ajuste?</h4><p class="hint">Cada pedido de cambios, aprobación con cambios o cancelación, según su causa. Inside = error, propuesta que no convenció o pieza tarde. Cliente = preferencia nueva o decisión de negocio. Proceso = brief o insumo incompleto.</p>
+      ${hsStack(HS_RESP_ORD.map(r=>({v:resp[r],l:HS_RESP[r],cls:"r-"+r})),ajc.length)}
+      <table class="hstbl"><thead><tr><th>Causa</th><th>Responsable</th><th>Ajustes</th><th>%</th><th></th></tr></thead><tbody>${origRows||`<tr><td colspan="5" class="hint">Sin ajustes clasificados.</td></tr>`}</tbody></table></section>
+    <section><h4>¿En qué fallamos?</h4><p class="hint">Ajustes por tema, ordenados por los que son responsabilidad de Inside.</p>
+      <table class="hstbl"><thead><tr><th>Tema</th><th>Ajustes</th><th>Por responsable</th><th>Inside</th><th>Errores</th><th>No convenció</th><th>Cliente</th><th>% Inside</th></tr></thead><tbody>${temaRows||`<tr><td colspan="8" class="hint">Sin datos.</td></tr>`}</tbody></table>
+      <div class="hslegend">${HS_RESP_ORD.map(r=>`<span><i class="r-${r}"></i>${HS_RESP[r]}</span>`).join("")}</div></section>
+    <section class="hs2"><div><h4>Velocidad de respuesta de Inside</h4><table class="hstbl"><tbody>${bk.map(([l,v])=>`<tr><td>${l}</td><td class="mono">${v}</td><td>${hsBar(v,bmax)}</td></tr>`).join("")}</tbody></table>
+      <table class="hstbl"><thead><tr><th>Quién responde</th><th>Respuestas</th><th>Mediana</th><th>En &lt; 24 h</th></tr></thead><tbody>${respRows||`<tr><td colspan="4" class="hint">Sin datos.</td></tr>`}</tbody></table></div>
+      <div><h4>Pedidos sin responder</h4>${pendRows?`<table class="hstbl"><thead><tr><th>Pieza</th><th>Quién</th><th>Pedido</th><th>Espera</th></tr></thead><tbody>${pendRows}</tbody></table>`:`<p class="hint">✓ No hay pedidos del cliente sin respuesta.</p>`}</div></section>
+    <section><h4>Aprobadores del cliente</h4><table class="hstbl"><thead><tr><th>Aprobador</th><th>Piezas</th><th>Comentarios</th><th>Aprueba a la primera</th><th>Comentarios por pieza</th><th>Objetivos</th><th>Tono + / −</th><th>Lo que más pide</th><th>Causa principal</th></tr></thead><tbody>${aprRows||`<tr><td colspan="9" class="hint">Sin datos.</td></tr>`}</tbody></table></section>
+    <section class="hs2"><div><h4>Por matriz y región</h4><table class="hstbl"><thead><tr><th>Segmento</th><th>Piezas</th><th>A la primera</th><th>Rondas</th><th>% ajustes Inside</th></tr></thead><tbody>${segRows||`<tr><td colspan="5" class="hint">Sin datos.</td></tr>`}</tbody></table></div>
+      <div><h4>Checklist antes de enviar</h4><p class="hint">Los errores verificables que más se repiten. Revisarlos antes de mandar una pieza evita rondas.</p>${chkHtml}</div></section>
+    <section><h4>Tendencia semanal</h4><table class="hstbl"><thead><tr><th>Semana</th><th>Comentarios</th><th>Aprobaciones</th><th>Ajustes</th><th>% Inside</th><th>% Cliente</th><th>Tono + / −</th></tr></thead><tbody>${wkRows||`<tr><td colspan="7" class="hint">Sin datos.</td></tr>`}</tbody></table></section>
+    <section><h4>Comentarios clasificados</h4><p class="hint">El Asistente INSIDE clasifica cada comentario del cliente; si una etiqueta no es correcta, cámbiala aquí y los indicadores se recalculan. En gris: todavía sin clasificar.</p>
+      <div class="hsfilters">${`<select data-hsf="lr"><option value="">Todos los responsables</option>${HS_RESP_ORD.map(r=>`<option value="${r}" ${f.lr===r?"selected":""}>${HS_RESP[r]}</option>`).join("")}</select>`}<select data-hsf="lo">${opt(HS_ORIG,f.lo,"Todas las causas")}</select><select data-hsf="lt">${opt(HS_TEMA,f.lt,"Todos los temas")}</select></div>
+      <div class="hsscroll"><table class="hstbl hslist"><thead><tr><th>Fecha</th><th>Quién</th><th>Pieza</th><th>Comentario</th><th>Tipo</th><th>Tema</th><th>Objetividad</th><th>Causa</th><th>Tono</th></tr></thead><tbody>${listRows||`<tr><td colspan="9" class="hint">Sin comentarios con estos filtros.</td></tr>`}</tbody></table></div>
+      ${!f.all&&d.uq.length>60?`<button class="btn ghost sm" data-hsall>Ver todos (${d.uq.length})</button>`:""}</section>
+  </div></div>`;
+}
+const HS_PROMPT=`Eres director de cuentas de la agencia INSIDE (agencia creativa) y analizas comentarios del CLIENTE Payless sobre piezas de contenido orgánico y de medios. Clasifica cada comentario con estas etiquetas:
+- tipo: aprobacion | aprobacion_condicionada (aprueba pero pide un cambio) | cambio | pregunta | informativo (dato, copy, contexto sin pedir cambio) | cancelacion (no hacer, ya no aplica)
+- tema: copy | diseno | marca (logos, colores de marca, playbook) | producto (lote, foto, modelo, oficial) | legal | cta (CTA, URL, canal WhatsApp o en línea) | promo (porcentaje, mecánica) | fechas (vigencia, día de salida) | estrategia (concepto, campaña, producto elegido) | publicacion (país, red, hora) | formato | otro
+- objetividad: objetivo (error verificable: legal, dato, ortografía, URL, logo fuera de playbook, instrucción del brief no cumplida, legibilidad) | subjetivo (gusto, criterio, preferencia)
+- origen (solo si pide cambio, aprueba con cambio o cancela; si no, vacío): error_inside (Inside no cumplió brief, playbook, legal, dato o una indicación ya dada) | propuesta_no_convence (la idea, el copy o el arte no le gusta, sin error verificable) | llego_tarde (ya no aplica porque la pieza llegó tarde) | brief_incompleto (Inside no tenía la información: legal nuevo, indicación nueva que no estaba en el brief) | preferencia_cliente (cambio de criterio o preferencia nueva del cliente) | decision_cliente (decisión de negocio: fechas, promo, cancelar, pauta) | sugerencia_futura (para próximas piezas, no bloquea)
+- tono: positivo | neutro | negativo
+Responde SOLO con un JSON: [{"id":"…","tipo":"…","tema":"…","objetividad":"…","origen":"…","tono":"…"}], un objeto por comentario, con el mismo id.`;
+async function hsClassify(){
+  if(!S.sampleFn){toast("Necesita Claude disponible en esta vista.");return}
+  const todo=(S.comments||[]).filter(c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim()&&!(S.salud&&S.salud.has("cl-"+c._id)));
+  const byId=new Map(S.comments.map(c=>[c._id,c])); let done=0;
+  try{for(let i=0;i<todo.length;i+=25){const lote=todo.slice(i,i+25);S.hsBusy=`Clasificando ${i+1}–${i+lote.length} de ${todo.length}…`;renderHS();
+    const items=lote.map(c=>{const pc=hsPiece(c.postId);const par=c.parentId&&byId.get(c.parentId);return {id:c._id,quien:c.personaNombre||c.autorNombre||"",pieza:pc?pc.name:"",texto:(c.texto||"").slice(0,600),responde_a:par?`${par.autorNombre||""}: ${(par.texto||"").slice(0,200)}`:""}});
+    const r=await S.sampleFn.json(`${HS_PROMPT}\n\nCOMENTARIOS:\n${JSON.stringify(items)}`,{cache:false});
+    for(const x of (Array.isArray(r)?r:[])){if(!x||!lote.some(c=>c._id===x.id)) continue;
+      const doc={comentarioId:x.id,tipo:HS_TIPO[x.tipo]?x.tipo:"cambio",tema:HS_TEMA[x.tema]?x.tema:"",objetividad:x.objetividad==="subjetivo"?"subjetivo":x.objetividad==="objetivo"?"objetivo":"",origen:HS_ORIG[x.origen]?x.origen:"",tono:["positivo","neutro","negativo"].includes(x.tono)?x.tono:"neutro",por:"ia",modelo:"Asistente INSIDE",fecha:new Date().toISOString()};
+      await S.db.doc("salud/cl-"+x.id).set(doc); S.salud.set("cl-"+x.id,doc); done++}}
+    toast(`${done} comentarios clasificados`)}
+  catch(e){toast(e&&e.code==="rate_limited"?"Claude está ocupado; intenta en unos minutos.":"No se pudo terminar la clasificación.")}
+  finally{S.hsBusy="";renderHS()}
+}
+document.addEventListener("click",async e=>{
+  if(e.target.closest("#hsBtn")){hsOpen();return}
+  if(!S.hs) return;
+  if(e.target.matches("[data-hsclose]")||e.target.closest("button[data-hsclose]")){S.hs=null;renderHS();return}
+  if(e.target.closest("[data-hsclass]")){hsClassify();return}
+  if(e.target.closest("[data-hsall]")){S.hs.all=true;renderHS();return}
+  const o=e.target.closest("[data-hsopen]"); if(o){const [k,id]=o.dataset.hsopen.split("|");S.hs=null;renderHS();if(k==="medio") openMedio(id); else openPost(id);return}
+});
+document.addEventListener("change",async e=>{
+  if(!S.hs) return;
+  const f=e.target.closest("[data-hsf]"); if(f){S.hs[f.dataset.hsf]=f.value;S.hs.all=false;renderHS();return}
+  const k=e.target.closest("[data-hsk]"); if(k&&hsAll()){const id=k.dataset.hsk, c=(S.comments||[]).find(x=>x._id===id); if(!c) return;
+    const cur=hsCls(c), doc={comentarioId:id,tipo:cur.tipo,tema:cur.tema||"",objetividad:cur.objetividad||"",origen:cur.origen||"",tono:cur.tono||"neutro",...(S.salud.get("cl-"+id)||{}),[k.dataset.k]:k.value,por:"inside",corregidoPor:S.myId||"",fecha:new Date().toISOString()};
+    delete doc.heur; S.salud.set("cl-"+id,doc);
+    try{await S.db.doc("salud/cl-"+id).set(doc);toast("Clasificación corregida")}catch(err){toast("No se pudo guardar la corrección.")}
+    renderHS()}
+});
+
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
@@ -4313,6 +4542,7 @@ async function boot(){
     const inside=own||(guest===false&&wr!==false)||(guest===null&&ed);
     S.role=inside&&wr!==false?"inside":(wr===false?"lectura":"cliente");
   }else S.role="cliente";
+  if(S.role==="inside") db.collection("salud").onSnapshot(snap=>{S.salud=new Map(snap.docs.map(d=>[d.id,d.data()]));S.saludErr=false;if(S.hs) renderHS()},err=>{S.saludErr=true;if(S.hs) renderHS()});
   let first=true;
   db.collection("posts").onSnapshot(snap=>{
     const m=new Map(); for(const d of snap.docs) m.set(d.id,normalize({...d.data(),id:d.id}));
@@ -4322,6 +4552,7 @@ async function boot(){
   },err=>{if(!S.posts.size) offline(); else toast("Se perdió la conexión en vivo. Recarga la página.")});
   db.collection("comentarios").onSnapshot(async snap=>{
     S.comments=snap.docs.map(d=>({...d.data(),_id:d.id}));
+    if(S.hs) setTimeout(renderHS,0);
     const ids=[...new Set([...(S.envios||[]).map(e=>e.porId),...S.comments.flatMap(c=>[c.autorId,c.resueltoPor]),...[...(S.medios||new Map()).values()].map(m=>m.slideResueltoPor)].filter(Boolean))].slice(0,64);
     if(user&&ids.length){try{S.profiles=await user.profiles(ids)}catch(e){}}
     if(S.openId) renderSheet(); if(S.openMed) renderMedioSheet(); if(S.f.section==="med") renderView(); else renderSummary();
