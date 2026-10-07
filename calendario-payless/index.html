@@ -948,6 +948,71 @@ body.lbon{overflow:hidden}
 .hsheur td{color:var(--ink-3)}
 .hstbl .clink{text-align:left;font-weight:600;font-size:12px}
 @media (max-width:760px){.hs2{grid-template-columns:1fr}.hsdlg{padding:12px}}
+.hsdlg{overflow:auto}
+.hshead{display:flex;align-items:center;gap:10px}
+.hshead>div{flex:1;min-width:0}
+.hshead h3{margin:0;font:800 22px var(--f-display)}
+.hshead small{color:var(--ink-3);font-size:12px}
+.hshero{display:grid;grid-template-columns:230px 1fr;gap:14px;align-items:stretch}
+.hsscore{border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px;background:var(--sunk);border-left:5px solid var(--line-strong)}
+.hsscore span{font-size:12px;font-weight:700;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
+.hsscore b{font-size:56px;line-height:1;color:var(--ink)}
+.hsscore em{font-style:normal;font-weight:800;font-size:15px}
+.hsscore small{font-size:11px;color:var(--ink-3);margin-top:auto}
+.hsscore.good{background:var(--ok-soft);border-left-color:var(--ok)} .hsscore.good em{color:var(--ok)}
+.hsscore.mid{background:var(--warn-soft);border-left-color:var(--warn)} .hsscore.mid em{color:var(--warn)}
+.hsscore.bad{background:var(--bad-soft);border-left-color:var(--bad)} .hsscore.bad em{color:var(--bad)}
+.hskpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.hskpi{border:1px solid var(--line);border-radius:10px;padding:9px 10px;display:flex;flex-direction:column;gap:2px;background:var(--bg);min-width:0}
+.hskpi>span{font-size:11px;font-weight:700;color:var(--ink-2)}
+.hskpi>b{font-size:22px;line-height:1.15;color:var(--ink)}
+.hskpi>small{font-size:11px;color:var(--ink-3)}
+.hskpi.warn{border-color:var(--warn);background:var(--warn-soft)}
+.hsd{font-style:normal;font-size:11px;font-weight:700;color:var(--ink-3)}
+.hsd.good{color:var(--ok)} .hsd.bad{color:var(--bad)}
+.hstabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;position:sticky;top:-1px;background:var(--surface);z-index:2;padding-top:2px}
+.hstabs button{border:0;background:none;padding:8px 12px;font:700 13px var(--f-body);color:var(--ink-3);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
+.hstabs button:hover{color:var(--ink)}
+.hstabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.hsbody{display:flex;flex-direction:column;gap:14px}
+.hsgrid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hsgrid2.tight{gap:10px;margin-top:6px}
+.hsdlg h5{margin:10px 0 4px;font:800 12px var(--f-body);color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
+.hsdlg h5:first-child{margin-top:0}
+.hsul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:13px}
+.hsul.sm{font-size:12px;gap:3px}
+.hsul.neg li::marker{color:var(--bad)} .hsul.ok li::marker{color:var(--ok)}
+.hsalert{border-left:3px solid var(--bad);background:var(--bad-soft);border-radius:6px;padding:7px 10px;margin-bottom:6px;display:flex;flex-direction:column;gap:2px;font-size:13px}
+.hsalert small{color:var(--ink-2);font-size:12px}
+.hsbar i.ins{background:var(--hs-ins)} .hsbar i.cli{background:var(--hs-cli)}
+.hsprof{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:14px}
+.hscard{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:8px;min-width:0}
+.hscard>header{display:flex;align-items:center;gap:10px}
+.hscard>header>div{flex:1;min-width:0;display:flex;flex-direction:column}
+.hscard>header b{font-size:16px} .hscard>header small{font-size:12px;color:var(--ink-3)}
+.hsav{width:40px;height:40px;border-radius:50%;background:var(--hs-cli);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.hsstats{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.hsstats span{background:var(--sunk);border-radius:8px;padding:6px 8px;font-size:11px;color:var(--ink-3);display:flex;flex-direction:column}
+.hsstats b{font-size:17px;color:var(--ink)}
+.hsres{margin:0;font-size:13px;line-height:1.45;color:var(--ink)}
+.hsmut{margin:0;font-size:12px;color:var(--ink-2);line-height:1.4}
+.hsdlg blockquote{margin:0 0 5px;padding:5px 10px;border-left:3px solid var(--hs-cli);background:var(--sunk);border-radius:0 6px 6px 0;font-size:12px;color:var(--ink)}
+.hsdlg blockquote small{display:block;color:var(--ink-3);font-size:11px}
+.hsrecs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+.hsrec{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg);display:flex;flex-direction:column;gap:5px;font-size:13px}
+.hsrec.alta{border-left:4px solid var(--bad)}
+.hsrec header{display:flex;gap:6px;flex-wrap:wrap}
+.hsrec p{margin:0;color:var(--ink-2)}
+.hsprio,.hsarea{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--sunk);color:var(--ink-2);text-transform:uppercase;letter-spacing:.03em}
+.hsrec.alta .hsprio{background:var(--bad-soft);color:var(--bad)}
+.hsacc{color:var(--ink)!important;background:var(--sunk);border-radius:6px;padding:6px 8px}
+.hsmemo{background:var(--sunk);border-radius:10px;padding:10px 12px;margin:6px 0;font-size:13px}
+.hsmemo p{margin:0 0 5px} .hsmemo small{color:var(--ink-3);font-size:11px}
+.hsbad{color:var(--bad);font-weight:700}
+@media (max-width:900px){.hshero{grid-template-columns:1fr}.hsprof{grid-template-columns:1fr}}
+.hsdlg .hslegend{margin-bottom:8px}
+@media (max-width:760px){.hsgrid2{grid-template-columns:1fr}.hsrecs{grid-template-columns:1fr}.hsdlg section{overflow-x:auto;min-width:0}.hshero .hsscore b{font-size:44px}.hskpis{grid-template-columns:repeat(2,minmax(0,1fr))}.hsdlg .hstbl{min-width:0}}
+
 </style>
 
 <div class="top">
@@ -4342,17 +4407,19 @@ function etapaMatch(p){const v=S.f.etapa;if(!v||v==="ALL") return true;const e=e
 document.addEventListener("change",e=>{if(e.target.id==="fEtapa"){S.f.etapa=e.target.value;persistF();render()}});
 
 
-/* ============ SALUD DE LA CUENTA: solo Inside. Mide aprobaciones, rondas, tiempos y causas de los ajustes del cliente */
+/* ============ SALUD DE LA CUENTA: solo Inside. KPIs, perfiles del cliente, fallas de Inside, reproceso y decisiones */
 const HS_ORIG={error_inside:["Error de Inside","inside"],llego_tarde:["La pieza llegó tarde","inside"],propuesta_no_convence:["La propuesta no convenció","inside"],brief_incompleto:["Brief o insumo incompleto","proceso"],sugerencia_futura:["Sugerencia para próximas piezas","proceso"],preferencia_cliente:["Preferencia o cambio de criterio del cliente","cliente"],decision_cliente:["Decisión de negocio del cliente","cliente"]};
 const HS_RESP={inside:"Inside",proceso:"Proceso / brief",cliente:"Cliente"};
 const HS_RESP_ORD=["cliente","inside","proceso"];
 const HS_TEMA={copy:"Copy",diseno:"Diseño / arte",marca:"Logos y marca",producto:"Producto / foto",legal:"Legal",cta:"CTA / URL / canal",promo:"Promo / descuento",fechas:"Fechas / vigencia",estrategia:"Estrategia / concepto",publicacion:"Publicación / pauta",formato:"Formato",otro:"Otro"};
+const HS_AREA={copy:"Copy",diseno:"Diseño",marca:"Diseño",producto:"Diseño",formato:"Diseño",legal:"Cuentas",cta:"Cuentas",promo:"Cuentas",fechas:"Cuentas",publicacion:"Cuentas",otro:"Cuentas",estrategia:"Estrategia"};
+const HS_AREA_ACC={Diseño:"Guía de logos y legibilidad por marca (tamaño mínimo, versión en blanco), plantillas por formato y revisión visual antes de enviar.",Copy:"Validar el copy contra el brief y la campaña del mes; enviar dos opciones en piezas conceptuales.",Cuentas:"Ficha de datos obligatoria antes de producir: legal aprobado, vigencia, CTA, URL y canal por país, lote y foto oficial.",Estrategia:"Incluir en cada envío el racional: campaña del mes, producto y por qué.",Tiempos:"Producir con más anticipación: enviar al menos 72 h antes de la fecha de publicación."};
 const HS_TIPO={aprobacion:"Aprueba",aprobacion_condicionada:"Aprueba con cambios",cambio:"Pide cambios",pregunta:"Pregunta",informativo:"Informa",cancelacion:"Cancela / ya no aplica"};
 const HS_AJ=["cambio","aprobacion_condicionada","cancelacion"];
-const HS_CHECK=[["Sin el claim «Todos los estilos» en piezas promocionales",/claim/i],["Logo de Payless visible y grande (mínimo del tamaño de «sneakers»; blanco sobre fondo oscuro)",/logo/i],["Logos de las marcas según el producto de cada imagen (Champion, LA Gear, Airwalk, Cross Trekkers)",/(la ?gear|champion|airwalk|cross ?trek|marcas)/i],["Legal exacto, una sola vez y con la vigencia correcta",/(legal|vigencia)/i],["CTA, URL y canal correctos por país (payless.cr, ecuador.payless.com, WhatsApp vs en línea)",/(cta|url|whats|\.com|online|en l[ií]nea|tienda)/i],["Producto, lote y foto oficial correctos",/(lote|foto|oficial|imagen|zapato)/i],["Porcentaje y mecánica de la promo correctos",/(\d+ ?%|promo es|promo correcta|promo debe)/i],["Ortografía y nombres propios",/(spelt|mal escrit|ortograf|incorrect)/i],["Campaña y producto del mes alineados al brief",/(campaña|producto|atl[eé]ticos|d[ií]a del niño)/i]];
+const HS_CHECK=[["Claim «Todos los estilos» en piezas promocionales",/claim/i,"Diseño"],["Logo de Payless pequeño o poco visible",/logo(?!s de)/i,"Diseño"],["Logos de marca que no corresponden al producto de cada imagen",/(la ?gear|champion|airwalk|cross ?trek|marcas|logos)/i,"Diseño"],["Legal incorrecto, duplicado o con vigencia equivocada",/(legal|vigencia)/i,"Cuentas"],["CTA, URL o canal equivocado (país, WhatsApp, «en línea»)",/(cta|url|whats|\.com|online|en l[ií]nea|tienda)/i,"Cuentas"],["Producto, lote o foto no oficial",/(lote|foto|oficial|imagen|zapato)/i,"Diseño"],["Porcentaje o mecánica de la promo equivocada",/(\d+ ?%|promo es|promo correcta|promo debe)/i,"Cuentas"],["Ortografía y nombres propios",/(spelt|mal escrit|ortograf|incorrect)/i,"Copy"],["Pieza desalineada con la campaña o el producto del mes",/(campaña|producto|atl[eé]ticos|d[ií]a del niño)/i,"Estrategia"]];
 const hsAll=()=>role()==="inside"&&!S.viewAs;
-function hsOpen(){if(!hsAll()) return;S.hs=S.hs||{per:"mes",mz:"ALL",reg:"ALL",apr:"ALL",lo:"",lt:"",lr:""};renderHS()}
-function hsPiece(id){const p=S.posts.get(id);if(p) return {kind:"post",x:p,mz:"ORGÁNICO",regs:regsOf(p),name:pName(p)};const m=S.medios&&S.medios.get(id);if(m) return {kind:"medio",x:m,mz:m.matriz||"MEDIOS",regs:[m.region||"CENTRO"],name:`${m.matriz||"Medios"} · ${m.nombre||id}`};return null}
+function hsOpen(){if(!hsAll()) return;S.hs=S.hs||{per:"todo",mz:"ALL",reg:"ALL",apr:"ALL",tab:"resumen",lo:"",lt:"",lr:"",lf:""};renderHS()}
+function hsPiece(id){const p=S.posts.get(id);if(p) return {kind:"post",x:p,mz:"ORGÁNICO",fmt:p.formato||"",regs:regsOf(p),name:pName(p)};const m=S.medios&&S.medios.get(id);if(m) return {kind:"medio",x:m,mz:m.matriz||"MEDIOS",fmt:m.matriz||"Medios",regs:[m.region||"CENTRO"],name:`${m.matriz||"Medios"} · ${m.nombre||id}`};return null}
 const hsOk=t=>/^\s*(aprobad[oa]s?|approved|ok\b)/i.test(t||"");
 function hsCls(c){const d=S.salud&&S.salud.get("cl-"+c._id);if(d) return d;return {tipo:hsOk(c.texto)?"aprobacion":"cambio",tema:"",objetividad:"",origen:"",tono:hsOk(c.texto)?"positivo":"neutro",heur:true}}
 const hsH=(a,b)=>(new Date(b)-new Date(a))/36e5;
@@ -4360,158 +4427,258 @@ const hsMed=a=>{if(!a.length) return null;const s=[...a].sort((x,y)=>x-y),k=s.le
 const hsPct=(a,b)=>b?Math.round(a/b*100):0;
 const hsFmtH=h=>h==null?"—":h<1?`${Math.round(h*60)} min`:h<48?`${h<10?h.toFixed(1):Math.round(h)} h`:`${(h/24).toFixed(1)} días`;
 function hsWeek(f){const d=new Date(f);const k=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-k);return d.toISOString().slice(0,10)}
-function hsFrom(per){const n=new Date();if(per==="7d") return new Date(n-7*864e5).toISOString();if(per==="30d") return new Date(n-30*864e5).toISOString();if(per==="mes") return new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),1)).toISOString();return ""}
-function hsData(){
-  const f=S.hs, from=hsFrom(f.per), all=S.comments||[];
+function hsRange(per){const n=new Date(),to=new Date(n.getTime()+864e5).toISOString();
+  if(per==="7d") return {from:new Date(n-7*864e5).toISOString(),to,prev:{from:new Date(n-14*864e5).toISOString(),to:new Date(n-7*864e5).toISOString()}};
+  if(per==="30d") return {from:new Date(n-30*864e5).toISOString(),to,prev:{from:new Date(n-60*864e5).toISOString(),to:new Date(n-30*864e5).toISOString()}};
+  if(per==="mes"){const a=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),1)),b=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth()-1,1));return {from:a.toISOString(),to,prev:{from:b.toISOString(),to:a.toISOString()}}}
+  return {from:"",to,prev:null}}
+const hsWho=c=>c.personaNombre||c.autorNombre||"Cliente";
+const hsIsCl=c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim();
+const hsIsIn=c=>(["comentario","respuesta","envio"].includes(c.tipo)&&orgOf(c)!=="cliente")||(c.tipo==="estado"&&/→\s*Enviado a cliente/.test(c.texto||""));
+function hsCompute(from,to){
+  const f=S.hs, all=S.comments||[], inR=x=>(!from||(x||"")>=from)&&(!to||(x||"")<to);
   const byP=new Map(); for(const c of all){if(!c.postId) continue;(byP.get(c.postId)||byP.set(c.postId,[]).get(c.postId)).push(c)}
   for(const l of byP.values()) l.sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||""));
   const inSc=pc=>pc&&(f.mz==="ALL"||(f.mz==="MEDIOS"?pc.kind==="medio":f.mz===pc.mz))&&(f.reg==="ALL"||pc.regs.includes(f.reg));
-  const isCl=c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim();
-  const isIn=c=>(["comentario","respuesta","envio"].includes(c.tipo)&&orgOf(c)!=="cliente")||(c.tipo==="estado"&&/→\s*Enviado a cliente/.test(c.texto||""));
-  const who=c=>c.personaNombre||c.autorNombre||"Cliente";
-  const cc=[], pieces=[], resp=[], pend=[], cyc=[], clResp=[];
+  const R={cc:[],pieces:[],resp:[],pend:[],cyc:[],clResp:[],envios:0,reenvios:0};
   for(const [pid,l] of byP){const pc=hsPiece(pid);if(!inSc(pc)) continue;
-    const cl=l.filter(c=>isCl(c)&&(!from||(c.fecha||"")>=from)&&(f.apr==="ALL"||who(c)===f.apr)).map(c=>({c,k:hsCls(c),pc,who:who(c)}));
-    if(!cl.length) continue; cc.push(...cl);
-    const allCl=l.filter(isCl).map(c=>({c,k:hsCls(c)}));
+    const env=l.filter(c=>c.tipo==="envio"||(c.tipo==="estado"&&/→\s*Enviado a cliente/.test(c.texto||"")));
+    const allCl=l.filter(hsIsCl).map(c=>({c,k:hsCls(c),pc,who:hsWho(c)}));
+    const cl=allCl.filter(x=>inR(x.c.fecha)&&(f.apr==="ALL"||x.who===f.apr));
+    const envR=env.filter(c=>inR(c.fecha)).length;
+    if(envR){R.envios++;R.reenvios+=Math.max(0,envR-1)}else if(cl.length&&!env.length&&inR(allCl[0].c.fecha)) R.envios++;
+    if(!cl.length) continue; R.cc.push(...cl);
     const apDocs=l.filter(c=>c.tipo==="aprobado"&&orgOf(c)==="cliente");
     const firstAp=[...allCl.filter(x=>x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada").map(x=>x.c.fecha),...apDocs.map(c=>c.fecha)].filter(Boolean).sort()[0]||null;
-    const signals=allCl.filter(x=>x.k.tipo!=="informativo");
-    const first=signals[0];
+    const first=allCl.filter(x=>x.k.tipo!=="informativo")[0];
     const days=new Set(allCl.filter(x=>(x.k.tipo==="cambio"||x.k.tipo==="aprobacion_condicionada")&&(!firstAp||x.c.fecha<=firstAp)).map(x=>(x.c.fecha||"").slice(0,10)));
     const cancel=allCl.some(x=>x.k.tipo==="cancelacion");
     const ok=!!firstAp||["Aprobado por cliente","Programado","Publicado"].includes(pc.x.estado);
-    const start=(l.find(c=>isIn(c)&&(c.tipo==="envio"||c.tipo==="estado"))||{}).fecha||(first&&first.c.fecha);
-    if(firstAp&&start&&firstAp>start) cyc.push(hsH(start,firstAp)/24);
-    pieces.push({pid,pc,ok,cancel,fpy:!!first&&first.k.tipo==="aprobacion",rondas:days.size,first});
+    const start=(env[0]||{}).fecha||(first&&first.c.fecha);
+    if(firstAp&&start&&firstAp>start&&inR(firstAp)) R.cyc.push(hsH(start,firstAp)/24);
+    R.pieces.push({pid,pc,ok,cancel,fpy:!!first&&first.k.tipo==="aprobacion",rondas:days.size,first,temas:[...new Set(allCl.filter(x=>HS_AJ.includes(x.k.tipo)&&x.k.tema).map(x=>x.k.tema))]});
     for(const x of cl){if(!["cambio","aprobacion_condicionada","pregunta"].includes(x.k.tipo)) continue;
-      const r=l.find(c=>isIn(c)&&(c.fecha||"")>(x.c.fecha||""));
-      if(r) resp.push({h:hsH(x.c.fecha,r.fecha),by:r.personaNombre||r.autorNombre||(r.tipo==="envio"?"Envío":"Inside"),x});
-      else if(!ok&&!cancel) pend.push({x,h:hsH(x.c.fecha,new Date().toISOString())});}
-    for(let i=0;i<l.length;i++){const c=l[i];if(!isIn(c)||(from&&(c.fecha||"")<from)) continue;const n=l.slice(i+1).find(isCl);if(n) clResp.push(hsH(c.fecha,n.fecha));}
+      const r=l.find(c=>hsIsIn(c)&&(c.fecha||"")>(x.c.fecha||""));
+      if(r) R.resp.push({h:hsH(x.c.fecha,r.fecha),by:r.personaNombre||r.autorNombre||(r.tipo==="envio"?"Envío":"Inside"),x});
+      else if(!ok&&!cancel) R.pend.push({x,h:hsH(x.c.fecha,new Date().toISOString())});}
+    for(let i=0;i<l.length;i++){const c=l[i];if(!hsIsIn(c)||!inR(c.fecha)) continue;const n=l.slice(i+1).find(hsIsCl);if(n) R.clResp.push({h:hsH(c.fecha,n.fecha),who:hsWho(n)});}
   }
-  const seen=new Set(), uq=cc.filter(x=>{const k=(x.c.texto||"").trim()+"|"+(x.c.fecha||"").slice(0,16);if(seen.has(k)) return false;seen.add(k);return true});
-  return {cc,uq,pieces,resp,pend,cyc,clResp};
+  const seen=new Set(); R.uq=R.cc.filter(x=>{const k=(x.c.texto||"").trim()+"|"+(x.c.fecha||"").slice(0,16);if(seen.has(k)) return false;seen.add(k);return true});
+  R.aj=R.uq.filter(x=>HS_AJ.includes(x.k.tipo)&&x.k.origen);
+  R.resp3={inside:0,cliente:0,proceso:0}; R.aj.forEach(x=>R.resp3[(HS_ORIG[x.k.origen]||[])[1]||"proceso"]++);
+  const p=R.pieces.filter(x=>x.first); R.nP=p.length; R.fpy=hsPct(p.filter(x=>x.fpy).length,p.length);
+  const nf=p.filter(x=>!x.fpy); R.rondas=nf.length?nf.reduce((a,x)=>a+x.rondas,0)/nf.length:null;
+  R.respMed=hsMed(R.resp.map(x=>x.h)); R.clMed=hsMed(R.clResp.map(x=>x.h)); R.cycMed=hsMed(R.cyc);
+  R.insidePct=hsPct(R.resp3.inside,R.aj.length);
+  const ob=R.uq.filter(x=>x.k.objetividad); R.objPct=hsPct(ob.filter(x=>x.k.objetividad==="objetivo").length,ob.length);
+  R.pos=hsPct(R.uq.filter(x=>x.k.tono==="positivo").length,R.uq.length); R.neg=hsPct(R.uq.filter(x=>x.k.tono==="negativo").length,R.uq.length);
+  R.reit=R.uq.filter(x=>x.k.reiteracion); R.cont=R.uq.filter(x=>x.k.contradice);
+  return R;
 }
+function hsScore(R){if(!R.nP) return null;const cl=v=>Math.max(0,Math.min(1,v));
+  const s=.30*cl(R.fpy/60)+.25*cl(1-R.insidePct/100)+.20*(R.respMed==null?.5:cl(1-(R.respMed-8)/64))+.10*cl(1-R.pend.length/20)+.15*cl(.5+(R.pos-R.neg)/100);
+  return Math.round(s*100)}
+function hsDelta(cur,prev,better,fmt){if(prev==null||cur==null) return "";const d=cur-prev;if(Math.abs(d)<1e-9) return `<em class="hsd">= igual que el periodo anterior</em>`;const good=better==="up"?d>0:d<0;return `<em class="hsd ${good?"good":"bad"}">${d>0?"▲":"▼"} ${fmt?fmt(Math.abs(d)):Math.abs(Math.round(d))} ${good?"mejor":"peor"}</em>`}
 function hsBar(v,max,cls){return `<span class="hsbar"><i class="${cls||""}" style="width:${max?Math.max(2,v/max*100):0}%"></i></span>`}
 function hsStack(parts,tot){if(!tot) return `<div class="hsstack empty"></div>`;return `<div class="hsstack">${parts.filter(p=>p.v).map(p=>`<i class="${p.cls}" style="flex:${p.v}" title="${esc(p.l)}: ${p.v} (${hsPct(p.v,tot)}%)"></i>`).join("")}</div><div class="hslegend">${parts.map(p=>`<span><i class="${p.cls}"></i>${esc(p.l)} <b class="mono">${hsPct(p.v,tot)}%</b> <small>(${p.v})</small></span>`).join("")}</div>`}
-function hsDiag(d){
-  const aj=d.uq.filter(x=>HS_AJ.includes(x.k.tipo)&&x.k.origen), out=[];
-  const r={inside:0,cliente:0,proceso:0}; aj.forEach(x=>r[(HS_ORIG[x.k.origen]||[])[1]||"proceso"]++);
-  if(aj.length){const top=Object.entries(r).sort((a,b)=>b[1]-a[1])[0];out.push(`<b>${hsPct(top[1],aj.length)}% de los ajustes ${top[0]==="inside"?"son responsabilidad de Inside":top[0]==="cliente"?"vienen de cambios o decisiones del cliente":"vienen del proceso o del brief"}</b> (Inside ${hsPct(r.inside,aj.length)}% · cliente ${hsPct(r.cliente,aj.length)}% · proceso ${hsPct(r.proceso,aj.length)}%).`)}
-  const ins=aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside"), bt={};ins.forEach(x=>bt[x.k.tema||"otro"]=(bt[x.k.tema||"otro"]||0)+1);
-  const tt=Object.entries(bt).sort((a,b)=>b[1]-a[1]);
-  if(tt.length) out.push(`Donde más fallamos: <b>${esc(HS_TEMA[tt[0][0]]||tt[0][0])}</b> (${hsPct(tt[0][1],ins.length)}% de los ajustes atribuibles a Inside)${tt[1]?`, seguido de ${esc(HS_TEMA[tt[1][0]]||tt[1][0])} (${hsPct(tt[1][1],ins.length)}%)`:""}.`);
-  const nc=ins.filter(x=>x.k.origen==="propuesta_no_convence").length, er=ins.filter(x=>x.k.origen==="error_inside").length, lt=ins.filter(x=>x.k.origen==="llego_tarde").length;
-  if(ins.length) out.push(`De lo atribuible a Inside: ${hsPct(er,ins.length)}% son errores verificables (se evitan con revisión antes de enviar), ${hsPct(nc,ins.length)}% son propuestas que no convencieron (calidad creativa) y ${hsPct(lt,ins.length)}% piezas que llegaron tarde.`);
-  const m=hsMed(d.resp.map(x=>x.h));
-  if(m!=null) out.push(`Respondemos a un pedido de cambios en <b>${hsFmtH(m)}</b> (mediana); ${hsPct(d.resp.filter(x=>x.h<=24).length,d.resp.length)}% en menos de 24 h.${d.pend.length?` Hay <b>${d.pend.length} pedidos sin respuesta</b>.`:""}`);
-  const p=d.pieces.filter(x=>x.first);
-  if(p.length) out.push(`Aprobación a la primera: <b>${hsPct(p.filter(x=>x.fpy).length,p.length)}%</b> de ${p.length} piezas; las demás necesitan en promedio ${(p.filter(x=>!x.fpy).reduce((a,x)=>a+x.rondas,0)/Math.max(1,p.filter(x=>!x.fpy).length)).toFixed(1)} rondas.`);
-  const neg=d.uq.filter(x=>x.k.tono==="negativo").length, pos=d.uq.filter(x=>x.k.tono==="positivo").length;
-  if(d.uq.length) out.push(`Tono del cliente: ${hsPct(pos,d.uq.length)}% positivo, ${hsPct(neg,d.uq.length)}% negativo.`);
-  return out;
-}
 function hsSel(id,cur,opts){return `<select data-hsf="${id}">${opts.map(([v,l])=>`<option value="${esc(v)}" ${v===cur?"selected":""}>${esc(l)}</option>`).join("")}</select>`}
+const hsLink=x=>`<button class="clink" data-hsopen="${esc(x.pc.kind)}|${esc(x.c?x.c.postId:x.pid)}">${esc((x.pc.name||"").slice(0,48))}</button>`;
+function hsAreaOf(x){return x.k.origen==="llego_tarde"?"Tiempos":HS_AREA[x.k.tema||"otro"]||"Cuentas"}
+function hsClusters(R){const ins=R.aj.filter(x=>x.k.origen==="error_inside"),used=new Set();
+  return HS_CHECK.map(([l,re,area])=>{const m=ins.filter(x=>re.test(x.c.texto||""));const pz=new Set(m.map(x=>x.c.postId));const rep=m.filter(x=>x.k.reiteracion).length;const ult=m.map(x=>x.c.fecha).sort().pop();return {l,area,n:m.length,pz:pz.size,rep,ult,m}}).filter(x=>x.n).sort((a,b)=>b.n-a.n).map(x=>{const ej=[...x.m].sort((a,b)=>(a.c.texto||"").length-(b.c.texto||"").length).find(y=>!used.has(y.c._id));if(ej) used.add(ej.c._id);return {...x,ej}})}
+function hsPeople(R){const by={};
+  for(const x of R.cc){const o=by[x.who]||(by[x.who]={who:x.who,pid:x.c.personaId||"",n:0,ap:0,aj:0,obj:0,objN:0,pos:0,neg:0,tem:{},ori:{},pz:new Set(),cont:0,last:[],ok:[]});
+    o.n++;o.pz.add(x.c.postId);if(!o.pid&&x.c.personaId) o.pid=x.c.personaId;
+    if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada"){o.ap++;if((x.c.texto||"").length>25) o.ok.push(x)}
+    if(HS_AJ.includes(x.k.tipo)){o.aj++;if(x.k.tema) o.tem[x.k.tema]=(o.tem[x.k.tema]||0)+1;if(x.k.origen) o.ori[x.k.origen]=(o.ori[x.k.origen]||0)+1;o.last.push(x)}
+    if(x.k.objetividad){o.objN++;if(x.k.objetividad==="objetivo") o.obj++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++;if(x.k.contradice) o.cont++}
+  const fp={};R.pieces.filter(x=>x.first).forEach(x=>{const w=hsWho(x.first.c);const o=fp[w]||(fp[w]={n:0,f:0});o.n++;if(x.fpy) o.f++});
+  const cr={};R.clResp.forEach(x=>(cr[x.who]=cr[x.who]||[]).push(x.h));
+  return Object.values(by).map(o=>({...o,fpy:fp[o.who]?hsPct(fp[o.who].f,fp[o.who].n):null,fpN:fp[o.who]?fp[o.who].n:0,resp:hsMed(cr[o.who]||[])})).sort((a,b)=>b.n-a.n)}
+function hsProfileOf(o){if(o.pid&&S.salud.get("perfil-"+o.pid)) return S.salud.get("perfil-"+o.pid);for(const [k,v] of S.salud) if(k.startsWith("perfil-")&&v.nombre===o.who) return v;return null}
+function hsRecs(R,people){const out=[],add=(prio,area,t,why,acc)=>out.push({prio,area,t,why,acc});
+  const ins=R.aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside");
+  if(R.aj.length&&R.insidePct>=50) add("Alta","Dirección",`El reproceso es nuestro: ${R.insidePct}% de los ajustes`,`${R.resp3.inside} de ${R.aj.length} ajustes los causa Inside; ${hsPct(ins.filter(x=>x.k.origen==="error_inside").length,ins.length)}% son errores verificables.`,"Checklist obligatorio antes de «Enviar a cliente» y revisión cruzada de cada pieza por otra persona del equipo.");
+  const ar={};ins.forEach(x=>{const a=hsAreaOf(x);ar[a]=(ar[a]||0)+1});
+  Object.entries(ar).sort((a,b)=>b[1]-a[1]).slice(0,2).forEach(([a,n],i)=>add(i?"Media":"Alta",a,`Reforzar ${a}: ${n} ajustes atribuibles`,`${hsPct(n,ins.length)}% de lo que el cliente nos corrige es de ${a}.`,HS_AREA_ACC[a]));
+  if(R.reit.length>=3) add("Alta","Cuentas",`El cliente tuvo que repetir ${R.reit.length} pedidos`,"Ajustes marcados como hechos que no se aplicaron, o reglas que ya nos había dado en otras piezas.","Quien responde «Ajustado» adjunta la versión corregida y la compara con el comentario; las reglas del cliente pasan a su perfil y al checklist.");
+  if(R.respMed!=null&&R.respMed>24) add("Alta","Cuentas",`Respondemos en ${hsFmtH(R.respMed)} (mediana)`,`Solo ${hsPct(R.resp.filter(x=>x.h<=24).length,R.resp.length)}% de los pedidos se responde en menos de 24 h.`,"Meta de respuesta de 24 h hábiles y una persona por región que revise la cola de comentarios dos veces al día.");
+  if(R.pend.length) add(R.pend.length>=5?"Alta":"Media","Cuentas",`${R.pend.length} pedidos del cliente sin respuesta`,`El más antiguo espera ${hsFmtH(Math.max(...R.pend.map(x=>x.h)))}.`,"Responderlos hoy; están en la pestaña Inside.");
+  const lt=R.aj.filter(x=>x.k.origen==="llego_tarde").length; if(lt>=3) add("Alta","Tiempos",`${lt} piezas se cayeron por llegar tarde`,"El cliente las descartó porque la vigencia ya había pasado.",HS_AREA_ACC.Tiempos);
+  const bi=R.aj.filter(x=>x.k.origen==="brief_incompleto").length; if(bi>=3) add("Media","Cuentas",`${bi} ajustes por información que no estaba en el brief`,"Legales, indicaciones o lotes que llegaron después de producir.","Pedir en el input de cada mes: legales aprobados por país, lotes y fotos oficiales, URLs y canal de cada promo.");
+  const dc=R.aj.filter(x=>x.k.origen==="decision_cliente"||x.k.origen==="preferencia_cliente").length;
+  if(R.cont.length>=2||(R.aj.length&&dc/R.aj.length>=.2)) add("Media","Dirección",`El cliente cambia de criterio: ${R.cont.length} contradicciones y ${dc} cambios suyos`,`${hsPct(dc,R.aj.length)}% de los ajustes nacen de preferencias o decisiones del cliente.`,"Consolidar el feedback en una sola ronda por pieza, registrar los cambios de alcance y llevarlos a la reunión mensual.");
+  people.filter(o=>o.fpN>=5&&o.fpy!=null&&o.fpy<20).slice(0,3).forEach(o=>{const t=Object.entries(o.tem).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>HS_TEMA[k]).join(" y ");add("Media","Cuentas",`Alinear con ${o.who}: ${o.fpy}% aprobado a la primera`,`Lo que más corrige: ${t||"varios temas"}.`,`Revisar su perfil antes de cada envío a ${o.who.split(" ")[0]} y acordar con ella sus criterios fijos.`)});
+  if(R.neg>=15) add("Media","Dirección",`Tono negativo en ${R.neg}% de los comentarios`,"Señal de desgaste en la relación.","Conversación de cuenta con el cliente: qué está funcionando y qué no.");
+  return out.sort((a,b)=>(a.prio==="Alta"?0:1)-(b.prio==="Alta"?0:1))}
+function hsDiag(R){const out=[];
+  if(R.aj.length){const t=Object.entries(R.resp3).sort((a,b)=>b[1]-a[1])[0];out.push(`<b>${hsPct(t[1],R.aj.length)}% de los ajustes ${t[0]==="inside"?"son responsabilidad de Inside":t[0]==="cliente"?"vienen de cambios o decisiones del cliente":"vienen del proceso o del brief"}</b> (Inside ${hsPct(R.resp3.inside,R.aj.length)}% · cliente ${hsPct(R.resp3.cliente,R.aj.length)}% · proceso ${hsPct(R.resp3.proceso,R.aj.length)}%).`)}
+  const ins=R.aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside"),ar={};ins.forEach(x=>{const a=hsAreaOf(x);ar[a]=(ar[a]||0)+1});const aa=Object.entries(ar).sort((a,b)=>b[1]-a[1]);
+  if(aa.length) out.push(`Donde más fallamos: <b>${esc(aa[0][0])}</b> (${hsPct(aa[0][1],ins.length)}% de lo nuestro)${aa[1]?`, después ${esc(aa[1][0])} (${hsPct(aa[1][1],ins.length)}%)`:""}.`);
+  if(R.respMed!=null) out.push(`Respondemos a un pedido de cambios en <b>${hsFmtH(R.respMed)}</b>; el cliente nos responde en ${hsFmtH(R.clMed)}.`);
+  if(R.nP) out.push(`Aprobación a la primera: <b>${R.fpy}%</b>. Las demás piezas necesitan ${R.rondas!=null?R.rondas.toFixed(1):"—"} rondas en promedio.`);
+  if(R.reit.length||R.cont.length) out.push(`${R.reit.length} pedidos que el cliente tuvo que repetir y ${R.cont.length} contradicciones del cliente.`);
+  return out}
+function hsKpi(v,l,sub,delta,cls){return `<div class="hskpi ${cls||""}"><span>${l}</span><b class="mono">${v}</b>${delta||""}${sub?`<small>${sub}</small>`:""}</div>`}
+function hsTabResumen(R,P,people){
+  const ins=R.aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside"),ar={},arC={};ins.forEach(x=>{const a=hsAreaOf(x);ar[a]=(ar[a]||0)+1});
+  R.aj.filter(x=>HS_ORIG[x.k.origen][1]==="cliente").forEach(x=>{const a=HS_TEMA[x.k.tema||"otro"];arC[a]=(arC[a]||0)+1});
+  const amax=Math.max(1,...Object.values(ar));
+  const cl=hsClusters(R).slice(0,3), recs=hsRecs(R,people).filter(r=>r.prio==="Alta").slice(0,3);
+  const wk={};R.uq.forEach(x=>{const w=hsWeek(x.c.fecha);const o=wk[w]||(wk[w]={n:0,aj:0,i:0,pos:0,neg:0,ap:0});o.n++;if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada") o.ap++;if(HS_AJ.includes(x.k.tipo)&&x.k.origen){o.aj++;if(HS_ORIG[x.k.origen][1]==="inside") o.i++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++});
+  return `<div class="hsgrid2">
+    <section><h4>Diagnóstico</h4>${(()=>{const d=hsDiag(R);return d.length?`<ul class="hsul">${d.map(x=>`<li>${x}</li>`).join("")}</ul>`:`<p class="hint">Sin comentarios del cliente en este periodo.</p>`})()}</section>
+    <section><h4>Lo urgente</h4>${recs.length?recs.map(r=>`<div class="hsalert"><b>${esc(r.t)}</b><small>${esc(r.acc)}</small></div>`).join(""):`<p class="hint">Nada urgente en este periodo.</p>`}<button class="clink" data-hstab="decisiones">Ver todas las decisiones →</button></section></div>
+    <section><h4>¿De quién es el reproceso?</h4>${hsStack(HS_RESP_ORD.map(r=>({v:R.resp3[r],l:HS_RESP[r],cls:"r-"+r})),R.aj.length)}
+      <div class="hsgrid2"><div><h5>Inside, por área</h5><table class="hstbl"><tbody>${Object.entries(ar).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<tr><td>${esc(a)}</td><td class="mono">${n}</td><td>${hsBar(n,amax,"ins")}</td></tr>`).join("")||`<tr><td class="hint">Sin datos.</td></tr>`}</tbody></table></div>
+      <div><h5>Cliente, por tema</h5><table class="hstbl"><tbody>${Object.entries(arC).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([a,n])=>`<tr><td>${esc(a)}</td><td class="mono">${n}</td><td>${hsBar(n,Math.max(1,...Object.values(arC)),"cli")}</td></tr>`).join("")||`<tr><td class="hint">Sin datos.</td></tr>`}</tbody></table></div></div></section>
+    <div class="hsgrid2"><section><h4>Errores que más se repiten</h4>${cl.length?`<ol class="hschk">${cl.map(x=>`<li><b>${esc(x.l)}</b> <span class="mono">${x.n}</span><small>${x.pz} piezas · ${esc(x.area)}${x.rep?` · ${x.rep} veces después de avisado`:""}</small></li>`).join("")}</ol>`:`<p class="hint">Sin errores repetidos.</p>`}<button class="clink" data-hstab="inside">Ver la sección Inside →</button></section>
+    <section><h4>Tendencia semanal</h4><table class="hstbl"><thead><tr><th>Semana</th><th>Comentarios</th><th>Aprobaciones</th><th>Ajustes</th><th>% Inside</th><th>Tono + / −</th></tr></thead><tbody>${Object.entries(wk).sort().map(([w,o])=>`<tr><td>${esc(fmtCorto(w))}</td><td class="mono">${o.n}</td><td class="mono">${o.ap}</td><td class="mono">${o.aj}</td><td class="mono">${hsPct(o.i,o.aj)}%</td><td class="mono">${hsPct(o.pos,o.n)}% / ${hsPct(o.neg,o.n)}%</td></tr>`).join("")||`<tr><td colspan="6" class="hint">Sin datos.</td></tr>`}</tbody></table></section></div>`}
+function hsTabPerfiles(R,people){
+  if(!people.length) return `<p class="hint">Sin comentarios del cliente en este periodo.</p>`;
+  return `<p class="hint">Un perfil por aprobador del cliente: qué prioriza, qué rechaza y cómo conviene trabajar con cada uno. Las cifras salen de sus comentarios en el periodo; el perfil lo escribe el Asistente INSIDE a partir de todo lo que ha comentado.</p><div class="hsprof">${people.map(o=>{const pf=hsProfileOf(o);const tem=Object.entries(o.tem).sort((a,b)=>b[1]-a[1]).slice(0,5),tmax=Math.max(1,...tem.map(t=>t[1]));const ori=Object.entries(o.ori).sort((a,b)=>b[1]-a[1]);const ins=ori.filter(([k])=>HS_ORIG[k][1]==="inside").reduce((a,[,v])=>a+v,0);
+    const ini=o.who.split(/[ ,]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+    const li=a=>(a||[]).map(t=>`<li>${esc(t)}</li>`).join("");
+    const cita=[...o.last].sort((a,b)=>(b.c.fecha||"").localeCompare(a.c.fecha||"")).slice(0,2);
+    return `<article class="hscard"><header><span class="hsav">${esc(ini)}</span><div><b>${esc(o.who)}</b><small>${esc(pf&&pf.rol||"Cliente")}</small></div>${S.sampleFn&&o.pid?`<button class="btn ghost sm" data-hsprof="${esc(o.pid)}|${esc(o.who)}" ${S.hsBusy?"disabled":""}>Actualizar perfil</button>`:""}</header>
+      <div class="hsstats"><span><b class="mono">${o.pz.size}</b>piezas</span><span><b class="mono">${o.fpy==null?"—":o.fpy+"%"}</b>a la primera</span><span><b class="mono">${(o.n/Math.max(1,o.pz.size)).toFixed(1)}</b>coment./pieza</span><span><b class="mono">${o.objN?hsPct(o.obj,o.objN)+"%":"—"}</b>objetivos</span><span><b class="mono">${hsFmtH(o.resp)}</b>tarda en responder</span><span><b class="mono">${hsPct(o.pos,o.n)}/${hsPct(o.neg,o.n)}</b>tono + / −</span><span><b class="mono">${o.cont}</b>contradicciones</span></div>
+      ${pf?`<p class="hsres">${esc(pf.resumen||"")}</p>`:`<p class="hint">Sin perfil escrito todavía.</p>`}
+      <div class="hsgrid2 tight"><div><h5>Lo que más pide</h5><table class="hstbl"><tbody>${tem.map(([t,n])=>`<tr><td>${esc(HS_TEMA[t]||t)}</td><td class="mono">${n}</td><td>${hsBar(n,tmax,"cli")}</td></tr>`).join("")||`<tr><td class="hint">—</td></tr>`}</tbody></table>
+        <h5>Por qué nos corrige</h5><p class="hsmut">${o.aj?`${hsPct(ins,o.aj)}% por errores o propuestas de Inside · ${hsPct(o.aj-ins,o.aj)}% por sus criterios, decisiones o el brief`:"—"}</p></div>
+        <div>${pf?`<h5>Prioriza</h5><ul class="hsul sm">${li(pf.prioriza)}</ul><h5>Rechaza</h5><ul class="hsul sm neg">${li(pf.rechaza)}</ul>`:""}</div></div>
+      ${pf?`<div class="hsgrid2 tight"><div><h5>Cómo comenta</h5><p class="hsmut">${esc(pf.estilo||"")}</p></div><div><h5>Cómo trabajar con ${esc(o.who.split(/[ ,]+/)[0])}</h5><ul class="hsul sm ok">${li(pf.comoTrabajar)}</ul></div></div>`:""}
+      ${cita.length?`<h5>Últimos pedidos</h5>${cita.map(x=>`<blockquote>«${esc((x.c.texto||"").slice(0,180))}» <small>${esc(fmtCorto((x.c.fecha||"").slice(0,10)))} · ${hsLink(x)}</small></blockquote>`).join("")}`:""}
+    </article>`}).join("")}</div>`}
+function hsTabInside(R){
+  const ins=R.aj.filter(x=>HS_ORIG[x.k.origen][1]==="inside");
+  const ar={};ins.forEach(x=>{const a=hsAreaOf(x);const o=ar[a]||(ar[a]={n:0,err:0,nc:0,lt:0,obj:0});o.n++;if(x.k.origen==="error_inside") o.err++;if(x.k.origen==="propuesta_no_convence") o.nc++;if(x.k.origen==="llego_tarde") o.lt++});
+  const amax=Math.max(1,...Object.values(ar).map(o=>o.n));
+  const tm={};ins.forEach(x=>{const t=x.k.tema||"otro";const o=tm[t]||(tm[t]={n:0,err:0,nc:0,lt:0});o.n++;if(x.k.origen==="error_inside") o.err++;if(x.k.origen==="propuesta_no_convence") o.nc++;if(x.k.origen==="llego_tarde") o.lt++});
+  const cl=hsClusters(R);
+  const bk=[["< 4 h",0,4],["4–24 h",4,24],["1–2 días",24,48],["> 2 días",48,1e9]].map(([l,a,b])=>[l,R.resp.filter(x=>x.h>=a&&x.h<b).length]),bmax=Math.max(1,...bk.map(b=>b[1]));
+  const byR={};R.resp.forEach(x=>(byR[x.by]=byR[x.by]||[]).push(x.h));
+  return `<div class="hsgrid2"><section><h4>¿En qué área fallamos?</h4><table class="hstbl"><thead><tr><th>Área</th><th>Ajustes</th><th></th><th>Errores</th><th>No convenció</th><th>Tarde</th></tr></thead><tbody>${Object.entries(ar).sort((a,b)=>b[1].n-a[1].n).map(([a,o])=>`<tr><td><b>${esc(a)}</b></td><td class="mono">${o.n}</td><td>${hsBar(o.n,amax,"ins")}</td><td class="mono">${o.err}</td><td class="mono">${o.nc}</td><td class="mono">${o.lt}</td></tr>`).join("")||`<tr><td colspan="6" class="hint">Sin datos.</td></tr>`}</tbody></table>
+      <h5>Por tema</h5><table class="hstbl"><tbody>${Object.entries(tm).sort((a,b)=>b[1].n-a[1].n).map(([t,o])=>`<tr><td>${esc(HS_TEMA[t]||t)}</td><td class="mono">${o.n}</td><td class="hsmut">${o.err} errores${o.nc?` · ${o.nc} no convenció`:""}${o.lt?` · ${o.lt} tarde`:""}</td></tr>`).join("")}</tbody></table></section>
+    <section><h4>Errores más repetitivos</h4><p class="hint">Errores verificables que el cliente nos ha marcado; «después de avisado» cuenta las veces que volvieron a pasar.</p>${cl.length?`<ol class="hschk">${cl.map(x=>`<li><b>${esc(x.l)}</b> <span class="mono">${x.n}</span><small>${x.pz} piezas · ${esc(x.area)}${x.rep?` · <span class="hsbad">${x.rep} después de avisado</span>`:""} · último ${esc(fmtCorto((x.ult||"").slice(0,10)))}</small>${x.ej?`<small>«${esc((x.ej.c.texto||"").slice(0,140))}» — ${esc(x.ej.who)}</small>`:""}</li>`).join("")}</ol>`:`<p class="hint">Sin errores repetidos.</p>`}</section></div>
+    <section><h4>Pedidos que el cliente tuvo que repetir (${R.reit.length})</h4>${R.reit.length?`<table class="hstbl"><thead><tr><th>Fecha</th><th>Quién</th><th>Pieza</th><th>Qué pasó</th><th>Comentario</th></tr></thead><tbody>${R.reit.sort((a,b)=>(b.c.fecha||"").localeCompare(a.c.fecha||"")).map(x=>`<tr><td class="mono">${esc(fmtCorto((x.c.fecha||"").slice(0,10)))}</td><td>${esc(x.who)}</td><td>${hsLink(x)}</td><td>${esc(x.k.notaReit||"")}</td><td class="hstxt">${esc((x.c.texto||"").slice(0,160))}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">Ninguno en este periodo.</p>`}</section>
+    <div class="hsgrid2"><section><h4>Velocidad de respuesta</h4><table class="hstbl"><tbody>${bk.map(([l,v])=>`<tr><td>${l}</td><td class="mono">${v}</td><td>${hsBar(v,bmax)}</td></tr>`).join("")}</tbody></table>
+      <table class="hstbl"><thead><tr><th>Quién responde</th><th>Respuestas</th><th>Mediana</th><th>En &lt; 24 h</th></tr></thead><tbody>${Object.entries(byR).sort((a,b)=>b[1].length-a[1].length).map(([n,a])=>`<tr><td>${esc(n)}</td><td class="mono">${a.length}</td><td class="mono">${hsFmtH(hsMed(a))}</td><td class="mono">${hsPct(a.filter(h=>h<=24).length,a.length)}%</td></tr>`).join("")||`<tr><td colspan="4" class="hint">Sin datos.</td></tr>`}</tbody></table></section>
+    <section><h4>Pedidos sin responder (${R.pend.length})</h4>${R.pend.length?`<table class="hstbl"><thead><tr><th>Pieza</th><th>Quién</th><th>Pedido</th><th>Espera</th></tr></thead><tbody>${R.pend.sort((a,b)=>b.h-a.h).map(p=>`<tr><td>${hsLink(p.x)}</td><td>${esc(p.x.who)}</td><td class="hstxt">${esc((p.x.c.texto||"").slice(0,120))}</td><td class="mono">${hsFmtH(p.h)}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">✓ Al día.</p>`}</section></div>`}
+function hsTabReproceso(R){
+  const tm={};R.aj.forEach(x=>{const t=x.k.tema||"otro";const o=tm[t]||(tm[t]={n:0,i:0,c:0,p:0,pz:new Set()});o.n++;o.pz.add(x.c.postId);o[{inside:"i",cliente:"c",proceso:"p"}[HS_ORIG[x.k.origen][1]]]++});
+  const rp={};R.pieces.forEach(p=>p.temas.forEach(t=>(rp[t]=rp[t]||[]).push(p.rondas)));
+  const tmax=Math.max(1,...Object.values(tm).map(o=>o.n));
+  const top=[...R.pieces].sort((a,b)=>b.rondas-a.rondas).filter(p=>p.rondas>=2).slice(0,10);
+  const seg={};R.pieces.forEach(x=>{for(const r of (S.hs.reg==="ALL"?x.pc.regs:[S.hs.reg])){const k=`${x.pc.mz} · ${region(r).corto}`;const o=seg[k]||(seg[k]={n:0,f:0,r:0,nf:0});if(x.first){o.n++;if(x.fpy) o.f++;else{o.nf++;o.r+=x.rondas}}}});
+  const fm={};R.pieces.filter(x=>x.first).forEach(x=>{const k=x.pc.kind==="post"?(x.pc.fmt||"Sin formato"):x.pc.mz;const o=fm[k]||(fm[k]={n:0,f:0,r:0});o.n++;if(x.fpy) o.f++;o.r+=x.rondas});
+  const dec=R.aj.filter(x=>x.k.origen==="decision_cliente"), canc=R.uq.filter(x=>x.k.tipo==="cancelacion");
+  return `<section><h4>¿Qué tipo de pedido genera más reproceso?</h4><table class="hstbl"><thead><tr><th>Tema</th><th>Ajustes</th><th>Por responsable</th><th>Piezas</th><th>Rondas promedio de esas piezas</th><th>Inside</th><th>Cliente</th><th>Proceso</th></tr></thead><tbody>${Object.entries(tm).sort((a,b)=>b[1].n-a[1].n).map(([t,o])=>{const r=rp[t]||[];return `<tr><td><b>${esc(HS_TEMA[t]||t)}</b></td><td class="mono">${o.n}</td><td><div class="hsmini" style="width:${o.n/tmax*100}%">${[["c","cliente"],["i","inside"],["p","proceso"]].filter(([k])=>o[k]).map(([k,r])=>`<i class="r-${r}" style="flex:${o[k]}" title="${HS_RESP[r]}: ${o[k]}"></i>`).join("")}</div></td><td class="mono">${o.pz.size}</td><td class="mono">${r.length?(r.reduce((a,b)=>a+b,0)/r.length).toFixed(1):"—"}</td><td class="mono">${o.i}</td><td class="mono">${o.c}</td><td class="mono">${o.p}</td></tr>`}).join("")||`<tr><td colspan="8" class="hint">Sin datos.</td></tr>`}</tbody></table><div class="hslegend">${HS_RESP_ORD.map(r=>`<span><i class="r-${r}"></i>${HS_RESP[r]}</span>`).join("")}</div></section>
+    <div class="hsgrid2"><section><h4>¿El cliente se contradice? (${R.cont.length})</h4><p class="hint">Cuando cambia una indicación que él mismo había dado en la misma pieza.</p>${R.cont.length?`<table class="hstbl"><tbody>${R.cont.map(x=>`<tr><td>${esc(x.who)}</td><td>${hsLink(x)}</td><td>${esc(x.k.notaCont||"")}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">No se detectaron contradicciones en este periodo.</p>`}
+      <h5>Decisiones de negocio del cliente (${dec.length}) · cancelaciones (${canc.length})</h5><p class="hsmut">Cambios de vigencia, promos que no se aprueban o piezas que ya no aplican. No son errores, pero son reproceso que conviene registrar como cambio de alcance.</p></section>
+    <section><h4>Piezas con más rondas</h4>${top.length?`<table class="hstbl"><thead><tr><th>Pieza</th><th>Rondas</th><th>Temas</th></tr></thead><tbody>${top.map(p=>`<tr><td>${hsLink(p)}</td><td class="mono">${p.rondas}</td><td class="hsmut">${p.temas.map(t=>HS_TEMA[t]).join(", ")}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">Ninguna pieza con 2 rondas o más.</p>`}</section></div>
+    <div class="hsgrid2"><section><h4>Por matriz y región</h4><table class="hstbl"><thead><tr><th>Segmento</th><th>Piezas</th><th>A la primera</th><th>Rondas</th></tr></thead><tbody>${Object.entries(seg).filter(([,o])=>o.n).sort((a,b)=>b[1].n-a[1].n).map(([k,o])=>`<tr><td>${esc(k)}</td><td class="mono">${o.n}</td><td class="mono">${hsPct(o.f,o.n)}%</td><td class="mono">${o.nf?(o.r/o.nf).toFixed(1):"—"}</td></tr>`).join("")}</tbody></table></section>
+    <section><h4>Por formato</h4><table class="hstbl"><thead><tr><th>Formato</th><th>Piezas</th><th>A la primera</th><th>Rondas promedio</th></tr></thead><tbody>${Object.entries(fm).sort((a,b)=>b[1].n-a[1].n).map(([k,o])=>`<tr><td>${esc(k)}</td><td class="mono">${o.n}</td><td class="mono">${hsPct(o.f,o.n)}%</td><td class="mono">${(o.r/o.n).toFixed(1)}</td></tr>`).join("")}</tbody></table></section></div>`}
+function hsTabDecisiones(R,people){const recs=hsRecs(R,people), memo=S.salud.get("memo");
+  return `<section><h4>Decisiones recomendadas</h4><p class="hint">Salen de los datos de este periodo; cambian cuando cambian los números.</p>${recs.length?`<div class="hsrecs">${recs.map(r=>`<article class="hsrec ${r.prio==="Alta"?"alta":""}"><header><span class="hsprio">${r.prio==="Alta"?"▲ Prioridad alta":"Prioridad media"}</span><span class="hsarea">${esc(r.area)}</span></header><b>${esc(r.t)}</b><p>${esc(r.why)}</p><p class="hsacc"><b>Qué hacer:</b> ${esc(r.acc)}</p></article>`).join("")}</div>`:`<p class="hint">Sin recomendaciones: los indicadores están dentro de lo esperado.</p>`}</section>
+    <section><h4>Lectura de dirección</h4><p class="hint">El Asistente INSIDE lee los indicadores y escribe una lectura estratégica de la cuenta. Usa solo cifras agregadas.</p>
+      ${memo?`<div class="hsmemo">${(memo.puntos||[]).map(p=>`<p>• ${esc(p)}</p>`).join("")}<small>Generada el ${esc(fmtCorto((memo.fecha||"").slice(0,10)))} · periodo «${esc(memo.periodo||"")}»</small></div>`:""}
+      ${S.sampleFn?`<button class="btn sm" data-hsmemo ${S.hsBusy?"disabled":""}>${S.hsBusy?esc(S.hsBusy):memo?"Actualizar la lectura":"Generar la lectura"}</button>`:`<p class="hint">Necesita Claude disponible en esta vista.</p>`}</section>`}
+function hsTabComentarios(R){const f=S.hs;
+  const lst=R.uq.filter(x=>(!f.lo||x.k.origen===f.lo)&&(!f.lt||x.k.tema===f.lt)&&(!f.lr||(HS_ORIG[x.k.origen]||[])[1]===f.lr)&&(!f.lf||(f.lf==="reit"?x.k.reiteracion:f.lf==="cont"?x.k.contradice:x.k.heur))).sort((a,b)=>(b.c.fecha||"").localeCompare(a.c.fecha||"")).slice(0,f.all?2000:80);
+  const opt=(o,cur,blank)=>`${blank?`<option value="">${blank}</option>`:""}${Object.entries(o).map(([k,v])=>`<option value="${k}" ${k===cur?"selected":""}>${esc(Array.isArray(v)?v[0]:v)}</option>`).join("")}`;
+  return `<section><p class="hint">Cada comentario del cliente con su clasificación. Si una etiqueta no es correcta, cámbiala y los indicadores se recalculan. En gris: todavía sin clasificar.</p>
+    <div class="hsfilters"><select data-hsf="lr"><option value="">Todos los responsables</option>${HS_RESP_ORD.map(r=>`<option value="${r}" ${f.lr===r?"selected":""}>${HS_RESP[r]}</option>`).join("")}</select><select data-hsf="lo">${opt(HS_ORIG,f.lo,"Todas las causas")}</select><select data-hsf="lt">${opt(HS_TEMA,f.lt,"Todos los temas")}</select><select data-hsf="lf"><option value="">Todos</option><option value="reit" ${f.lf==="reit"?"selected":""}>Solo repetidos</option><option value="cont" ${f.lf==="cont"?"selected":""}>Solo contradicciones</option><option value="heur" ${f.lf==="heur"?"selected":""}>Sin clasificar</option></select></div>
+    <div class="hsscroll"><table class="hstbl hslist"><thead><tr><th>Fecha</th><th>Quién</th><th>Pieza</th><th>Comentario</th><th>Tipo</th><th>Tema</th><th>Objetividad</th><th>Causa</th><th>Tono</th><th>Repetido</th><th>Contradice</th></tr></thead><tbody>${lst.map(x=>`<tr${x.k.heur?` class="hsheur"`:""}><td class="mono">${esc(fmtCorto((x.c.fecha||"").slice(0,10)))}</td><td>${esc(x.who)}</td><td>${hsLink(x)}</td><td class="hstxt">${esc((x.c.texto||"").slice(0,240))}</td>
+      <td><select data-hsk="${esc(x.c._id)}" data-k="tipo">${opt(HS_TIPO,x.k.tipo)}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tema">${opt(HS_TEMA,x.k.tema,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="objetividad">${opt({objetivo:"Objetivo",subjetivo:"Subjetivo"},x.k.objetividad,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="origen">${opt(HS_ORIG,x.k.origen,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tono">${opt({positivo:"Positivo",neutro:"Neutro",negativo:"Negativo"},x.k.tono)}</select></td>
+      <td><input type="checkbox" data-hsk="${esc(x.c._id)}" data-k="reiteracion" ${x.k.reiteracion?"checked":""} aria-label="Repetido"></td><td><input type="checkbox" data-hsk="${esc(x.c._id)}" data-k="contradice" ${x.k.contradice?"checked":""} aria-label="Contradice"></td></tr>`).join("")||`<tr><td colspan="11" class="hint">Sin comentarios con estos filtros.</td></tr>`}</tbody></table></div>
+    ${!f.all&&R.uq.length>80?`<button class="btn ghost sm" data-hsall>Ver todos (${R.uq.length})</button>`:""}</section>`}
 function renderHS(){
   let root=$("#hsRoot"); if(!S.hs||!hsAll()){root&&root.remove();return}
   if(!root){root=document.createElement("div");root.id="hsRoot";document.body.appendChild(root)}
-  const f=S.hs, d=hsData();
-  const aprs=[...new Set((S.comments||[]).filter(c=>orgOf(c)==="cliente"&&c.texto).map(c=>c.personaNombre||c.autorNombre).filter(Boolean))].sort();
-  const p=d.pieces.filter(x=>x.first), fpy=p.filter(x=>x.fpy).length, notF=p.filter(x=>!x.fpy);
-  const aj=d.uq.filter(x=>HS_AJ.includes(x.k.tipo)), ajc=aj.filter(x=>x.k.origen);
-  const resp={inside:0,cliente:0,proceso:0}; ajc.forEach(x=>resp[(HS_ORIG[x.k.origen]||[])[1]||"proceso"]++);
-  const obj=d.uq.filter(x=>x.k.objetividad), objO=obj.filter(x=>x.k.objetividad==="objetivo").length;
-  const pos=d.uq.filter(x=>x.k.tono==="positivo").length, neg=d.uq.filter(x=>x.k.tono==="negativo").length;
-  const sinC=(S.comments||[]).filter(c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim()&&!(S.salud&&S.salud.has("cl-"+c._id))).length;
-  const tile=(v,l,s)=>`<div class="hstile"><b class="mono">${v}</b><span>${l}</span>${s?`<small>${s}</small>`:""}</div>`;
-  const kpis=[tile(p.length,"Piezas revisadas por el cliente",`${d.uq.length} comentarios del cliente`),tile(`${hsPct(fpy,p.length)}%`,"Aprobadas a la primera",`${fpy} de ${p.length}`),tile(notF.length?(notF.reduce((a,x)=>a+x.rondas,0)/notF.length).toFixed(1):"—","Rondas de ajustes","promedio en las que no salieron a la primera"),tile(d.cyc.length?`${hsMed(d.cyc).toFixed(1)} d`:"—","De envío a aprobación","mediana"),tile(hsFmtH(hsMed(d.resp.map(x=>x.h))),"Respuesta de Inside","mediana a un pedido de cambios"),tile(d.pend.length,"Pedidos sin responder",d.pend.length?`el más antiguo hace ${hsFmtH(Math.max(...d.pend.map(x=>x.h)))}`:"al día"),tile(`${hsPct(resp.inside,ajc.length)}%`,"Ajustes atribuibles a Inside",`${resp.inside} de ${ajc.length} ajustes`),tile(`${hsPct(objO,obj.length)}%`,"Comentarios objetivos","el resto son de gusto o criterio"),tile(`${hsPct(pos,d.uq.length)}% / ${hsPct(neg,d.uq.length)}%`,"Tono positivo / negativo",""),tile(hsFmtH(hsMed(d.clResp)),"Respuesta del cliente","mediana desde que Inside envía o responde")].join("");
-  // causas
-  const oc={};ajc.forEach(x=>oc[x.k.origen]=(oc[x.k.origen]||0)+1); const omax=Math.max(1,...Object.values(oc));
-  const origRows=Object.keys(HS_ORIG).filter(k=>oc[k]).sort((a,b)=>oc[b]-oc[a]).map(k=>`<tr><td>${esc(HS_ORIG[k][0])}</td><td><span class="hstag r-${HS_ORIG[k][1]}">${HS_RESP[HS_ORIG[k][1]]}</span></td><td class="mono">${oc[k]}</td><td class="mono">${hsPct(oc[k],ajc.length)}%</td><td>${hsBar(oc[k],omax)}</td></tr>`).join("");
-  // temas
-  const tm={};ajc.forEach(x=>{const t=x.k.tema||"otro";const o=tm[t]||(tm[t]={tot:0,inside:0,cliente:0,proceso:0,err:0,nc:0});o.tot++;o[HS_ORIG[x.k.origen][1]]++;if(x.k.origen==="error_inside") o.err++;if(x.k.origen==="propuesta_no_convence") o.nc++});
-  const tmax=Math.max(1,...Object.values(tm).map(o=>o.tot));
-  const temaRows=Object.entries(tm).sort((a,b)=>b[1].inside-a[1].inside||b[1].tot-a[1].tot).map(([t,o])=>`<tr><td>${esc(HS_TEMA[t]||t)}</td><td class="mono">${o.tot}</td><td><div class="hsmini" style="width:${o.tot/tmax*100}%">${HS_RESP_ORD.filter(r=>o[r]).map(r=>`<i class="r-${r}" style="flex:${o[r]}" title="${HS_RESP[r]}: ${o[r]}"></i>`).join("")}</div></td><td class="mono">${o.inside}</td><td class="mono">${o.err}</td><td class="mono">${o.nc}</td><td class="mono">${o.cliente}</td><td class="mono">${hsPct(o.inside,o.tot)}%</td></tr>`).join("");
-  // velocidad
-  const bk=[["< 4 h",0,4],["4–24 h",4,24],["1–2 días",24,48],["> 2 días",48,1e9]].map(([l,a,b])=>[l,d.resp.filter(x=>x.h>=a&&x.h<b).length]); const bmax=Math.max(1,...bk.map(b=>b[1]));
-  const byR={};d.resp.forEach(x=>(byR[x.by]=byR[x.by]||[]).push(x.h));
-  const respRows=Object.entries(byR).sort((a,b)=>b[1].length-a[1].length).map(([n,a])=>`<tr><td>${esc(n)}</td><td class="mono">${a.length}</td><td class="mono">${hsFmtH(hsMed(a))}</td><td class="mono">${hsPct(a.filter(h=>h<=24).length,a.length)}%</td></tr>`).join("");
-  const pendRows=d.pend.sort((a,b)=>b.h-a.h).slice(0,12).map(x=>`<tr><td><button class="clink" data-hsopen="${esc(x.x.pc.kind)}|${esc(x.x.c.postId)}">${esc(x.x.pc.name)}</button></td><td>${esc(x.x.who)}</td><td>${esc((x.x.c.texto||"").slice(0,110))}</td><td class="mono">${hsFmtH(x.h)}</td></tr>`).join("");
-  // aprobadores
-  const byA={};d.cc.forEach(x=>{const o=byA[x.who]||(byA[x.who]={n:0,ap:0,aj:0,obj:0,objN:0,pos:0,neg:0,tem:{},ori:{},pz:new Set()});o.n++;o.pz.add(x.c.postId);if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada") o.ap++;if(HS_AJ.includes(x.k.tipo)){o.aj++;if(x.k.tema) o.tem[x.k.tema]=(o.tem[x.k.tema]||0)+1;if(x.k.origen) o.ori[x.k.origen]=(o.ori[x.k.origen]||0)+1}if(x.k.objetividad){o.objN++;if(x.k.objetividad==="objetivo") o.obj++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++});
-  const fpyBy={};d.pieces.filter(x=>x.first).forEach(x=>{const w=x.first.c.personaNombre||x.first.c.autorNombre||"Cliente";const o=fpyBy[w]||(fpyBy[w]={n:0,f:0});o.n++;if(x.fpy) o.f++});
-  const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,2);
-  const aprRows=Object.entries(byA).sort((a,b)=>b[1].n-a[1].n).map(([n,o])=>`<tr><td><b>${esc(n)}</b></td><td class="mono">${o.pz.size}</td><td class="mono">${o.n}</td><td class="mono">${fpyBy[n]?hsPct(fpyBy[n].f,fpyBy[n].n)+"%":"—"}</td><td class="mono">${(o.n/o.pz.size).toFixed(1)}</td><td class="mono">${o.objN?hsPct(o.obj,o.objN)+"%":"—"}</td><td class="mono">${hsPct(o.pos,o.n)}% / ${hsPct(o.neg,o.n)}%</td><td>${top(o.tem).map(([t,v])=>`${esc(HS_TEMA[t]||t)} (${v})`).join(", ")||"—"}</td><td>${top(o.ori).map(([t,v])=>`${esc(HS_ORIG[t][0])} (${v})`).join(", ")||"—"}</td></tr>`).join("");
-  // segmentos
-  const seg={};d.pieces.forEach(x=>{for(const r of (f.reg==="ALL"?x.pc.regs:[f.reg])){const k=`${x.pc.mz} · ${region(r).nombre}`;const o=seg[k]||(seg[k]={n:0,f:0,r:0,nf:0});if(x.first){o.n++;if(x.fpy) o.f++;else{o.nf++;o.r+=x.rondas}}}});
-  const segA={};ajc.forEach(x=>{for(const r of (f.reg==="ALL"?x.pc.regs:[f.reg])){const k=`${x.pc.mz} · ${region(r).nombre}`;const o=segA[k]||(segA[k]={t:0,i:0});o.t++;if(HS_ORIG[x.k.origen][1]==="inside") o.i++}});
-  const segRows=Object.entries(seg).filter(([,o])=>o.n).sort((a,b)=>b[1].n-a[1].n).map(([k,o])=>`<tr><td>${esc(k)}</td><td class="mono">${o.n}</td><td class="mono">${hsPct(o.f,o.n)}%</td><td class="mono">${o.nf?(o.r/o.nf).toFixed(1):"—"}</td><td class="mono">${segA[k]?hsPct(segA[k].i,segA[k].t)+"%":"—"}</td></tr>`).join("");
-  // checklist
-  const ins=ajc.filter(x=>x.k.origen==="error_inside");
-  const used=new Set(), chk=HS_CHECK.map(([l,re])=>{const m=ins.filter(x=>re.test(x.c.texto||""));return {l,re,n:m.length,m}}).filter(x=>x.n).sort((a,b)=>b.n-a.n).map(x=>{const ej=[...x.m].sort((a,b)=>(a.c.texto||"").length-(b.c.texto||"").length).find(y=>!used.has(y.c._id));if(ej) used.add(ej.c._id);return {...x,ej}});
-  const chkHtml=chk.length?`<ol class="hschk">${chk.map(x=>`<li><b>${esc(x.l)}</b> <span class="mono">${x.n}</span>${x.ej?`<small>«${esc((x.ej.c.texto||"").slice(0,140))}» — ${esc(x.ej.who)}</small>`:""}</li>`).join("")}</ol>`:`<p class="hint">Sin errores repetidos en este periodo.</p>`;
-  // tendencia
-  const wk={};d.uq.forEach(x=>{const w=hsWeek(x.c.fecha);const o=wk[w]||(wk[w]={n:0,aj:0,i:0,c:0,pos:0,neg:0,ap:0});o.n++;if(x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada") o.ap++;if(HS_AJ.includes(x.k.tipo)&&x.k.origen){o.aj++;const r=HS_ORIG[x.k.origen][1];if(r==="inside") o.i++;if(r==="cliente") o.c++}if(x.k.tono==="positivo") o.pos++;if(x.k.tono==="negativo") o.neg++});
-  const wkRows=Object.entries(wk).sort().map(([w,o])=>`<tr><td>Semana del ${esc(fmtCorto(w))}</td><td class="mono">${o.n}</td><td class="mono">${o.ap}</td><td class="mono">${o.aj}</td><td class="mono">${hsPct(o.i,o.aj)}%</td><td class="mono">${hsPct(o.c,o.aj)}%</td><td class="mono">${hsPct(o.pos,o.n)}% / ${hsPct(o.neg,o.n)}%</td></tr>`).join("");
-  // lista
-  const lst=d.uq.filter(x=>(!f.lo||x.k.origen===f.lo)&&(!f.lt||x.k.tema===f.lt)&&(!f.lr||(HS_ORIG[x.k.origen]||[])[1]===f.lr)).sort((a,b)=>(b.c.fecha||"").localeCompare(a.c.fecha||"")).slice(0,f.all?1000:60);
-  const opt=(o,cur,blank)=>`${blank?`<option value="">${blank}</option>`:""}${Object.entries(o).map(([k,v])=>`<option value="${k}" ${k===cur?"selected":""}>${esc(Array.isArray(v)?v[0]:v)}</option>`).join("")}`;
-  const listRows=lst.map(x=>`<tr${x.k.heur?` class="hsheur"`:""}><td class="mono">${esc(fmtCorto((x.c.fecha||"").slice(0,10)))}</td><td>${esc(x.who)}</td><td><button class="clink" data-hsopen="${esc(x.pc.kind)}|${esc(x.c.postId)}">${esc(x.pc.name.slice(0,40))}</button></td><td class="hstxt">${esc((x.c.texto||"").slice(0,240))}</td>
-    <td><select data-hsk="${esc(x.c._id)}" data-k="tipo">${opt(HS_TIPO,x.k.tipo)}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tema">${opt(HS_TEMA,x.k.tema,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="objetividad">${opt({objetivo:"Objetivo",subjetivo:"Subjetivo"},x.k.objetividad,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="origen">${opt(HS_ORIG,x.k.origen,"—")}</select></td><td><select data-hsk="${esc(x.c._id)}" data-k="tono">${opt({positivo:"Positivo",neutro:"Neutro",negativo:"Negativo"},x.k.tono)}</select></td></tr>`).join("");
-  const diag=hsDiag(d);
+  const f=S.hs, rg=hsRange(f.per), R=hsCompute(rg.from,rg.to), P=rg.prev?hsCompute(rg.prev.from,rg.prev.to):null, people=hsPeople(R);
+  const sc=hsScore(R), scP=P?hsScore(P):null, lab=sc==null?"Sin datos":sc>=70?"Saludable":sc>=50?"En observación":"En riesgo";
+  const aprs=[...new Set((S.comments||[]).filter(c=>orgOf(c)==="cliente"&&c.texto).map(hsWho).filter(Boolean))].sort();
+  const sinC=(S.comments||[]).filter(c=>hsIsCl(c)&&!(S.salud&&S.salud.has("cl-"+c._id))).length;
+  const pv=P&&P.nP?P:null;
+  const kpis=[hsKpi(R.envios,"Envíos a aprobación",`${R.reenvios} reenvíos · ${R.nP} piezas revisadas`,pv?hsDelta(R.envios,pv.envios,"none"):""),
+    hsKpi(`${R.fpy}%`,"Aprobado a la primera",`${R.pieces.filter(x=>x.fpy).length} de ${R.nP} piezas`,pv?hsDelta(R.fpy,pv.fpy,"up",v=>Math.round(v)+" pts"):"",R.fpy<30?"warn":""),
+    hsKpi(R.rondas==null?"—":R.rondas.toFixed(1),"Rondas por pieza","en las que no salen a la primera",pv&&pv.rondas!=null&&R.rondas!=null?hsDelta(R.rondas,pv.rondas,"down",v=>v.toFixed(1)):""),
+    hsKpi(hsFmtH(R.respMed),"Inside tarda en responder","mediana a un pedido de cambios",pv&&pv.respMed!=null&&R.respMed!=null?hsDelta(R.respMed,pv.respMed,"down",hsFmtH):"",R.respMed>24?"warn":""),
+    hsKpi(R.cycMed==null?"—":`${R.cycMed.toFixed(1)} d`,"Del envío a la aprobación","mediana",pv&&pv.cycMed!=null&&R.cycMed!=null?hsDelta(R.cycMed,pv.cycMed,"down",v=>v.toFixed(1)+" d"):""),
+    hsKpi(`${R.insidePct}%`,"Reproceso causado por Inside",`${R.resp3.inside} de ${R.aj.length} ajustes`,pv?hsDelta(R.insidePct,pv.insidePct,"down",v=>Math.round(v)+" pts"):"",R.insidePct>=50?"warn":""),
+    hsKpi(R.reit.length,"Pedidos repetidos","el cliente tuvo que pedirlo dos veces",pv?hsDelta(R.reit.length,pv.reit.length,"down"):"",R.reit.length>=5?"warn":""),
+    hsKpi(R.cont.length,"Contradicciones del cliente","cambia su propia indicación",pv?hsDelta(R.cont.length,pv.cont.length,"down"):""),
+    hsKpi(R.pend.length,"Pedidos sin responder",R.pend.length?`el más antiguo: ${hsFmtH(Math.max(...R.pend.map(x=>x.h)))}`:"al día","",R.pend.length?"warn":""),
+    hsKpi(hsFmtH(R.clMed),"El cliente tarda en responder","mediana desde nuestro envío o respuesta",pv&&pv.clMed!=null&&R.clMed!=null?hsDelta(R.clMed,pv.clMed,"down",hsFmtH):""),
+    hsKpi(`${R.objPct}%`,"Comentarios objetivos","el resto son de gusto o criterio",""),
+    hsKpi(`${R.pos}% / ${R.neg}%`,"Tono del cliente","positivo / negativo",pv?hsDelta(R.pos-R.neg,pv.pos-pv.neg,"up",v=>Math.round(v)+" pts"):"")].join("");
+  const tabs=[["resumen","Resumen"],["perfiles",`Perfiles del cliente (${people.length})`],["inside","Inside: dónde fallamos"],["reproceso","Reproceso"],["decisiones","Decisiones estratégicas"],["comentarios",`Comentarios (${R.uq.length})`]];
+  const body=f.tab==="perfiles"?hsTabPerfiles(R,people):f.tab==="inside"?hsTabInside(R):f.tab==="reproceso"?hsTabReproceso(R):f.tab==="decisiones"?hsTabDecisiones(R,people):f.tab==="comentarios"?hsTabComentarios(R):hsTabResumen(R,P,people);
   root.innerHTML=`<div class="scrim modal hsscrim" data-hsclose><div class="dialog hsdlg" role="dialog" aria-label="Salud de la cuenta">
-    <header><h3>Salud de la cuenta · Payless</h3><span class="hsprivate">🔒 Solo Inside</span><button class="iconbtn" data-hsclose aria-label="Cerrar">✕</button></header>
+    <header class="hshead"><div><h3>Salud de la cuenta</h3><small>Payless · ${esc(f.per==="todo"?"todo el historial":f.per==="mes"?"este mes":f.per==="7d"?"últimos 7 días":"últimos 30 días")}${P?" · comparado con el periodo anterior":""}</small></div><span class="hsprivate">🔒 Solo Inside</span><button class="iconbtn" data-hsclose aria-label="Cerrar">✕</button></header>
     <div class="hsfilters">${hsSel("per",f.per,[["7d","Últimos 7 días"],["30d","Últimos 30 días"],["mes","Este mes"],["todo","Todo"]])}${hsSel("mz",f.mz,[["ALL","Todas las matrices"],["ORGÁNICO","Orgánico"],["MEDIOS","Medios (todas)"],["ATL","ATL"],["ECOMMERCE","Ecommerce"],["DIGITAL","Digital"]])}${hsSel("reg",f.reg,[["ALL","Todas las regiones"],...REGIONES.map(r=>[r.id,r.nombre])])}${hsSel("apr",f.apr,[["ALL","Todos los aprobadores"],...aprs.map(a=>[a,a])])}
-      ${sinC?`<button class="btn sm" data-hsclass ${S.hsBusy?"disabled":""}>${S.hsBusy?esc(S.hsBusy):`Clasificar ${sinC} comentario${sinC>1?"s":""} nuevo${sinC>1?"s":""}`}</button>`:`<span class="hint">✓ Todos los comentarios están clasificados</span>`}</div>
-    ${!S.saludErr&&!(S.salud&&S.salud.size)&&(S.comments||[]).some(c=>orgOf(c)==="cliente")?`<div class="callout">No ves clasificaciones guardadas. Si los comentarios ya se clasificaron, tu acceso a la plataforma necesita ser de Editor para leerlas (el cliente nunca puede verlas).</div>`:""}${S.saludErr?`<div class="callout">No se pudieron leer las clasificaciones guardadas: tu acceso a la plataforma necesita ser de Editor. Los indicadores de tiempo y aprobación sí están completos.</div>`:""}
-    <section class="hsdiag"><h4>Diagnóstico</h4>${diag.length?`<ul>${diag.map(x=>`<li>${x}</li>`).join("")}</ul>`:`<p class="hint">Todavía no hay comentarios del cliente en este periodo.</p>`}</section>
-    <section><div class="hstiles">${kpis}</div></section>
-    <section><h4>¿De quién es el ajuste?</h4><p class="hint">Cada pedido de cambios, aprobación con cambios o cancelación, según su causa. Inside = error, propuesta que no convenció o pieza tarde. Cliente = preferencia nueva o decisión de negocio. Proceso = brief o insumo incompleto.</p>
-      ${hsStack(HS_RESP_ORD.map(r=>({v:resp[r],l:HS_RESP[r],cls:"r-"+r})),ajc.length)}
-      <table class="hstbl"><thead><tr><th>Causa</th><th>Responsable</th><th>Ajustes</th><th>%</th><th></th></tr></thead><tbody>${origRows||`<tr><td colspan="5" class="hint">Sin ajustes clasificados.</td></tr>`}</tbody></table></section>
-    <section><h4>¿En qué fallamos?</h4><p class="hint">Ajustes por tema, ordenados por los que son responsabilidad de Inside.</p>
-      <table class="hstbl"><thead><tr><th>Tema</th><th>Ajustes</th><th>Por responsable</th><th>Inside</th><th>Errores</th><th>No convenció</th><th>Cliente</th><th>% Inside</th></tr></thead><tbody>${temaRows||`<tr><td colspan="8" class="hint">Sin datos.</td></tr>`}</tbody></table>
-      <div class="hslegend">${HS_RESP_ORD.map(r=>`<span><i class="r-${r}"></i>${HS_RESP[r]}</span>`).join("")}</div></section>
-    <section class="hs2"><div><h4>Velocidad de respuesta de Inside</h4><table class="hstbl"><tbody>${bk.map(([l,v])=>`<tr><td>${l}</td><td class="mono">${v}</td><td>${hsBar(v,bmax)}</td></tr>`).join("")}</tbody></table>
-      <table class="hstbl"><thead><tr><th>Quién responde</th><th>Respuestas</th><th>Mediana</th><th>En &lt; 24 h</th></tr></thead><tbody>${respRows||`<tr><td colspan="4" class="hint">Sin datos.</td></tr>`}</tbody></table></div>
-      <div><h4>Pedidos sin responder</h4>${pendRows?`<table class="hstbl"><thead><tr><th>Pieza</th><th>Quién</th><th>Pedido</th><th>Espera</th></tr></thead><tbody>${pendRows}</tbody></table>`:`<p class="hint">✓ No hay pedidos del cliente sin respuesta.</p>`}</div></section>
-    <section><h4>Aprobadores del cliente</h4><table class="hstbl"><thead><tr><th>Aprobador</th><th>Piezas</th><th>Comentarios</th><th>Aprueba a la primera</th><th>Comentarios por pieza</th><th>Objetivos</th><th>Tono + / −</th><th>Lo que más pide</th><th>Causa principal</th></tr></thead><tbody>${aprRows||`<tr><td colspan="9" class="hint">Sin datos.</td></tr>`}</tbody></table></section>
-    <section class="hs2"><div><h4>Por matriz y región</h4><table class="hstbl"><thead><tr><th>Segmento</th><th>Piezas</th><th>A la primera</th><th>Rondas</th><th>% ajustes Inside</th></tr></thead><tbody>${segRows||`<tr><td colspan="5" class="hint">Sin datos.</td></tr>`}</tbody></table></div>
-      <div><h4>Checklist antes de enviar</h4><p class="hint">Los errores verificables que más se repiten. Revisarlos antes de mandar una pieza evita rondas.</p>${chkHtml}</div></section>
-    <section><h4>Tendencia semanal</h4><table class="hstbl"><thead><tr><th>Semana</th><th>Comentarios</th><th>Aprobaciones</th><th>Ajustes</th><th>% Inside</th><th>% Cliente</th><th>Tono + / −</th></tr></thead><tbody>${wkRows||`<tr><td colspan="7" class="hint">Sin datos.</td></tr>`}</tbody></table></section>
-    <section><h4>Comentarios clasificados</h4><p class="hint">El Asistente INSIDE clasifica cada comentario del cliente; si una etiqueta no es correcta, cámbiala aquí y los indicadores se recalculan. En gris: todavía sin clasificar.</p>
-      <div class="hsfilters">${`<select data-hsf="lr"><option value="">Todos los responsables</option>${HS_RESP_ORD.map(r=>`<option value="${r}" ${f.lr===r?"selected":""}>${HS_RESP[r]}</option>`).join("")}</select>`}<select data-hsf="lo">${opt(HS_ORIG,f.lo,"Todas las causas")}</select><select data-hsf="lt">${opt(HS_TEMA,f.lt,"Todos los temas")}</select></div>
-      <div class="hsscroll"><table class="hstbl hslist"><thead><tr><th>Fecha</th><th>Quién</th><th>Pieza</th><th>Comentario</th><th>Tipo</th><th>Tema</th><th>Objetividad</th><th>Causa</th><th>Tono</th></tr></thead><tbody>${listRows||`<tr><td colspan="9" class="hint">Sin comentarios con estos filtros.</td></tr>`}</tbody></table></div>
-      ${!f.all&&d.uq.length>60?`<button class="btn ghost sm" data-hsall>Ver todos (${d.uq.length})</button>`:""}</section>
+      ${sinC?`<button class="btn sm" data-hsclass ${S.hsBusy?"disabled":""}>${S.hsBusy?esc(S.hsBusy):`Clasificar ${sinC} comentario${sinC>1?"s":""} nuevo${sinC>1?"s":""}`}</button>`:`<span class="hint">✓ Comentarios clasificados</span>`}</div>
+    ${!S.saludErr&&!(S.salud&&S.salud.size)&&(S.comments||[]).some(c=>orgOf(c)==="cliente")?`<div class="callout">No ves clasificaciones guardadas. Si los comentarios ya se clasificaron, tu acceso a la plataforma necesita ser de Editor para leerlas (el cliente nunca puede verlas).</div>`:""}${S.saludErr?`<div class="callout">No se pudieron leer las clasificaciones guardadas: tu acceso a la plataforma necesita ser de Editor.</div>`:""}
+    <section class="hshero"><div class="hsscore ${sc==null?"":sc>=70?"good":sc>=50?"mid":"bad"}"><span>Índice de salud</span><b class="mono">${sc==null?"—":sc}</b><em>${lab}</em>${scP!=null&&sc!=null?hsDelta(sc,scP,"up",v=>Math.round(v)+" pts"):""}<small>Pondera aprobación a la primera, reproceso de Inside, velocidad de respuesta, pendientes y tono del cliente.</small></div><div class="hskpis">${kpis}</div></section>
+    <nav class="hstabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-hstab="${k}" aria-selected="${f.tab===k}">${esc(l)}</button>`).join("")}</nav>
+    <div class="hsbody">${body}</div>
   </div></div>`;
 }
 const HS_PROMPT=`Eres director de cuentas de la agencia INSIDE (agencia creativa) y analizas comentarios del CLIENTE Payless sobre piezas de contenido orgánico y de medios. Clasifica cada comentario con estas etiquetas:
 - tipo: aprobacion | aprobacion_condicionada (aprueba pero pide un cambio) | cambio | pregunta | informativo (dato, copy, contexto sin pedir cambio) | cancelacion (no hacer, ya no aplica)
 - tema: copy | diseno | marca (logos, colores de marca, playbook) | producto (lote, foto, modelo, oficial) | legal | cta (CTA, URL, canal WhatsApp o en línea) | promo (porcentaje, mecánica) | fechas (vigencia, día de salida) | estrategia (concepto, campaña, producto elegido) | publicacion (país, red, hora) | formato | otro
 - objetividad: objetivo (error verificable: legal, dato, ortografía, URL, logo fuera de playbook, instrucción del brief no cumplida, legibilidad) | subjetivo (gusto, criterio, preferencia)
-- origen (solo si pide cambio, aprueba con cambio o cancela; si no, vacío): error_inside (Inside no cumplió brief, playbook, legal, dato o una indicación ya dada) | propuesta_no_convence (la idea, el copy o el arte no le gusta, sin error verificable) | llego_tarde (ya no aplica porque la pieza llegó tarde) | brief_incompleto (Inside no tenía la información: legal nuevo, indicación nueva que no estaba en el brief) | preferencia_cliente (cambio de criterio o preferencia nueva del cliente) | decision_cliente (decisión de negocio: fechas, promo, cancelar, pauta) | sugerencia_futura (para próximas piezas, no bloquea)
+- origen (solo si pide cambio, aprueba con cambio o cancela; si no, vacío): error_inside (Inside no cumplió brief, playbook, legal, dato o una indicación ya dada) | propuesta_no_convence (la idea, el copy o el arte no le gusta, sin error verificable) | llego_tarde (ya no aplica porque la pieza llegó tarde) | brief_incompleto (Inside no tenía la información) | preferencia_cliente (cambio de criterio o preferencia nueva del cliente) | decision_cliente (decisión de negocio: fechas, promo, cancelar, pauta) | sugerencia_futura (para próximas piezas, no bloquea)
 - tono: positivo | neutro | negativo
-Responde SOLO con un JSON: [{"id":"…","tipo":"…","tema":"…","objetividad":"…","origen":"…","tono":"…"}], un objeto por comentario, con el mismo id.`;
+- reiteracion: true si el cliente repite algo que ya había pedido (en esta u otra pieza) o un ajuste que Inside dijo haber hecho y no se aplicó
+- contradice: true si el cliente cambia una indicación que él mismo había dado antes en la misma pieza
+Usa "historial" (comentarios anteriores de esa pieza) para decidir reiteracion y contradice.
+Responde SOLO con un JSON: [{"id":"…","tipo":"…","tema":"…","objetividad":"…","origen":"…","tono":"…","reiteracion":false,"contradice":false,"nota":"si reiteracion o contradice, una frase que explique"}], un objeto por comentario, con el mismo id.`;
 async function hsClassify(){
   if(!S.sampleFn){toast("Necesita Claude disponible en esta vista.");return}
-  const todo=(S.comments||[]).filter(c=>["comentario","respuesta","cambios"].includes(c.tipo)&&orgOf(c)==="cliente"&&(c.texto||"").trim()&&!(S.salud&&S.salud.has("cl-"+c._id)));
-  const byId=new Map(S.comments.map(c=>[c._id,c])); let done=0;
-  try{for(let i=0;i<todo.length;i+=25){const lote=todo.slice(i,i+25);S.hsBusy=`Clasificando ${i+1}–${i+lote.length} de ${todo.length}…`;renderHS();
-    const items=lote.map(c=>{const pc=hsPiece(c.postId);const par=c.parentId&&byId.get(c.parentId);return {id:c._id,quien:c.personaNombre||c.autorNombre||"",pieza:pc?pc.name:"",texto:(c.texto||"").slice(0,600),responde_a:par?`${par.autorNombre||""}: ${(par.texto||"").slice(0,200)}`:""}});
+  const todo=(S.comments||[]).filter(c=>hsIsCl(c)&&!(S.salud&&S.salud.has("cl-"+c._id)));
+  const byP=new Map();(S.comments||[]).forEach(c=>(byP.get(c.postId)||byP.set(c.postId,[]).get(c.postId)).push(c)); let done=0;
+  try{for(let i=0;i<todo.length;i+=20){const lote=todo.slice(i,i+20);S.hsBusy=`Clasificando ${i+1}–${i+lote.length} de ${todo.length}…`;renderHS();
+    const items=lote.map(c=>{const pc=hsPiece(c.postId);const hist=(byP.get(c.postId)||[]).filter(x=>(x.fecha||"")<(c.fecha||"")&&(x.texto||"").trim()&&["comentario","respuesta","cambios"].includes(x.tipo)).slice(-6).map(x=>`${hsWho(x)} (${orgOf(x)}): ${(x.texto||"").slice(0,160)}`);return {id:c._id,quien:hsWho(c),pieza:pc?pc.name:"",texto:(c.texto||"").slice(0,600),historial:hist}});
     const r=await S.sampleFn.json(`${HS_PROMPT}\n\nCOMENTARIOS:\n${JSON.stringify(items)}`,{cache:false});
     for(const x of (Array.isArray(r)?r:[])){if(!x||!lote.some(c=>c._id===x.id)) continue;
-      const doc={comentarioId:x.id,tipo:HS_TIPO[x.tipo]?x.tipo:"cambio",tema:HS_TEMA[x.tema]?x.tema:"",objetividad:x.objetividad==="subjetivo"?"subjetivo":x.objetividad==="objetivo"?"objetivo":"",origen:HS_ORIG[x.origen]?x.origen:"",tono:["positivo","neutro","negativo"].includes(x.tono)?x.tono:"neutro",por:"ia",modelo:"Asistente INSIDE",fecha:new Date().toISOString()};
+      const doc={comentarioId:x.id,tipo:HS_TIPO[x.tipo]?x.tipo:"cambio",tema:HS_TEMA[x.tema]?x.tema:"",objetividad:x.objetividad==="subjetivo"?"subjetivo":x.objetividad==="objetivo"?"objetivo":"",origen:HS_ORIG[x.origen]?x.origen:"",tono:["positivo","neutro","negativo"].includes(x.tono)?x.tono:"neutro",...(x.reiteracion?{reiteracion:true,notaReit:String(x.nota||"").slice(0,200)}:{}),...(x.contradice?{contradice:true,notaCont:String(x.nota||"").slice(0,200)}:{}),por:"ia",modelo:"Asistente INSIDE",fecha:new Date().toISOString()};
       await S.db.doc("salud/cl-"+x.id).set(doc); S.salud.set("cl-"+x.id,doc); done++}}
     toast(`${done} comentarios clasificados`)}
   catch(e){toast(e&&e.code==="rate_limited"?"Claude está ocupado; intenta en unos minutos.":"No se pudo terminar la clasificación.")}
   finally{S.hsBusy="";renderHS()}
 }
+async function hsUpdateProfile(pid,who){
+  if(!S.sampleFn) return; const cur=S.salud.get("perfil-"+pid)||{};
+  const cs=(S.comments||[]).filter(c=>hsIsCl(c)&&(c.personaId===pid||hsWho(c)===who)).sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||"")).slice(-90).map(c=>({fecha:(c.fecha||"").slice(0,10),pieza:(hsPiece(c.postId)||{}).name||"",texto:(c.texto||"").slice(0,400)}));
+  S.hsBusy=`Actualizando el perfil de ${who}…`;renderHS();
+  try{const r=await S.sampleFn.json(`Eres director de cuentas de la agencia INSIDE. Con los comentarios que ${who} (cliente Payless) ha dejado sobre nuestras piezas, escribe su perfil de aprobación para que el equipo sepa qué le importa. No inventes: todo debe salir de sus comentarios. Español neutro, frases cortas.
+Responde SOLO con un JSON: {"rol":"cargo o alcance que se deduce (regiones, matrices)","resumen":"2 frases","prioriza":["…"],"rechaza":["…"],"estilo":"cómo comenta y aprueba, 1-2 frases","comoTrabajar":["recomendaciones concretas para Inside"]}
+PERFIL ACTUAL: ${JSON.stringify({rol:cur.rol,resumen:cur.resumen,prioriza:cur.prioriza,rechaza:cur.rechaza,estilo:cur.estilo,comoTrabajar:cur.comoTrabajar})}
+COMENTARIOS: ${JSON.stringify(cs)}`,{cache:false});
+    if(r&&r.resumen){const doc={...cur,nombre:cur.nombre||who,personaId:pid,rol:String(r.rol||cur.rol||""),resumen:String(r.resumen),prioriza:(r.prioriza||[]).slice(0,7).map(String),rechaza:(r.rechaza||[]).slice(0,7).map(String),estilo:String(r.estilo||""),comoTrabajar:(r.comoTrabajar||[]).slice(0,6).map(String),por:"ia",actualizado:new Date().toISOString()};
+      await S.db.doc("salud/perfil-"+pid).set(doc);S.salud.set("perfil-"+pid,doc);toast("Perfil actualizado")}}
+  catch(e){toast("No se pudo actualizar el perfil.")}finally{S.hsBusy="";renderHS()}
+}
+async function hsMemo(){
+  if(!S.sampleFn) return; const rg=hsRange(S.hs.per), R=hsCompute(rg.from,rg.to), people=hsPeople(R);
+  const agg={periodo:S.hs.per,piezasRevisadas:R.nP,envios:R.envios,aprobadoPrimera:R.fpy,rondas:R.rondas,respuestaInsideH:R.respMed,respuestaClienteH:R.clMed,envioAprobacionDias:R.cycMed,reprocesoInside:R.insidePct,responsables:R.resp3,repetidos:R.reit.length,contradicciones:R.cont.length,pendientes:R.pend.length,tono:{pos:R.pos,neg:R.neg},
+    causas:Object.fromEntries(Object.keys(HS_ORIG).map(k=>[k,R.aj.filter(x=>x.k.origen===k).length])),erroresRepetidos:hsClusters(R).map(x=>({error:x.l,veces:x.n,despuesDeAvisado:x.rep})),aprobadores:people.map(o=>({nombre:o.who,piezas:o.pz.size,aprobadoPrimera:o.fpy,temas:o.tem}))};
+  S.hsBusy="Escribiendo la lectura…";renderHS();
+  try{const r=await S.sampleFn.json(`Eres el director estratégico y creativo de la agencia INSIDE para la cuenta Payless. Con estos indicadores de la relación con el cliente, escribe una lectura de dirección: 5 a 7 puntos concretos sobre el estado de la cuenta, qué está haciendo mal Inside, qué parte del reproceso es del cliente y qué decisiones tomarías esta semana. Cifras exactas, sin adornos, en español.
+Responde SOLO con un JSON: {"puntos":["…"]}
+INDICADORES: ${JSON.stringify(agg)}`,{cache:false});
+    if(r&&Array.isArray(r.puntos)){const doc={puntos:r.puntos.slice(0,8).map(String),periodo:S.hs.per,fecha:new Date().toISOString(),por:"ia"};await S.db.doc("salud/memo").set(doc);S.salud.set("memo",doc)}}
+  catch(e){toast("No se pudo escribir la lectura.")}finally{S.hsBusy="";renderHS()}
+}
 document.addEventListener("click",async e=>{
   if(e.target.closest("#hsBtn")){hsOpen();return}
   if(!S.hs) return;
   if(e.target.matches("[data-hsclose]")||e.target.closest("button[data-hsclose]")){S.hs=null;renderHS();return}
+  const t=e.target.closest("[data-hstab]"); if(t){S.hs.tab=t.dataset.hstab;S.hs.all=false;renderHS();$("#hsRoot .dialog")?.scrollTo(0,0);return}
   if(e.target.closest("[data-hsclass]")){hsClassify();return}
+  if(e.target.closest("[data-hsmemo]")){hsMemo();return}
+  const pf=e.target.closest("[data-hsprof]"); if(pf){const [pid,who]=pf.dataset.hsprof.split("|");hsUpdateProfile(pid,who);return}
   if(e.target.closest("[data-hsall]")){S.hs.all=true;renderHS();return}
   const o=e.target.closest("[data-hsopen]"); if(o){const [k,id]=o.dataset.hsopen.split("|");S.hs=null;renderHS();if(k==="medio") openMedio(id); else openPost(id);return}
 });
@@ -4519,12 +4686,12 @@ document.addEventListener("change",async e=>{
   if(!S.hs) return;
   const f=e.target.closest("[data-hsf]"); if(f){S.hs[f.dataset.hsf]=f.value;S.hs.all=false;renderHS();return}
   const k=e.target.closest("[data-hsk]"); if(k&&hsAll()){const id=k.dataset.hsk, c=(S.comments||[]).find(x=>x._id===id); if(!c) return;
-    const cur=hsCls(c), doc={comentarioId:id,tipo:cur.tipo,tema:cur.tema||"",objetividad:cur.objetividad||"",origen:cur.origen||"",tono:cur.tono||"neutro",...(S.salud.get("cl-"+id)||{}),[k.dataset.k]:k.value,por:"inside",corregidoPor:S.myId||"",fecha:new Date().toISOString()};
+    const cur=hsCls(c), val=k.type==="checkbox"?k.checked:k.value;
+    const doc={comentarioId:id,tipo:cur.tipo,tema:cur.tema||"",objetividad:cur.objetividad||"",origen:cur.origen||"",tono:cur.tono||"neutro",...(S.salud.get("cl-"+id)||{}),[k.dataset.k]:val,por:"inside",corregidoPor:S.myId||"",fecha:new Date().toISOString()};
     delete doc.heur; S.salud.set("cl-"+id,doc);
     try{await S.db.doc("salud/cl-"+id).set(doc);toast("Clasificación corregida")}catch(err){toast("No se pudo guardar la corrección.")}
     renderHS()}
 });
-
 async function boot(){
   S.month=pickMonth(); render();
   const use=n=>(window.claude&&window.claude.use)?Promise.resolve(window.claude.use(n)).catch(()=>null):Promise.resolve(null);
