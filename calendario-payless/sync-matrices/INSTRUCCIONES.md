@@ -1,21 +1,14 @@
 # Sincronizar las matrices de Payless con el calendario
 
-Estas instrucciones las sigue la tarea programada (cada 2 horas, de 7 am a 9 pm hora Colombia, días hábiles). La tarea compara cada matriz del cliente con la última versión procesada y sube al calendario **solo lo nuevo**.
+Estas son las reglas para aplicar los cambios de una matriz. Las usan la revisión diaria y la revisión rápida descritas en `RUTINA.md`. La tarea compara cada matriz del cliente con la última versión procesada y sube al calendario **solo lo nuevo**.
 
 - Plataforma: https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp
-- Scripts: `sync/leer_matriz.py` y `sync/comparar.py`, publicados junto a la plataforma (léelos con la herramienta Artifact, acción `read`, `path`). Necesitan Python 3 con `python-pptx` y `lxml` (`pip install python-pptx lxml pillow`).
-- Estado de cada matriz: colección `syncmatrices`, documentos `CARIBE`, `RD`, `CENTRO` y `SUR`. Ahí está qué versión se procesó, los comentarios ya importados y qué piezas del calendario corresponden a cada diapositiva (`slides.<id>.posts`).
-
-| Documento | Archivo en SharePoint |
-|---|---|
-| CARIBE | `ING OCT ORGANIC.pptx` |
-| RD | `RD OCT ORG.pptx` |
-| CENTRO | `CAM OCT ORG.pptx` |
-| SUR | `SUR OCT ORGANICO.pptx` |
+- Scripts publicados junto a la plataforma (léelos con la herramienta Artifact, acción `read`, `path`): `sync/leer_matriz.py`, `sync/comparar.py` y `sync/ayudas.py`. Necesitan Python 3 con `python-pptx`, `lxml` y `pillow`.
+- Estado de cada matriz: colección `syncmatrices`, documento `<MATRIZ>-<AAAA-MM>` (por ejemplo `CENTRO-2026-10`). Ahí está qué versión se procesó, los comentarios ya importados y qué piezas del calendario corresponden a cada diapositiva (`slides.<id>.posts`).
 
 ## Pasos en cada corrida
 
-1. **Busca los 4 archivos** en la carpeta sincronizada con OneDrive que indica la tarea. Si un archivo no está o todavía se está descargando (pesa 0 KB o tiene `~$` al inicio), sáltalo y anótalo en el registro.
+1. **Busca los archivos** en la carpeta de Drive como dice `RUTINA.md` (subcarpeta por mes). Si un archivo no se puede descargar, sáltalo y anótalo en el registro.
 2. **Lee el estado** de cada matriz con ArtifactData (`get`, colección `syncmatrices`) y guárdalo como `estado.json`.
 3. **Compara**:
    ```
@@ -34,7 +27,7 @@ Estas instrucciones las sigue la tarea programada (cada 2 horas, de 7 am a 9 pm 
 **Comentarios nuevos** (`comentarios_nuevos`). Cada uno va a la colección `comentarios`, una vez por pieza relacionada:
 - Id del documento: `mx-<cid>-<postId>`. Al ser siempre el mismo, si se repite no se duplica.
 - Campos: `postId`, `texto`, `fecha` (la del comentario con `Z` al final), `tipo` (`comentario` si no tiene `padre`, `respuesta` si lo tiene, con `parentId: "mx-<cid del padre>-<postId>"`), `autorNombre`, `autorOrg`, `personaId`, `personaNombre`, `autorId: ""`, `registradoPor: "Sincronización de matrices"` y `fuente: "Matriz <REGION> · diapositiva N"`.
-- Personas: «Khan, Stephanie» → `p-stephanie-khan` · «Alcantara, Dainy» → `p-dainy-alcantara` · «Quezada, Cristina» → `p-cristina-quezada` (las tres son cliente) · «rolazabal» → `p-roberto` · «Silvana Molano Barreto» → `p-silvana` · «aguerrero» → `p-allison` · «Sunniva Giraldo» → `p-sunny` · «Ariana Fernanda Torrecilla Namaní» → `p-ariana` (Inside). Si el autor no está en la lista, busca en la colección `personas` por nombre o alias. Si no aparece, usa su nombre tal cual y `autorOrg: "inside"`, y anótalo en el registro.
+- Personas: «Khan, Stephanie» → `p-stephanie-khan` · «Alcantara, Dainy» → `p-dainy-alcantara` · «Quezada, Cristina» → `p-cristina-quezada` · «Poveda, Karla» → `p-karla-poveda` · «QUISBERT, CARLA» → `p-carla-quisbert` · «Narino, Nicolas» → `p-nicolas-narino` (todas son cliente) · «rolazabal» → `p-roberto` · «Silvana Molano Barreto» → `p-silvana` · «aguerrero» → `p-allison` · «Sunniva Giraldo» → `p-sunny` · «Ariana Fernanda Torrecilla Namaní» y «atorrecilla@agenciainside.lat» → `p-ariana` · «rguerrero», «david», «amedrano», «eurbano», «ahuata», «epadron» → `p-<usuario>` (Inside). La tabla completa está en `ayudas.PERS`. Si el autor no está en la lista, busca en la colección `personas` por nombre o alias. Si no aparece, usa su nombre tal cual y `autorOrg: "inside"`, y anótalo en el registro.
 - Si el padre ya se había importado antes con otro id (los del barrido manual empiezan con `mz-`), busca en `comentarios` el de esa pieza con el mismo texto y fecha y usa su id como `parentId`.
 
 **Aprobaciones.** Un comentario del cliente que empieza con «aprobado», «aprobada», «aprobadas» o «approved» genera además un documento `tipo: "aprobado"` (id `mx-ap-<cid>-<postId>`). Si la diapositiva corresponde a varias piezas y el comentario menciona un día o un país («las del lunes 5», «para CR, HN»), aplícalo solo a esa pieza. Si la pieza está en «Enviado a cliente» o «Comentarios del cliente», pásala a «Aprobado por cliente» con `cambiosPendientes: false`.
@@ -58,3 +51,28 @@ Estas instrucciones las sigue la tarea programada (cada 2 horas, de 7 am a 9 pm 
 - Agrupa las escrituras en lotes (`batch`, máximo 50).
 - No cambies piezas de otra región ni campos que el cliente no tocó.
 - Al terminar, actualiza `syncmatrices/<REGION>` aunque solo hayan cambiado comentarios, para no volver a procesarlos.
+
+## Estados según el hilo
+
+Usa `ayudas.estado_hilo()` sobre todos los comentarios de la diapositiva. El resultado se aplica solo si la pieza no está «Programado» ni «Publicado» y si nadie la editó después del último comentario.
+
+- Si el último comentario del cliente aprueba («aprobado», «approved», «ok», «video aprobado…»), la pieza pasa a «Aprobado por cliente».
+- Si el cliente pidió cambios e Inside respondió después («ajustado», «done», «corregido»), pasa a «Enviado a cliente».
+- Si el cliente pidió cambios y no hay respuesta de Inside, pasa a «Comentarios del cliente» con `cambiosPendientes: true`.
+- Si no hay comentarios del cliente pero Inside marcó «Diseñado» o «Pieza realizada», pasa a «Enviado a cliente».
+
+## Arte final
+
+- Usa `ayudas.finales2(slide, formato)`. Toma las imágenes visibles dentro de la diapositiva, no tapadas por una capa superior y pesadas, y ordenadas de izquierda a derecha y de arriba abajo. En historias acepta también imágenes livianas con proporción 9:16.
+- Descarta las capturas de pantalla del programa de diseño con `ayudas.es_captura()`.
+- Si en un carrusel el arte es una tira panorámica, córtala en paneles de 4:5.
+- Si la pieza está «Programado» o «Publicado», o el equipo subió el arte a mano después del último comentario, no lo reemplaces.
+
+## Clasificación para Salud de la cuenta (colección `salud`, solo Inside)
+
+- tipo: aprobacion | aprobacion_condicionada | cambio | pregunta | informativo | cancelacion
+- tema: copy | diseno | marca | producto | legal | cta | promo | fechas | estrategia | publicacion | formato | otro
+- objetividad: objetivo (error verificable) | subjetivo (gusto o criterio)
+- origen (solo si pide cambio, aprueba con cambio o cancela): error_inside | propuesta_no_convence | llego_tarde | brief_incompleto | preferencia_cliente | decision_cliente | sugerencia_futura
+- tono: positivo | neutro | negativo
+- reiteracion (+ notaReit), contradice (+ notaCont)

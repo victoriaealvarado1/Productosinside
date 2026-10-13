@@ -1011,6 +1011,10 @@ body.lbon{overflow:hidden}
 .hsbad{color:var(--bad);font-weight:700}
 @media (max-width:900px){.hshero{grid-template-columns:1fr}.hsprof{grid-template-columns:1fr}}
 .hsdlg .hslegend{margin-bottom:8px}
+.hstb{font-style:normal;font-size:10px;font-weight:700;color:var(--ink-3);margin-left:4px}
+.hstb.dsc{color:var(--bad);text-transform:uppercase;letter-spacing:.03em}
+.pc .t2.desc{text-decoration:line-through;color:var(--ink-3)}
+.histnote{margin:8px 0 0;padding:8px 10px;border-radius:8px;background:var(--sunk);color:var(--ink-2);font-size:12px;line-height:1.4}
 .hskpi{font:inherit;text-align:left;color:inherit}
 button.hskpi{cursor:pointer} button.hskpi:hover{border-color:var(--line-strong)} button.hskpi.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
 .hskev{font-style:normal;font-size:11px;font-weight:700;color:var(--accent);margin-top:2px}
@@ -1255,8 +1259,8 @@ function renderSummary(){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
   const vs=visible(); const inM=vs.filter(p=>p.fecha&&p.fecha.startsWith(pre));
   const by=k=>inM.filter(p=>p.tipo===k).length;
-  const env=inM.filter(p=>p.estado==="Enviado a cliente").length;
-  const cam=inM.filter(p=>p.cambiosPendientes).length;
+  const env=inM.filter(p=>p.estado==="Enviado a cliente"&&!p.historico).length;
+  const cam=inM.filter(p=>p.cambiosPendientes&&!p.historico).length;
   const soon=inM.filter(p=>p.fecha>=todayISO&&p.fecha<=iso(new Date(Date.now()+2*864e5))&&!isOk(p)).length;
   const sf=vs.filter(p=>!p.fecha).length;
   $("#summary").innerHTML=`<span><b>${inM.length}</b> publicaciones ${S.f.desde||S.f.hasta?`del ${S.f.desde?fmtDia(S.f.desde):"inicio"} al ${S.f.hasta?fmtDia(S.f.hasta):"fin"}`:"en "+MESES[m]}</span><span><b>${by("feed")}</b> feed · <b>${by("historia")}</b> historias · <b>${by("promo")}</b> promos</span>
@@ -1272,8 +1276,22 @@ function chip(p,opts={}){
   const where=whereLabel(p); const stripe=regStripe(p);
   return `<button class="pc ${colorC(p.estado)} ${(S.clip||[]).includes(p.id)?"clip":""} ${S.sels&&S.sels.has(p.id)?"sel":""} ${stripe?"multi":""}" data-open="${esc(p.id)}" ${drag} data-drag="${esc(p.id)}" ${p.serieId?`data-sid="${esc(p.serieId)}"`:""} style="--rc:${rv(p)};${stripe}" title="${esc((p.headline||p.campana)+" · "+p.estado)}">
     <span class="th ${story?"story":""}" style="${im?`background-image:url('${esc(imgSrc(im))}')`:""}">${im?"":p.tipo==="promo"?"%":story?"◎":"▢"}</span>
-    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span>${isTT(p)?`<span class="ttb">TikTok</span>`:`<span class="fmt">${fmtAbbr(p)}</span>`}${serieTag(p)}${role()==="inside"&&etapaOf(p)&&etapaOf(p)!=="Arte final listo"?`<i class="etb" title="${etapaOf(p)}">${etapaOf(p)==="Boceto"?"✎":"🎨"}</i>`:""}${canEdit()&&repeatsOf(p).length?`<i class="repb" title="Se repite en el feed de un mismo país en menos de 14 días">⚠</i>`:""}<span>${esc(where)}</span></span>
-    <span class="t2">${esc(campDisp(p)||p.headline||"Sin campaña")}${p.campSug&&canEdit()?` <i class="sugdot" title="Sugerencia de campaña por confirmar">✨</i>`:""}</span></span></button>`;
+    <span style="min-width:0"><span class="t1"><span class="sd ${p.cambiosPendientes?"st-cam":estadoC(p.estado)}" ${p.cambiosPendientes?`title="El cliente pidió cambios"`:""}></span><span class="mono">${esc(p.hora||(opts.sf&&p.fechaPropuesta?"prop. "+fmtDia(p.fechaPropuesta):"—"))}</span>${isTT(p)?`<span class="ttb">TikTok</span>`:`<span class="fmt">${fmtAbbr(p)}</span>`}${serieTag(p)}${role()==="inside"&&etapaOf(p)&&etapaOf(p)!=="Arte final listo"?`<i class="etb" title="${etapaOf(p)}">${etapaOf(p)==="Boceto"?"✎":"🎨"}</i>`:""}${canEdit()&&repeatsOf(p).length?`<i class="repb" title="Se repite en el feed de un mismo país en menos de 14 días">⚠</i>`:""}<span>${esc(where)}</span>${histTag(p)}</span>
+    <span class="t2 ${p.descartada?"desc":""}">${esc(campDisp(p)||p.headline||"Sin campaña")}${p.campSug&&canEdit()?` <i class="sugdot" title="Sugerencia de campaña por confirmar">✨</i>`:""}</span></span></button>`;
+}
+/* historial (matrices de meses cerrados): fecha estimada, descartada o sin aprobación registrada */
+function histTag(p){
+  if(p.descartada) return `<i class="hstb dsc" title="El cliente la descartó en la matriz">Descartada</i>`;
+  if(p.fechaEstimada) return `<i class="hstb" title="Fecha estimada: la matriz no trae la fecha de publicación; se ubicó según la aprobación o el último comentario">≈</i>`;
+  return "";
+}
+function histNote(p){
+  const t=[];
+  if(p.historico) t.push(`Pieza del historial (${esc(p.fuente||"matriz")}).`);
+  if(p.fechaEstimada) t.push("La fecha es estimada: la matriz no trae la fecha de publicación y se ubicó según la aprobación o el último comentario del cliente.");
+  if(p.descartada) t.push("El cliente la descartó en la matriz.");
+  else if(p.sinAprobacion) t.push("En la matriz no quedó registrada una aprobación del cliente.");
+  return t.length?`<div class="histnote">🗂 ${t.join(" ")}</div>`:"";
 }
 function monthDays(){
   const [y,m]=S.month; const first=new Date(y,m,1); const start=new Date(first); start.setDate(1-((first.getDay()+6)%7));
@@ -1436,7 +1454,7 @@ const GAPS=[
 const openGaps=new Set(["feedimg"]);
 function renderGaps(){
   const [y,m]=S.month; const pre=`${y}-${pad(m+1)}`;
-  const vs=visible().filter(p=>!p.fecha||p.fecha.startsWith(pre)).sort(sortPosts);
+  const vs=visible().filter(p=>(!p.fecha||p.fecha.startsWith(pre))&&!p.historico).sort(sortPosts);
   const rows=GAPS.map(g=>({g,items:vs.filter(g.f)}));
   const left=`<section class="gaps"><h2 class="vh">Lo que falta</h2><p class="sub">${MESES[m]} · con los filtros de arriba (región, país, tipo).</p>
    ${canEdit()&&S.assets?`<p><button class="btn primary" data-xlsx>Actualizar imágenes desde el Excel</button> <span class="hint">Lee las imágenes pegadas en las casillas VIEW del planning.</span></p>`:""}
@@ -1609,10 +1627,10 @@ function renderSheet(){
       <div class="sheethead"><div style="min-width:0">
         <div class="meta"><span class="rtag" style="--rc:var(${r.var})"><i></i>${esc(regNames(p))}</span><span>${esc(p.paises.join(" · "))}</span><span>·</span><span>${TIPOS[p.tipo]} · ${esc(fmtLabel(p))}</span></div>
         <h2>${esc(p.headline||p.campana||"Publicación")}</h2>
-        <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
+        <div class="meta" style="margin-top:6px"><span class="mono">${p.fecha?(p.fechaEstimada?"≈ ":"")+fmtDia(p.fecha,true):"Por asignar fecha"+(p.fechaPropuesta?` (propuesta ${fmtDia(p.fechaPropuesta)})`:"")}${p.hora?" · "+esc(p.hora):""}</span><span class="badge ${estadoC(p.estado)}"><span class="sd"></span>${esc(p.descartada?"Descartada":p.estado)}</span>${p.campana?`<span>${esc(p.campana)}</span>`:""}</div>
       </div><div class="shact">${canEdit()?`<button class="btn ${S.newId===p.id?"primary":""} sm" data-savepost title="Guarda todo lo escrito y vuelve al calendario">💾 Guardar</button>`:""}<button class="iconbtn x" data-x aria-label="Cerrar">✕</button></div></div>
       ${S.newId===p.id&&canEdit()?`<div class="newhint">✏️ <b>Publicación nueva.</b> Ponle fecha, países, formato y headline, y presiona <b>Guardar</b> para verla en el calendario.</div>`:""}
-      ${approveBox(p)}${pieceLinkBox("post",p)}
+      ${histNote(p)}${approveBox(p)}${pieceLinkBox("post",p)}
       <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${S.openTab===k}">${l}</button>`).join("")}</div>
       <div id="tabBody">${tabBody(p,cms)}</div>
       ${traceBox("post",p)}
@@ -2068,8 +2086,9 @@ function renderViewInner(){
   if(S.f.view==="cms") renderCommentsView("org"); else if(S.f.view==="list") renderList(); else if(S.f.view==="grid") renderGrid(); else if(S.f.view==="gaps"&&role()==="inside") renderGaps(); else renderCal();
 }
 function render(){renderTop();renderFilters();renderView();renderInbox()}
-$("#prevM").onclick=()=>{let [y,m]=S.month;m--;if(m<0){m=11;y--}S.month=[y,m];render()};
-$("#nextM").onclick=()=>{let [y,m]=S.month;m++;if(m>11){m=0;y++}S.month=[y,m];render()};
+function fitRange(){const [y,m]=S.month,a=`${y}-${String(m+1).padStart(2,"0")}-01`,b=`${y}-${String(m+1).padStart(2,"0")}-31`;if((S.f.desde&&S.f.desde>b)||(S.f.hasta&&S.f.hasta<a)){S.f.desde="";S.f.hasta="";persistF()}}
+$("#prevM").onclick=()=>{let [y,m]=S.month;m--;if(m<0){m=11;y--}S.month=[y,m];fitRange();render()};
+$("#nextM").onclick=()=>{let [y,m]=S.month;m++;if(m>11){m=0;y++}S.month=[y,m];fitRange();render()};
 let lastNarrow=null; window.addEventListener("resize",()=>{const n=window.matchMedia("(max-width:760px)").matches;if(n!==lastNarrow){lastNarrow=n;if(S.f.view==="cal"||S.f.section==="all") renderView()}});
 
 function pickMonth(){
@@ -2454,7 +2473,7 @@ document.addEventListener("keydown",e=>{if(S.send&&e.key==="Escape"){S.send=null
 /* bandeja "Por revisar" del cliente y "Enviados" de Inside */
 function pendingItems(){
   const out=[];
-  for(const p of S.posts.values()) if(p.estado==="Enviado a cliente") out.push({kind:"post",id:p.id,en:p.enviadoEn||""});
+  for(const p of S.posts.values()) if(p.estado==="Enviado a cliente"&&!p.historico) out.push({kind:"post",id:p.id,en:p.enviadoEn||""});
   for(const m of (S.medios||new Map()).values()) if(m.estado==="Enviado a cliente") out.push({kind:"medio",id:m.id,en:m.enviadoEn||""});
   return out.sort((a,b)=>(b.en||"").localeCompare(a.en||""));
 }
@@ -2463,7 +2482,7 @@ function renderInbox(){
   const eb=$("#eqBtn"); if(eb) eb.hidden=S.mode!=="live";
   const hb=$("#hsBtn"); if(hb) hb.hidden=!(S.mode==="live"&&S.role==="inside"&&!S.viewAs); if(S.hs&&!hsAll()){S.hs=null;renderHS()}
   const b=$("#inboxBtn"); if(!b) return;
-  const n=pendingItems().length, cms=role()==="inside"?[...S.posts.keys(),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
+  const n=pendingItems().length, cms=role()==="inside"?[...[...S.posts.values()].filter(p=>!p.historico).map(p=>p.id),...(S.medios||new Map()).keys()].reduce((a,id)=>a+threadsOf(id).filter(t=>!t.resuelto&&t.org==="cliente").length,0):0;
   const nw=newClientCount();
   b.hidden=S.mode!=="live"; b.innerHTML=role()==="cliente"?`Por revisar <b>${n}</b>`:`Con el cliente <b>${n}</b>${cms?` · <span title="Comentarios del cliente sin resolver">💬 ${cms}</span>`:""}${nw?`<i class="nbadge" title="Comentarios nuevos del cliente">${nw} nuevos</i>`:""}`;
   b.classList.toggle("hot",role()==="cliente"&&n>0);
@@ -3423,7 +3442,7 @@ function markSeen(){try{localStorage.setItem(seenKey(),new Date().toISOString())
 function pieceById(id){const p=S.posts.get(id);if(p) return {kind:"post",x:p};const m=S.medios&&S.medios.get(id);return m?{kind:"medio",x:m}:null}
 function notifList(){
   const out=[];
-  for(const c of S.comments){if(!["comentario","cambios","respuesta","nota"].includes(c.tipo)) continue;const pc=pieceById(c.postId);if(!pc) continue;
+  for(const c of S.comments){if(!["comentario","cambios","respuesta","nota"].includes(c.tipo)) continue;const pc=pieceById(c.postId);if(!pc||pc.x.historico) continue;
     const top=c.parentId?S.comments.find(x=>x._id===c.parentId):c;
     out.push({c,pc,org:orgOf(c),res:!!(top&&top.resuelto),fecha:c.fecha})}
   for(const m of (S.medios||new Map()).values()) if(m.comentariosSlide) out.push({c:{texto:m.comentariosSlide,autorNombre:"Payless (matriz)",tipo:"comentario",postId:m.id},pc:{kind:"medio",x:m},org:"cliente",res:!!m.slideResuelto,fecha:"",matriz:true});
@@ -4474,7 +4493,7 @@ function hsCompute(from,to){
     const firstAp=[...allCl.filter(x=>x.k.tipo==="aprobacion"||x.k.tipo==="aprobacion_condicionada").map(x=>x.c.fecha),...apDocs.map(c=>c.fecha)].filter(Boolean).sort()[0]||null;
     const first=allCl.filter(x=>x.k.tipo!=="informativo")[0];
     const days=new Set(allCl.filter(x=>(x.k.tipo==="cambio"||x.k.tipo==="aprobacion_condicionada")&&(!firstAp||x.c.fecha<=firstAp)).map(x=>(x.c.fecha||"").slice(0,10)));
-    const cancel=allCl.some(x=>x.k.tipo==="cancelacion");
+    const cancel=allCl.some(x=>x.k.tipo==="cancelacion")||!!pc.x.descartada;
     const ok=!!firstAp||["Aprobado por cliente","Programado","Publicado"].includes(pc.x.estado);
     const start=(env[0]||{}).fecha||(first&&first.c.fecha);
     if(firstAp&&start&&firstAp>start&&inR(firstAp)) R.cyc.push(hsH(start,firstAp)/24);
@@ -4482,7 +4501,7 @@ function hsCompute(from,to){
     for(const x of cl){if(!["cambio","aprobacion_condicionada","pregunta"].includes(x.k.tipo)) continue;
       const r=l.find(c=>hsIsIn(c)&&(c.fecha||"")>(x.c.fecha||""));
       if(r) R.resp.push({h:hsH(x.c.fecha,r.fecha),by:r.personaNombre||r.autorNombre||(r.tipo==="envio"?"Envío":"Inside"),x});
-      else if(!ok&&!cancel) R.pend.push({x,h:hsH(x.c.fecha,new Date().toISOString())});}
+      else if(!ok&&!cancel&&!pc.x.historico) R.pend.push({x,h:hsH(x.c.fecha,new Date().toISOString())});}
     for(let i=0;i<l.length;i++){const c=l[i];if(!hsIsIn(c)||!inR(c.fecha)) continue;const n=l.slice(i+1).find(hsIsCl);if(n) R.clResp.push({h:hsH(c.fecha,n.fecha),who:hsWho(n)});}
   }
   const seen=new Set(); R.uq=R.cc.filter(x=>{const k=(x.c.texto||"").trim()+"|"+(x.c.fecha||"").slice(0,16);if(seen.has(k)) return false;seen.add(k);return true});
