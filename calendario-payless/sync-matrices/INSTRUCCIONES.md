@@ -72,7 +72,11 @@ Usa `ayudas.estado_hilo()` sobre todos los comentarios de la diapositiva. El res
 
 - tipo: aprobacion | aprobacion_condicionada | cambio | pregunta | informativo | cancelacion
 - tema: copy | diseno | marca | producto | legal | cta | promo | fechas | estrategia | publicacion | formato | otro
-- objetividad: objetivo (error verificable) | subjetivo (gusto o criterio)
-- origen (solo si pide cambio, aprueba con cambio o cancela): error_inside | propuesta_no_convence | llego_tarde | brief_incompleto | preferencia_cliente | decision_cliente | sugerencia_futura
 - tono: positivo | neutro | negativo
 - reiteracion (+ notaReit), contradice (+ notaCont)
+
+Lo deciden solo el Estratega INSIDE (`ESTRATEGA.md`) o una persona de Inside, nunca a partir del comentario solo:
+
+- objetividad: objetivo (error verificable) | subjetivo (gusto o criterio)
+- origen (solo si pide cambio, aprueba con cambio o cancela): error_inside | propuesta_no_convence | llego_tarde | brief_incompleto | preferencia_cliente | decision_cliente | pedido_sin_sustento | sugerencia_futura
+- fundamento: fundamentado | discutible | sin_fundamento (+ notaEstratega)

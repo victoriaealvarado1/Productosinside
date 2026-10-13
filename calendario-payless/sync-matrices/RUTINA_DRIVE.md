@@ -5,7 +5,7 @@ Hay dos corridas que siguen estas mismas instrucciones:
 - **Revisión diaria (todos los días, 11:53 am hora Lima/Colombia).** Revisa toda la carpeta, incluidas las subcarpetas de cada mes, y deja el calendario al día con todo lo que falte.
 - **Revisión rápida (cada hora, de lunes a sábado, de 7 am a 8 pm, salvo el mediodía).** Mira solo si cambió algún archivo. Si no cambió nada, termina sin escribir.
 
-Plataforma: https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp. Archivos de apoyo publicados en la plataforma (léelos con la herramienta Artifact, acción `read`, `path`): `sync/RUTINA.md` (este documento), `sync/INSTRUCCIONES.md` (reglas para aplicar cambios), `sync/leer_matriz.py`, `sync/comparar.py` y `sync/ayudas.py` (detección del arte final, personas, estados, fechas del historial y TikTok).
+Plataforma: https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp. Archivos de apoyo publicados en la plataforma (léelos con la herramienta Artifact, acción `read`, `path`): `sync/RUTINA.md` (este documento), `sync/INSTRUCCIONES.md` (reglas para aplicar cambios), `sync/leer_matriz.py`, `sync/comparar.py` y `sync/ayudas.py` (detección del arte final, personas, estados, fechas del historial y TikTok) y `sync/ESTRATEGA.md` (el Estratega INSIDE para la Salud de la cuenta).
 
 ## 1. Qué hay en la carpeta
 
@@ -76,35 +76,54 @@ Guarda `estado_nuevo.json` en `syncmatrices/<MATRIZ>-<AAAA-MM>` con:
 - `drive: {carpeta, fileId, modifiedTime, size, titulo}`;
 - `region` y `mes`.
 
-## 6. Salud de la cuenta, perfiles y aprendizajes
+## 6. Salud de la cuenta: el Estratega INSIDE, perfiles y aprendizajes
 
-**Clasificación.** Clasifica cada comentario del CLIENTE que no tenga `salud/cl-<id del comentario>`, incluidos los de la plataforma. Escribe:
+La Salud de la cuenta no se arma solo con lo que dice el cliente. Cada pieza con pedidos de cambio la revisa el **Estratega INSIDE** (`sync/ESTRATEGA.md`), que mira el arte y juzga con objetividad.
+
+**1. Clasificación descriptiva.** Para cada comentario del CLIENTE que no tenga `salud/cl-<id del comentario>` (de las matrices o de la plataforma), escribe:
 
 ```
-{comentarioId, tipo, tema, objetividad, origen, tono, reiteracion, notaReit, contradice, notaCont, por: "ia", modelo: "Asistente INSIDE", fecha}
+{comentarioId, tipo, tema, tono, reiteracion, notaReit, contradice, notaCont, objetividad: "", origen: "", por: "ia", modelo: "Asistente INSIDE", fecha}
 ```
 
-Usa los valores de la taxonomía de `INSTRUCCIONES.md`. Lee el historial de la pieza y los perfiles `salud/perfil-*`. La colección `salud` solo la ve Inside: nunca copies sus etiquetas a otra colección.
+Usa la taxonomía de `INSTRUCCIONES.md`. No decidas aquí la causa ni la objetividad: eso lo hace el estratega.
 
-**Perfiles.** Solo en la revisión diaria: si una persona del cliente suma 10 o más comentarios clasificados desde la fecha `actualizado` de su perfil, actualiza `salud/perfil-<personaId>`:
+**2. Revisión del estratega.** Revisa cada pieza que tenga pedidos del cliente (`tipo` cambio, aprobación con cambios o cancelación) sin `salud/rev-<pieza>`, o con pedidos posteriores a la `fecha` de esa revisión. Sigue `ESTRATEGA.md`:
+
+- abre el arte (descarga el asset con la herramienta Artifact, acción `read` y `path` igual al id del asset, y míralo);
+- lee la pieza, la campaña, los aprendizajes de `redaccion/marca` y el hilo completo;
+- juzga con los criterios vigentes en la fecha de la pieza.
+
+Escribe:
+
+- `salud/rev-<pieza>` con el veredicto;
+- en cada `salud/cl-<comentario>` de esos pedidos: `objetividad`, `origen`, `fundamento`, `notaEstratega` y `porEstratega: true`.
+
+No toques los documentos `cl-` que tengan `por: "inside"`: son correcciones de una persona.
+
+**3. Perfiles.** Solo en la revisión diaria. Si una persona del cliente suma 10 o más comentarios clasificados desde la fecha `actualizado` de su perfil, actualiza `salud/perfil-<personaId>`:
 
 - resumen, prioriza, rechaza, estilo, comoTrabajar;
 - `actualizado` y `fuente`.
 
-**Aprendizajes.** Solo en la revisión diaria: si en los comentarios nuevos aparece una regla que el cliente repite (2 o más veces) o una directriz explícita, crea una propuesta `redaccion/prop-<id>` con este formato:
+Cuando hables de qué tan justos son sus pedidos, usa los veredictos del estratega, no el tono de sus comentarios.
+
+**4. Aprendizajes.** Solo en la revisión diaria. Si en los comentarios nuevos aparece una regla que el cliente repite (2 o más veces) o una directriz explícita, crea una propuesta `redaccion/prop-<id>`:
 
 ```
 {tipo: "prop", texto, categoria, alcance, fuerza, evidencias: [{cita, quien, fecha, fuente: "comentario"}], relacion, relacionCon, recomendacion, creado}
 ```
 
-No la apliques: Inside la aprueba en el Asistente INSIDE.
+Si el estratega juzgó esos pedidos «sin sustento», dilo en `recomendacion`. No la apliques: Inside la aprueba en el Asistente INSIDE.
+
+La colección `salud` solo la ve Inside: nunca copies sus etiquetas ni los veredictos del estratega a otra colección.
 
 ## 7. Registro
 
 Escribe `synclog/<AAAA-MM-DDTHH-MM>` (hora UTC) con:
 
 ```
-{fecha, resumen, matrices: {"<MATRIZ>-<MES>": "sin cambios" | "N cambios" | "historial cargado" | "no se pudo descargar"}, clasificados, detalle}
+{fecha, resumen, matrices: {"<MATRIZ>-<MES>": "sin cambios" | "N cambios" | "historial cargado" | "no se pudo descargar"}, clasificados, revisadas, detalle}
 ```
 
 - La revisión diaria lo escribe siempre.
