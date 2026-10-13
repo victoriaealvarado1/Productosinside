@@ -477,7 +477,50 @@ Región → país, tipo (Feed / Historias / Promos), línea de campaña, estado,
 - Promos separadas del feed, en historias.
 - Feed por país con lo que realmente se publica.
 
-### 9.4 Feedback del cliente aún no incorporado
+### 9.4 Actualización del 13 de octubre: historial, Estratega INSIDE y tarea diaria
+
+**Matrices de octubre (versión del 13 oct).** Aplicadas:
+- 4 piezas nuevas;
+- 50 piezas actualizadas;
+- 211 comentarios, aprobaciones y notas.
+
+El estado de cada matriz queda en `syncmatrices/<MATRIZ>-2026-10`. Los documentos sin mes (`CENTRO`, `SUR`, `RD`, `CARIBE`) quedaron en desuso.
+
+**Historial de julio a septiembre.**
+- Se cargaron 424 piezas con id `h<MM>-<región>-s<NN>` y 2.110 comentarios.
+- Llevan `historico: true`. Con `fechaEstimada: true` se muestran con «≈» cuando la matriz no trae la fecha. Las descartadas aparecen tachadas.
+- No cuentan en pendientes, bandeja ni huecos.
+- 66 reels y TikTok no tienen video porque el almacenamiento de la plataforma está lleno. Muestran la portada y el aviso «está en la matriz», con enlace a Drive (`videoEnMatriz`, `matrizUrl`).
+- Quedan por relacionar:
+  - `h09-cen-s70`, `s71` y `s72` (se parecen a piezas de octubre);
+  - la diapositiva 57 de SUR septiembre.
+- El estado de cada matriz histórica está en `syncmatrices/<MATRIZ>-2026-07|08|09`.
+- `TIKTOK-2026-07` es un archivo de planificación: no se cargó.
+
+**Estratega INSIDE (Salud de la cuenta).**
+- `sync-matrices/ESTRATEGA.md` define al agente que revisa cada pieza con pedidos de cambio. Mira el arte, el copy, la campaña, los lineamientos y el hilo, y juzga con los criterios vigentes en la fecha de la pieza: julio a septiembre con el enfoque anterior, octubre con Set26.
+- Escribe `salud/rev-<pieza>`. En cada `salud/cl-<comentario>` agrega `fundamento`, `notaEstratega` y `porEstratega`.
+- La causa y la objetividad de un pedido solo cuentan si las fijó el estratega o una persona de Inside. El clasificador por comentario ya no las decide.
+- En la plataforma:
+  - pestaña «Lectura del estratega»;
+  - KPI «Pedidos del cliente con sustento»;
+  - columna «Sustento»;
+  - botón «Revisar con el estratega» (manda las imágenes a Claude: `sample.images`);
+  - recuadro en la ficha, solo Inside.
+- Primera revisión: 372 piezas y 622 pedidos.
+  - El 80% de los pedidos del cliente tenía sustento y el 19% era discutible.
+  - El reproceso por pedido: Inside 54%, cliente 37% y proceso 10%. La clasificación anterior, solo por el comentario, decía Inside 76%.
+
+**Tareas programadas.**
+- Revisión diaria: `trig_01GhqaEnqvKGEEfV4ZURhJ9D`, todos los días a las 11:53 de Bogotá/Lima, en una sesión nueva.
+- Revisión rápida: `trig_01LJK9j318APLmnjxZkBiRVo`, cada hora de lunes a sábado, de 7 a 20, salvo el mediodía.
+- Ambas siguen `sync/RUTINA.md`. No usan conectores: Drive se lee por enlace, así que las carpetas deben seguir compartidas por enlace.
+
+**Almacenamiento de archivos.** Está lleno: 1 GB, 891 archivos. 120 archivos que ninguna pieza usa ocupan 206 MB, y 29 de ellos (122 MB) son copias exactas. Solo se borran si Inside lo aprueba. Mientras siga lleno, el equipo no puede subir artes nuevos desde la plataforma.
+
+**Por confirmar con la marca por escrito:** el criterio de casting por país (comentario del 07-10 en `cen-n-muwljq2ctnk`).
+
+### 9.5 Feedback del cliente aún no incorporado
 
 - Copy más corto y joven, validado por mercado.
 - Lanzamiento de Sneakers con carrusel, story y cuenta regresiva.
