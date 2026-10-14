@@ -22,6 +22,6 @@ Con la URL final se genera el QR. Conviene probarlo en el teléfono que se va a 
 
 ## Editar textos
 
-Todo el contenido está en el `<script>` de `index.html`: los seis tiempos en `CARTA`, la pantalla final en `CIERRE`. La portada está en el HTML.
+Todo el contenido está en el `<script>` de `index.html`: los seis tiempos en `CARTA` (la pantalla final repite sus títulos). La portada está en el HTML.
 
 La velocidad de escritura se ajusta con `VELOCIDAD` (1 = normal, 1.5 más rápido).
