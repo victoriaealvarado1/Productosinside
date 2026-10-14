@@ -558,7 +558,7 @@ El estado de cada matriz queda en `syncmatrices/<MATRIZ>-2026-10`. Los documento
 - Los 10 videos de piezas de octubre ya publicadas (105 MB) se reemplazaron por su portada. Las piezas llevan `videoEnMatriz: true` y la ficha enlaza a la matriz (Drive o el SharePoint de Payless, campo `link`).
 - El historial de julio a septiembre pasó a miniaturas livianas: 402 imágenes de 560 px, unos 13 MB, en lugar de 229 MB. Los 21 videos quedaron como portada con enlace a la matriz. Las piezas llevan `miniatura: true`. Los originales siguen en las matrices de Drive.
 - No se tocaron los medios terminados (33 MB) ni los vigentes.
-
+- Resultado: 556 MB de 1.024 (54%) y 745 archivos. Ya hay espacio para subir artes nuevos y los videos de medios mientras estén vigentes.
 ### 9.6 Feedback del cliente aún no incorporado
 
 - Copy más corto y joven, validado por mercado.
