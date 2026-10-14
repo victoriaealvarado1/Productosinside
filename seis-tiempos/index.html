@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seis tiempos</title>
+<meta name="description" content="Una historia que no estaba en la carta.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F1EBE0">
+<meta property="og:title" content="Seis tiempos">
+<meta property="og:description" content="Una historia que no estaba en la carta.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F1EBE0'/%3E%3Ctext x='32' y='47' font-family='Georgia,serif' font-size='44' text-anchor='middle' fill='%231E1A16'%3E6%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&display=swap">
+<style>
+/* Layout: una carta de degustación en una sola columna. Portada centrada como la tapa de un menú;
+   adentro, numeral grande colgado, filetes finos entre plato / historia / pausa, y la pausa como una franja de otro papel. */
+:root {
+  --paper: #F1EBE0;      /* marfil, papel de carta */
+  --card: #E7DECF;       /* segundo papel: la pausa */
+  --ink: #1E1A16;        /* tinta */
+  --ink-2: #5A524A;      /* tinta secundaria */
+  --ink-3: #9B9085;      /* numerales, apenas */
+  --rule: #CDC2B2;       /* filetes */
+  --warm: #8A5B25;       /* mantequilla tostada: el único acento */
+  --scrim: rgba(30, 26, 22, .32);
+
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Jost", "Futura", "Avenir Next", "Century Gothic", "Helvetica Neue", Arial, sans-serif;
+
+  --measure: 30rem;
+  --gutter: clamp(1.5rem, 6.4vw, 2.5rem);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* grano de papel, muy leve */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--warm); color: var(--paper); }
+
+p, h1, h2, ol, blockquote { margin: 0; }
+
+html.lock, html.lock body { overflow: hidden; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+:focus-visible { outline: 1px solid var(--warm); outline-offset: 4px; }
+[tabindex="-1"]:focus { outline: none; }
+
+main { position: relative; z-index: 1; }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* etiquetas pequeñas, como en una carta */
+.micro {
+  font: 500 .6875rem/1.4 var(--sans);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── botones ───────── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0 1.25rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  font: 500 .75rem/1 var(--sans);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color .3s ease, color .3s ease;
+}
+.btn svg { width: 1.9rem; height: .7rem; flex: none; transition: transform .3s var(--ease); }
+.btn:active { background: var(--ink); color: var(--paper); }
+@media (hover: hover) {
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn:hover svg { transform: translateX(3px); }
+}
+
+.link, .back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink-2);
+  font: 500 .6875rem/1 var(--sans);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.link span { border-bottom: 1px solid currentColor; padding-bottom: .3rem; }
+.link { color: var(--ink); }
+
+/* ───────── portada ───────── */
+.cover {
+  min-height: 100vh;
+  min-height: calc(100svh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  text-align: center;
+  padding-block: 1.75rem 2.25rem;
+}
+.cover-top { display: flex; justify-content: center; }
+.cover-mid { display: grid; align-content: center; justify-items: center; padding-block: 3rem; }
+.cover-title {
+  font-weight: 300;
+  font-size: clamp(3rem, 15.5vw, 5.25rem);
+  line-height: .94;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  margin-right: -.07em; /* compensa el tracking para centrar de verdad */
+}
+.cover-rule { width: 2.5rem; height: 1px; background: var(--ink); margin: 2rem auto 0; }
+.cover-sub {
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+  max-width: 15rem;
+  margin-top: 1.5rem;
+  text-wrap: balance;
+}
+.cover-bottom { display: grid; justify-items: center; gap: 1.25rem; }
+.cover .btn { width: auto; min-width: 13rem; justify-content: center; padding-inline: 2.25rem; }
+
+/* ───────── barra superior ───────── */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+}
+.ticks { display: flex; gap: 5px; }
+.ticks i { display: block; width: 14px; height: 2px; background: var(--rule); }
+.ticks i.done { background: var(--ink-2); }
+.ticks i.now { background: var(--warm); }
+
+/* ───────── tiempo ───────── */
+.head { margin-top: clamp(2.75rem, 9vh, 4.5rem); }
+.num {
+  font-family: var(--serif);
+  font-weight: 200;
+  font-size: clamp(5.5rem, 29vw, 8.5rem);
+  line-height: .78;
+  letter-spacing: -.045em;
+  color: var(--num-color, var(--ink-3));
+  font-variant-numeric: lining-nums;
+  margin-left: -.05em;
+}
+.title {
+  font-weight: 400;
+  font-size: clamp(1.8rem, 8.2vw, 2.45rem);
+  line-height: 1.05;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-top: 1.4rem;
+  text-wrap: balance;
+}
+
+.dish { display: grid; gap: .45rem; margin-top: 1.9rem; }
+.dish-name { font-style: italic; font-size: 1.3125rem; line-height: 1.25; }
+.dish-ing { font: 400 .875rem/1.5 var(--sans); letter-spacing: .03em; color: var(--ink-2); }
+.dish-note { margin-top: .15rem; }
+
+.rule {
+  border: 0;
+  height: 1px;
+  background: var(--rule);
+  margin: 1.9rem 0 2.25rem;
+  transform-origin: left center;
+}
+
+.story {
+  display: grid;
+  gap: 1.05em;
+  font-size: 1.1875rem;
+  line-height: 1.58;
+  text-wrap: pretty;
+}
+.story p:last-child { margin-top: .9em; }
+
+.quote { margin-top: 3rem; }
+.quote::before {
+  content: "\201C";
+  display: block;
+  font: 300 4.25rem/.55 var(--serif);
+  color: var(--warm);
+  margin-bottom: .55rem;
+}
+.quote p {
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 6.4vw, 1.85rem);
+  line-height: 1.26;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.reveal { display: grid; gap: .9rem; margin-top: clamp(5rem, 24vh, 9rem); }
+.reveal-big {
+  font-weight: 300;
+  font-size: clamp(2.3rem, 10.5vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.reveal-line { font-style: italic; font-size: 1.25rem; line-height: 1.4; color: var(--ink-2); }
+
+/* la pausa: otra hoja dentro de la carta */
+.pausa {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 3.25rem;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 2rem var(--gutter) 1.75rem;
+  background: var(--card);
+}
+.pausa-label { color: var(--warm); }
+.pausa-intro { font-style: italic; font-size: 1.3125rem; line-height: 1.3; color: var(--warm); }
+
+.q { display: grid; gap: .8rem; }
+.q + .q { border-top: 1px solid var(--rule); padding-top: 1.6rem; }
+.q-text { font-size: 1.375rem; line-height: 1.3; text-wrap: pretty; }
+.q-text.is-frase { font-style: italic; font-size: 1.5rem; line-height: 1.3; }
+.q-note { font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); }
+.q-remate { font-style: italic; font-size: 1.1875rem; color: var(--warm); }
+.house { display: grid; gap: .35rem; margin-top: .4rem; }
+.house-text { font-size: 1.0625rem; line-height: 1.45; color: var(--ink-2); }
+
+.note-toggle {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 2.75rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink-2);
+  font: 500 .6875rem/1 var(--sans);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.note-toggle::before { content: ""; width: 1.25rem; height: 1px; background: currentColor; }
+
+.field { display: grid; gap: .45rem; }
+.field textarea {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: .35rem 0 .5rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink-2);
+  border-radius: 0;
+  color: var(--ink);
+  font: italic 400 1.0625rem/1.5 var(--serif);
+  resize: none;
+  overflow: hidden;
+}
+.field textarea:focus { outline: none; border-bottom-color: var(--warm); }
+.field-hint { font: 400 .75rem/1.4 var(--sans); letter-spacing: .02em; color: var(--ink-2); }
+
+.cierre { font-style: italic; font-size: 1.25rem; line-height: 1.4; color: var(--ink-2); margin-top: 2.75rem; }
+
+.next { display: grid; gap: .5rem; margin-top: 3.25rem; padding-bottom: 3rem; }
+.next .back { justify-self: start; }
+
+/* ───────── cierre ───────── */
+.head-final { display: flex; align-items: baseline; gap: .9rem; }
+.head-final .title { margin-top: 0; }
+.sign { display: grid; gap: .5rem; margin-top: 3rem; }
+.wish { font-size: 1.5rem; line-height: 1.3; }
+.by { font-style: italic; font-size: 1.25rem; color: var(--ink-2); }
+
+.index {
+  list-style: none;
+  padding: 1.5rem 0 0;
+  margin-top: 3.5rem;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: .4rem;
+}
+.index li { display: flex; align-items: baseline; gap: 1rem; font-size: 1.0625rem; color: var(--ink-2); }
+.index li span { font: 500 .6875rem/1 var(--sans); letter-spacing: .14em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.colophon { display: grid; gap: .3rem; margin-top: 2.75rem; }
+.today { font-style: italic; font-size: 1.875rem; line-height: 1.2; margin-top: .6rem; }
+
+.final-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* ───────── guardar ───────── */
+.sheet { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; }
+.sheet-scrim { position: absolute; inset: 0; background: var(--scrim); animation: fade .3s ease both; }
+.sheet-panel {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  max-height: 90vh;
+  margin-inline: auto;
+  overflow-y: auto;
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem var(--gutter) calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  gap: 1rem;
+  animation: rise .4s var(--ease) both;
+}
+.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.sheet-title { font-weight: 400; font-size: 1.5rem; line-height: 1.2; }
+.sheet-lede { font-style: italic; font-size: 1.0625rem; color: var(--ink-2); }
+.export {
+  display: block;
+  width: 100%;
+  height: min(44vh, 22rem);
+  padding: 1rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 0;
+  border-radius: 0;
+  font: 400 1rem/1.55 var(--sans);
+  resize: none;
+}
+.sheet-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .6rem; }
+.sheet-actions .btn { justify-content: center; min-height: 3.25rem; }
+.status { min-height: 1.4em; font: 400 .8125rem/1.4 var(--sans); color: var(--warm); }
+.wipe { display: grid; gap: .25rem; border-top: 1px solid var(--rule); padding-top: .75rem; }
+.wipe p { font-size: 1rem; color: var(--ink-2); }
+.wipe-row { display: flex; gap: 1.5rem; }
+.link.is-quiet { color: var(--ink-2); }
+
+/* ───────── movimiento ───────── */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.screen { transition: opacity .3s ease, transform .3s ease; }
+.screen.is-leaving { opacity: 0; transform: translateY(-6px); }
+.screen.is-entering .num   { animation: rise 1s var(--ease) both; }
+.screen.is-entering .title { animation: rise 1s .14s var(--ease) both; }
+.screen.is-entering .dish  { animation: fade .9s .4s ease both; }
+.screen.is-entering .rule  { animation: draw 1.2s .5s cubic-bezier(.6, 0, .2, 1) both; }
+.screen.is-entering .rest  { animation: fade 1s .7s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="app">
+
+  <!-- PORTADA -->
+  <section class="screen cover wrap" data-screen="cover" aria-labelledby="cover-title">
+    <div class="cover-top"><p class="micro">13.10.26</p></div>
+    <div class="cover-mid">
+      <h1 class="cover-title" id="cover-title" tabindex="-1">Seis<br>tiempos</h1>
+      <div class="cover-rule" aria-hidden="true"></div>
+      <p class="cover-sub">Una historia que no estaba en la carta.</p>
+    </div>
+    <div class="cover-bottom">
+      <button type="button" class="btn" data-go="1">Comenzar</button>
+    </div>
+  </section>
+
+  <!-- Los seis tiempos se arman desde el bloque CARTA, más abajo -->
+
+  <!-- CIERRE -->
+  <section class="screen final" data-screen="final" aria-labelledby="final-title" hidden>
+    <header class="bar wrap" data-bar="7"></header>
+    <div class="wrap">
+      <header class="head head-final">
+        <p class="num" aria-hidden="true">6</p>
+        <h2 class="title" id="final-title" tabindex="-1"><span class="sr-only">6 </span>meses.</h2>
+      </header>
+      <hr class="rule">
+      <div class="rest">
+        <div class="story">
+          <p>Hay cosas que ya son nuestras.<br>Hay cosas que todavía estamos entendiendo.<br>Hay cosas que probablemente nunca vamos a entender.<br>Y hay muchas que todavía no han pasado.</p>
+          <p>Me gusta bastante eso.</p>
+        </div>
+        <div class="sign">
+          <p class="wish">Feliz seis meses.</p>
+          <p class="by">— V.</p>
+        </div>
+        <ol class="index" id="index"></ol>
+        <footer class="colophon">
+          <p class="micro">Archivo 01</p>
+          <p class="micro">13.10.26 · Lima</p>
+          <p class="today">Hoy.</p>
+        </footer>
+        <div class="final-actions">
+          <button type="button" class="link" id="open-save"><span>Guardar mis respuestas</span></button>
+          <button type="button" class="back" data-go="6">Volver</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- GUARDAR MIS RESPUESTAS -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-scrim" data-close></div>
+  <div class="sheet-panel">
+    <div class="sheet-head">
+      <h2 class="sheet-title" id="sheet-title" tabindex="-1">Mis respuestas</h2>
+      <button type="button" class="link is-quiet" data-close>Cerrar</button>
+    </div>
+    <p class="sheet-lede">Para guardarlas donde quieras.</p>
+    <textarea class="export" id="export" readonly aria-label="Texto de mis respuestas"></textarea>
+    <div class="sheet-actions">
+      <button type="button" class="btn" id="copy">Copiar</button>
+      <button type="button" class="btn" id="download">Descargar</button>
+    </div>
+    <p class="status" id="status" aria-live="polite"></p>
+    <div class="wipe">
+      <button type="button" class="link is-quiet" id="wipe"><span>Borrar todo de este teléfono</span></button>
+      <div id="wipe-confirm" hidden>
+        <p>Se borran las respuestas y la carta vuelve al principio.</p>
+        <div class="wipe-row">
+          <button type="button" class="link" id="wipe-yes"><span>Sí, borrar</span></button>
+          <button type="button" class="link is-quiet" id="wipe-no">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CARTA — todo el texto de los seis tiempos vive aquí.
+   historia: cada grupo [ ] es un párrafo; cada línea dentro, un salto.
+   pausa.items: preguntas. opcional: true las marca como opcionales.
+   ═══════════════════════════════════════════════════════════════ */
+const CARTA = [
+  {
+    n: '01',
+    titulo: 'Primeras impresiones',
+    plato: 'Carpaccio de lomito',
+    ingredientes: 'Lomito · aceitunas · queso · aceite de oliva',
+    historia: [
+      ['Hay cosas que uno prueba sin saber muy bien qué esperar.'],
+      ['Al principio ves lo que tienes enfrente y crees que ya entendiste.'],
+      ['A veces aciertas.', 'A veces no tanto.'],
+      ['Y después, cuando vuelves a probar, aparecen cosas que no habías notado la primera vez.'],
+      ['Supongo que con las personas pasa algo parecido.']
+    ],
+    pausa: {
+      etiqueta: 'Antes del primer bocado',
+      items: [
+        { id: 't1-a', texto: '¿Qué fue lo primero que pensaste de mí?' },
+        { id: 't1-b', texto: '¿Qué fue lo primero que pensaste de mí que estaba completamente equivocado?' }
+      ]
+    },
+    cierre: 'No todo se entiende en el primer bocado.',
+    boton: 'Siguiente tiempo'
+  },
+  {
+    n: '02',
+    titulo: 'Punto de fuego',
+    plato: 'Champiñones salteados en mantequilla',
+    ingredientes: 'Champiñones · mantequilla · pimienta',
+    historia: [
+      ['Los champiñones tienen algo raro.', 'Al principio parecen fáciles.'],
+      ['Los pones en la sartén y empiezan a soltar todo lo que tienen. Durante un rato parecen aguados, desordenados, como si algo estuviera saliendo mal.'],
+      ['Hay que esperar.'],
+      ['No todo se arregla moviéndolo más.', 'Y tampoco todo se arregla subiendo el fuego.'],
+      ['A veces solo hay que dejar que pase un rato.', 'Y ver qué queda después.']
+    ],
+    pausa: {
+      intro: 'Esta no es tan bonita.',
+      items: [
+        {
+          id: 't2-a',
+          texto: '¿Cuál ha sido el momento más incómodo que hemos vivido juntos?',
+          nota: ['No el más grave.', 'El más incómodo.', 'Ese que en el momento quisiste desaparecer y ahora probablemente te da risa.']
+        },
+        { id: 't2-b', opcional: true, texto: '¿Hay alguno que hoy te dé risa y que en ese momento no te diera ninguna?' }
+      ]
+    },
+    boton: 'Siguiente tiempo'
+  },
+  {
+    n: '03',
+    titulo: 'Lo que no se ve',
+    plato: 'Caldito de pollo',
+    ingredientes: 'Caldo de pollo · pollo desmechado · hierbas',
+    historia: [
+      ['Hay cosas que no se notan de inmediato.', 'Un buen caldo no parece tener demasiado.'],
+      ['Pero hay algo ahí.'],
+      ['Tiempo.', 'Paciencia.', 'Cosas que estuvieron pasando mientras nadie estaba mirando.'],
+      ['Y quizás hay personas que también se conocen así.'],
+      ['No por lo que hacen cuando todo está pasando, sino por lo que empiezas a notar cuando ya te quedaste un rato.']
+    ],
+    pausa: {
+      intro: 'Ahora una que sí quiero saber.',
+      items: [
+        {
+          id: 't3-a',
+          texto: '¿Qué descubriste de mí que no esperabas descubrir?',
+          nota: ['No algo que te guste.', 'Algo que simplemente no sabías que estaba ahí.']
+        },
+        { id: 't3-b', opcional: true, texto: '¿Qué parte de ti crees que todavía no conozco del todo?' }
+      ]
+    },
+    boton: 'Siguiente tiempo'
+  },
+  {
+    n: '04',
+    titulo: 'Fuera de tema',
+    plato: 'Langostinos al ajo, limón y perejil',
+    ingredientes: 'Langostinos · ajo · limón · perejil',
+    historia: [
+      ['Hay cosas que empiezan de una manera y terminan completamente en otra.'],
+      ['Un ingrediente entra primero.', 'Después aparece otro que cambia todo.'],
+      ['Y cuando crees que ya entendiste por dónde va, aparece algo más.'],
+      ['A veces una conversación contigo funciona exactamente así.', 'Empezamos hablando de algo serio y terminamos hablando de cualquier estupidez.'],
+      ['Y, por alguna razón, me gusta bastante que sea así.']
+    ],
+    destacado: 'Me encanta cómo podemos pasar de una conversación profunda a estar diciendo una estupidez en cinco minutos.',
+    pausa: {
+      intro: 'Te toca contar una.',
+      items: [
+        {
+          id: 't4-a',
+          texto: 'Cuéntame una historia nuestra que haya empezado de una manera y haya terminado completamente en otra.',
+          remate: 'La más absurda gana.',
+          anotar: 'Anotar la ganadora',
+          enLimpio: 'Una historia nuestra que empezó de una manera y terminó completamente en otra.'
+        }
+      ]
+    },
+    boton: 'Siguiente tiempo'
+  },
+  {
+    n: '05',
+    titulo: 'Sin receta',
+    plato: 'Mini arepas con ají de gallina',
+    ingredientes: 'Arepa venezolana · ají de gallina peruano',
+    nota: '2–3 por persona',
+    historia: [
+      ['Esto no debería estar aquí.', 'Al menos no según la receta original.'],
+      ['Una cosa viene de un lugar.', 'La otra, de otro.'],
+      ['Cada una ya tenía su propia historia antes de encontrarse.'],
+      ['Y ahora están aquí.', 'Juntas.'],
+      ['No sé si esto tiene una forma correcta de hacerse.'],
+      ['Solo sé que lo probamos y funcionó.']
+    ],
+    pausa: {
+      intro: 'Dos preguntas.',
+      items: [
+        { id: 't5-a', texto: '¿Qué cosa de tu mundo sientes que ya empezó a ser un poquito nuestra?' },
+        { id: 't5-b', texto: '¿Qué cosa de mi mundo todavía no entiendes del todo?' },
+        { id: 't5-c', opcional: true, texto: '¿Qué parte de mí crees que se ha mezclado contigo sin que nos diéramos cuenta?' }
+      ]
+    },
+    boton: 'Último tiempo'
+  },
+  {
+    n: '06',
+    titulo: 'Por ahora',
+    plato: 'Uvas',
+    ingredientes: 'Uvas frescas',
+    historia: [
+      ['Hay frutas que uno termina sin darse cuenta.'],
+      ['Una.', 'Otra.', 'Y otra más.'],
+      ['No hace falta saber cuál va a ser la última para disfrutar la que tienes ahora.'],
+      ['Esta es la última de la noche.'],
+      ['Por ahora.']
+    ],
+    revelacion: ['Seis meses.', 'Y todavía hay demasiadas cosas que no sabemos.'],
+    pausa: {
+      intro: 'Completa esto.',
+      items: [
+        {
+          id: 't6-a',
+          frase: true,
+          texto: 'Antes de que cumplamos un año, quiero que nosotros…',
+          regla: 'No vale cambiar la respuesta después de escuchar la del otro.',
+          anotar: 'Dejarlo por escrito'
+        }
+      ]
+    },
+    boton: 'Sobremesa'
+  }
+];
+
+(function () {
+  'use strict';
+
+  const KEY = 'seis-tiempos:v1';
+  const ORDER = ['cover', '1', '2', '3', '4', '5', '6', 'final'];
+  const app = document.getElementById('app');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ───── memoria local (solo en este teléfono) ───── */
+  const store = {
+    read() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } },
+    write(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} },
+    clear() { try { localStorage.removeItem(KEY); } catch (e) {} }
+  };
+
+  if (location.hash === '#reiniciar') {
+    store.clear();
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  }
+
+  const fresh = () => ({ screen: 'cover', max: 0, answers: {}, scroll: 0 });
+  let state = Object.assign(fresh(), store.read());
+  if (ORDER.indexOf(state.screen) < 0) state.screen = 'cover';
+  if (!state.answers || typeof state.answers !== 'object') state.answers = {};
+
+  let saveTimer;
+  const save = () => store.write(state);
+  const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 350); };
+
+  /* ───── utilidades ───── */
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const arrow = '<svg viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h29M24.5 .5 29 5l-4.5 4.5"/></svg>';
+
+  // el numeral se entibia un poco en cada tiempo
+  const mix = (a, b, t) => {
+    const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const [ca, cb] = [p(a), p(b)];
+    return '#' + ca.map((v, i) => Math.round(v + (cb[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  };
+
+  const bar = (pos) => {
+    let ticks = '';
+    for (let i = 1; i <= 6; i++) ticks += `<i class="${i < pos ? 'done' : i === pos ? 'now' : ''}"></i>`;
+    return `<p class="micro">Seis tiempos</p><div class="ticks" aria-hidden="true">${ticks}</div>`;
+  };
+
+  const item = (q) => `
+    <div class="q">
+      ${q.opcional ? '<p class="micro">Opcional</p>' : ''}
+      <p class="q-text${q.frase ? ' is-frase' : ''}">${esc(q.texto)}</p>
+      ${q.nota ? `<p class="q-note">${q.nota.map(esc).join('<br>')}</p>` : ''}
+      ${q.remate ? `<p class="q-remate">${esc(q.remate)}</p>` : ''}
+      ${q.regla ? `<div class="house"><p class="micro">Regla de la casa</p><p class="house-text">${esc(q.regla)}</p></div>` : ''}
+      <button type="button" class="note-toggle" aria-expanded="false" aria-controls="${q.id}-field">${esc(q.anotar || 'Anotar')}</button>
+      <div class="field" id="${q.id}-field" hidden>
+        <textarea id="${q.id}" rows="1" aria-label="${esc(q.enLimpio || q.texto)}"></textarea>
+        <p class="field-hint">Se queda en este teléfono.</p>
+      </div>
+    </div>`;
+
+  const tiempo = (t, i) => {
+    const n = i + 1;
+    const next = n < 6 ? String(n + 1) : 'final';
+    const sec = document.createElement('section');
+    sec.className = 'screen tiempo';
+    sec.dataset.screen = String(n);
+    sec.hidden = true;
+    sec.setAttribute('aria-labelledby', `t${n}-title`);
+    sec.style.setProperty('--num-color', mix('#9B9085', '#8A5B25', (i / 5) * 0.85));
+    sec.innerHTML = `
+      <header class="bar wrap">${bar(n)}</header>
+      <div class="wrap">
+        <header class="head">
+          <p class="num" aria-hidden="true">${t.n}</p>
+          <h2 class="title" id="t${n}-title" tabindex="-1"><span class="sr-only">Tiempo ${t.n}. </span>${esc(t.titulo)}</h2>
+        </header>
+        <div class="dish">
+          <p class="dish-name">${esc(t.plato)}</p>
+          <p class="dish-ing">${esc(t.ingredientes)}</p>
+          ${t.nota ? `<p class="micro dish-note">${esc(t.nota)}</p>` : ''}
+        </div>
+        <hr class="rule">
+        <div class="rest">
+          <div class="story">${t.historia.map((s) => `<p>${s.map(esc).join('<br>')}</p>`).join('')}</div>
+          ${t.destacado ? `<blockquote class="quote"><p>${esc(t.destacado)}</p></blockquote>` : ''}
+          ${t.revelacion ? `<div class="reveal"><p class="reveal-big">${esc(t.revelacion[0])}</p><p class="reveal-line">${esc(t.revelacion[1])}</p></div>` : ''}
+          <aside class="pausa" aria-label="Pausa">
+            ${t.pausa.etiqueta ? `<p class="micro pausa-label">${esc(t.pausa.etiqueta)}</p>` : ''}
+            ${t.pausa.intro ? `<p class="pausa-intro">${esc(t.pausa.intro)}</p>` : ''}
+            ${t.pausa.items.map(item).join('')}
+          </aside>
+          ${t.cierre ? `<p class="cierre">${esc(t.cierre)}</p>` : ''}
+          <nav class="next" aria-label="Seguir">
+            <button type="button" class="btn" data-go="${next}"><span>${esc(t.boton)}</span>${arrow}</button>
+            ${n > 1 ? `<button type="button" class="back" data-go="${n - 1}">Tiempo anterior</button>` : ''}
+          </nav>
+        </div>
+      </div>`;
+    return sec;
+  };
+
+  /* ───── armar la carta ───── */
+  const finalEl = app.querySelector('[data-screen="final"]');
+  CARTA.forEach((t, i) => app.insertBefore(tiempo(t, i), finalEl));
+  finalEl.querySelector('[data-bar]').innerHTML = bar(7);
+  finalEl.style.setProperty('--num-color', '#8A5B25');
+  document.getElementById('index').innerHTML = CARTA
+    .map((t) => `<li><span>${t.n}</span>${esc(t.titulo)}</li>`).join('');
+
+  const screens = {};
+  app.querySelectorAll('.screen').forEach((s) => { screens[s.dataset.screen] = s; });
+
+  /* ───── notas ───── */
+  const autosize = (ta) => {
+    if (!ta.offsetParent) return;
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  };
+
+  const openField = (toggle, focus) => {
+    const field = document.getElementById(toggle.getAttribute('aria-controls'));
+    field.hidden = false;
+    toggle.hidden = true;
+    toggle.setAttribute('aria-expanded', 'true');
+    const ta = field.querySelector('textarea');
+    autosize(ta);
+    if (focus) ta.focus();
+  };
+
+  const closeField = (field) => {
+    const toggle = field.parentElement.querySelector('.note-toggle');
+    field.hidden = true;
+    toggle.hidden = false;
+    toggle.setAttribute('aria-expanded', 'false');
+  };
+
+  app.querySelectorAll('.field textarea').forEach((ta) => {
+    const v = state.answers[ta.id];
+    if (v) {
+      ta.value = v;
+      openField(ta.closest('.q').querySelector('.note-toggle'), false);
+    }
+  });
+
+  app.addEventListener('input', (e) => {
+    const ta = e.target;
+    if (!ta.matches('.field textarea')) return;
+    autosize(ta);
+    if (ta.value.trim()) state.answers[ta.id] = ta.value;
+    else delete state.answers[ta.id];
+    saveSoon();
+  });
+
+  app.addEventListener('focusout', (e) => {
+    const ta = e.target;
+    if (ta.matches && ta.matches('.field textarea') && !ta.value.trim()) closeField(ta.closest('.field'));
+  });
+
+  /* ───── pasar de tiempo ───── */
+  let busy = false;
+  const show = (id, instant) => {
+    const next = screens[id];
+    const cur = app.querySelector('.screen:not([hidden])');
+    if (!next || cur === next || busy) return;
+
+    state.screen = id;
+    state.max = Math.max(state.max || 0, ORDER.indexOf(id));
+    state.scroll = 0;
+    save();
+
+    const enter = () => {
+      if (cur) { cur.hidden = true; cur.classList.remove('is-leaving', 'is-entering'); }
+      next.hidden = false;
+      window.scrollTo(0, 0);
+      next.querySelectorAll('.field textarea').forEach(autosize);
+      if (!instant && !reduce) {
+        next.classList.remove('is-entering');
+        void next.offsetWidth;
+        next.classList.add('is-entering');
+      }
+      if (!instant) {
+        const h = next.querySelector('[tabindex="-1"]');
+        if (h) h.focus({ preventScroll: true });
+      }
+    };
+
+    if (instant || reduce || !cur) { enter(); return; }
+    busy = true;
+    cur.classList.add('is-leaving');
+    setTimeout(() => { enter(); busy = false; }, 300);
+  };
+
+  app.addEventListener('click', (e) => {
+    const toggle = e.target.closest('.note-toggle');
+    if (toggle) { openField(toggle, true); return; }
+    const go = e.target.closest('[data-go]');
+    if (go) show(go.dataset.go);
+  });
+
+  /* volver a donde quedó, si se recarga en medio de la cena */
+  if (state.screen !== 'cover') {
+    show(state.screen, true);
+    const y = state.scroll || 0;
+    const restore = () => window.scrollTo(0, y);
+    if (y) { requestAnimationFrame(restore); if (document.fonts && document.fonts.ready) document.fonts.ready.then(restore); }
+  }
+
+  const remember = () => { state.scroll = Math.round(window.scrollY); save(); };
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') remember(); });
+  window.addEventListener('pagehide', remember);
+
+  /* ───── guardar mis respuestas ───── */
+  const sheet = document.getElementById('sheet');
+  const exportEl = document.getElementById('export');
+  const status = document.getElementById('status');
+  const openBtn = document.getElementById('open-save');
+  const wipeBtn = document.getElementById('wipe');
+  const wipeConfirm = document.getElementById('wipe-confirm');
+  const framed = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+  if (framed) document.getElementById('download').hidden = true;
+
+  const enLimpio = () => {
+    const L = ['SEIS TIEMPOS', 'Una historia que no estaba en la carta.', '13.10.26', ''];
+    CARTA.forEach((t) => {
+      L.push('— — —', '', `${t.n} · ${t.titulo.toUpperCase()}`, t.plato, '');
+      t.pausa.items.forEach((q) => {
+        const a = (state.answers[q.id] || '').trim();
+        if (q.opcional && !a) return;
+        L.push(q.enLimpio || q.texto);
+        L.push(a ? '→ ' + a.replace(/\n/g, '\n  ') : '→ (en voz alta)');
+        L.push('');
+      });
+    });
+    L.push('— — —', '', 'Feliz seis meses.', '— V.', '', 'ARCHIVO 01', '13.10.26 · Lima', 'Hoy.');
+    return L.join('\n');
+  };
+
+  const openSheet = () => {
+    exportEl.value = enLimpio();
+    status.textContent = '';
+    wipeConfirm.hidden = true;
+    wipeBtn.hidden = false;
+    sheet.hidden = false;
+    document.documentElement.classList.add('lock');
+    document.getElementById('sheet-title').focus({ preventScroll: true });
+  };
+
+  const closeSheet = () => {
+    sheet.hidden = true;
+    document.documentElement.classList.remove('lock');
+    if (!openBtn.closest('[hidden]')) openBtn.focus({ preventScroll: true });
+  };
+
+  openBtn.addEventListener('click', openSheet);
+  sheet.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSheet(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+
+  document.getElementById('copy').addEventListener('click', () => {
+    const text = exportEl.value;
+    const fallback = () => {
+      exportEl.focus();
+      exportEl.setSelectionRange(0, text.length);
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      status.textContent = ok ? 'Copiado.' : 'Ya está seleccionado. Cópialo desde el menú del teléfono.';
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => { status.textContent = 'Copiado.'; }, fallback);
+    } else fallback();
+  });
+
+  document.getElementById('download').addEventListener('click', () => {
+    const blob = new Blob([exportEl.value], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'seis-tiempos-13-10-26.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    status.textContent = 'Descargado.';
+  });
+
+  wipeBtn.addEventListener('click', () => { wipeBtn.hidden = true; wipeConfirm.hidden = false; });
+  document.getElementById('wipe-no').addEventListener('click', () => { wipeConfirm.hidden = true; wipeBtn.hidden = false; });
+  document.getElementById('wipe-yes').addEventListener('click', () => {
+    store.clear();
+    state = fresh();
+    app.querySelectorAll('.field textarea').forEach((ta) => { ta.value = ''; closeField(ta.closest('.field')); });
+    closeSheet();
+    show('cover', true);
+    state.max = 0;
+    save();
+  });
+})();
+</script>
+</body>
+</html>
