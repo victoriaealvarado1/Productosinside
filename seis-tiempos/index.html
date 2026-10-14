@@ -12,23 +12,21 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F2ECE1'/%3E%3Ctext x='32' y='46' font-family='Bradley Hand,Segoe Print,cursive' font-size='42' text-anchor='middle' fill='%232A2621'%3E6%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mynerve&family=Reenie+Beanie&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mynerve&display=block">
 <style>
 /* Layout: una hoja de papel escrita a mano, en una sola columna. Todo entra como tinta que se va
    escribiendo; las líneas, flechas y recuadros están dibujados a pulso. Dos bolígrafos (negro y sepia),
-   un lápiz para lo secundario, y la tinta azul es la letra de él. */
+   un lápiz para lo secundario. */
 :root {
   --paper: #F2ECE1;      /* papel crema */
   --ink: #2A2621;        /* bolígrafo negro */
   --pencil: #6E665E;     /* lápiz: ingredientes, notas, lo secundario */
   --faint: #A89E93;      /* lo que todavía no pasa */
   --sepia: #8A5B25;      /* el segundo bolígrafo */
-  --blue: #27477F;       /* la letra de él */
   --lines: #DCD2C3;      /* renglones */
   --scrim: rgba(42, 38, 33, .3);
 
   --hand: "Mynerve", "Bradley Hand", "Segoe Print", "Chalkboard SE", cursive;
-  --his: "Reenie Beanie", "Marker Felt", "Segoe Print", cursive;
 
   --measure: 30rem;
   --gutter: clamp(1.5rem, 6.4vw, 2.5rem);
@@ -70,7 +68,6 @@ body::before {
 
 ::selection { background: var(--sepia); color: var(--paper); }
 p, h1, h2, ol, blockquote { margin: 0; }
-html.lock, html.lock body { overflow: hidden; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -124,7 +121,7 @@ main { position: relative; z-index: 1; }
 @media (hover: hover) { .hbtn:hover { color: var(--sepia); } .hbtn:hover .arrow { transform: translateX(3px); } }
 .hbtn .arrow { transition: transform .3s var(--ease); }
 
-.back, .note-toggle, .quiet {
+.back {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
@@ -135,7 +132,7 @@ main { position: relative; z-index: 1; }
   font: 400 1.125rem/1.2 var(--hand);
   cursor: pointer;
 }
-.back .ln, .note-toggle .ln, .quiet .ln { transform: none; }
+.back .ln { transform: none; }
 
 /* ───────── portada ───────── */
 .cover {
@@ -218,25 +215,7 @@ main { position: relative; z-index: 1; }
 .house { display: grid; gap: .1rem; margin-top: .6rem; }
 .house .tag { color: var(--sepia); }
 .house-text { font-size: 1.25rem; line-height: 1.45; color: var(--pencil); }
-.note-toggle { justify-self: start; margin-top: .1rem; }
 
-/* lo que escribe él: en azul, sobre renglones */
-.field { display: grid; gap: .3rem; }
-.field textarea {
-  display: block;
-  width: 100%;
-  min-height: 2.6rem;
-  padding: 0 .1rem;
-  background: transparent repeating-linear-gradient(transparent 0 calc(2.1rem - 1px), var(--lines) calc(2.1rem - 1px) 2.1rem);
-  border: 0;
-  border-radius: 0;
-  color: var(--blue);
-  font: 400 1.75rem/2.1rem var(--his);
-  resize: none;
-  overflow: hidden;
-}
-.field textarea:focus { outline: none; }
-.field-hint { font-size: 1rem; color: var(--pencil); }
 
 .cierre { font-size: 1.5rem; line-height: 1.4; margin-top: 2.5rem; }
 
@@ -271,44 +250,6 @@ main { position: relative; z-index: 1; }
 }
 .index .idx { font-size: .7em; margin-right: .55rem; }
 .final-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: clamp(3rem, 10vh, 5rem); }
-
-/* ───────── guardar ───────── */
-.sheet { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; }
-.sheet-scrim { position: absolute; inset: 0; background: var(--scrim); animation: fade .3s ease both; }
-.sheet-panel {
-  position: relative;
-  width: 100%;
-  max-width: calc(var(--measure) + 2 * var(--gutter));
-  max-height: 90vh;
-  margin-inline: auto;
-  overflow-y: auto;
-  background: var(--paper);
-  padding: 1.4rem var(--gutter) calc(1.75rem + env(safe-area-inset-bottom, 0px));
-  display: grid;
-  gap: .9rem;
-  box-shadow: 0 -12px 30px -18px rgba(42, 38, 33, .45);
-  animation: rise .4s var(--ease) both;
-}
-.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.sheet-title { font-weight: 400; font-size: 1.75rem; line-height: 1.2; }
-.sheet-lede { font-size: 1.1875rem; color: var(--pencil); }
-.export {
-  display: block;
-  width: 100%;
-  height: min(42vh, 22rem);
-  padding: .25rem .1rem;
-  background: transparent repeating-linear-gradient(transparent 0 calc(1.75rem - 1px), var(--lines) calc(1.75rem - 1px) 1.75rem);
-  border: 0;
-  border-radius: 0;
-  color: var(--ink);
-  font: 400 1.0625rem/1.75rem var(--hand);
-  resize: none;
-}
-.sheet-actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; }
-.status { min-height: 1.5em; font-size: 1.0625rem; color: var(--sepia); }
-.wipe p { font-size: 1.125rem; color: var(--pencil); }
-.wipe-row { display: flex; gap: 1.5rem; }
-.quiet.strong { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 
 /* ───────── la tinta ───────── */
 @keyframes ink {
@@ -354,34 +295,6 @@ main { position: relative; z-index: 1; }
   <!-- Los seis tiempos y el cierre se escriben desde CARTA, más abajo -->
 </main>
 
-<!-- GUARDAR MIS RESPUESTAS -->
-<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
-  <div class="sheet-scrim" data-close></div>
-  <div class="sheet-panel">
-    <div class="sheet-head">
-      <h2 class="sheet-title" id="sheet-title" tabindex="-1">Mis respuestas</h2>
-      <button type="button" class="quiet" data-close>cerrar</button>
-    </div>
-    <p class="sheet-lede">Para guardarlas donde quieras.</p>
-    <textarea class="export" id="export" readonly aria-label="Texto de mis respuestas"></textarea>
-    <div class="sheet-actions">
-      <button type="button" class="hbtn" id="copy"><span>Copiar</span><i data-draw="box"></i></button>
-      <button type="button" class="hbtn" id="download"><span>Descargar</span><i data-draw="box"></i></button>
-    </div>
-    <p class="status" id="status" aria-live="polite"></p>
-    <div class="wipe">
-      <button type="button" class="quiet" id="wipe">borrar todo de este teléfono</button>
-      <div id="wipe-confirm" hidden>
-        <p>Se borran las respuestas y la carta vuelve al principio.</p>
-        <div class="wipe-row">
-          <button type="button" class="quiet strong" id="wipe-yes">sí, borrar</button>
-          <button type="button" class="quiet" id="wipe-no">no</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 /* ═══════════════════════════════════════════════════════════════
    CARTA — todo el texto de los seis tiempos vive aquí.
@@ -405,8 +318,8 @@ const CARTA = [
     pausa: {
       etiqueta: 'Antes del primer bocado',
       items: [
-        { id: 't1-a', texto: '¿Qué fue lo primero que pensaste de mí?' },
-        { id: 't1-b', texto: '¿Qué fue lo primero que pensaste de mí que estaba completamente equivocado?' }
+        { texto: '¿Qué fue lo primero que pensaste de mí?' },
+        { texto: '¿Qué fue lo primero que pensaste de mí que estaba completamente equivocado?' }
       ]
     },
     cierre: 'No todo se entiende en el primer bocado.',
@@ -428,11 +341,10 @@ const CARTA = [
       intro: 'Esta no es tan bonita.',
       items: [
         {
-          id: 't2-a',
           texto: '¿Cuál ha sido el momento más incómodo que hemos vivido juntos?',
           nota: ['No el más grave.', 'El más incómodo.', 'Ese que en el momento quisiste desaparecer y ahora probablemente te da risa.']
         },
-        { id: 't2-b', opcional: true, texto: '¿Hay alguno que hoy te dé risa y que en ese momento no te diera ninguna?' }
+        { opcional: true, texto: '¿Hay alguno que hoy te dé risa y que en ese momento no te diera ninguna?' }
       ]
     },
     boton: 'Siguiente tiempo'
@@ -454,11 +366,10 @@ const CARTA = [
       intro: 'Ahora una que sí quiero saber.',
       items: [
         {
-          id: 't3-a',
           texto: '¿Qué descubriste de mí que no esperabas descubrir?',
           nota: ['No algo que te guste.', 'Algo que simplemente no sabías que estaba ahí.']
         },
-        { id: 't3-b', opcional: true, texto: '¿Qué parte de ti crees que todavía no conozco del todo?' }
+        { opcional: true, texto: '¿Qué parte de ti crees que todavía no conozco del todo?' }
       ]
     },
     boton: 'Siguiente tiempo'
@@ -480,11 +391,8 @@ const CARTA = [
       intro: 'Te toca contar una.',
       items: [
         {
-          id: 't4-a',
           texto: 'Cuéntame una historia nuestra que haya empezado de una manera y haya terminado completamente en otra.',
-          remate: 'La más absurda gana.',
-          anotar: 'anotar la ganadora',
-          enLimpio: 'Una historia nuestra que empezó de una manera y terminó completamente en otra.'
+          remate: 'La más absurda gana.'
         }
       ]
     },
@@ -507,9 +415,9 @@ const CARTA = [
     pausa: {
       intro: 'Dos preguntas.',
       items: [
-        { id: 't5-a', texto: '¿Qué cosa de tu mundo sientes que ya empezó a ser un poquito nuestra?' },
-        { id: 't5-b', texto: '¿Qué cosa de mi mundo todavía no entiendes del todo?' },
-        { id: 't5-c', opcional: true, texto: '¿Qué parte de mí crees que se ha mezclado contigo sin que nos diéramos cuenta?' }
+        { texto: '¿Qué cosa de tu mundo sientes que ya empezó a ser un poquito nuestra?' },
+        { texto: '¿Qué cosa de mi mundo todavía no entiendes del todo?' },
+        { opcional: true, texto: '¿Qué parte de mí crees que se ha mezclado contigo sin que nos diéramos cuenta?' }
       ]
     },
     boton: 'Último tiempo'
@@ -531,11 +439,9 @@ const CARTA = [
       intro: 'Completa esto.',
       items: [
         {
-          id: 't6-a',
           frase: true,
           texto: 'Antes de que cumplamos un año, quiero que nosotros…',
-          regla: 'No vale cambiar la respuesta después de escuchar la del otro.',
-          anotar: 'dejarlo por escrito'
+          regla: 'No vale cambiar la respuesta después de escuchar la del otro.'
         }
       ]
     },
@@ -568,15 +474,12 @@ const VELOCIDAD = 1;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
   }
 
-  const fresh = () => ({ screen: 'cover', answers: {}, steps: {}, scroll: 0 });
+  const fresh = () => ({ screen: 'cover', steps: {}, scroll: 0 });
   let state = Object.assign(fresh(), store.read());
   if (ORDER.indexOf(state.screen) < 0) state.screen = 'cover';
-  if (!state.answers || typeof state.answers !== 'object') state.answers = {};
   if (!state.steps || typeof state.steps !== 'object') state.steps = {};
 
-  let saveTimer;
   const save = () => store.write(state);
-  const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 350); };
 
   /* ───── pulso: azar con semilla, para que cada trazo sea distinto pero estable ───── */
   const mulberry = (a) => () => {
@@ -655,11 +558,6 @@ const VELOCIDAD = 1;
       ${q.nota ? `<p class="q-note pg">${q.nota.map(ln).join('')}</p>` : ''}
       ${q.remate ? `<p class="q-remate pg">${ln(q.remate)}</p>` : ''}
       ${q.regla ? `<div class="house"><p class="tag pg">${ln('regla de la casa')}</p><p class="house-text pg">${ln(q.regla)}</p></div>` : ''}
-      <button type="button" class="note-toggle" aria-expanded="false" aria-controls="${q.id}-field">${ln('+ ' + (q.anotar || 'anotar'))}</button>
-      <div class="field" id="${q.id}-field" hidden>
-        <textarea id="${q.id}" rows="1" aria-label="${esc(q.enLimpio || q.texto)}"></textarea>
-        <p class="field-hint">se queda en este teléfono.</p>
-      </div>
     </div>`;
 
   const tiempo = (t, i) => {
@@ -734,7 +632,6 @@ const VELOCIDAD = 1;
           <h2 class="sr-only" id="final-title" tabindex="-1">Seis tiempos</h2>
           <ol class="index">${lista}</ol>
           <div class="final-actions">
-            <button type="button" class="hbtn" id="open-save">${ln('Guardar mis respuestas')}${draw('box')}</button>
             <button type="button" class="back" data-go="6">${ln('volver')}</button>
           </div>
         </div>
@@ -820,7 +717,6 @@ const VELOCIDAD = 1;
     cue.hidden = (state.steps[sec.dataset.screen] || 0) >= stepsOf(sec).length - 1;
   };
 
-  const autosizeIn = (root) => root.querySelectorAll('.field textarea').forEach(autosize);
 
   const prepare = (sec) => {
     const id = sec.dataset.screen;
@@ -838,7 +734,6 @@ const VELOCIDAD = 1;
       steps.forEach((s, i) => { s.hidden = i > seen; s.classList.remove('writing'); s.classList.add('inked'); });
       updateCue(sec);
     }
-    autosizeIn(sec);
   };
 
   const advance = (sec) => {
@@ -849,8 +744,7 @@ const VELOCIDAD = 1;
     state.steps[id] = k;
     save();
     sec.querySelector('.cue').hidden = true;
-    write([step], () => { updateCue(sec); autosizeIn(step); });
-    autosizeIn(step);
+    write([step], () => updateCue(sec));
     const top = step.getBoundingClientRect().top;
     if (top > window.innerHeight * 0.5) {
       window.scrollTo({ top: window.scrollY + top - window.innerHeight * 0.2, behavior: reduce ? 'auto' : 'smooth' });
@@ -891,61 +785,13 @@ const VELOCIDAD = 1;
     setTimeout(() => { enter(); busy = false; }, 350);
   };
 
-  /* ───── notas ───── */
-  function autosize(ta) {
-    if (!ta.offsetParent) return;
-    ta.style.height = 'auto';
-    ta.style.height = ta.scrollHeight + 'px';
-  }
-
-  const openField = (toggle, focus) => {
-    const field = document.getElementById(toggle.getAttribute('aria-controls'));
-    field.hidden = false;
-    toggle.hidden = true;
-    toggle.setAttribute('aria-expanded', 'true');
-    const ta = field.querySelector('textarea');
-    autosize(ta);
-    if (focus) ta.focus();
-  };
-
-  const closeField = (field) => {
-    const toggle = field.parentElement.querySelector('.note-toggle');
-    field.hidden = true;
-    toggle.hidden = false;
-    toggle.setAttribute('aria-expanded', 'false');
-  };
-
-  app.querySelectorAll('.field textarea').forEach((ta) => {
-    const v = state.answers[ta.id];
-    if (v) {
-      ta.value = v;
-      openField(ta.closest('.q').querySelector('.note-toggle'), false);
-    }
-  });
-
-  app.addEventListener('input', (e) => {
-    const ta = e.target;
-    if (!ta.matches('.field textarea')) return;
-    autosize(ta);
-    if (ta.value.trim()) state.answers[ta.id] = ta.value;
-    else delete state.answers[ta.id];
-    saveSoon();
-  });
-
-  app.addEventListener('focusout', (e) => {
-    const ta = e.target;
-    if (ta.matches && ta.matches('.field textarea') && !ta.value.trim()) closeField(ta.closest('.field'));
-  });
-
   app.addEventListener('click', (e) => {
-    const toggle = e.target.closest('.note-toggle');
-    if (toggle) { finish(); openField(toggle, true); return; }
     const cue = e.target.closest('.cue');
     if (cue) { advance(cue.closest('.screen')); return; }
     const go = e.target.closest('[data-go]');
     if (go) { show(go.dataset.go); return; }
     // un toque en cualquier parte termina de escribir lo que falta
-    if (writing && !e.target.closest('textarea')) finish();
+    if (writing) finish();
   });
 
   /* volver a donde quedó, si se recarga en medio de la cena */
@@ -960,92 +806,6 @@ const VELOCIDAD = 1;
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') remember(); });
   window.addEventListener('pagehide', remember);
 
-  /* ───── guardar mis respuestas ───── */
-  const sheet = document.getElementById('sheet');
-  const exportEl = document.getElementById('export');
-  const status = document.getElementById('status');
-  const openBtn = document.getElementById('open-save');
-  const wipeBtn = document.getElementById('wipe');
-  const wipeConfirm = document.getElementById('wipe-confirm');
-  const framed = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
-  if (framed) document.getElementById('download').hidden = true;
-
-  const enLimpio = () => {
-    const L = ['SEIS TIEMPOS', 'Una historia que no estaba en la carta.', '13.10.26', ''];
-    CARTA.forEach((t) => {
-      L.push('— — —', '', `${t.n} · ${t.titulo.toUpperCase()}`, t.plato, '');
-      t.pausa.items.forEach((q) => {
-        const a = (state.answers[q.id] || '').trim();
-        if (q.opcional && !a) return;
-        L.push(q.enLimpio || q.texto);
-        L.push(a ? '→ ' + a.replace(/\n/g, '\n  ') : '→ (en voz alta)');
-        L.push('');
-      });
-    });
-    L.push('— — —');
-    return L.join('\n');
-  };
-
-  const openSheet = () => {
-    finish();
-    exportEl.value = enLimpio();
-    status.textContent = '';
-    wipeConfirm.hidden = true;
-    wipeBtn.hidden = false;
-    sheet.hidden = false;
-    document.documentElement.classList.add('lock');
-    document.getElementById('sheet-title').focus({ preventScroll: true });
-  };
-
-  const closeSheet = () => {
-    sheet.hidden = true;
-    document.documentElement.classList.remove('lock');
-    if (!openBtn.closest('[hidden]')) openBtn.focus({ preventScroll: true });
-  };
-
-  openBtn.addEventListener('click', openSheet);
-  sheet.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeSheet(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
-
-  document.getElementById('copy').addEventListener('click', () => {
-    const text = exportEl.value;
-    const fallback = () => {
-      exportEl.focus();
-      exportEl.setSelectionRange(0, text.length);
-      let ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) {}
-      status.textContent = ok ? 'Copiado.' : 'Ya está seleccionado. Cópialo desde el menú del teléfono.';
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => { status.textContent = 'Copiado.'; }, fallback);
-    } else fallback();
-  });
-
-  document.getElementById('download').addEventListener('click', () => {
-    const blob = new Blob([exportEl.value], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'seis-tiempos-13-10-26.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
-    status.textContent = 'Descargado.';
-  });
-
-  wipeBtn.addEventListener('click', () => { wipeBtn.hidden = true; wipeConfirm.hidden = false; });
-  document.getElementById('wipe-no').addEventListener('click', () => { wipeConfirm.hidden = true; wipeBtn.hidden = false; });
-  document.getElementById('wipe-yes').addEventListener('click', () => {
-    finish();
-    store.clear();
-    state = fresh();
-    app.querySelectorAll('.field textarea').forEach((ta) => { ta.value = ''; closeField(ta.closest('.field')); });
-    app.querySelectorAll('.step').forEach((s) => { s.hidden = true; s.classList.remove('inked', 'writing'); });
-    show('cover', true);
-    closeSheet();
-    save();
-  });
 })();
 </script>
 </body>

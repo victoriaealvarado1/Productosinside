@@ -16,9 +16,9 @@ Con la URL final se genera el QR. Conviene probarlo en el teléfono que se va a 
 
 ## Probar y reiniciar
 
-- Lo escrito y el tiempo en que quedó la carta se guardan solo en el navegador de ese teléfono (`localStorage`). Nada sale del dispositivo.
+- El punto en que quedó la carta se guarda solo en el navegador de ese teléfono (`localStorage`). Nada sale del dispositivo.
 - Si se recarga la página a mitad de la cena, vuelve al mismo tiempo.
-- Para empezar de cero después de probar: abrir la URL con `#reiniciar` al final, o usar “Borrar todo de este teléfono” dentro de “Guardar mis respuestas”.
+- Para empezar de cero después de probar: abrir la URL con `#reiniciar` al final.
 
 ## Editar textos
 
