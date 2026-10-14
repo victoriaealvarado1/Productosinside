@@ -95,6 +95,8 @@ Regía el enfoque anterior:
 - Caribe: todo en inglés. ECI va con BOGO30. La promo y el producto se definen país por país.
 - No repetir fotos ya muy usadas. La IA tiene que ser creíble.
 
+Para el juicio visual (encuadre, zapato, luz, locación, logos, texto sobre la foto) usa el perfil del Director de Arte: `DIRECTOR_ARTE.md`.
+
 Los aprendizajes aprobados están en `redaccion/marca` (`aprendizajes`). Los documentos de estrategia y planning están en `redaccion/doc-*`. Los perfiles de cada aprobador están en `salud/perfil-*`.
 
 ## 4. Cómo juzgar con objetividad
