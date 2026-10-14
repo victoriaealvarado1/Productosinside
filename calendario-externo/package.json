@@ -1,0 +1,19 @@
+{
+  "name": "calendario-payless-externo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node server.mjs",
+    "importar": "node scripts/importar.mjs",
+    "db": "node scripts/db.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.134.0",
+    "@supabase/supabase-js": "2.117.3",
+    "express": "4.22.3"
+  }
+}
