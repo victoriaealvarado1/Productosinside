@@ -195,6 +195,9 @@ main { position: relative; z-index: 1; }
 .story .pg + .pg { margin-top: .85em; }
 .story .pg:last-child { margin-top: 1.5em; }
 
+/* lo que se agrega después, al margen, en lápiz */
+.apunte { margin-top: 2.25rem; font-size: 1.1875rem; line-height: 1.5; color: var(--pencil); transform: rotate(-1.2deg); transform-origin: left top; }
+
 .quote { margin-top: 2.75rem; font-size: clamp(1.6rem, 7vw, 1.9rem); line-height: 1.35; }
 .quote .w:first-child { color: var(--sepia); }
 
@@ -393,7 +396,7 @@ const CARTA = [
     n: '01',
     titulo: 'Primeras impresiones',
     plato: 'Carpaccio de lomito',
-    ingredientes: 'Lomito · aceitunas · queso · aceite de oliva',
+    ingredientes: 'Lomito · aceitunas · queso',
     historia: [
       ['Hay cosas que uno prueba sin saber muy bien qué esperar.'],
       ['Al principio ves lo que tienes enfrente y crees que ya entendiste.'],
@@ -415,7 +418,7 @@ const CARTA = [
     n: '02',
     titulo: 'Punto de fuego',
     plato: 'Champiñones salteados en mantequilla',
-    ingredientes: 'Champiñones · mantequilla · pimienta',
+    ingredientes: 'Champiñones · mantequilla',
     historia: [
       ['Los champiñones tienen algo raro.', 'Al principio parecen fáciles.'],
       ['Los pones en la sartén y empiezan a soltar todo lo que tienen. Durante un rato parecen aguados, desordenados, como si algo estuviera saliendo mal.'],
@@ -448,6 +451,7 @@ const CARTA = [
       ['Y quizás hay personas que también se conocen así.'],
       ['No por lo que hacen cuando todo está pasando, sino por lo que empiezas a notar cuando ya te quedaste un rato.']
     ],
+    apunte: ['Bueno, este no aplica. Es de caja.', 'Pero igual, si lo hubiese hecho con mis manos, algo así sería.'],
     pausa: {
       intro: 'Ahora una que sí quiero saber.',
       items: [
@@ -687,7 +691,8 @@ const VELOCIDAD = 1;
         ${t.nota ? `<p class="dish-note pg">${ln(t.nota)}</p>` : ''}
       </div>
       ${draw('divider')}
-      <div class="story">${t.historia.map((s) => `<p class="pg">${s.map(ln).join('')}</p>`).join('')}</div>`);
+      <div class="story">${t.historia.map((s) => `<p class="pg">${s.map(ln).join('')}</p>`).join('')}</div>
+      ${t.apunte ? `<p class="apunte pg">${t.apunte.map(ln).join('')}</p>` : ''}`);
 
     if (t.destacado) steps.push(`<blockquote class="quote"><p class="pg">${ln('“' + t.destacado + '”')}</p></blockquote>`);
     if (t.revelacion) steps.push(`<div class="reveal"><p class="reveal-big pg">${ln(t.revelacion[0])}</p>${draw('double')}<p class="reveal-line pg">${ln(t.revelacion[1])}</p></div>`);
