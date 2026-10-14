@@ -1370,8 +1370,10 @@ function histNote(p){
   if(p.fechaEstimada) t.push("La fecha es estimada: la matriz no trae la fecha de publicación y se ubicó según la aprobación o el último comentario del cliente.");
   if(p.descartada) t.push("El cliente la descartó en la matriz.");
   else if(p.sinAprobacion) t.push("En la matriz no quedó registrada una aprobación del cliente.");
-  if(p.videoEnMatriz) t.push(`El video no está cargado en la plataforma (aquí ves su portada): está en la matriz${p.slide?`, diapositiva ${esc(p.slide)}`:""}.`);
-  const link=/^https:\/\/drive\.google\.com\//.test(p.matrizUrl||"")?` <a href="${esc(p.matrizUrl)}" target="_blank" rel="noopener">Abrir la matriz</a>`:"";
+  if(p.miniatura) t.push("Las imágenes son una versión liviana; los originales están en la matriz.");
+  if(p.videoEnMatriz) t.push(`${!p.historico&&p.estado==="Publicado"?"Ya está publicado. ":""}El video no está cargado en la plataforma (aquí ves su portada): está en la matriz${p.slide?`, diapositiva ${esc(p.slide)}`:""}.`);
+  const mu=p.matrizUrl||(p.videoEnMatriz&&p.link)||"";
+  const link=/^https:\/\/(drive\.google\.com|paylessshoes\.sharepoint\.com)\//.test(mu)?` <a href="${esc(mu)}" target="_blank" rel="noopener">Abrir la matriz</a>`:"";
   return t.length?`<div class="histnote">🗂 ${t.join(" ")}${link}</div>`:"";
 }
 function monthDays(){

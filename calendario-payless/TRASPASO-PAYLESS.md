@@ -546,6 +546,19 @@ El estado de cada matriz queda en `syncmatrices/<MATRIZ>-2026-10`. Los documento
 
 **Dónde se guarda.** Colección `direccion/<pieza>`: `{pieceId, kind, linea, nota, vioArte, out, chat, fecha, por}`. Tiene regla de acceso solo para Inside (`admin`), igual que `salud`.
 
+**Aprendizajes de marca activados (14 oct).** Las 12 propuestas que salieron del historial se revisaron una por una contra su evidencia y contra la estrategia de octubre, y quedaron activas junto con «promos solo en historias». Son 13 en total: 12 directrices y 1 preferencia.
+- Se ajustaron para que convivan con Set26. Por ejemplo, el producto protagonista se combina con el plano completo de look.
+- Las de Caribe ya no fijan la promo del mes: la regla es revisarla país por país.
+- La de legal suma la mecánica exacta: «2do a mitad de precio» no es «2x1».
+- Cuatro subieron de preferencia a directriz porque las pidieron aprobadoras de forma explícita y repetida: atléticos como moda, menos texto, no repetir fotos y un calzado por pieza.
+- Pendiente de confirmar con la marca: el pedido de quitar los logos de Champion, Airwalk y LA Gear, que Set26 pide mostrar.
+
+**Limpieza del almacenamiento (14 oct).** Aprobada por Victoria. Antes había 1.072 MB de 1.024.
+- Se borraron 120 archivos que nada usaba: 206 MB, de ellos 29 copias exactas.
+- Los 10 videos de piezas de octubre ya publicadas (105 MB) se reemplazaron por su portada. Las piezas llevan `videoEnMatriz: true` y la ficha enlaza a la matriz (Drive o el SharePoint de Payless, campo `link`).
+- El historial de julio a septiembre pasó a miniaturas livianas: 402 imágenes de 560 px, unos 13 MB, en lugar de 229 MB. Los 21 videos quedaron como portada con enlace a la matriz. Las piezas llevan `miniatura: true`. Los originales siguen en las matrices de Drive.
+- No se tocaron los medios terminados (33 MB) ni los vigentes.
+
 ### 9.6 Feedback del cliente aún no incorporado
 
 - Copy más corto y joven, validado por mercado.
