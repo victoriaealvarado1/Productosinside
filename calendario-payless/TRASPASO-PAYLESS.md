@@ -520,7 +520,33 @@ El estado de cada matriz queda en `syncmatrices/<MATRIZ>-2026-10`. Los documento
 
 **Por confirmar con la marca por escrito:** el criterio de casting por país (comentario del 07-10 en `cen-n-muwljq2ctnk`).
 
-### 9.5 Feedback del cliente aún no incorporado
+### 9.5 Actualización del 14 de octubre: Director de Arte
+
+**Para qué es.** El content de Inside trabaja cada pieza con el criterio de la marca. Un solo módulo junta el copy (antes, el Asistente en la ficha) y el arte.
+
+**Dónde está.**
+- Botón «🎨 Director de Arte» en la barra superior.
+- Recuadro en la ficha de cada pieza, orgánica o de medios, con «Trabajar esta pieza».
+- Solo lo ve Inside con permiso de edición.
+
+**Cómo se trabaja.**
+1. El content elige la pieza en la lista. Filtra por región, fecha (próximos 14 días, el mes o todas), estado (por trabajar o todas) y tipo (orgánico o medios).
+2. Puede escribir qué necesita y pide dirección. El Director mira el arte (manda hasta 3 imágenes a Claude) y responde:
+   - por dónde va la pieza según la estrategia y su campaña, con el territorio y los datos que debe usar;
+   - qué funciona y qué no del copy y por qué, con 2 o 3 copys listos para «Usar este copy» o «Copiar»;
+   - cómo debe ser la imagen lámina por lámina, el texto sobre la imagen y los logos;
+   - semáforo (lista, mejorable, corregir antes de enviar), errores verificables y lo que va a pedir quien aprueba;
+   - un referente concreto.
+3. Conversa con el Director sobre esa pieza («¿y si la hago en reel?», «dame algo más corto»).
+4. Pasa a la siguiente pieza.
+
+**Qué usa.**
+- El perfil del Director: pestaña «Director de Arte» del Asistente INSIDE (`redaccion/marca.arte`). Si está vacío, usa el perfil base de `sync-matrices/DIRECTOR_ARTE.md`, resumido en la plataforma.
+- La voz de marca, los aprendizajes, los insumos y documentos de la campaña, el input del cliente vigente para la fecha y los países de la pieza, otras piezas de la campaña, los comentarios del cliente y los perfiles de quien aprueba.
+
+**Dónde se guarda.** Colección `direccion/<pieza>`: `{pieceId, kind, linea, nota, vioArte, out, chat, fecha, por}`. Tiene regla de acceso solo para Inside (`admin`), igual que `salud`.
+
+### 9.6 Feedback del cliente aún no incorporado
 
 - Copy más corto y joven, validado por mercado.
 - Lanzamiento de Sneakers con carrusel, story y cuenta regresiva.
