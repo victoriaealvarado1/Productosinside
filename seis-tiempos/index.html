@@ -6,28 +6,30 @@
 <title>Seis tiempos</title>
 <meta name="description" content="Una historia que no estaba en la carta.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#F1EBE0">
+<meta name="theme-color" content="#F2ECE1">
 <meta property="og:title" content="Seis tiempos">
 <meta property="og:description" content="Una historia que no estaba en la carta.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F1EBE0'/%3E%3Ctext x='32' y='47' font-family='Georgia,serif' font-size='44' text-anchor='middle' fill='%231E1A16'%3E6%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F2ECE1'/%3E%3Ctext x='32' y='46' font-family='Bradley Hand,Segoe Print,cursive' font-size='42' text-anchor='middle' fill='%232A2621'%3E6%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Mynerve&family=Reenie+Beanie&display=block">
 <style>
-/* Layout: una carta de degustación en una sola columna. Portada centrada como la tapa de un menú;
-   adentro, numeral grande colgado, filetes finos entre plato / historia / pausa, y la pausa como una franja de otro papel. */
+/* Layout: una hoja de papel escrita a mano, en una sola columna. Todo entra como tinta que se va
+   escribiendo; las líneas, flechas y recuadros están dibujados a pulso. Dos bolígrafos (negro y sepia),
+   un lápiz para lo secundario, y la tinta azul es la letra de él. */
 :root {
-  --paper: #F1EBE0;      /* marfil, papel de carta */
-  --card: #E7DECF;       /* segundo papel: la pausa */
-  --ink: #1E1A16;        /* tinta */
-  --ink-2: #5A524A;      /* tinta secundaria */
-  --ink-3: #9B9085;      /* numerales, apenas */
-  --rule: #CDC2B2;       /* filetes */
-  --warm: #8A5B25;       /* mantequilla tostada: el único acento */
-  --scrim: rgba(30, 26, 22, .32);
+  --paper: #F2ECE1;      /* papel crema */
+  --ink: #2A2621;        /* bolígrafo negro */
+  --pencil: #6E665E;     /* lápiz: ingredientes, notas, lo secundario */
+  --faint: #A89E93;      /* lo que todavía no pasa */
+  --sepia: #8A5B25;      /* el segundo bolígrafo */
+  --blue: #27477F;       /* la letra de él */
+  --lines: #DCD2C3;      /* renglones */
+  --scrim: rgba(42, 38, 33, .3);
 
-  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --sans: "Jost", "Futura", "Avenir Next", "Century Gothic", "Helvetica Neue", Arial, sans-serif;
+  --hand: "Mynerve", "Bradley Hand", "Segoe Print", "Chalkboard SE", cursive;
+  --his: "Reenie Beanie", "Marker Felt", "Segoe Print", cursive;
+  --sign: "Cedarville Cursive", "Snell Roundhand", "Segoe Script", cursive;
 
   --measure: 30rem;
   --gutter: clamp(1.5rem, 6.4vw, 2.5rem);
@@ -47,37 +49,35 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-family: var(--hand);
+  font-size: 1.25rem;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-wrap: break-word;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* grano de papel, muy leve */
+/* fibra del papel + un poco de luz cálida en los bordes */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .1 0 0 0 0 .08 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .14 0 0 0 0 .11 0 0 0 0 .08 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 120% 90% at 50% 35%, transparent 55%, rgba(120, 88, 48, .09) 100%);
 }
 
-::selection { background: var(--warm); color: var(--paper); }
-
+::selection { background: var(--sepia); color: var(--paper); }
 p, h1, h2, ol, blockquote { margin: 0; }
-
 html.lock, html.lock body { overflow: hidden; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-
-:focus-visible { outline: 1px solid var(--warm); outline-offset: 4px; }
+:focus-visible { outline: 1px dashed var(--sepia); outline-offset: 5px; }
 [tabindex="-1"]:focus { outline: none; }
 
 main { position: relative; z-index: 1; }
@@ -89,56 +89,54 @@ main { position: relative; z-index: 1; }
   padding-inline: var(--gutter);
 }
 
-/* etiquetas pequeñas, como en una carta */
-.micro {
-  font: 500 .6875rem/1.4 var(--sans);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-  font-variant-numeric: tabular-nums;
-}
+/* cada renglón escrito a pulso: nunca del todo derecho */
+.ln { display: block; transform: translateX(var(--x, 0)) rotate(var(--r, 0deg)); transform-origin: left center; }
+.w { display: inline-block; }
 
-/* ───────── botones ───────── */
-.btn {
-  display: flex;
+/* ───────── trazos dibujados ───────── */
+.draw { display: block; overflow: visible; color: var(--pencil); }
+.draw path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.divider { width: 5.5rem; height: 14px; margin-block: 2rem 2.1rem; }
+.under { width: min(58%, 15rem); height: 10px; margin-top: .3rem; color: var(--sepia); }
+.double { width: min(70%, 16rem); height: 16px; margin-top: .4rem; color: var(--sepia); }
+.arrow { display: inline-block; width: 2.4rem; height: .95rem; color: currentColor; flex: none; }
+.box { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); pointer-events: none; }
+.down { display: inline-block; width: .9rem; height: 1.4rem; color: currentColor; }
+.ring { position: absolute; left: 50%; top: 50%; width: 1.85em; height: 1.6em; transform: translate(-50%, -50%); color: var(--sepia); }
+.strike { position: absolute; left: -15%; top: 50%; width: 130%; height: 8px; transform: translateY(-40%); color: var(--pencil); }
+
+/* ───────── botones a mano ───────── */
+.hbtn {
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  min-height: 3.5rem;
-  padding: 0 1.25rem;
-  background: transparent;
+  gap: .8rem;
+  min-height: 3.4rem;
+  padding: .55rem 1.35rem .65rem;
+  background: none;
+  border: 0;
   color: var(--ink);
-  border: 1px solid var(--ink);
-  border-radius: 0;
-  font: 500 .75rem/1 var(--sans);
-  letter-spacing: .24em;
-  text-transform: uppercase;
+  font: 400 1.375rem/1.2 var(--hand);
   cursor: pointer;
-  transition: background-color .3s ease, color .3s ease;
+  transition: color .25s ease, transform .25s var(--ease);
 }
-.btn svg { width: 1.9rem; height: .7rem; flex: none; transition: transform .3s var(--ease); }
-.btn:active { background: var(--ink); color: var(--paper); }
-@media (hover: hover) {
-  .btn:hover { background: var(--ink); color: var(--paper); }
-  .btn:hover svg { transform: translateX(3px); }
-}
+.hbtn .ln { transform: none; }
+.hbtn:active { color: var(--sepia); transform: translateY(1px); }
+@media (hover: hover) { .hbtn:hover { color: var(--sepia); } .hbtn:hover .arrow { transform: translateX(3px); } }
+.hbtn .arrow { transition: transform .3s var(--ease); }
 
-.link, .back {
+.back, .note-toggle, .quiet {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
   padding: 0;
   background: none;
   border: 0;
-  color: var(--ink-2);
-  font: 500 .6875rem/1 var(--sans);
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  color: var(--pencil);
+  font: 400 1.125rem/1.2 var(--hand);
   cursor: pointer;
 }
-.link span { border-bottom: 1px solid currentColor; padding-bottom: .3rem; }
-.link { color: var(--ink); }
+.back .ln, .note-toggle .ln, .quiet .ln { transform: none; }
 
 /* ───────── portada ───────── */
 .cover {
@@ -147,205 +145,131 @@ main { position: relative; z-index: 1; }
   display: grid;
   grid-template-rows: auto 1fr auto;
   text-align: center;
-  padding-block: 1.75rem 2.25rem;
+  padding-block: 1.75rem 2.5rem;
 }
-.cover-top { display: flex; justify-content: center; }
+.cover-top { color: var(--pencil); font-size: 1.125rem; letter-spacing: .08em; }
 .cover-mid { display: grid; align-content: center; justify-items: center; padding-block: 3rem; }
 .cover-title {
-  font-weight: 300;
-  font-size: clamp(3rem, 15.5vw, 5.25rem);
-  line-height: .94;
-  letter-spacing: .07em;
+  font-weight: 400;
+  font-size: clamp(3rem, 15vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  margin-right: -.07em; /* compensa el tracking para centrar de verdad */
 }
-.cover-rule { width: 2.5rem; height: 1px; background: var(--ink); margin: 2rem auto 0; }
-.cover-sub {
-  font-style: italic;
-  font-size: 1.25rem;
-  line-height: 1.35;
-  color: var(--ink-2);
-  max-width: 15rem;
-  margin-top: 1.5rem;
-  text-wrap: balance;
-}
-.cover-bottom { display: grid; justify-items: center; gap: 1.25rem; }
-.cover .btn { width: auto; min-width: 13rem; justify-content: center; padding-inline: 2.25rem; }
+.cover-title .ln { transform-origin: center; }
+.cover .under { margin: .8rem auto 0; width: 7rem; }
+.cover-sub { font-size: 1.5rem; line-height: 1.35; color: var(--pencil); max-width: 15rem; margin-top: 1.4rem; }
+.cover-bottom { display: grid; justify-items: center; }
 
 /* ───────── barra superior ───────── */
-.bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 1.25rem;
-}
-.ticks { display: flex; gap: 5px; }
-.ticks i { display: block; width: 14px; height: 2px; background: var(--rule); }
-.ticks i.done { background: var(--ink-2); }
-.ticks i.now { background: var(--warm); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.1rem; }
+.bar-name { color: var(--pencil); font-size: 1.0625rem; }
+.prog { display: flex; gap: .85rem; font-size: 1.125rem; color: var(--faint); }
+.pn { position: relative; display: inline-block; min-width: .6em; text-align: center; line-height: 1.6; }
+.pn.past { color: var(--pencil); }
+.pn.now { color: var(--ink); }
 
 /* ───────── tiempo ───────── */
-.head { margin-top: clamp(2.75rem, 9vh, 4.5rem); }
+.head { margin-top: clamp(2rem, 6vh, 3.5rem); }
 .num {
-  font-family: var(--serif);
-  font-weight: 200;
-  font-size: clamp(5.5rem, 29vw, 8.5rem);
-  line-height: .78;
-  letter-spacing: -.045em;
-  color: var(--num-color, var(--ink-3));
-  font-variant-numeric: lining-nums;
-  margin-left: -.05em;
+  font-size: clamp(4.5rem, 23vw, 6.25rem);
+  line-height: .95;
+  color: var(--num-color, var(--faint));
+  margin-left: -.04em;
 }
 .title {
   font-weight: 400;
-  font-size: clamp(1.8rem, 8.2vw, 2.45rem);
-  line-height: 1.05;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  margin-top: 1.4rem;
-  text-wrap: balance;
-}
-
-.dish { display: grid; gap: .45rem; margin-top: 1.9rem; }
-.dish-name { font-style: italic; font-size: 1.3125rem; line-height: 1.25; }
-.dish-ing { font: 400 .875rem/1.5 var(--sans); letter-spacing: .03em; color: var(--ink-2); }
-.dish-note { margin-top: .15rem; }
-
-.rule {
-  border: 0;
-  height: 1px;
-  background: var(--rule);
-  margin: 1.9rem 0 2.25rem;
-  transform-origin: left center;
-}
-
-.story {
-  display: grid;
-  gap: 1.05em;
-  font-size: 1.1875rem;
-  line-height: 1.58;
-  text-wrap: pretty;
-}
-.story p:last-child { margin-top: .9em; }
-
-.quote { margin-top: 3rem; }
-.quote::before {
-  content: "\201C";
-  display: block;
-  font: 300 4.25rem/.55 var(--serif);
-  color: var(--warm);
-  margin-bottom: .55rem;
-}
-.quote p {
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(1.5rem, 6.4vw, 1.85rem);
-  line-height: 1.26;
-  letter-spacing: -.01em;
-  text-wrap: balance;
-}
-
-.reveal { display: grid; gap: .9rem; margin-top: clamp(5rem, 24vh, 9rem); }
-.reveal-big {
-  font-weight: 300;
-  font-size: clamp(2.3rem, 10.5vw, 3.25rem);
-  line-height: 1;
+  font-size: clamp(1.75rem, 7.6vw, 2.15rem);
+  line-height: 1.12;
   letter-spacing: .05em;
   text-transform: uppercase;
+  margin-top: .5rem;
 }
-.reveal-line { font-style: italic; font-size: 1.25rem; line-height: 1.4; color: var(--ink-2); }
 
-/* la pausa: otra hoja dentro de la carta */
-.pausa {
-  display: grid;
-  gap: 1.75rem;
-  margin-top: 3.25rem;
-  margin-inline: calc(var(--gutter) * -1);
-  padding: 2rem var(--gutter) 1.75rem;
-  background: var(--card);
-}
-.pausa-label { color: var(--warm); }
-.pausa-intro { font-style: italic; font-size: 1.3125rem; line-height: 1.3; color: var(--warm); }
+.dish { display: grid; gap: .2rem; margin-top: 1.5rem; }
+.dish-name { font-size: 1.5rem; line-height: 1.3; }
+.dish-ing { font-size: 1.125rem; line-height: 1.45; color: var(--pencil); }
+.dish-note { font-size: 1rem; color: var(--pencil); }
 
-.q { display: grid; gap: .8rem; }
-.q + .q { border-top: 1px solid var(--rule); padding-top: 1.6rem; }
-.q-text { font-size: 1.375rem; line-height: 1.3; text-wrap: pretty; }
-.q-text.is-frase { font-style: italic; font-size: 1.5rem; line-height: 1.3; }
-.q-note { font-size: 1.0625rem; line-height: 1.5; color: var(--ink-2); }
-.q-remate { font-style: italic; font-size: 1.1875rem; color: var(--warm); }
-.house { display: grid; gap: .35rem; margin-top: .4rem; }
-.house-text { font-size: 1.0625rem; line-height: 1.45; color: var(--ink-2); }
+.story { font-size: 1.375rem; line-height: 1.6; }
+.story .pg + .pg { margin-top: .85em; }
+.story .pg:last-child { margin-top: 1.5em; }
 
-.note-toggle {
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: .55rem;
-  min-height: 2.75rem;
-  padding: 0;
-  background: none;
-  border: 0;
-  color: var(--ink-2);
-  font: 500 .6875rem/1 var(--sans);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.note-toggle::before { content: ""; width: 1.25rem; height: 1px; background: currentColor; }
+.quote { margin-top: 2.75rem; font-size: clamp(1.6rem, 7vw, 1.9rem); line-height: 1.35; }
+.quote .w:first-child { color: var(--sepia); }
 
-.field { display: grid; gap: .45rem; }
+.reveal { margin-top: clamp(4rem, 20vh, 7rem); }
+.reveal-big { font-size: clamp(2.4rem, 11vw, 3.1rem); line-height: 1.05; letter-spacing: .05em; text-transform: uppercase; }
+.reveal-line { font-size: 1.4375rem; line-height: 1.45; color: var(--pencil); margin-top: 1.1rem; }
+
+.pausa-label { font-size: 1rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sepia); }
+.pausa-intro { font-size: 1.5rem; line-height: 1.35; color: var(--sepia); }
+.pausa-label + .q, .pausa-intro + .q { margin-top: 1.1rem; }
+
+.step + .step > .q { margin-top: 2.25rem; }
+.q { display: grid; gap: .5rem; }
+.q-text { font-size: 1.5625rem; line-height: 1.35; }
+.q-text.is-frase { font-size: 1.6875rem; }
+.q-note { font-size: 1.25rem; line-height: 1.5; color: var(--pencil); margin-top: .25rem; }
+.q-remate { font-size: 1.375rem; color: var(--sepia); margin-top: .2rem; }
+.tag { font-size: .9375rem; letter-spacing: .14em; text-transform: uppercase; color: var(--pencil); }
+.house { display: grid; gap: .1rem; margin-top: .6rem; }
+.house .tag { color: var(--sepia); }
+.house-text { font-size: 1.25rem; line-height: 1.45; color: var(--pencil); }
+.note-toggle { justify-self: start; margin-top: .1rem; }
+
+/* lo que escribe él: en azul, sobre renglones */
+.field { display: grid; gap: .3rem; }
 .field textarea {
   display: block;
   width: 100%;
-  min-height: 2.75rem;
-  padding: .35rem 0 .5rem;
-  background: transparent;
+  min-height: 2.6rem;
+  padding: 0 .1rem;
+  background: transparent repeating-linear-gradient(transparent 0 calc(2.1rem - 1px), var(--lines) calc(2.1rem - 1px) 2.1rem);
   border: 0;
-  border-bottom: 1px solid var(--ink-2);
   border-radius: 0;
-  color: var(--ink);
-  font: italic 400 1.0625rem/1.5 var(--serif);
+  color: var(--blue);
+  font: 400 1.75rem/2.1rem var(--his);
   resize: none;
   overflow: hidden;
 }
-.field textarea:focus { outline: none; border-bottom-color: var(--warm); }
-.field-hint { font: 400 .75rem/1.4 var(--sans); letter-spacing: .02em; color: var(--ink-2); }
+.field textarea:focus { outline: none; }
+.field-hint { font-size: 1rem; color: var(--pencil); }
 
-.cierre { font-style: italic; font-size: 1.25rem; line-height: 1.4; color: var(--ink-2); margin-top: 2.75rem; }
+.cierre { font-size: 1.5rem; line-height: 1.4; margin-top: 2.5rem; }
 
-.next { display: grid; gap: .5rem; margin-top: 3.25rem; padding-bottom: 3rem; }
-.next .back { justify-self: start; }
+.next { display: grid; justify-items: start; gap: .5rem; margin-top: 2.75rem; }
+
+.cue {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 3rem;
+  margin-top: 2rem;
+  padding: 0 .25rem;
+  background: none;
+  border: 0;
+  color: var(--sepia);
+  font: 400 1.3125rem/1 var(--hand);
+  cursor: pointer;
+  animation: fade .8s ease both;
+}
+
+.tail { height: 3.5rem; }
 
 /* ───────── cierre ───────── */
-.head-final { display: flex; align-items: baseline; gap: .9rem; }
+.head-final { display: flex; align-items: baseline; gap: .7rem; }
 .head-final .title { margin-top: 0; }
-.sign { display: grid; gap: .5rem; margin-top: 3rem; }
-.wish { font-size: 1.5rem; line-height: 1.3; }
-.by { font-style: italic; font-size: 1.25rem; color: var(--ink-2); }
+.sign { display: grid; gap: .3rem; margin-top: 2.5rem; }
+.wish { font-size: 1.75rem; line-height: 1.3; }
+.by { font-family: var(--sign); font-size: 2rem; line-height: 1.4; color: var(--ink); }
 
-.index {
-  list-style: none;
-  padding: 1.5rem 0 0;
-  margin-top: 3.5rem;
-  border-top: 1px solid var(--rule);
-  display: grid;
-  gap: .4rem;
-}
-.index li { display: flex; align-items: baseline; gap: 1rem; font-size: 1.0625rem; color: var(--ink-2); }
-.index li span { font: 500 .6875rem/1 var(--sans); letter-spacing: .14em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-
-.colophon { display: grid; gap: .3rem; margin-top: 2.75rem; }
-.today { font-style: italic; font-size: 1.875rem; line-height: 1.2; margin-top: .6rem; }
-
-.final-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding-bottom: 3rem;
-}
+.index { list-style: none; padding: 0; display: grid; gap: .15rem; font-size: 1.1875rem; color: var(--pencil); }
+.index .w:first-child { color: var(--faint); margin-right: .4rem; }
+.colophon { display: grid; margin-top: 2.25rem; }
+.arch { font-size: 1.0625rem; letter-spacing: .08em; color: var(--pencil); }
+.today { font-size: 2.25rem; line-height: 1.2; margin-top: .5rem; }
+.final-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2.5rem; }
 
 /* ───────── guardar ───────── */
 .sheet { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; }
@@ -358,47 +282,52 @@ main { position: relative; z-index: 1; }
   margin-inline: auto;
   overflow-y: auto;
   background: var(--paper);
-  border-top: 1px solid var(--rule);
-  padding: 1.5rem var(--gutter) calc(1.75rem + env(safe-area-inset-bottom, 0px));
+  padding: 1.4rem var(--gutter) calc(1.75rem + env(safe-area-inset-bottom, 0px));
   display: grid;
-  gap: 1rem;
+  gap: .9rem;
+  box-shadow: 0 -12px 30px -18px rgba(42, 38, 33, .45);
   animation: rise .4s var(--ease) both;
 }
 .sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.sheet-title { font-weight: 400; font-size: 1.5rem; line-height: 1.2; }
-.sheet-lede { font-style: italic; font-size: 1.0625rem; color: var(--ink-2); }
+.sheet-title { font-weight: 400; font-size: 1.75rem; line-height: 1.2; }
+.sheet-lede { font-size: 1.1875rem; color: var(--pencil); }
 .export {
   display: block;
   width: 100%;
-  height: min(44vh, 22rem);
-  padding: 1rem;
-  background: var(--card);
-  color: var(--ink);
+  height: min(42vh, 22rem);
+  padding: .25rem .1rem;
+  background: transparent repeating-linear-gradient(transparent 0 calc(1.75rem - 1px), var(--lines) calc(1.75rem - 1px) 1.75rem);
   border: 0;
   border-radius: 0;
-  font: 400 1rem/1.55 var(--sans);
+  color: var(--ink);
+  font: 400 1.0625rem/1.75rem var(--hand);
   resize: none;
 }
-.sheet-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .6rem; }
-.sheet-actions .btn { justify-content: center; min-height: 3.25rem; }
-.status { min-height: 1.4em; font: 400 .8125rem/1.4 var(--sans); color: var(--warm); }
-.wipe { display: grid; gap: .25rem; border-top: 1px solid var(--rule); padding-top: .75rem; }
-.wipe p { font-size: 1rem; color: var(--ink-2); }
+.sheet-actions { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; }
+.status { min-height: 1.5em; font-size: 1.0625rem; color: var(--sepia); }
+.wipe p { font-size: 1.125rem; color: var(--pencil); }
 .wipe-row { display: flex; gap: 1.5rem; }
-.link.is-quiet { color: var(--ink-2); }
+.quiet.strong { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 
-/* ───────── movimiento ───────── */
+/* ───────── la tinta ───────── */
+@keyframes ink {
+  from { opacity: 0; clip-path: inset(-45% 100% -45% -12%); }
+  35%  { opacity: 1; }
+  to   { opacity: 1; clip-path: inset(-45% -18% -45% -12%); }
+}
+@keyframes stroke {
+  from { clip-path: inset(-60% 100% -60% -8%); }
+  to   { clip-path: inset(-60% -8% -60% -8%); }
+}
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-.screen { transition: opacity .3s ease, transform .3s ease; }
-.screen.is-leaving { opacity: 0; transform: translateY(-6px); }
-.screen.is-entering .num   { animation: rise 1s var(--ease) both; }
-.screen.is-entering .title { animation: rise 1s .14s var(--ease) both; }
-.screen.is-entering .dish  { animation: fade .9s .4s ease both; }
-.screen.is-entering .rule  { animation: draw 1.2s .5s cubic-bezier(.6, 0, .2, 1) both; }
-.screen.is-entering .rest  { animation: fade 1s .7s ease both; }
+.writing .w { animation: ink var(--dur, 300ms) var(--del, 0ms) cubic-bezier(.35, .1, .25, 1) both; }
+.writing .draw { animation: stroke 520ms var(--del, 0ms) ease-out both; }
+
+.screen { transition: opacity .35s ease; }
+.screen.is-leaving { opacity: 0; }
+.screen.is-arriving { animation: fade .5s ease both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -410,50 +339,18 @@ main { position: relative; z-index: 1; }
 
   <!-- PORTADA -->
   <section class="screen cover wrap" data-screen="cover" aria-labelledby="cover-title">
-    <div class="cover-top"><p class="micro">13.10.26</p></div>
+    <p class="cover-top">13.10.26</p>
     <div class="cover-mid">
-      <h1 class="cover-title" id="cover-title" tabindex="-1">Seis<br>tiempos</h1>
-      <div class="cover-rule" aria-hidden="true"></div>
+      <h1 class="cover-title" id="cover-title" tabindex="-1"><span class="ln">Seis</span><span class="ln">tiempos</span></h1>
+      <i data-draw="under"></i>
       <p class="cover-sub">Una historia que no estaba en la carta.</p>
     </div>
     <div class="cover-bottom">
-      <button type="button" class="btn" data-go="1">Comenzar</button>
+      <button type="button" class="hbtn" data-go="1"><span>Comenzar</span><i data-draw="box"></i></button>
     </div>
   </section>
 
-  <!-- Los seis tiempos se arman desde el bloque CARTA, más abajo -->
-
-  <!-- CIERRE -->
-  <section class="screen final" data-screen="final" aria-labelledby="final-title" hidden>
-    <header class="bar wrap" data-bar="7"></header>
-    <div class="wrap">
-      <header class="head head-final">
-        <p class="num" aria-hidden="true">6</p>
-        <h2 class="title" id="final-title" tabindex="-1"><span class="sr-only">6 </span>meses.</h2>
-      </header>
-      <hr class="rule">
-      <div class="rest">
-        <div class="story">
-          <p>Hay cosas que ya son nuestras.<br>Hay cosas que todavía estamos entendiendo.<br>Hay cosas que probablemente nunca vamos a entender.<br>Y hay muchas que todavía no han pasado.</p>
-          <p>Me gusta bastante eso.</p>
-        </div>
-        <div class="sign">
-          <p class="wish">Feliz seis meses.</p>
-          <p class="by">— V.</p>
-        </div>
-        <ol class="index" id="index"></ol>
-        <footer class="colophon">
-          <p class="micro">Archivo 01</p>
-          <p class="micro">13.10.26 · Lima</p>
-          <p class="today">Hoy.</p>
-        </footer>
-        <div class="final-actions">
-          <button type="button" class="link" id="open-save"><span>Guardar mis respuestas</span></button>
-          <button type="button" class="back" data-go="6">Volver</button>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Los seis tiempos y el cierre se escriben desde CARTA y CIERRE, más abajo -->
 </main>
 
 <!-- GUARDAR MIS RESPUESTAS -->
@@ -462,22 +359,22 @@ main { position: relative; z-index: 1; }
   <div class="sheet-panel">
     <div class="sheet-head">
       <h2 class="sheet-title" id="sheet-title" tabindex="-1">Mis respuestas</h2>
-      <button type="button" class="link is-quiet" data-close>Cerrar</button>
+      <button type="button" class="quiet" data-close>cerrar</button>
     </div>
     <p class="sheet-lede">Para guardarlas donde quieras.</p>
     <textarea class="export" id="export" readonly aria-label="Texto de mis respuestas"></textarea>
     <div class="sheet-actions">
-      <button type="button" class="btn" id="copy">Copiar</button>
-      <button type="button" class="btn" id="download">Descargar</button>
+      <button type="button" class="hbtn" id="copy"><span>Copiar</span><i data-draw="box"></i></button>
+      <button type="button" class="hbtn" id="download"><span>Descargar</span><i data-draw="box"></i></button>
     </div>
     <p class="status" id="status" aria-live="polite"></p>
     <div class="wipe">
-      <button type="button" class="link is-quiet" id="wipe"><span>Borrar todo de este teléfono</span></button>
+      <button type="button" class="quiet" id="wipe">borrar todo de este teléfono</button>
       <div id="wipe-confirm" hidden>
         <p>Se borran las respuestas y la carta vuelve al principio.</p>
         <div class="wipe-row">
-          <button type="button" class="link" id="wipe-yes"><span>Sí, borrar</span></button>
-          <button type="button" class="link is-quiet" id="wipe-no">No</button>
+          <button type="button" class="quiet strong" id="wipe-yes">sí, borrar</button>
+          <button type="button" class="quiet" id="wipe-no">no</button>
         </div>
       </div>
     </div>
@@ -487,8 +384,9 @@ main { position: relative; z-index: 1; }
 <script>
 /* ═══════════════════════════════════════════════════════════════
    CARTA — todo el texto de los seis tiempos vive aquí.
-   historia: cada grupo [ ] es un párrafo; cada línea dentro, un salto.
-   pausa.items: preguntas. opcional: true las marca como opcionales.
+   historia: cada grupo [ ] es un párrafo; cada línea dentro, un renglón.
+   Cada tiempo se va abriendo en partes: primero plato + historia,
+   y con "sigue" aparece cada pregunta, una por una.
    ═══════════════════════════════════════════════════════════════ */
 const CARTA = [
   {
@@ -583,7 +481,7 @@ const CARTA = [
           id: 't4-a',
           texto: 'Cuéntame una historia nuestra que haya empezado de una manera y haya terminado completamente en otra.',
           remate: 'La más absurda gana.',
-          anotar: 'Anotar la ganadora',
+          anotar: 'anotar la ganadora',
           enLimpio: 'Una historia nuestra que empezó de una manera y terminó completamente en otra.'
         }
       ]
@@ -635,7 +533,7 @@ const CARTA = [
           frase: true,
           texto: 'Antes de que cumplamos un año, quiero que nosotros…',
           regla: 'No vale cambiar la respuesta después de escuchar la del otro.',
-          anotar: 'Dejarlo por escrito'
+          anotar: 'dejarlo por escrito'
         }
       ]
     },
@@ -643,13 +541,28 @@ const CARTA = [
   }
 ];
 
+const CIERRE = {
+  texto: [
+    ['Hay cosas que ya son nuestras.', 'Hay cosas que todavía estamos entendiendo.', 'Hay cosas que probablemente nunca vamos a entender.', 'Y hay muchas que todavía no han pasado.'],
+    ['Me gusta bastante eso.']
+  ],
+  deseo: 'Feliz seis meses.',
+  firma: '— V.',
+  archivo: ['Archivo 01', '13.10.26 · Lima'],
+  hoy: 'Hoy.'
+};
+
+/* Velocidad de la escritura. 1 = normal. 1.5 escribe más rápido; 0.8, más lento. */
+const VELOCIDAD = 1;
+
 (function () {
   'use strict';
 
-  const KEY = 'seis-tiempos:v1';
+  const KEY = 'seis-tiempos:v2';
   const ORDER = ['cover', '1', '2', '3', '4', '5', '6', 'final'];
   const app = document.getElementById('app');
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CHAR = 15 / VELOCIDAD, GAP = 36 / VELOCIDAD, LINE = 160 / VELOCIDAD, PARA = 340 / VELOCIDAD, STROKE = 380 / VELOCIDAD;
 
   /* ───── memoria local (solo en este teléfono) ───── */
   const store = {
@@ -663,104 +576,346 @@ const CARTA = [
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
   }
 
-  const fresh = () => ({ screen: 'cover', max: 0, answers: {}, scroll: 0 });
+  const fresh = () => ({ screen: 'cover', answers: {}, steps: {}, scroll: 0 });
   let state = Object.assign(fresh(), store.read());
   if (ORDER.indexOf(state.screen) < 0) state.screen = 'cover';
   if (!state.answers || typeof state.answers !== 'object') state.answers = {};
+  if (!state.steps || typeof state.steps !== 'object') state.steps = {};
 
   let saveTimer;
   const save = () => store.write(state);
   const saveSoon = () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 350); };
 
-  /* ───── utilidades ───── */
-  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const arrow = '<svg viewBox="0 0 30 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h29M24.5 .5 29 5l-4.5 4.5"/></svg>';
+  /* ───── pulso: azar con semilla, para que cada trazo sea distinto pero estable ───── */
+  const mulberry = (a) => () => {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+  let seed = 11;
+  const pulse = () => mulberry(seed++ * 7919);
+  const f = (v) => v.toFixed(1);
 
-  // el numeral se entibia un poco en cada tiempo
-  const mix = (a, b, t) => {
-    const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-    const [ca, cb] = [p(a), p(b)];
-    return '#' + ca.map((v, i) => Math.round(v + (cb[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  const waveD = (r, w, h, amp, segs, y0) => {
+    const y = y0 == null ? h / 2 : y0;
+    let d = `M${f(1 + r() * 2)} ${f(y + (r() - .5) * amp)}`;
+    for (let i = 1; i <= segs; i++) {
+      const x = 2 + (w - 4) * i / segs;
+      const cx = x - (w - 4) / segs / 2;
+      d += ` Q${f(cx)} ${f(y + (r() - .5) * amp * 2)} ${f(x)} ${f(y + (r() - .5) * amp)}`;
+    }
+    return d;
   };
 
+  const SVG = {
+    under: (r) => `<svg class="draw under" viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true"><path d="${waveD(r, 200, 10, 2.2, 3)}"/></svg>`,
+    divider: (r) => `<svg class="draw divider" viewBox="0 0 90 14" preserveAspectRatio="none" aria-hidden="true"><path d="${waveD(r, 90, 14, 5, 5)}"/></svg>`,
+    double: (r) => `<svg class="draw double" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true"><path d="${waveD(r, 200, 16, 2, 3, 5)}"/><path d="${waveD(r, 186, 16, 2, 3, 11)}"/></svg>`,
+    box: (r) => {
+      const j = (b, a = 2.6) => f(b + (r() - .5) * a);
+      const d = `M${j(-3)} ${j(2)} C60 ${j(-1)} 140 ${j(3)} ${j(203)} ${j(1)}`
+        + ` M${j(199)} ${j(-3)} C${j(201)} 16 ${j(198)} 34 ${j(200)} ${j(53)}`
+        + ` M${j(204)} ${j(48)} C140 ${j(51)} 60 ${j(47)} ${j(-2)} ${j(49)}`
+        + ` M${j(1)} ${j(53)} C${j(-1)} 34 ${j(2)} 16 ${j(0)} ${j(-3)}`;
+      return `<svg class="draw box" viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"><path d="${d}"/></svg>`;
+    },
+    arrow: (r) => {
+      const j = (b, a = 1.6) => f(b + (r() - .5) * a);
+      return `<svg class="draw arrow" viewBox="0 0 44 16" aria-hidden="true"><path d="M2 ${j(8.5)} Q20 ${j(7)} ${j(40)} ${j(8)} M${j(33)} ${j(3)} Q${j(37)} ${j(6)} 40.5 8 Q${j(36.5)} ${j(10.5)} ${j(33.5)} ${j(13.5)}"/></svg>`;
+    },
+    down: (r) => {
+      const j = (b, a = 1.6) => f(b + (r() - .5) * a);
+      return `<svg class="draw down" viewBox="0 0 20 30" aria-hidden="true"><path d="M${j(10)} 2 Q${j(8)} 15 10.5 27 M${j(5)} ${j(20)} Q8 24 10.5 27.5 Q13 24 ${j(16)} ${j(20)}"/></svg>`;
+    },
+    ring: (r) => {
+      const cx = 17, cy = 15, rx = 15, ry = 12.5, n = 26, a0 = r() * Math.PI * 2;
+      let d = '';
+      for (let i = 0; i <= n + 3; i++) {
+        const a = a0 + i / n * Math.PI * 2, k = 1 + (r() - .5) * .1;
+        d += (i ? ' L' : 'M') + f(cx + Math.cos(a) * rx * k) + ' ' + f(cy + Math.sin(a) * ry * k);
+      }
+      return `<svg class="draw ring" viewBox="0 0 34 30" aria-hidden="true"><path d="${d}"/></svg>`;
+    },
+    strike: (r) => `<svg class="draw strike" viewBox="0 0 30 8" preserveAspectRatio="none" aria-hidden="true"><path d="M1 ${f(5 + r() * 2)} Q15 ${f(3 + r() * 2)} 29 ${f(2 + r() * 2)}"/></svg>`
+  };
+  const draw = (kind) => SVG[kind](pulse());
+
+  /* ───── texto en palabras, para poder escribirlas una por una ───── */
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const words = (s) => esc(s).split(/\s+/).filter(Boolean).map((x) => `<span class="w">${x}</span>`).join(' ');
+  const ln = (s) => `<span class="ln">${words(s)}</span>`;
+
   const bar = (pos) => {
-    let ticks = '';
-    for (let i = 1; i <= 6; i++) ticks += `<i class="${i < pos ? 'done' : i === pos ? 'now' : ''}"></i>`;
-    return `<p class="micro">Seis tiempos</p><div class="ticks" aria-hidden="true">${ticks}</div>`;
+    let nums = '';
+    for (let i = 1; i <= 6; i++) {
+      const cls = i < pos ? 'past' : i === pos ? 'now' : '';
+      const mark = i < pos ? draw('strike') : i === pos ? draw('ring') : '';
+      nums += `<span class="pn ${cls}">${i}${mark}</span>`;
+    }
+    return `<header class="bar wrap"><span class="bar-name">seis tiempos</span><span class="prog" aria-hidden="true">${nums}</span></header>`;
   };
 
   const item = (q) => `
     <div class="q">
-      ${q.opcional ? '<p class="micro">Opcional</p>' : ''}
-      <p class="q-text${q.frase ? ' is-frase' : ''}">${esc(q.texto)}</p>
-      ${q.nota ? `<p class="q-note">${q.nota.map(esc).join('<br>')}</p>` : ''}
-      ${q.remate ? `<p class="q-remate">${esc(q.remate)}</p>` : ''}
-      ${q.regla ? `<div class="house"><p class="micro">Regla de la casa</p><p class="house-text">${esc(q.regla)}</p></div>` : ''}
-      <button type="button" class="note-toggle" aria-expanded="false" aria-controls="${q.id}-field">${esc(q.anotar || 'Anotar')}</button>
+      ${q.opcional ? `<p class="tag pg">${ln('opcional')}</p>` : ''}
+      <p class="q-text pg${q.frase ? ' is-frase' : ''}">${ln(q.texto)}</p>
+      ${q.nota ? `<p class="q-note pg">${q.nota.map(ln).join('')}</p>` : ''}
+      ${q.remate ? `<p class="q-remate pg">${ln(q.remate)}</p>` : ''}
+      ${q.regla ? `<div class="house"><p class="tag pg">${ln('regla de la casa')}</p><p class="house-text pg">${ln(q.regla)}</p></div>` : ''}
+      <button type="button" class="note-toggle" aria-expanded="false" aria-controls="${q.id}-field">${ln('+ ' + (q.anotar || 'anotar'))}</button>
       <div class="field" id="${q.id}-field" hidden>
         <textarea id="${q.id}" rows="1" aria-label="${esc(q.enLimpio || q.texto)}"></textarea>
-        <p class="field-hint">Se queda en este teléfono.</p>
+        <p class="field-hint">se queda en este teléfono.</p>
       </div>
     </div>`;
 
   const tiempo = (t, i) => {
     const n = i + 1;
     const next = n < 6 ? String(n + 1) : 'final';
+    const steps = [];
+
+    steps.push(`
+      <header class="head">
+        <p class="num" aria-hidden="true"><span class="w">${t.n}</span></p>
+        <h2 class="title" id="t${n}-title" tabindex="-1"><span class="sr-only">Tiempo ${t.n}. </span>${ln(t.titulo)}</h2>
+        ${draw('under')}
+      </header>
+      <div class="dish">
+        <p class="dish-name pg">${ln(t.plato)}</p>
+        <p class="dish-ing pg">${ln(t.ingredientes)}</p>
+        ${t.nota ? `<p class="dish-note pg">${ln(t.nota)}</p>` : ''}
+      </div>
+      ${draw('divider')}
+      <div class="story">${t.historia.map((s) => `<p class="pg">${s.map(ln).join('')}</p>`).join('')}</div>`);
+
+    if (t.destacado) steps.push(`<blockquote class="quote"><p class="pg">${ln('“' + t.destacado + '”')}</p></blockquote>`);
+    if (t.revelacion) steps.push(`<div class="reveal"><p class="reveal-big pg">${ln(t.revelacion[0])}</p>${draw('double')}<p class="reveal-line pg">${ln(t.revelacion[1])}</p></div>`);
+
+    t.pausa.items.forEach((q, k) => {
+      let html = '';
+      if (k === 0) {
+        html += draw('divider');
+        if (t.pausa.etiqueta) html += `<p class="pausa-label pg">${ln(t.pausa.etiqueta)}</p>`;
+        if (t.pausa.intro) html += `<p class="pausa-intro pg">${ln(t.pausa.intro)}</p>`;
+      }
+      steps.push(html + item(q));
+    });
+
+    if (t.cierre) steps.push(`<p class="cierre pg">${ln(t.cierre)}</p>`);
+
+    steps[steps.length - 1] += `
+      <nav class="next" aria-label="Seguir">
+        <button type="button" class="hbtn" data-go="${next}">${ln(t.boton)}${draw('arrow')}${draw('box')}</button>
+        ${n > 1 ? `<button type="button" class="back" data-go="${n - 1}">${ln('← tiempo anterior')}</button>` : ''}
+      </nav>`;
+
     const sec = document.createElement('section');
     sec.className = 'screen tiempo';
     sec.dataset.screen = String(n);
     sec.hidden = true;
     sec.setAttribute('aria-labelledby', `t${n}-title`);
-    sec.style.setProperty('--num-color', mix('#9B9085', '#8A5B25', (i / 5) * 0.85));
-    sec.innerHTML = `
-      <header class="bar wrap">${bar(n)}</header>
+    sec.style.setProperty('--num-color', mix('#A89E93', '#8A5B25', (i / 5) * 0.9));
+    sec.innerHTML = `${bar(n)}
       <div class="wrap">
-        <header class="head">
-          <p class="num" aria-hidden="true">${t.n}</p>
-          <h2 class="title" id="t${n}-title" tabindex="-1"><span class="sr-only">Tiempo ${t.n}. </span>${esc(t.titulo)}</h2>
-        </header>
-        <div class="dish">
-          <p class="dish-name">${esc(t.plato)}</p>
-          <p class="dish-ing">${esc(t.ingredientes)}</p>
-          ${t.nota ? `<p class="micro dish-note">${esc(t.nota)}</p>` : ''}
-        </div>
-        <hr class="rule">
-        <div class="rest">
-          <div class="story">${t.historia.map((s) => `<p>${s.map(esc).join('<br>')}</p>`).join('')}</div>
-          ${t.destacado ? `<blockquote class="quote"><p>${esc(t.destacado)}</p></blockquote>` : ''}
-          ${t.revelacion ? `<div class="reveal"><p class="reveal-big">${esc(t.revelacion[0])}</p><p class="reveal-line">${esc(t.revelacion[1])}</p></div>` : ''}
-          <aside class="pausa" aria-label="Pausa">
-            ${t.pausa.etiqueta ? `<p class="micro pausa-label">${esc(t.pausa.etiqueta)}</p>` : ''}
-            ${t.pausa.intro ? `<p class="pausa-intro">${esc(t.pausa.intro)}</p>` : ''}
-            ${t.pausa.items.map(item).join('')}
-          </aside>
-          ${t.cierre ? `<p class="cierre">${esc(t.cierre)}</p>` : ''}
-          <nav class="next" aria-label="Seguir">
-            <button type="button" class="btn" data-go="${next}"><span>${esc(t.boton)}</span>${arrow}</button>
-            ${n > 1 ? `<button type="button" class="back" data-go="${n - 1}">Tiempo anterior</button>` : ''}
-          </nav>
-        </div>
+        ${steps.map((s, k) => `<div class="step" data-step="${k}" hidden>${s}</div>`).join('')}
+        <button type="button" class="cue" hidden><span>sigue</span>${draw('down')}</button>
+        <div class="tail"></div>
       </div>`;
     return sec;
   };
 
+  const cierre = () => {
+    const c = CIERRE;
+    const sec = document.createElement('section');
+    sec.className = 'screen final';
+    sec.dataset.screen = 'final';
+    sec.hidden = true;
+    sec.setAttribute('aria-labelledby', 'final-title');
+    sec.style.setProperty('--num-color', '#8A5B25');
+    sec.innerHTML = `${bar(7)}
+      <div class="wrap">
+        <div class="step" data-step="0" hidden>
+          <header class="head head-final">
+            <p class="num" aria-hidden="true"><span class="w">6</span></p>
+            <h2 class="title" id="final-title" tabindex="-1"><span class="sr-only">6 </span>${ln('meses.')}</h2>
+          </header>
+          ${draw('divider')}
+          <div class="story">${c.texto.map((s) => `<p class="pg">${s.map(ln).join('')}</p>`).join('')}</div>
+          <div class="sign">
+            <p class="wish pg">${ln(c.deseo)}</p>
+            <p class="by pg">${ln(c.firma)}</p>
+          </div>
+          ${draw('divider')}
+          <ol class="index">${CARTA.map((t) => `<li class="pg">${ln(t.n + ' ' + t.titulo)}</li>`).join('')}</ol>
+          <footer class="colophon">
+            ${c.archivo.map((a) => `<p class="arch pg">${ln(a)}</p>`).join('')}
+            <p class="today pg">${ln(c.hoy)}</p>
+          </footer>
+          <div class="final-actions">
+            <button type="button" class="hbtn" id="open-save">${ln('Guardar mis respuestas')}${draw('box')}</button>
+            <button type="button" class="back" data-go="6">${ln('volver')}</button>
+          </div>
+        </div>
+        <div class="tail"></div>
+      </div>`;
+    return sec;
+  };
+
+  // el número de cada tiempo pasa del lápiz al sepia
+  function mix(a, b, t) {
+    const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const [ca, cb] = [p(a), p(b)];
+    return '#' + ca.map((v, i) => Math.round(v + (cb[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  }
+
   /* ───── armar la carta ───── */
-  const finalEl = app.querySelector('[data-screen="final"]');
-  CARTA.forEach((t, i) => app.insertBefore(tiempo(t, i), finalEl));
-  finalEl.querySelector('[data-bar]').innerHTML = bar(7);
-  finalEl.style.setProperty('--num-color', '#8A5B25');
-  document.getElementById('index').innerHTML = CARTA
-    .map((t) => `<li><span>${t.n}</span>${esc(t.titulo)}</li>`).join('');
+  CARTA.forEach((t, i) => app.appendChild(tiempo(t, i)));
+  app.appendChild(cierre());
+  document.querySelectorAll('[data-draw]').forEach((el) => { el.outerHTML = draw(el.dataset.draw); });
+
+  // ningún renglón queda del todo derecho
+  (() => {
+    const r = mulberry(4242);
+    document.querySelectorAll('.ln').forEach((el) => {
+      el.style.setProperty('--r', f((r() - .5) * .9) + 'deg');
+      el.style.setProperty('--x', f((r() - .3) * 3) + 'px');
+    });
+  })();
 
   const screens = {};
   app.querySelectorAll('.screen').forEach((s) => { screens[s.dataset.screen] = s; });
 
+  /* ───── la escritura ───── */
+  const schedule = (block, t) => {
+    let prevLn = null, prevPg = null;
+    block.querySelectorAll('.w, .draw').forEach((el) => {
+      if (el.classList.contains('draw')) {
+        el.style.setProperty('--del', Math.round(t) + 'ms');
+        t += STROKE;
+        prevLn = null;
+        return;
+      }
+      const lnEl = el.closest('.ln'), pgEl = el.closest('.pg');
+      if (prevLn && lnEl !== prevLn) t += pgEl !== prevPg ? PARA : LINE;
+      prevLn = lnEl; prevPg = pgEl;
+      const n = el.textContent.length;
+      el.style.setProperty('--del', Math.round(t) + 'ms');
+      el.style.setProperty('--dur', Math.round(Math.min(560, Math.max(170, n * 36)) / VELOCIDAD) + 'ms');
+      t += n * CHAR + GAP;
+    });
+    return t;
+  };
+
+  let writing = null;
+  const finish = () => {
+    if (!writing) return;
+    const w = writing;
+    writing = null;
+    clearTimeout(w.timer);
+    w.blocks.forEach((b) => { b.classList.remove('writing'); b.classList.add('inked'); });
+    if (w.done) w.done();
+  };
+
+  const write = (blocks, done) => {
+    finish();
+    blocks.forEach((b) => { b.hidden = false; });
+    if (reduce) {
+      blocks.forEach((b) => b.classList.add('inked'));
+      if (done) done();
+      return;
+    }
+    let t = 150;
+    blocks.forEach((b) => { b.classList.remove('inked'); t = schedule(b, t); b.classList.add('writing'); });
+    writing = { blocks, done, timer: setTimeout(finish, t + 600) };
+  };
+
+  /* ───── abrir cada tiempo por partes ───── */
+  const stepsOf = (sec) => [...sec.querySelectorAll('.step')];
+
+  const updateCue = (sec) => {
+    const cue = sec.querySelector('.cue');
+    if (!cue) return;
+    cue.hidden = (state.steps[sec.dataset.screen] || 0) >= stepsOf(sec).length - 1;
+  };
+
+  const autosizeIn = (root) => root.querySelectorAll('.field textarea').forEach(autosize);
+
+  const prepare = (sec) => {
+    const id = sec.dataset.screen;
+    if (id === 'cover') return;
+    const steps = stepsOf(sec);
+    const cue = sec.querySelector('.cue');
+    if (state.steps[id] === undefined) {
+      state.steps[id] = 0;
+      save();
+      steps.forEach((s, i) => { s.hidden = i > 0; s.classList.remove('inked', 'writing'); });
+      if (cue) cue.hidden = true;
+      write([steps[0]], () => updateCue(sec));
+    } else {
+      const seen = state.steps[id];
+      steps.forEach((s, i) => { s.hidden = i > seen; s.classList.remove('writing'); s.classList.add('inked'); });
+      updateCue(sec);
+    }
+    autosizeIn(sec);
+  };
+
+  const advance = (sec) => {
+    const id = sec.dataset.screen;
+    const k = (state.steps[id] || 0) + 1;
+    const step = sec.querySelector(`.step[data-step="${k}"]`);
+    if (!step) return;
+    state.steps[id] = k;
+    save();
+    sec.querySelector('.cue').hidden = true;
+    write([step], () => { updateCue(sec); autosizeIn(step); });
+    autosizeIn(step);
+    const top = step.getBoundingClientRect().top;
+    if (top > window.innerHeight * 0.5) {
+      window.scrollTo({ top: window.scrollY + top - window.innerHeight * 0.2, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  };
+
+  /* ───── pasar de tiempo ───── */
+  let busy = false;
+  const show = (id, instant) => {
+    const next = screens[id];
+    const cur = app.querySelector('.screen:not([hidden])');
+    if (!next || cur === next || busy) return;
+    finish();
+
+    state.screen = id;
+    state.scroll = 0;
+    save();
+
+    const enter = () => {
+      if (cur) { cur.hidden = true; cur.classList.remove('is-leaving', 'is-arriving'); }
+      next.hidden = false;
+      window.scrollTo(0, 0);
+      if (!instant && !reduce) {
+        next.classList.remove('is-arriving');
+        void next.offsetWidth;
+        next.classList.add('is-arriving');
+      }
+      prepare(next);
+      if (!instant) {
+        const h = next.querySelector('[tabindex="-1"]');
+        if (h) h.focus({ preventScroll: true });
+      }
+    };
+
+    if (instant || reduce || !cur) { enter(); return; }
+    busy = true;
+    cur.classList.add('is-leaving');
+    setTimeout(() => { enter(); busy = false; }, 350);
+  };
+
   /* ───── notas ───── */
-  const autosize = (ta) => {
+  function autosize(ta) {
     if (!ta.offsetParent) return;
     ta.style.height = 'auto';
     ta.style.height = ta.scrollHeight + 'px';
-  };
+  }
 
   const openField = (toggle, focus) => {
     const field = document.getElementById(toggle.getAttribute('aria-controls'));
@@ -801,45 +956,15 @@ const CARTA = [
     if (ta.matches && ta.matches('.field textarea') && !ta.value.trim()) closeField(ta.closest('.field'));
   });
 
-  /* ───── pasar de tiempo ───── */
-  let busy = false;
-  const show = (id, instant) => {
-    const next = screens[id];
-    const cur = app.querySelector('.screen:not([hidden])');
-    if (!next || cur === next || busy) return;
-
-    state.screen = id;
-    state.max = Math.max(state.max || 0, ORDER.indexOf(id));
-    state.scroll = 0;
-    save();
-
-    const enter = () => {
-      if (cur) { cur.hidden = true; cur.classList.remove('is-leaving', 'is-entering'); }
-      next.hidden = false;
-      window.scrollTo(0, 0);
-      next.querySelectorAll('.field textarea').forEach(autosize);
-      if (!instant && !reduce) {
-        next.classList.remove('is-entering');
-        void next.offsetWidth;
-        next.classList.add('is-entering');
-      }
-      if (!instant) {
-        const h = next.querySelector('[tabindex="-1"]');
-        if (h) h.focus({ preventScroll: true });
-      }
-    };
-
-    if (instant || reduce || !cur) { enter(); return; }
-    busy = true;
-    cur.classList.add('is-leaving');
-    setTimeout(() => { enter(); busy = false; }, 300);
-  };
-
   app.addEventListener('click', (e) => {
     const toggle = e.target.closest('.note-toggle');
-    if (toggle) { openField(toggle, true); return; }
+    if (toggle) { finish(); openField(toggle, true); return; }
+    const cue = e.target.closest('.cue');
+    if (cue) { advance(cue.closest('.screen')); return; }
     const go = e.target.closest('[data-go]');
-    if (go) show(go.dataset.go);
+    if (go) { show(go.dataset.go); return; }
+    // un toque en cualquier parte termina de escribir lo que falta
+    if (writing && !e.target.closest('textarea')) finish();
   });
 
   /* volver a donde quedó, si se recarga en medio de la cena */
@@ -876,11 +1001,12 @@ const CARTA = [
         L.push('');
       });
     });
-    L.push('— — —', '', 'Feliz seis meses.', '— V.', '', 'ARCHIVO 01', '13.10.26 · Lima', 'Hoy.');
+    L.push('— — —', '', CIERRE.deseo, CIERRE.firma, '', CIERRE.archivo[0].toUpperCase(), CIERRE.archivo[1], CIERRE.hoy);
     return L.join('\n');
   };
 
   const openSheet = () => {
+    finish();
     exportEl.value = enLimpio();
     status.textContent = '';
     wipeConfirm.hidden = true;
@@ -930,12 +1056,13 @@ const CARTA = [
   wipeBtn.addEventListener('click', () => { wipeBtn.hidden = true; wipeConfirm.hidden = false; });
   document.getElementById('wipe-no').addEventListener('click', () => { wipeConfirm.hidden = true; wipeBtn.hidden = false; });
   document.getElementById('wipe-yes').addEventListener('click', () => {
+    finish();
     store.clear();
     state = fresh();
     app.querySelectorAll('.field textarea').forEach((ta) => { ta.value = ''; closeField(ta.closest('.field')); });
-    closeSheet();
+    app.querySelectorAll('.step').forEach((s) => { s.hidden = true; s.classList.remove('inked', 'writing'); });
     show('cover', true);
-    state.max = 0;
+    closeSheet();
     save();
   });
 })();

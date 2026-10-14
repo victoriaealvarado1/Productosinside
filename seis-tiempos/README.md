@@ -2,6 +2,8 @@
 
 Pieza web para abrir desde un QR durante la cena. Un solo archivo (`index.html`), sin servidor ni base de datos.
 
+Todo se ve escrito a mano y se va escribiendo solo, palabra por palabra. Cada tiempo se abre en partes: primero el plato y la historia; con “sigue” aparece cada pregunta, una por una. Un toque en cualquier parte de la pantalla termina de escribir lo que falta.
+
 ## Publicarla para el QR
 
 Cualquier hosting estático sirve. Se sube la carpeta `seis-tiempos/` tal cual:
@@ -20,4 +22,6 @@ Con la URL final se genera el QR. Conviene probarlo en el teléfono que se va a 
 
 ## Editar textos
 
-Todo el contenido de los seis tiempos está en el bloque `CARTA` del `<script>` de `index.html`. Portada y cierre están en el HTML, arriba y abajo de ese bloque.
+Todo el contenido está en el `<script>` de `index.html`: los seis tiempos en `CARTA`, la pantalla final en `CIERRE`. La portada está en el HTML.
+
+La velocidad de escritura se ajusta con `VELOCIDAD` (1 = normal, 1.5 más rápido).
