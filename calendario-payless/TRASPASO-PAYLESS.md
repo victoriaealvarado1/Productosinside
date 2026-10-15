@@ -663,7 +663,7 @@ Historial de commits relevante (rama `claude/relaxed-pascal-bpzhko`):
 
 ### 10.4 Prompt de arranque
 
-El mensaje vigente para abrir una conversación nueva está en `ARRANQUE.md`, sección 9.
+El mensaje vigente para abrir una conversación nueva está en `ARRANQUE.md`, sección 8.
 
 ### 10.5 Glosario
 
