@@ -2,7 +2,7 @@
 
 **Calendario de publicación, revisión con el cliente y visión del sistema de campañas**
 
-Actualizado el 2 de octubre de 2026. Preparado para continuar el trabajo desde otra cuenta de Claude.
+Actualizado el 15 de octubre de 2026. **Para retomar el trabajo en una conversación nueva, empieza por `ARRANQUE.md`**: dice dónde vive cada cosa hoy, cómo se trabaja, qué falta y trae el mensaje de arranque. Este documento guarda el contexto de fondo.
 
 ---
 
@@ -22,6 +22,8 @@ Actualizado el 2 de octubre de 2026. Preparado para continuar el trabajo desde o
 ---
 
 ## 1. Cómo usar este documento en otra cuenta de Claude
+
+> Desde el 15 de octubre el código vive en `AGENCIA-INSIDE/Calendario-Payless`. Para seguir con la misma cuenta de Claude, usa `ARRANQUE.md`. Esta sección sirve solo para reconstruir la plataforma desde otra cuenta.
 
 ### Qué llevar
 
@@ -659,18 +661,9 @@ Historial de commits relevante (rama `claude/relaxed-pascal-bpzhko`):
    - repetir la extracción del Excel del planning y de las matrices (reglas en la sección 6.2);
    - o usar "Actualizar imágenes desde el Excel" para el arte.
 
-### 10.4 Prompt de arranque para la otra cuenta
+### 10.4 Prompt de arranque
 
-> Trabajo en la agencia creativa Inside y opero la cuenta Payless (retail de calzado; 4 regiones: Centroamérica, Sur, RD y Caribe inglés; ~16 países; aprobadores por región).
->
-> Te paso el documento TRASPASO-PAYLESS.md con todo el contexto: el calendario de publicación ya construido (artifact con base compartida y vista de cliente), cómo se extrajeron los datos del Excel de planning y de las matrices PDF, el feedback de la reunión con el cliente del 2 oct y la visión de Franco de un sistema de campañas (playbook → inputs por región, país y pilar → tropicalización → generación de piezas con IA → validación copy/legal/imagen/país → aprobación → publicación automática en Meta → vistas por campaña, pilar y responsable).
->
-> Objetivo de esta sesión: [elige uno]
-> (a) Fase 0: agregar "versión historia" de cada post, el tipo "Influencer", una plantilla de lanzamiento con cuenta regresiva y el canal y horarios de atención en la vista cliente.
-> (b) Fase 1: diseñar e implementar el objeto Campaña (playbook) con inputs por coordinadora y vistas por campaña y por pilar.
-> (c) Proponer la arquitectura de la Fase 2/3 (IA + backend + Meta Graph API) manteniendo el modelo de datos del anexo 10.1.
->
-> Antes de construir, hazme las preguntas necesarias. Prioriza lo que el cliente pidió en la reunión (sección 3.6).
+El mensaje vigente para abrir una conversación nueva está en `ARRANQUE.md`, sección 9.
 
 ### 10.5 Glosario
 

@@ -4,6 +4,7 @@ Plataforma solo de calendario para la cuenta Payless: publicaciones orgánicas d
 
 - **Publicada (privada):** https://claude.ai/artifact/B7aFHiLWrJ24geg4hrJnLp
 - **Fuente:** `PAYLESS _ Planning octubre meta cliente.xlsx` y las matrices CAM, SUR, RD y Caribbean (octubre 2026)
+- **Para retomar en una conversación nueva:** `ARRANQUE.md`
 - **Traspaso completo:** `TRASPASO-PAYLESS.md`
 
 ## Qué hace
